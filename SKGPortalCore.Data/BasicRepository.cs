@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
@@ -12,14 +15,14 @@ namespace SKGPortalCore.Data
     public class BasicRepository<TSet> : IDisposable
     {
         #region Property
-        protected readonly DbContext Database;
-        protected IUserModel User { get; }
+        protected readonly DbContext DataAccess;
+        public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
         #endregion
         #region Construct
         public BasicRepository(DbContext database)
         {
-            Database = database;
+            DataAccess = database;
         }
         #endregion
         #region Public
@@ -38,8 +41,9 @@ namespace SKGPortalCore.Data
                 foreach (var s in set.GetType().GetProperties())
                 {
                     dynamic val = Reflect.GetValue(set, s.Name);
-                    if (val is IEnumerable) { Database.Add(val); }
-                    else { Database.AddRange(val); }
+                    if (null == val) continue;
+                    if (val is IEnumerable) { DataAccess.AddRange(val); }
+                    else { DataAccess.Add(val); }
                 }
                 AfterSetEntity(set);
                 return set;
@@ -64,15 +68,15 @@ namespace SKGPortalCore.Data
                 foreach (var s in set.GetType().GetProperties())
                 {
                     dynamic val = Reflect.GetValue(set, s.Name);
-                    if (val is IEnumerable) { Database.Update(val); }
+                    if (val is IEnumerable) { DataAccess.Update(val); }
                     else
                     {
                         if (val is DetailRowState)
                         {
                             List<DetailRowState> c = val;
-                            Database.AddRange(c.Where(p => p.RowState == RowState.Insert));
-                            Database.UpdateRange(c.Where(p => p.RowState == RowState.Update));
-                            Database.RemoveRange(c.Where(p => p.RowState == RowState.Delete));
+                            DataAccess.AddRange(c.Where(p => p.RowState == RowState.Insert));
+                            DataAccess.UpdateRange(c.Where(p => p.RowState == RowState.Update));
+                            DataAccess.RemoveRange(c.Where(p => p.RowState == RowState.Delete));
                         }
                     }
                 }
@@ -101,7 +105,7 @@ namespace SKGPortalCore.Data
         {
             try
             {
-                Database.Remove(Database.Find(typeof(TSet).GetProperties()[0].PropertyType, key));
+                DataAccess.Remove(DataAccess.Find(typeof(TSet).GetProperties()[0].PropertyType, key));
             }
             catch
             {
@@ -124,8 +128,36 @@ namespace SKGPortalCore.Data
         /// <returns></returns>
         public TSet QueryData(object[] key)
         {
-            //Condition + User's Data
-            return default;
+            var setProperties = typeof(TSet).GetProperties();
+            var instance = Activator.CreateInstance<TSet>();
+            int setLen = 0;
+            string pkCondition = string.Empty;
+            foreach (var setProperty in setProperties)
+            {
+                if (typeof(IEnumerable).IsAssignableFrom(setProperty.PropertyType))
+                {
+                    Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
+                    var dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
+                    var models = ((IQueryable)dbSet).Where(pkCondition, key);
+                    foreach (var model in models)
+                    {
+                        SetRefModel(model);
+                    }
+                    Type listType = typeof(List<>).MakeGenericType(new[] { modelType });
+                    IList list = (IList)Activator.CreateInstance(listType, models);
+                    instance.GetType().GetProperties()[setLen].SetValue(instance, list);
+                }
+                else
+                {
+                    pkCondition = GetPKCondition(GetKeyPropertiesByModelType(setProperty.PropertyType));
+                    var model = DataAccess.Find(setProperty.PropertyType, key);
+                    if (null == model) return default;
+                    SetRefModel(model);
+                    instance.GetType().GetProperties()[setLen].SetValue(instance, model);
+                }
+                setLen++;
+            }
+            return instance;
         }
         /// <summary>
         /// 執行更新
@@ -133,7 +165,7 @@ namespace SKGPortalCore.Data
         /// <param name="action"></param>
         public void CommitData(FuncAction action)
         {
-            Database.BulkSaveChanges();
+            DataAccess.BulkSaveChanges();
             AfterSaveChanges(action);
         }
         #endregion
@@ -247,6 +279,43 @@ namespace SKGPortalCore.Data
                 model.ModifyStaff = null;
                 model.ModifyTime = DateTime.MinValue;
             }
+        }
+        /// <summary>
+        /// 讀取關聯表值
+        /// </summary>
+        /// <param name="_DB"></param>
+        /// <param name="model"></param>
+        /// <param name="fieldsProp"></param>
+        private void SetRefModel(object model)
+        {
+            if (null == model) return;
+            IEnumerable<ReferenceEntry> refs = DataAccess.Entry(model).References;
+            foreach (ReferenceEntry refE in refs)
+            {
+                refE.Load();
+            }
+        }
+        /// <summary>
+        /// 獲取主鍵值條件
+        /// </summary>
+        /// <param name="keysInfo"></param>
+        /// <returns></returns>
+        private static string GetPKCondition(PropertyInfo[] keysInfo)
+        {
+            string result = string.Empty;
+            int len = keysInfo.Length;
+            for (int i = 0; i < len; i++)
+                result = DataHelper.Merge(" And ", false, result, $"{keysInfo[i].Name}=@{i}");
+            return result;
+        }
+        /// <summary>
+        /// 獲取表的主鍵欄位
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private static PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
+        {
+            return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
         }
         #endregion
         #region IDisposable Support

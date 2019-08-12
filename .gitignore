@@ -1,5 +1,6 @@
 SKGPortalCore/bin
 SKGPortalCore/obj
+SKGPortalCore/Migrations
 SKGPortalCore.Business/
 SKGPortalCore.Data/bin
 SKGPortalCore.Data/obj

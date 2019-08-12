@@ -27,29 +27,30 @@ namespace SKGPortalCore.SeedDataInitial
             try
             {
                 SystemOperator sys = new SystemOperator();
-                /*
-                db.Add(sys.SysOperator);
-                db.SaveChanges();
+                if (db.Set<BackendUserModel>().Find("SysOperator") == null)
+                    db.Add(sys.SysOperator);
                 //資料
-                CreateChannel(db);
-                CreateCollectionType(db);
+                CreateChannel(db,sys);
+                CreateCollectionType(db, sys);
                 //CreateChannelVerifyPeriod(db);
-                CreateCustomer(db);
-                CreateBizCustomer(db);
-                CreatePayer(db);
-                CreateBillTerm(db);
-                 */
+                CreateCustomer(db, sys);
+                CreateBizCustomer(db, sys);
+                CreatePayer(db, sys);
+                CreateBillTerm(db, sys);
                 //單據
-                CreateBill(db);
-                //CreateReceiptBill(db);
-                //CreateCashFlowBill(db);
+                CreateBill(db, sys);
+                CreateReceiptBill(db, sys);
+                CreateCashFlowBill(db, sys);
 
-
+                //db.SaveChanges();
+                db.BulkSaveChanges();
                 transaction.Commit();
             }
-            catch
+            catch(Exception e)
             {
                 transaction.Rollback();
+                Console.WriteLine(e);
+                Console.ReadLine();
             }
         }
 
@@ -58,9 +59,10 @@ namespace SKGPortalCore.SeedDataInitial
         /// 新增「代收通路」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateChannel(ApplicationDbContext db)
+        private static void CreateChannel(ApplicationDbContext db, SystemOperator sys)
         {
             ChannelRepository repo = new ChannelRepository(db);
+            repo.User = sys.SysOperator;
             var channels = new List<ChannelSet>() { new ChannelSet() { Channel = new ChannelModel(){ ChannelId="00", ChannelName="銀行臨櫃", ChannelType= CanalisType.Bank} },
                                                     new ChannelSet() { Channel = new ChannelModel(){ ChannelId="01", ChannelName="7-11", ChannelType= CanalisType.Market}, ChannelMap = new List<ChannelMapModel>(){ new ChannelMapModel() { ChannelId = "01", TransCode = "7111111" } } },
                                                     new ChannelSet() { Channel = new ChannelModel(){ ChannelId="02", ChannelName="全家", ChannelType= CanalisType.Market}, ChannelMap = new List<ChannelMapModel>(){new ChannelMapModel() { ChannelId = "02", TransCode = "TFM" } } },
@@ -80,15 +82,19 @@ namespace SKGPortalCore.SeedDataInitial
                                                     new ChannelSet() { Channel = new ChannelModel(){ ChannelId="A5", ChannelName="約定扣款(平台端)", ChannelType= CanalisType.Credit}},
                                                     };
             foreach (var channel in channels)
-                repo.Create(channel);
+            {
+                if (null == repo.QueryData(new[] { channel.Channel.ChannelId }))
+                    repo.Create(channel);
+            }
         }
         /// <summary>
         /// 新增「代收類別」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateCollectionType(ApplicationDbContext db)
+        private static void CreateCollectionType(ApplicationDbContext db, SystemOperator sys)
         {
             CollectionTypeRepository repo = new CollectionTypeRepository(db);
+            repo.User = sys.SysOperator;
             var collectionTypes = new List<CollectionTypeSet>() { new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="50084884",CollectionTypeName="郵局特戶", ChargePayType= ChargePayType.Deduction}, CollectionTypeDetail = new List<CollectionTypeDetailModel>() { new CollectionTypeDetailModel() {CollectionTypeId= "50084884",ChannelId= "05", SRange=1,ERange=100,Fee=5 }, new CollectionTypeDetailModel() { CollectionTypeId = "50084884", ChannelId = "05", SRange = 101, ERange = 1000, Fee = 10 }, new CollectionTypeDetailModel() { CollectionTypeId = "50084884", ChannelId = "05", SRange = 1001, ERange = 9999999, Fee = 15 }, new CollectionTypeDetailModel() { CollectionTypeId = "50084884", ChannelId = "A1", SRange = 1, ERange = 100, Fee = 5 }, new CollectionTypeDetailModel() { CollectionTypeId = "50084884", ChannelId = "A1", SRange = 101, ERange = 1000, Fee = 10 }, new CollectionTypeDetailModel() { CollectionTypeId = "50084884", ChannelId = "A1", SRange = 1001, ERange = 9999999, Fee = 15 } } },
                                                                   new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="62H",CollectionTypeName="一般代收(2萬、內扣、日結)", ChargePayType= ChargePayType.Deduction }, CollectionTypeDetail = new List<CollectionTypeDetailModel>() { new CollectionTypeDetailModel() { CollectionTypeId = "62H", ChannelId = "02", SRange = 1, ERange = 20000, Fee = 12 }, new CollectionTypeDetailModel() { CollectionTypeId = "62H", ChannelId = "03", SRange = 1, ERange = 20000, Fee = 13 }, new CollectionTypeDetailModel() { CollectionTypeId = "62H", ChannelId = "04", SRange = 1, ERange = 20000, Fee = 12 } } },
                                                                   new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="62I",CollectionTypeName="一般代收(4萬、內扣、日結)", ChargePayType= ChargePayType.Deduction }, CollectionTypeDetail = new List<CollectionTypeDetailModel>() { new CollectionTypeDetailModel() { CollectionTypeId = "62I", ChannelId = "02", SRange = 20001, ERange = 40000, Fee = 16 }, new CollectionTypeDetailModel() { CollectionTypeId = "62I", ChannelId = "03", SRange = 20001, ERange = 40000, Fee = 16 }, new CollectionTypeDetailModel() { CollectionTypeId = "62I", ChannelId = "04", SRange = 20001, ERange = 40000, Fee = 16 } } },
@@ -120,57 +126,76 @@ namespace SKGPortalCore.SeedDataInitial
                                                                   new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="I0O",CollectionTypeName="超商代收-保險費", ChargePayType= ChargePayType.Deduction}, CollectionTypeDetail = new List<CollectionTypeDetailModel>() { new CollectionTypeDetailModel() { CollectionTypeId = "I0O", ChannelId = "01", SRange = 1, ERange = 50000, Fee = 20 }, new CollectionTypeDetailModel() { CollectionTypeId = "I0O", ChannelId = "02", SRange = 1, ERange = 50000, Fee = 20 }, new CollectionTypeDetailModel() { CollectionTypeId = "I0O", ChannelId = "03", SRange = 1, ERange = 50000, Fee = 20 }, new CollectionTypeDetailModel() { CollectionTypeId = "I0O", ChannelId = "04", SRange = 1, ERange = 50000, Fee = 20 } } },
                                                                 };
             foreach (var collectionType in collectionTypes)
-                repo.Create(collectionType);
+            {
+                if (null == repo.QueryData(new[] { collectionType.CollectionType.CollectionTypeId }))
+                    repo.Create(collectionType);
+            }
         }
         /// <summary>
         /// 新增「客戶基本資料」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateCustomer(ApplicationDbContext db)
+        private static void CreateCustomer(ApplicationDbContext db, SystemOperator sys)
         {
             CustomerRepository repo = new CustomerRepository(db);
+            repo.User = sys.SysOperator;
             var customers = new List<CustomerSet>() { new CustomerSet() { Customer = new CustomerModel() { CustomerId = "80425514", CustomerName = "測試客戶A", Address = "桃園市", Tel = "03-43123456", Fax = "03-4123123", ZipCode = "320", ZipUnit = "320-05", ZipNum = "05", BillTermLen = 3,PayerNoLen=6,DeptId="",PayerAuthorize=false,IsSysCust=false } },
                                                       //new CustomerSet(){ },
                                                     };
             foreach (var customer in customers)
-                repo.Create(customer);
+            {
+                if (null == repo.QueryData(new[] { customer.Customer.CustomerId }))
+                    repo.Create(customer);
+            }
         }
         /// <summary>
         /// 新增「商戶資料」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateBizCustomer(ApplicationDbContext db)
+        private static void CreateBizCustomer(ApplicationDbContext db, SystemOperator sys)
         {
             BizCustomerRepository repo = new BizCustomerRepository(db);
+            repo.User = sys.SysOperator;
             var customers = new List<BizCustomerSet>() { new BizCustomerSet() { BizCustomer = new BizCustomerModel() { CustomerId = "80425514", CustomerCode = "990521", AccountDeptId = "", RealAccount = "0505100015307", VirtualAccountLen = 13, VirtualAccount1 = VirtualAccount1.Empty, VirtualAccount2 = VirtualAccount2.Empty, VirtualAccount3 = VirtualAccount3.NoverifyCode, ChannelIds = "00,01,02,03,04,05,06,A3,A1", CollectionTypeIds = "6V5,6V6", HiTrustFlag = HiTrustFlag.NoApplication, EntrustCustId = "8551414", BizCustType = BizCustType.Cust, AccountStatus = AccountStatus.Enable,Source="" }, BizCustFeeDetail=new List<BizCustFeeDetailModel>(){ new BizCustFeeDetailModel() {  CustomerCode= "990521", ChannelType= CanalisType.Bank , FeeType= FeeType.ClearFee, Fee=10, Percent=0} } },
                                                          //new BizCustomerSet(){ },
                                                        };
             foreach (var customer in customers)
-                repo.Create(customer);
+            {
+                if (null == repo.QueryData(new[] { customer.BizCustomer.CustomerCode }))
+                    repo.Create(customer);
+            }
         }
         /// <summary>
         /// 新增「繳款人」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreatePayer(ApplicationDbContext db)
+        private static void CreatePayer(ApplicationDbContext db, SystemOperator sys)
         {
             PayerRepository repo = new PayerRepository(db);
+            repo.User = sys.SysOperator;
             var payers = new List<PayerSet>() {new PayerSet(){ Payer=new PayerModel(){CustomerId="80425514", PayerId="0001", PayerName="測試繳款人1", PayerType= Model.PayerType.Normal, PayerNo="1007", IDCard="F1233151847",Tel="0921447116",Address="平鎮",Memo="",CardNum="4478-1181-5547-9631", CardValidateMonth=12,CardValidateYear=23,CVV="225" } },
                                                        };
             foreach (var payer in payers)
-                repo.Create(payer);
+            {
+                if (null == repo.QueryData(new[] { payer.Payer.CustomerId, payer.Payer.PayerId }))
+                    repo.Create(payer);
+            }
         }
         /// <summary>
         /// 新增「期別」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateBillTerm(ApplicationDbContext db)
+        private static void CreateBillTerm(ApplicationDbContext db, SystemOperator sys)
         {
             BillTermRepository repo = new BillTermRepository(db);
+            repo.User = sys.SysOperator;
             var billTerms = new List<BillTermSet>() {new BillTermSet(){ BillTerm=new BillTermModel(){CustomerCode="990521", BillTermId="0001", BillTermName="測試期別1",BillTermNo="01",  }, BillTermDetail=new List<BillTermDetailModel>(){ new BillTermDetailModel() {CustomerCode="990521", BillTermId = "0001", FeeName = "費用01", IsDeduction = false }, new BillTermDetailModel() { CustomerCode = "990521", BillTermId = "0001", FeeName = "費用02", IsDeduction = true } } }
                                                        };
             foreach (var billTerm in billTerms)
-                repo.Create(billTerm);
+            {
+                if (null == repo.QueryData(new[] { billTerm.BillTerm.CustomerCode, billTerm.BillTerm.BillTermId }))
+                    repo.Create(billTerm);
+            }
         }
         #endregion
 
@@ -179,19 +204,22 @@ namespace SKGPortalCore.SeedDataInitial
         /// 新增「帳單」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateBill(ApplicationDbContext db)
+        private static void CreateBill(ApplicationDbContext db, SystemOperator sys)
         {
             BillRepository repo = new BillRepository(db);
-            var bills = new List<BillSet>() { new BillSet() { Bill = new BillModel() { BillNo = "0001", BillTermId = "0001", CustomerId = "80425514", CustomerCode = "990521", PayerId = "0001", PayerType = Model.PayerType.Normal, ImportBatchNo = string.Empty,PayEndDate=DateTime.Parse("2019-09-01"),PayStatus= PayStatus.Unpaid,Memo1=string.Empty,Memo2=string.Empty }, BillDetail = new List<BillDetailModel>() { new BillDetailModel() { BillNo = "0001", BillTermRowId = 3, PayAmount = 20 },new BillDetailModel() { BillNo = "0001", BillTermRowId = 4, PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() }
-                                            };
+            repo.User=sys.SysOperator;
+            var bills = new List<BillSet>() { new BillSet() { Bill = new BillModel() { BillNo = "0001", BillTermId = "0001", CustomerId = "80425514", CustomerCode = "990521", PayerId = "0001", PayerType = Model.PayerType.Normal, ImportBatchNo = string.Empty, PayEndDate = DateTime.Parse("2019-09-01"), PayStatus = PayStatus.Unpaid, Memo1 = string.Empty, Memo2 = string.Empty }, BillDetail = new List<BillDetailModel>() { new BillDetailModel() { BillNo = "0001", BillTermRowId = 3, PayAmount = 20 }, new BillDetailModel() { BillNo = "0001", BillTermRowId = 4, PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() } };
             foreach (var bill in bills)
-                repo.Create(bill);
+            {
+                if (null == repo.QueryData(new[] { bill.Bill.BillNo }))
+                    repo.Create(bill);
+            }
         }
         /// <summary>
         /// 新增「收款單(自收款)」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateReceiptBill(ApplicationDbContext db)
+        private static void CreateReceiptBill(ApplicationDbContext db, SystemOperator sys)
         {
 
 
@@ -200,7 +228,7 @@ namespace SKGPortalCore.SeedDataInitial
         /// 新增「金流帳簿」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateCashFlowBill(ApplicationDbContext db)
+        private static void CreateCashFlowBill(ApplicationDbContext db, SystemOperator sys)
         { }
         #endregion
     }

@@ -164,7 +164,7 @@ namespace SKGPortalCore.Models.BillData
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key]
+        [Description("序號"), Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RowId { get; set; }
         /// <summary>
         /// 期別行鍵
@@ -193,9 +193,9 @@ namespace SKGPortalCore.Models.BillData
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key]
+        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RowId { get; set; }
-        [ForeignKey("BillNo")]
+        [ForeignKey("ReceiptBillNo")]
         public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號

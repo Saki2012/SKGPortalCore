@@ -41,22 +41,22 @@ namespace SKGPortalCore.Model
         /// <summary>
         /// 創建時間
         /// </summary>
-        [Description("創建時間"), Column(Order = int.MaxValue - 1)]
-        public DateTime CreateTime { get; set; } = DateTime.Now;
+        [Description("創建時間")]
+        public DateTime CreateTime { get; set; }
         /// <summary>
         /// 修改時間
         /// </summary>
-        [Description("修改時間"), Column(Order = int.MaxValue - 2)]
-        public DateTime ModifyTime { get; set; } = DateTime.Now;
+        [Description("修改時間")]
+        public DateTime ModifyTime { get; set; }
         /// <summary>
         /// 創建人員
         /// </summary>
-        [Description("創建人員"), Column(Order = int.MaxValue - 3)]
+        [Description("創建人員")]
         public string CreateStaff { get; set; }
         /// <summary>
         /// 修改人員
         /// </summary>
-        [Description("修改人員"), Column(Order = int.MaxValue - 4)]
+        [Description("修改人員")]
         public string ModifyStaff { get; set; }
     }
     /// <summary>
@@ -65,7 +65,9 @@ namespace SKGPortalCore.Model
     public class DetailRowState
     {
         [Description("行狀態") ,NotMapped]
-        public RowState RowState;
+        public RowState RowState { get; set; }
+
+        //public int RowId { get; set; }//待考慮
     }
 
 }

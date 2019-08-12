@@ -123,10 +123,11 @@ namespace SKGPortalCore.Controllers.BillData
     public class BillRepository : BasicRepository<BillSet>
     {
         public BillRepository(ApplicationDbContext database) : base(database) { }
+
         protected override void BeforeSetEntity(BillSet set)
         {
             base.BeforeSetEntity(set);
-            using BizBill biz = new BizBill(Database);
+            using BizBill biz = new BizBill(DataAccess);
             biz.CheckData(set);
             biz.SetData(set);
         }
