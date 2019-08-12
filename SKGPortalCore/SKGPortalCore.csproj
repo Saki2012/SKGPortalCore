@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+	<LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="GraphQL" Version="2.4.0" />
+    <PackageReference Include="GraphQL.Server.Ui.GraphiQL" Version="3.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKGPortalCore.Business\SKGPortalCore.Business.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>
