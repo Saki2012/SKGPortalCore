@@ -1,0 +1,13 @@
+SKGPortalCore/bin
+SKGPortalCore/obj
+SKGPortalCore.Business/
+SKGPortalCore.Data/bin
+SKGPortalCore.Data/obj
+SKGPortalCore.Lib/bin
+SKGPortalCore.Lib/obj
+SKGPortalCore.Model/bin
+SKGPortalCore.Model/obj
+SKGPortalCore.SeedDataInitial/bin
+SKGPortalCore.SeedDataInitial/obj
+TestSln/bin
+TestSln/obj
