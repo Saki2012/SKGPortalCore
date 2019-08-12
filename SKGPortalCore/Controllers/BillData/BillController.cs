@@ -17,7 +17,6 @@ namespace SKGPortalCore.Controllers.BillData
     public class BillController : BaseController
     {
         public BillController(IDocumentExecuter documentExecuter, BillSchema schema, ISessionWapper sessionWapper) : base(documentExecuter, schema, sessionWapper) { }
-
     }
     #endregion
 
@@ -30,7 +29,7 @@ namespace SKGPortalCore.Controllers.BillData
             Mutation = resolver.Resolve(typeof(BillMutation)) as IObjectGraphType;
         }
     }
-    public class BillQuery : ObjectGraphType<object>
+    public class BillQuery : ObjectGraphType
     {
         public BillQuery(BillRepository repository)
         {
@@ -91,30 +90,18 @@ namespace SKGPortalCore.Controllers.BillData
                 });
         }
     }
-    public class BillInputType : InputObjectGraphType<BillModel>
+    public class BillInputType : BaseInputFieldGraphType<BillModel>
     {
-        public BillInputType()
+        protected override bool SetType(string propertyName, string descript)
         {
-            PropertyInfo[] properties = typeof(BillModel).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                System.Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
-                Field(changeType, property.Name, ResxManage.GetDescription(property));
-            }
+            return base.SetType(propertyName, descript);
         }
     }
-    public class BillType : ObjectGraphType<BillModel>
+    public class BillType : BaseQueryFieldGraphType<BillModel>
     {
-        public BillType()
+        protected override bool SetType(string propertyName, string descript)
         {
-            PropertyInfo[] properties = typeof(BillModel).GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                System.Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
-                Field(changeType, property.Name, ResxManage.GetDescription(property));
-            }
+            return base.SetType(propertyName, descript);
         }
     }
     #endregion

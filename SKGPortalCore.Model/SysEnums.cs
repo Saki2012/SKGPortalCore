@@ -373,12 +373,12 @@ namespace SKGPortalCore.Model
         /// 結案
         /// </summary>
         [Description("結案")]
-        CaseClosed = 64,
+        EndCase = 64,
         /// <summary>
         /// 作廢
         /// </summary>
         [Description("作廢")]
-        Obsolete = 128,
+        Invalid = 128,
         /// <summary>
         /// 全部
         /// </summary>

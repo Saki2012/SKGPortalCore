@@ -88,7 +88,6 @@ namespace SKGPortalCore.Data
                 throw;
             }
         }
-
         /// <summary>
         /// 刪除
         /// </summary>
@@ -105,7 +104,9 @@ namespace SKGPortalCore.Data
         {
             try
             {
+                BeforeRemoveEntity(default);
                 DataAccess.Remove(DataAccess.Find(typeof(TSet).GetProperties()[0].PropertyType, key));
+                AfterRemoveEntity(default);
             }
             catch
             {
@@ -159,6 +160,25 @@ namespace SKGPortalCore.Data
             }
             return instance;
         }
+        /// <summary>
+        /// 查詢明細
+        /// </summary>
+        /// <returns></returns>
+        public List<object> QueryList()
+        {
+
+
+            return new List<object>();
+        }
+        /// <summary>
+        /// 作廢
+        /// </summary>
+        public TSet Invalid(object[] key,bool Status)
+        {
+            return default;
+        }
+
+
         /// <summary>
         /// 執行更新
         /// </summary>
