@@ -244,10 +244,8 @@ namespace SKGPortalCore.Lib
         }
         private static Type GetEnumerationGraphType(Type type)
         {
-
             return typeof(IntGraphType);
-
-            //return type;
+            /*
             return type switch
             {
                 Type SysEnums when SysEnums == typeof(SysEnums) => typeof(EnumerationGraphType<SysEnums>),
@@ -257,6 +255,7 @@ namespace SKGPortalCore.Lib
                 Type EndType when EndType == typeof(EndType) => typeof(EnumerationGraphType<EndType>),
                 _ => type,
             };
+            */
         }
     }
 }

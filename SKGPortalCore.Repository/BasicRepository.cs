@@ -93,14 +93,6 @@ namespace SKGPortalCore.Repository
         /// 刪除
         /// </summary>
         /// <param name="key"></param>
-        public void Delete(string key)
-        {
-            Delete(new[] { key });
-        }
-        /// <summary>
-        /// 刪除
-        /// </summary>
-        /// <param name="key"></param>
         public void Delete(object[] key)
         {
             try
@@ -113,15 +105,6 @@ namespace SKGPortalCore.Repository
             {
                 throw;
             }
-        }
-        /// <summary>
-        /// 查詢
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public TSet QueryData(string key)
-        {
-            return QueryData(new[] { key });
         }
         /// <summary>
         /// 查詢
@@ -171,15 +154,24 @@ namespace SKGPortalCore.Repository
 
             return new List<object>();
         }
-        /// <summary>
-        /// 作廢
-        /// </summary>
-        public TSet Invalid(object[] key, bool Status)
+        public TSet Approve(object[] key, bool status)
         {
             return default;
         }
-
-
+        /// <summary>
+        /// 作廢
+        /// </summary>
+        public TSet Invalid(object[] key, bool status)
+        {
+            return default;
+        }
+        /// <summary>
+        /// 結案
+        /// </summary>
+        public TSet EndCase(object[] key, bool status)
+        {
+            return default;
+        }
         /// <summary>
         /// 執行更新
         /// </summary>

@@ -48,7 +48,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<StringGraphType> { Name = "jWT" }),
                 resolve: context =>
                 {
-                    return repository.QueryData("");
+                    dynamic bill = context.GetArgument<string>("billNo");
+                    return repository.QueryData(new object[] { bill });
                 });
             Field(
                 type: typeof(TSetType),
@@ -105,6 +106,19 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
+                name: "approve",
+                description: "作廢",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
+                resolve: context =>
+                {
+                    string billNo = context.GetArgument<string>("billNo");
+                    bool status = context.GetArgument<bool>("status");
+                    TSet result = repository.Approve(new[] { billNo }, status);
+                    repository.CommitData(FuncAction.Approve);
+                    return result;
+                });
+            Field(
+                type: typeof(TSetType),
                 name: "invalid",
                 description: "作廢",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
@@ -116,6 +130,19 @@ namespace SKGPortalCore.Graph
                     repository.CommitData(FuncAction.Invalid);
                     return result;
                 });
+            Field(
+              type: typeof(TSetType),
+              name: "endCase",
+              description: "結案",
+              arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
+              resolve: context =>
+              {
+                  string billNo = context.GetArgument<string>("billNo");
+                  bool status = context.GetArgument<bool>("status");
+                  TSet result = repository.Invalid(new[] { billNo }, status);
+                  repository.CommitData(FuncAction.EndCase);
+                  return result;
+              });
         }
     }
     #endregion
