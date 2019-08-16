@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SKGPortalCore.Repository.Func;
 
 namespace SKGPortalCore.Controllers.Func
 {
@@ -46,25 +44,4 @@ namespace SKGPortalCore.Controllers.Func
         public string UserId { get; set; }
         public string Pasuwado { get; set; }
     }
-    #region Repository
-    public class AccountRepository
-    {
-        ApplicationDbContext Database { get; }
-        public AccountRepository(ApplicationDbContext db)
-        {
-            Database = db;
-        }
-        public CustUserSet Login(string customerId, string userId, string pasuwado)
-        {
-            string key = $"{customerId},{userId}";
-            Func<CustUserModel, bool> where1 = new Func<CustUserModel, bool>(p => p.KeyId == key);
-            Func<CustUserRoleModel, bool> where2 = new Func<CustUserRoleModel, bool>(p => p.KeyId == key);
-            var UserRoles = Database.Set<CustUserRoleModel>().Include(p => p.Role).ThenInclude(role => role.Permissions)
-                .Where(where2).ToList();
-            CustUserSet user = new CustUserSet() { User = Database.Set<CustUserModel>().Find(), UserRoles = UserRoles };
-            if (!BizAccount.CheckAccountPasuwado(user, pasuwado)) return null;
-            return user;
-        }
-    }
-    #endregion
 }

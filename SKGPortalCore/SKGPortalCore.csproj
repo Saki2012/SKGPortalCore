@@ -23,12 +23,19 @@
     <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj">
       <Private>true</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SKGPortalCore.Graph\SKGPortalCore.Graph.csproj" />
     <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj">
       <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj">
       <Private>true</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

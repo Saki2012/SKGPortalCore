@@ -1,4 +1,8 @@
-﻿using GraphQL;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using GraphQL;
 using GraphQL.Http;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
@@ -9,14 +13,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
-using SKGPortalCore.Controllers.BillData;
-using SKGPortalCore.Controllers.Func;
-using SKGPortalCore.Controllers.MasterData;
 using SKGPortalCore.Data;
+using SKGPortalCore.Graph.BillData;
+using SKGPortalCore.Graph.MasterData;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using System;
-using System.Text;
+using SKGPortalCore.Repository.BillData;
+using SKGPortalCore.Repository.Func;
+using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore
 {
@@ -42,9 +46,8 @@ namespace SKGPortalCore
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection"))
-               );
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("SKGPortalCore.Data"))
+                  );
 
             services.AddMvc().
                 AddJsonOptions(p =>
@@ -70,7 +73,6 @@ namespace SKGPortalCore
             SetGraphQLService(ref services);
             SetRepository(ref services);
             SetGraphQLType(ref services);
-            SetGraphQLSchema(ref services);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -106,10 +108,10 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void SetRepository(ref IServiceCollection services)
         {
-            services.AddTransient<BillRepository>();
-            services.AddTransient<AccountRepository>();
-            services.AddTransient<RoleRepository>();
-            services.AddTransient<CustomerRepository>();
+            var assembly = Assembly.Load("SKGPortalCore.Repository");
+            var types = assembly.ExportedTypes.Where(p => p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
+            foreach (var t in types)
+                services.AddTransient(t);
         }
         /// <summary>
         /// 
@@ -117,39 +119,26 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void SetGraphQLType(ref IServiceCollection services)
         {
-            services.AddTransient<BillQuery>();
-            services.AddTransient<BillMutation>();
-            services.AddTransient<BillType>();
-            services.AddTransient<BillInputType>();
+            var assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
 
-            services.AddTransient<RoleQuery>();
-            services.AddTransient<RoleMutation>();
-            services.AddTransient<RoleType>();
-            services.AddTransient<RoleInputType>();
-            services.AddTransient<RolePermissionInputType>();
-            services.AddTransient<RolePermissionType>();
-            services.AddTransient<RoleSetType>();
+            var fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
+            foreach (var t in fieldTypes)
+                services.AddTransient(t);
 
-            services.AddTransient<EnumerationGraphType<PayStatus>>();
-            services.AddTransient<EnumerationGraphType<FuncAction>>();
-            services.AddTransient<EnumerationGraphType<EndType>>();
+            var setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
+            foreach (var t in setTypes)
+                services.AddTransient(t);
 
-            services.AddTransient<CustomerQuery>();
-            services.AddTransient<CustomerMutation>();
-            services.AddTransient<CustomerInputType>();
-            services.AddTransient<CustomerSetType>();
-            services.AddTransient<CustomerType>();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="services"></param>
-        private void SetGraphQLSchema(ref IServiceCollection services)
-        {
+            var operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
+            foreach (var t in operateTypes)
+                services.AddTransient(t);
+
             var sp = services.BuildServiceProvider();
-            services.AddSingleton(new BillSchema(new FuncDependencyResolver(type => sp.GetService(type))));
-            services.AddSingleton(new RoleSchema(new FuncDependencyResolver(type => sp.GetService(type))));
-            services.AddSingleton(new CustomerSchema(new FuncDependencyResolver(type => sp.GetService(type))));
+            var schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
+            foreach (var t in schemaTypes)
+                services.AddSingleton(t, Activator.CreateInstance(t, new FuncDependencyResolver(type => sp.GetService(type))));
+
+            //services.AddSingleton(new BillSchema(new FuncDependencyResolver(type => sp.GetService(type))));
         }
         /// <summary>
         /// 設置GraphQLService
@@ -157,7 +146,6 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void SetGraphQLService(ref IServiceCollection services)
         {
-            //services.AddSingleton<IDependencyResolver>(x => new FuncDependencyResolver(x.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
         }

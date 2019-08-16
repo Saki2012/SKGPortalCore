@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using GraphQL;
 using GraphQL.Types;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
+using SKGPortalCore.Repository;
 
-namespace SKGPortalCore.Data
+namespace SKGPortalCore.Graph
 {
     #region Schema
     public class BaseSchema<TQuery> : Schema
@@ -37,12 +36,13 @@ namespace SKGPortalCore.Data
     #endregion
 
     #region Operate
-    public class BaseQueryType<TSet> : ObjectGraphType
+    public class BaseQueryType<TSet, TSetType> : ObjectGraphType
+        where TSetType : BaseQuerySetGraphType<TSet>
     {
         public BaseQueryType(BasicRepository<TSet> repository)
         {
             Field(
-                type: typeof(byte),
+                type: typeof(TSetType),
                 name: "queryData",
                 description: "查詢",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<StringGraphType> { Name = "jWT" }),
@@ -51,34 +51,36 @@ namespace SKGPortalCore.Data
                     return repository.QueryData("");
                 });
             Field(
-                type: typeof(byte),
+                type: typeof(TSetType),
                 name: "queryList",
                 description: "查詢列表",
                 arguments: null,
                 resolve: context =>
                 {
-                    return repository.QueryData("");
+                    return repository.QueryList();
                 });
         }
     }
-    public class BaseMutationType<TSet, TInputSet> : ObjectGraphType where TInputSet : GraphType
+    public class BaseMutationType<TSet, TSetType, TInputSet> : ObjectGraphType
+        where TSetType : BaseQuerySetGraphType<TSet>
+        where TInputSet : BaseInputSetGraphType<TSet>
     {
         public BaseMutationType(BasicRepository<TSet> repository)
         {
             Field(
-                type: typeof(byte),
+                type: typeof(TSetType),
                 name: "create",
                 description: "新增",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set" }),
                 resolve: context =>
                 {
                     TSet set = context.GetArgument<TSet>("set");
-                    TSet result= repository.Create(set);
+                    TSet result = repository.Create(set);
                     repository.CommitData(FuncAction.Create);
                     return result;
                 });
             Field(
-                type: typeof(byte),
+                type: typeof(TSetType),
                 name: "update",
                 description: "修改",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set" }),
@@ -90,7 +92,7 @@ namespace SKGPortalCore.Data
                     return result;
                 });
             Field(
-                type: typeof(byte),
+                type: typeof(BooleanGraphType),
                 name: "delete",
                 description: "刪除",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "keyVal" }),
@@ -102,7 +104,7 @@ namespace SKGPortalCore.Data
                     return null;
                 });
             Field(
-                type: typeof(byte),
+                type: typeof(TSetType),
                 name: "invalid",
                 description: "作廢",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
@@ -116,6 +118,11 @@ namespace SKGPortalCore.Data
                 });
         }
     }
+    #endregion
+
+    #region SetGraph
+    public class BaseQuerySetGraphType<TSet> : ObjectGraphType<TSet> { }
+    public class BaseInputSetGraphType<TSet> : InputObjectGraphType<TSet> { }
     #endregion
 
     #region Fields
@@ -135,6 +142,12 @@ namespace SKGPortalCore.Data
                 }
             }
         }
+        /// <summary>
+        /// 設置Field控制
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="descript"></param>
+        /// <returns>有更動時Return true,反之false</returns>
         protected virtual bool SetType(string propertyName, string descript)
         {
             return false;

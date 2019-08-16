@@ -226,8 +226,9 @@ namespace SKGPortalCore.Lib
             {
                 case Type stringType when stringType == typeof(string):
                     return typeof(StringGraphType);
-                case Type intType when intType == typeof(int):
                 case Type byteType when byteType == typeof(byte):
+                case Type intType when intType == typeof(int):
+                case Type longType when longType == typeof(long):
                     return typeof(IntGraphType);
                 case Type decimalType when decimalType == typeof(decimal):
                     return typeof(DecimalGraphType);
@@ -243,11 +244,15 @@ namespace SKGPortalCore.Lib
         }
         private static Type GetEnumerationGraphType(Type type)
         {
+
+            return typeof(IntGraphType);
+
             //return type;
             return type switch
             {
                 Type SysEnums when SysEnums == typeof(SysEnums) => typeof(EnumerationGraphType<SysEnums>),
                 Type PayStatus when PayStatus == typeof(PayStatus) => typeof(EnumerationGraphType<PayStatus>),
+                Type PayerType when PayerType == typeof(PayerType) => typeof(EnumerationGraphType<PayerType>),
                 Type FuncAction when FuncAction == typeof(FuncAction) => typeof(StringGraphType),
                 Type EndType when EndType == typeof(EndType) => typeof(EnumerationGraphType<EndType>),
                 _ => type,

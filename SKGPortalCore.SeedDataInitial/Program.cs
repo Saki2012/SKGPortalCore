@@ -6,6 +6,8 @@ using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Models.BillData;
+using SKGPortalCore.Repository.BillData;
+using SKGPortalCore.Repository.MasterData;
 using System;
 using System.Collections.Generic;
 

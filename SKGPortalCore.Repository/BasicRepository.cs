@@ -6,23 +6,24 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
-namespace SKGPortalCore.Data
+namespace SKGPortalCore.Repository
 {
     public class BasicRepository<TSet> : IDisposable
     {
         #region Property
-        protected readonly DbContext DataAccess;
+        protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
         #endregion
         #region Construct
-        public BasicRepository(DbContext database)
+        public BasicRepository(ApplicationDbContext dataAccess)
         {
-            DataAccess = database;
+            DataAccess = dataAccess;
         }
         #endregion
         #region Public
@@ -173,7 +174,7 @@ namespace SKGPortalCore.Data
         /// <summary>
         /// 作廢
         /// </summary>
-        public TSet Invalid(object[] key,bool Status)
+        public TSet Invalid(object[] key, bool Status)
         {
             return default;
         }
@@ -235,7 +236,6 @@ namespace SKGPortalCore.Data
         /// <param name="set"></param>
         protected virtual void AfterSaveChanges(FuncAction action)
         {
-
 
         }
         #endregion

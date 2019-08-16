@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Func\" />
+  </ItemGroup>
+
+</Project>
