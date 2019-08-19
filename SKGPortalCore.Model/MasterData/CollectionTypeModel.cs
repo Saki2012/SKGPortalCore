@@ -40,7 +40,7 @@ namespace SKGPortalCore.Model.MasterData
     /// 代收類別費率明細
     /// </summary>
     [Description("代收類別費率明細")]
-    public class CollectionTypeDetailModel
+    public class CollectionTypeDetailModel:DetailRowState
     {
         [ForeignKey("CollectionTypeId")]
         public CollectionTypeModel CollectionType { get; set; }
@@ -52,7 +52,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Description("序號"), Key]
         public int RowId { get; set; }
         public ChannelModel Channel { get; set; }
         /// <summary>

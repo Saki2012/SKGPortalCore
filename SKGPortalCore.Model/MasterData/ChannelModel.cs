@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.MasterData
 {
+    /// <summary>
+    /// 平台通路代號
+    /// </summary>
     public class ChannelValue
     {
         /// <summary>
@@ -120,7 +123,7 @@ namespace SKGPortalCore.Model.MasterData
     /// 交易代號與平台通路代號關聯表
     /// </summary>
     [Description("交易代號與平台通路代號關聯表")]
-    public class ChannelMapModel
+    public class ChannelMapModel:DetailRowState
     {
         [ForeignKey("ChannelId")]
         public ChannelModel Channel { get; set; }

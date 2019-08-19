@@ -5,15 +5,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.MasterData
 {
-
+    /// <summary>
+    /// 商戶資料
+    /// </summary>
+    [Description("商戶資料")]
     public class BizCustomerSet
     {
-        public BizCustomerSet()
-        {
-            BizCustomer = new BizCustomerModel();
-            BizCustFeeDetail = new List<BizCustFeeDetailModel>();
-        }
+        /// <summary>
+        /// 商戶資料
+        /// </summary>
+        [Description("商戶資料")]
         public BizCustomerModel BizCustomer { get; set; }
+        /// <summary>
+        /// 商戶手續費管理明細
+        /// </summary>
+        [Description("商戶手續費管理明細")]
         public List<BizCustFeeDetailModel> BizCustFeeDetail { get; set; }
     }
     /// <summary>
@@ -22,6 +28,11 @@ namespace SKGPortalCore.Model.MasterData
     [Description("商戶資料")]
     public class BizCustomerModel : MasterDataModel
     {
+        /// <summary>
+        /// 企業編號
+        /// </summary>
+        [Description("企業編號"), Key]
+        public string CustomerCode { get; set; }
         [ForeignKey("CustomerId")]
         public CustomerModel Customer { get; set; }
         /// <summary>
@@ -29,11 +40,6 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("客戶統編")]
         public string CustomerId { get; set; }
-        /// <summary>
-        /// 企業編號
-        /// </summary>
-        [Description("企業編號"), Key]
-        public string CustomerCode { get; set; }
         /// <summary>
         /// 帳務分行
         /// </summary>
@@ -85,23 +91,21 @@ namespace SKGPortalCore.Model.MasterData
         [Description("委託單位代號")]
         public string EntrustCustId { get; set; }
         /// <summary>
-        /// 商戶類型
-        /// </summary>
-        [Description("商戶類型")]
-        public BizCustType BizCustType { get; set; }
-        /// <summary>
         /// 帳戶狀態
         /// </summary>
         [Description("帳戶狀態")]
         public AccountStatus AccountStatus { get; set; }
-
+        /// <summary>
+        /// 來源核心
+        /// </summary>
+        [Description("來源核心")]
         public string Source { get; set; }
     }
     /// <summary>
-    /// 商戶手續費明細
+    /// 商戶手續費管理明細
     /// </summary>
-    [Description("商戶手續費明細")]
-    public class BizCustFeeDetailModel
+    [Description("商戶手續費管理明細")]
+    public class BizCustFeeDetailModel:DetailRowState
     {
         [ForeignKey("CustomerCode")]
         public BizCustomerModel BizCustomer { get; set; }

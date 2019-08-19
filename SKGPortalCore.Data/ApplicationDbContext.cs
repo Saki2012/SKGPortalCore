@@ -12,7 +12,6 @@ namespace SKGPortalCore.Data
         public DbSet<BillModel> Bill { get; set; }
         public DbSet<BillDetailModel> BillDetail { get; set; }
         public DbSet<BillReceiptDetailModel> BillReceiptDetail { get; set; }
-
         public DbSet<ReceiptBillModel> ReceiptBill { get; set; }
         public DbSet<CustomerModel> Customer { get; set; }
         public DbSet<RoleModel> Role { get; set; }

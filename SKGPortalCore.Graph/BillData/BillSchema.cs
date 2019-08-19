@@ -1,4 +1,5 @@
-﻿using GraphQL;
+﻿using System.Linq;
+using GraphQL;
 using GraphQL.Types;
 using SKGPortalCore.Models.BillData;
 using SKGPortalCore.Repository.BillData;
@@ -8,9 +9,7 @@ namespace SKGPortalCore.Graph.BillData
     //Schema
     public class BillSchema : BaseSchema<BillQuery, BillMutation>
     {
-        public BillSchema(IDependencyResolver resolver) : base(resolver)
-        {
-        }
+        public BillSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
     public class BillQuery : BaseQueryType<BillSet, BillSetType>
@@ -19,10 +18,7 @@ namespace SKGPortalCore.Graph.BillData
     }
     public class BillMutation : BaseMutationType<BillSet, BillSetType, BillSetInputType>
     {
-        public BillMutation(BillRepository repository) : base(repository)
-        {
-
-        }
+        public BillMutation(BillRepository repository) : base(repository) { }
     }
     //Input
     public class BillSetInputType : BaseInputSetGraphType<BillSet>
@@ -38,12 +34,6 @@ namespace SKGPortalCore.Graph.BillData
     {
         protected override bool SetType(string propertyName, string descript)
         {
-            switch (propertyName)
-            {
-                case "PayerType":
-                    //    case "PayStatus":
-                    return true;
-            }
             return base.SetType(propertyName, descript);
         }
     }
@@ -63,12 +53,6 @@ namespace SKGPortalCore.Graph.BillData
     {
         protected override bool SetType(string propertyName, string descript)
         {
-            switch (propertyName)
-            {
-                case "PayerType":
-                //case "PayStatus":
-                    return true;
-            }
             return base.SetType(propertyName, descript);
         }
     }

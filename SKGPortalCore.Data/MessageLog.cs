@@ -1,26 +1,27 @@
 ﻿using GraphQL;
+using SKGPortalCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 
-namespace SKGPortalCore.Lib
+namespace SKGPortalCore.Data
 {
-    public class LogHelper
+    public class MessageLog
     {
+        //private string MessageCode;
         private string Message;
-        private string MessageCode;
-        private ExecutionErrors Errors;
+        private readonly ExecutionErrors Errors;
         public List<ExecutionError> ErrorMessages = new List<ExecutionError>();
-        public LogHelper(ExecutionErrors errors)
+        public MessageLog(ExecutionErrors errors)
         {
             Errors = errors;
         }
 
         public void AddErrorMessage(MessageCode messageCode, params object[] args)
         {
-            MessageCode MessageCode = messageCode;
+            //MessageCode MessageCode = messageCode;
             Message = string.Format($"{messageCode}:{ResxManage.GetDescription(messageCode)}", args);
             Errors.Add(new ExecutionError(Message));
         }
@@ -58,5 +59,15 @@ namespace SKGPortalCore.Lib
         /// </summary>
         [Description("檔案不存在！({0})")]
         Code1004,
+        /// <summary>
+        /// {0}長度不符，應為{1}碼！
+        /// </summary>
+        [Description("{0}長度不符，應為{1}碼！")]
+        Code1005,
+        /// <summary>
+        /// {0}只能輸入數字！
+        /// </summary>
+        [Description("{0}只能輸入數字！")]
+        Code1006,
     }
 }

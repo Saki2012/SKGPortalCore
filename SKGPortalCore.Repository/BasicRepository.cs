@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using GraphQL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Data;
@@ -19,6 +20,7 @@ namespace SKGPortalCore.Repository
         protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
+        protected MessageLog Message = new MessageLog(new ExecutionErrors());
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -154,23 +156,50 @@ namespace SKGPortalCore.Repository
 
             return new List<object>();
         }
+        /// <summary>
+        /// 審核
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         public TSet Approve(object[] key, bool status)
         {
-            return default;
+            TSet set = QueryData(key);
+            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            if (masterData is BasicDataModel)
+            {
+                SetApproveInfo(masterData, status);
+                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Approved : FormStatus.Saved;
+            }
+            return set;
         }
         /// <summary>
         /// 作廢
         /// </summary>
         public TSet Invalid(object[] key, bool status)
         {
-            return default;
+            TSet set = QueryData(key);
+            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            if (masterData is BasicDataModel)
+            {
+                SetInvalidInfo(masterData, status);
+                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Obsoleted : FormStatus.Saved;
+            }
+            return set;
         }
         /// <summary>
         /// 結案
         /// </summary>
         public TSet EndCase(object[] key, bool status)
         {
-            return default;
+            TSet set = QueryData(key);
+            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            if (masterData is BasicDataModel)
+            {
+                SetEndCaseInfo(masterData, status);
+                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.EndCase : FormStatus.Approved;
+            }
+            return set;
         }
         /// <summary>
         /// 執行更新
@@ -187,28 +216,12 @@ namespace SKGPortalCore.Repository
         /// 進Entity前
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void BeforeSetEntity(TSet set)
-        {
-            DateTime now = DateTime.Now;
-            foreach (var p in set.GetType().GetProperties())
-            {
-                if (p.GetValue(set) is BasicDataModel basic)
-                {
-                    basic.CreateStaff = User.KeyId;
-                    basic.ModifyStaff = User.KeyId;
-                    basic.CreateTime = now;
-                    basic.ModifyTime = now;
-                }
-            }
-        }
+        protected virtual void BeforeSetEntity(TSet set) { }
         /// <summary>
         /// 進Entity後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterSetEntity(TSet set)
-        {
-
-        }
+        protected virtual void AfterSetEntity(TSet set) { }
         /// <summary>
         /// 移除Entity前
         /// </summary>
@@ -218,18 +231,12 @@ namespace SKGPortalCore.Repository
         /// 移除Entity後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterRemoveEntity(TSet set)
-        {
-
-        }
+        protected virtual void AfterRemoveEntity(TSet set) { }
         /// <summary>
         /// 執行SaveChanges後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterSaveChanges(FuncAction action)
-        {
-
-        }
+        protected virtual void AfterSaveChanges(FuncAction action) { }
         #endregion
         #region Private
         /// <summary>
@@ -263,14 +270,13 @@ namespace SKGPortalCore.Repository
         {
             if (status)
             {
-
-                model.ModifyStaff = User.KeyId;
-                model.ModifyTime = DateTime.Now;
+                model.InvalidStaff = User.KeyId;
+                model.InvalidTime = DateTime.Now;
             }
             else
             {
-                model.ModifyStaff = null;
-                model.ModifyTime = DateTime.MinValue;
+                model.InvalidStaff = null;
+                model.InvalidTime = DateTime.MinValue;
             }
         }
         /// <summary>
@@ -282,14 +288,31 @@ namespace SKGPortalCore.Repository
         {
             if (status)
             {
-
-                model.ModifyStaff = User.KeyId;
-                model.ModifyTime = DateTime.Now;
+                model.ApproveStaff = User.KeyId;
+                model.ApproveTime = DateTime.Now;
             }
             else
             {
-                model.ModifyStaff = null;
-                model.ModifyTime = DateTime.MinValue;
+                model.ApproveStaff = null;
+                model.ApproveTime = DateTime.MinValue;
+            }
+        }
+        /// <summary>
+        /// 設置結案時使用者資料
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="status"></param>
+        private void SetEndCaseInfo(BasicDataModel model, bool status)
+        {
+            if (status)
+            {
+                model.EndCaseStaff = User.KeyId;
+                model.EndCaseTime = DateTime.Now;
+            }
+            else
+            {
+                model.EndCaseStaff = null;
+                model.EndCaseTime = DateTime.MinValue;
             }
         }
         /// <summary>

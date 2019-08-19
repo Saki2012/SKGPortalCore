@@ -44,12 +44,12 @@ namespace SKGPortalCore.Graph
             Field(
                 type: typeof(TSetType),
                 name: "queryData",
-                description: "查詢",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<StringGraphType> { Name = "jWT" }),
+                description: ResxManage.GetDescription(FuncAction.Query),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<StringGraphType> { Name = "jWT" }),
                 resolve: context =>
                 {
-                    dynamic bill = context.GetArgument<string>("billNo");
-                    return repository.QueryData(new object[] { bill });
+                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    return repository.QueryData(keyVal);
                 });
             Field(
                 type: typeof(TSetType),
@@ -71,8 +71,8 @@ namespace SKGPortalCore.Graph
             Field(
                 type: typeof(TSetType),
                 name: "create",
-                description: "新增",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set" }),
+                description: ResxManage.GetDescription(FuncAction.Create),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }),
                 resolve: context =>
                 {
                     TSet set = context.GetArgument<TSet>("set");
@@ -83,8 +83,8 @@ namespace SKGPortalCore.Graph
             Field(
                 type: typeof(TSetType),
                 name: "update",
-                description: "修改",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set" }),
+                description: ResxManage.GetDescription(FuncAction.Update),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }),
                 resolve: context =>
                 {
                     TSet set = context.GetArgument<TSet>("set");
@@ -95,51 +95,51 @@ namespace SKGPortalCore.Graph
             Field(
                 type: typeof(BooleanGraphType),
                 name: "delete",
-                description: "刪除",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "keyVal" }),
+                description: ResxManage.GetDescription(FuncAction.Delete),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }),
                 resolve: context =>
                 {
-                    string billNo = context.GetArgument<string>("billNo");
-                    repository.Delete(new[] { billNo });
+                    object keyVal = context.GetArgument<object>("keyVal");
+                    repository.Delete(new[] { keyVal });
                     repository.CommitData(FuncAction.Delete);
                     return null;
                 });
             Field(
                 type: typeof(TSetType),
                 name: "approve",
-                description: "作廢",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
+                description: ResxManage.GetDescription(FuncAction.Approve),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
                 resolve: context =>
                 {
-                    string billNo = context.GetArgument<string>("billNo");
+                    object keyVal = context.GetArgument<object>("keyVal");
                     bool status = context.GetArgument<bool>("status");
-                    TSet result = repository.Approve(new[] { billNo }, status);
+                    TSet result = repository.Approve(new[] { keyVal }, status);
                     repository.CommitData(FuncAction.Approve);
                     return result;
                 });
             Field(
                 type: typeof(TSetType),
                 name: "invalid",
-                description: "作廢",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
+                description: ResxManage.GetDescription(FuncAction.Invalid),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
                 resolve: context =>
                 {
-                    string billNo = context.GetArgument<string>("billNo");
+                    object keyVal = context.GetArgument<object>("keyVal");
                     bool status = context.GetArgument<bool>("status");
-                    TSet result = repository.Invalid(new[] { billNo }, status);
+                    TSet result = repository.Invalid(new[] { keyVal }, status);
                     repository.CommitData(FuncAction.Invalid);
                     return result;
                 });
             Field(
               type: typeof(TSetType),
               name: "endCase",
-              description: "結案",
-              arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "billNo" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
+              description: ResxManage.GetDescription(FuncAction.EndCase),
+              arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
               resolve: context =>
               {
-                  string billNo = context.GetArgument<string>("billNo");
+                  object keyVal = context.GetArgument<object>("keyVal");
                   bool status = context.GetArgument<bool>("status");
-                  TSet result = repository.Invalid(new[] { billNo }, status);
+                  TSet result = repository.Invalid(new[] { keyVal }, status);
                   repository.CommitData(FuncAction.EndCase);
                   return result;
               });

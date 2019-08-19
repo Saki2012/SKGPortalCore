@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SKGPortalCore.Lib
 {
@@ -37,6 +38,15 @@ namespace SKGPortalCore.Lib
         private static string GetDescription(DescriptionAttribute attribute)
         {
             return null == attribute ? string.Empty : attribute.Description;
+        }
+        /// <summary>
+        /// 檢查是否為數字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsNumberString(string str)
+        {
+            return Regex.IsMatch(str, "^[0-9]*$");
         }
     }
 }

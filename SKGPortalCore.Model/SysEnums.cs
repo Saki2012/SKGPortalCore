@@ -388,7 +388,7 @@ namespace SKGPortalCore.Model
     /// 單據狀態
     /// </summary>
     [Description("單據狀態")]
-    public enum BillStatus : byte
+    public enum FormStatus : byte
     {
         /// <summary>
         /// 保存
@@ -404,7 +404,7 @@ namespace SKGPortalCore.Model
         /// 結案
         /// </summary>
         [Description("結案")]
-        CaseClosed = 2,
+        EndCase = 2,
         /// <summary>
         /// 作廢
         /// </summary>
@@ -641,12 +641,12 @@ namespace SKGPortalCore.Model
     public enum RowState : byte
     {
         [Description("無異動")]
-        None=0,
+        None = 0,
         [Description("新增")]
         Insert = 1,
         [Description("修改")]
-        Update= 2,
+        Update = 2,
         [Description("刪除")]
-        Delete=3,
+        Delete = 3,
     }
 }

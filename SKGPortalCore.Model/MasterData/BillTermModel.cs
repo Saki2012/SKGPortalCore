@@ -47,9 +47,9 @@ namespace SKGPortalCore.Model.MasterData
         [Description("期別名稱")]
         public string BillTermName { get; set; }
         /// <summary>
-        /// 期別碼
+        /// 期別編號
         /// </summary>
-        [Description("期別碼")]
+        [Description("期別編號")]
         public string BillTermNo { get; set; }
         /// <summary>
         /// 帳單基本資料1

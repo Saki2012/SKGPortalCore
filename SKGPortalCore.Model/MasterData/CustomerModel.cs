@@ -9,10 +9,6 @@ namespace SKGPortalCore.Model.MasterData
     [Description("客戶基本資料")]
     public class CustomerSet
     {
-        public CustomerSet()
-        {
-            Customer = new CustomerModel();
-        }
         /// <summary>
         /// 客戶資料
         /// </summary>
@@ -65,9 +61,9 @@ namespace SKGPortalCore.Model.MasterData
         [Description("郵簡字號")]
         public string ZipNum { get; set; }
         /// <summary>
-        /// 期別代號長度
+        /// 期別編號長度
         /// </summary>
-        [Description("期別代號長度")]
+        [Description("期別編號長度")]
         public byte BillTermLen { get; set; }
         /// <summary>
         /// 繳款人編號長度
