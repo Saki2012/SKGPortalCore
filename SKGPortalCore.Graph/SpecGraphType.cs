@@ -4,6 +4,7 @@ using GraphQL;
 using GraphQL.Types;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository;
 
 namespace SKGPortalCore.Graph
@@ -87,6 +88,9 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }),
                 resolve: context =>
                 {
+#if DEBUG
+                    repository.User = new SystemOperator().SysOperator;
+#endif
                     TSet set = context.GetArgument<TSet>("set");
                     TSet result = repository.Update(set);
                     repository.CommitData(FuncAction.Update);

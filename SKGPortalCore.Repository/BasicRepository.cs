@@ -38,16 +38,10 @@ namespace SKGPortalCore.Repository
         {
             try
             {
-                dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetCreateInfo(masterData);
                 BeforeSetEntity(set);
-                foreach (var s in set.GetType().GetProperties())
-                {
-                    dynamic val = Reflect.GetValue(set, s.Name);
-                    if (null == val) continue;
-                    if (val is IEnumerable) { DataAccess.AddRange(val); }
-                    else { DataAccess.Add(val); }
-                }
+                DoCreate(set);
                 AfterSetEntity(set);
                 return set;
             }
@@ -65,24 +59,10 @@ namespace SKGPortalCore.Repository
         {
             try
             {
-                dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
                 BeforeSetEntity(set);
-                foreach (var s in set.GetType().GetProperties())
-                {
-                    dynamic val = Reflect.GetValue(set, s.Name);
-                    if (val is IEnumerable) { DataAccess.Update(val); }
-                    else
-                    {
-                        if (val is DetailRowState)
-                        {
-                            List<DetailRowState> c = val;
-                            DataAccess.AddRange(c.Where(p => p.RowState == RowState.Insert));
-                            DataAccess.UpdateRange(c.Where(p => p.RowState == RowState.Update));
-                            DataAccess.RemoveRange(c.Where(p => p.RowState == RowState.Delete));
-                        }
-                    }
-                }
+                DoUpdate(set);
                 AfterSetEntity(set);
                 return set;
             }
@@ -99,9 +79,10 @@ namespace SKGPortalCore.Repository
         {
             try
             {
-                BeforeRemoveEntity(default);
+                TSet set = QueryData(key);
+                BeforeRemoveEntity(set);
                 DataAccess.Remove(DataAccess.Find(typeof(TSet).GetProperties()[0].PropertyType, key));
-                AfterRemoveEntity(default);
+                AfterRemoveEntity();
             }
             catch
             {
@@ -152,8 +133,6 @@ namespace SKGPortalCore.Repository
         /// <returns></returns>
         public List<object> QueryList()
         {
-
-
             return new List<object>();
         }
         /// <summary>
@@ -231,7 +210,7 @@ namespace SKGPortalCore.Repository
         /// 移除Entity後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterRemoveEntity(TSet set) { }
+        protected virtual void AfterRemoveEntity() { }
         /// <summary>
         /// 執行SaveChanges後
         /// </summary>
@@ -239,6 +218,56 @@ namespace SKGPortalCore.Repository
         protected virtual void AfterSaveChanges(FuncAction action) { }
         #endregion
         #region Private
+        private void DoCreate(TSet set)
+        {
+            foreach (var props in set.GetType().GetProperties())
+            {
+                dynamic entity = Reflect.GetValue(set, props.Name);
+                if (null == entity) continue;
+                if (entity is IEnumerable) { DataAccess.AddRange(entity); }
+                else { DataAccess.Add(entity); }
+            }
+        }
+        private void DoUpdate(TSet set)
+        {
+            foreach (var s in set.GetType().GetProperties())
+            {
+                var val = Reflect.GetValue(set, s.Name);
+                if (null == val) continue;
+                if (val is IEnumerable<DetailRowState>)
+                {
+                    List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
+
+                    List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
+                    DataAccess.AddRange(insertList);
+
+                    List<DetailRowState> updateList = detail.Where(p => p.RowState == RowState.Update).ToList();
+                    foreach (var entity in updateList)
+                    {
+                        var oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
+                        if (null != oldEntity)
+                            DataAccess.Remove(oldEntity);
+                        DataAccess.Update(entity);
+                    }
+                    List<DetailRowState> deleteList = detail.Where(p => p.RowState == RowState.Delete).ToList();
+                    foreach (var entity in deleteList)
+                    {
+                        var oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
+                        if (null != oldEntity)
+                            DataAccess.Remove(oldEntity);
+                    }
+                }
+                else
+                {
+                    var oldEntity = DataAccess.Find(val.GetType(), GetKeyVals(val));
+                    if (null != oldEntity)
+                        DataAccess.Remove(oldEntity);
+                    DataAccess.Update(val);
+                }
+            }
+        }
+
+
         /// <summary>
         /// 設置新增時使用者資料
         /// </summary>
@@ -335,7 +364,7 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="keysInfo"></param>
         /// <returns></returns>
-        private static string GetPKCondition(PropertyInfo[] keysInfo)
+        private string GetPKCondition(PropertyInfo[] keysInfo)
         {
             string result = string.Empty;
             int len = keysInfo.Length;
@@ -344,15 +373,31 @@ namespace SKGPortalCore.Repository
             return result;
         }
         /// <summary>
+        /// 獲取表主鍵值
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private object[] GetKeyVals(object model)
+        {
+            PropertyInfo[] props = GetKeyPropertiesByModelType(model.GetType());
+            List<object> result = new List<object>();
+            foreach (var prop in props)
+            {
+                result.Add(prop.GetValue(model));
+            }
+            return result.ToArray();
+        }
+        /// <summary>
         /// 獲取表的主鍵欄位
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private static PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
+        private PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
         {
             return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
         }
         #endregion
+
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫
 
