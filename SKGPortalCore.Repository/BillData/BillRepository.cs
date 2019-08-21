@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
+using SKGPortalCore.Model;
 using SKGPortalCore.Models.BillData;
 
 namespace SKGPortalCore.Repository.BillData
@@ -11,17 +12,12 @@ namespace SKGPortalCore.Repository.BillData
         public BillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
         #endregion
         #region Protected
-        protected override void BeforeSetEntity(BillSet set)
+        protected override void AfterSetEntity(BillSet set, FuncAction action)
         {
-            base.BeforeSetEntity(set);
-            return;
-            using BizBill biz = new BizBill(Message, DataAccess);
+            base.AfterSetEntity(set, action);
+            using BizBill biz = new BizBill(Message, DataAccess, User);
+            biz.SetData(set, action);
             biz.CheckData(set);
-            biz.SetData(set);
-        }
-        protected override void AfterSetEntity(BillSet set)
-        {
-            base.AfterSetEntity(set);
         }
         #endregion
     }

@@ -52,6 +52,11 @@ namespace SKGPortalCore.Model.MasterData
         [Description("期別編號")]
         public string BillTermNo { get; set; }
         /// <summary>
+        /// 期別流水碼
+        /// </summary>
+        [Description("期別流水碼")]
+        public int Seq { get; set; }
+        /// <summary>
         /// 帳單基本資料1
         /// </summary>
         [Description("帳單基本資料1")]

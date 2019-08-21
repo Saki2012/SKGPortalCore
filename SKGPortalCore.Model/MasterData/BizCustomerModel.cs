@@ -72,11 +72,13 @@ namespace SKGPortalCore.Model.MasterData
         public VirtualAccount3 VirtualAccount3 { get; set; }
         /// <summary>
         /// 啟用通路
+        /// (逗號分割)
         /// </summary>
         [Description("啟用通路")]
         public string ChannelIds { get; set; }
         /// <summary>
         /// 啟用超商代收類別
+        /// (逗號分割)
         /// </summary>
         [Description("啟用超商代收類別")]
         public string CollectionTypeIds { get; set; }

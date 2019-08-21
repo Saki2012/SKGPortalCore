@@ -1,10 +1,8 @@
-﻿using GraphQL;
-using SKGPortalCore.Lib;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
+using GraphQL;
+using SKGPortalCore.Lib;
+using SKGPortalCore.Model;
 
 namespace SKGPortalCore.Data
 {
@@ -24,6 +22,7 @@ namespace SKGPortalCore.Data
             //MessageCode MessageCode = messageCode;
             Message = string.Format($"{messageCode}:{ResxManage.GetDescription(messageCode)}", args);
             Errors.Add(new ExecutionError(Message));
+            //ErrorLog
         }
     }
 
@@ -69,5 +68,15 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("{0}只能輸入數字！")]
         Code1006,
+        /// <summary>
+        /// 銀行銷帳編號長度不符，應為{0}碼，但不前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。
+        /// </summary>
+        [Description("銀行銷帳編號長度不符，應為{0}碼，但不前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。")]
+        Code1007,
+        /// <summary>
+        /// 銷帳編號{0}已存在，請確認！
+        /// </summary>
+        [Description("銷帳編號{0}已存在，請確認！")]
+        Code1008,
     }
 }

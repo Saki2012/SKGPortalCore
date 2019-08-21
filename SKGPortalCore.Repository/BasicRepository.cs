@@ -40,9 +40,8 @@ namespace SKGPortalCore.Repository
             {
                 dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetCreateInfo(masterData);
-                BeforeSetEntity(set);
                 DoCreate(set);
-                AfterSetEntity(set);
+                AfterSetEntity(set, FuncAction.Create);
                 return set;
             }
             catch
@@ -61,9 +60,8 @@ namespace SKGPortalCore.Repository
             {
                 dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
-                BeforeSetEntity(set);
                 DoUpdate(set);
-                AfterSetEntity(set);
+                AfterSetEntity(set, FuncAction.Update);
                 return set;
             }
             catch
@@ -81,7 +79,7 @@ namespace SKGPortalCore.Repository
             {
                 TSet set = QueryData(key);
                 BeforeRemoveEntity(set);
-                DataAccess.Remove(DataAccess.Find(typeof(TSet).GetProperties()[0].PropertyType, key));
+                DataAccess.Remove(Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name));
                 AfterRemoveEntity();
             }
             catch
@@ -144,7 +142,7 @@ namespace SKGPortalCore.Repository
         public TSet Approve(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
             if (masterData is BasicDataModel)
             {
                 SetApproveInfo(masterData, status);
@@ -158,7 +156,7 @@ namespace SKGPortalCore.Repository
         public TSet Invalid(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
             if (masterData is BasicDataModel)
             {
                 SetInvalidInfo(masterData, status);
@@ -172,7 +170,7 @@ namespace SKGPortalCore.Repository
         public TSet EndCase(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = set.GetType().GetProperties()[0].GetValue(set);
+            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
             if (masterData is BasicDataModel)
             {
                 SetEndCaseInfo(masterData, status);
@@ -192,15 +190,10 @@ namespace SKGPortalCore.Repository
         #endregion
         #region Protected
         /// <summary>
-        /// 進Entity前
-        /// </summary>
-        /// <param name="set"></param>
-        protected virtual void BeforeSetEntity(TSet set) { }
-        /// <summary>
         /// 進Entity後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterSetEntity(TSet set) { }
+        protected virtual void AfterSetEntity(TSet set, FuncAction action) { }
         /// <summary>
         /// 移除Entity前
         /// </summary>
@@ -218,6 +211,10 @@ namespace SKGPortalCore.Repository
         protected virtual void AfterSaveChanges(FuncAction action) { }
         #endregion
         #region Private
+        /// <summary>
+        /// 處理新增動作
+        /// </summary>
+        /// <param name="set"></param>
         private void DoCreate(TSet set)
         {
             foreach (var props in set.GetType().GetProperties())
@@ -228,6 +225,10 @@ namespace SKGPortalCore.Repository
                 else { DataAccess.Add(entity); }
             }
         }
+        /// <summary>
+        /// 處理修改動作
+        /// </summary>
+        /// <param name="set"></param>
         private void DoUpdate(TSet set)
         {
             foreach (var s in set.GetType().GetProperties())
@@ -266,8 +267,6 @@ namespace SKGPortalCore.Repository
                 }
             }
         }
-
-
         /// <summary>
         /// 設置新增時使用者資料
         /// </summary>
@@ -369,7 +368,7 @@ namespace SKGPortalCore.Repository
             string result = string.Empty;
             int len = keysInfo.Length;
             for (int i = 0; i < len; i++)
-                result = DataHelper.Merge(" And ", false, result, $"{keysInfo[i].Name}=@{i}");
+                result = LibData.Merge(" And ", false, result, $"{keysInfo[i].Name}=@{i}");
             return result;
         }
         /// <summary>

@@ -8,11 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace SKGPortalCore.Lib
 {
-    /// <summary>
-    /// 可否為空(0)值
-    /// </summary>
-    public class IsEmptyField
-    { }
     public class ResxManage
     {
         public static string GetDescription(Enum member)

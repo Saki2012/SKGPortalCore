@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SKGPortalCore.Lib
 {
-    public static class DataHelper
+    public static class LibData
     {
         /// <summary>
         /// 
@@ -197,7 +197,7 @@ namespace SKGPortalCore.Lib
             return Convert.ToDateTime(val);
         }
         /// <summary>
-        /// 西元年
+        /// 西元年轉民國年
         /// </summary>
         /// <param name="datetime"></param>
         /// <returns></returns>

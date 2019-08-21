@@ -6,6 +6,65 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SKGPortalCore.Model.MasterData
 {
     /// <summary>
+    /// 代收通路
+    /// </summary>
+    [Description("代收通路")]
+    public class ChannelSet
+    {
+        /// <summary>
+        /// 代收通路資料
+        /// </summary>
+        [Description("代收通路資料")]
+        public ChannelModel Channel { get; set; }
+        /// <summary>
+        /// 交易代號與平台通路代號關聯表
+        /// </summary>
+        [Description("交易代號與平台通路代號關聯表")]
+        public List<ChannelMapModel> ChannelMap { get; set; }
+    }
+    /// <summary>
+    /// 代收通路資料
+    /// </summary>
+    [Description("代收通路資料")]
+    public class ChannelModel : MasterDataModel
+    {
+        /// <summary>
+        /// 代收通路代號
+        /// </summary>
+        [Description("代收通路代號"), Key]
+        public string ChannelId { get; set; }
+        /// <summary>
+        /// 代收通路名稱
+        /// </summary>
+        [Description("代收通路名稱")]
+        public string ChannelName { get; set; }
+        /// <summary>
+        /// 通路類別
+        /// </summary>
+        [Description("通路類別")]
+        public CanalisType ChannelType { get; set; }
+    }
+    /// <summary>
+    /// 交易代號與平台通路代號關聯表
+    /// </summary>
+    [Description("交易代號與平台通路代號關聯表")]
+    public class ChannelMapModel:DetailRowState
+    {
+        [ForeignKey("ChannelId")]
+        public ChannelModel Channel { get; set; }
+        /// <summary>
+        /// 代收通路代號
+        /// </summary>
+        [Description("代收通路代號"), Key]
+        public string ChannelId { get; set; }
+        /// <summary>
+        /// 交易代號
+        /// </summary>
+        [Description("交易代號"), Key]
+        public string TransCode { get; set; }
+    }
+
+    /// <summary>
     /// 平台通路代號
     /// </summary>
     public class ChannelValue
@@ -78,64 +137,5 @@ namespace SKGPortalCore.Model.MasterData
         /// 全國性e繳費
         /// </summary>
         public const string EB = "EB";
-    }
-
-    /// <summary>
-    /// 代收通路
-    /// </summary>
-    [Description("代收通路")]
-    public class ChannelSet
-    {
-        /// <summary>
-        /// 代收通路資料
-        /// </summary>
-        [Description("代收通路資料")]
-        public ChannelModel Channel { get; set; }
-        /// <summary>
-        /// 交易代號與平台通路代號關聯表
-        /// </summary>
-        [Description("交易代號與平台通路代號關聯表")]
-        public List<ChannelMapModel> ChannelMap { get; set; }
-    }
-    /// <summary>
-    /// 代收通路資料
-    /// </summary>
-    [Description("代收通路資料")]
-    public class ChannelModel : MasterDataModel
-    {
-        /// <summary>
-        /// 代收通路代號
-        /// </summary>
-        [Description("代收通路代號"), Key]
-        public string ChannelId { get; set; }
-        /// <summary>
-        /// 代收通路名稱
-        /// </summary>
-        [Description("代收通路名稱")]
-        public string ChannelName { get; set; }
-        /// <summary>
-        /// 通路類別
-        /// </summary>
-        [Description("通路類別")]
-        public CanalisType ChannelType { get; set; }
-    }
-    /// <summary>
-    /// 交易代號與平台通路代號關聯表
-    /// </summary>
-    [Description("交易代號與平台通路代號關聯表")]
-    public class ChannelMapModel:DetailRowState
-    {
-        [ForeignKey("ChannelId")]
-        public ChannelModel Channel { get; set; }
-        /// <summary>
-        /// 代收通路代號
-        /// </summary>
-        [Description("代收通路代號"), Key]
-        public string ChannelId { get; set; }
-        /// <summary>
-        /// 交易代號
-        /// </summary>
-        [Description("交易代號"), Key]
-        public string TransCode { get; set; }
     }
 }

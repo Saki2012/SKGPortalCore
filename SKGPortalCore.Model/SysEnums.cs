@@ -95,7 +95,7 @@ namespace SKGPortalCore.Model
         /// 期別
         /// </summary>
         [Description("期別")]
-        BillTermId = 1
+        BillTerm = 1
     }
     /// <summary>
     /// 自組銷帳編號2

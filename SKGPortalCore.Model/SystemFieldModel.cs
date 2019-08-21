@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model
@@ -95,5 +96,31 @@ namespace SKGPortalCore.Model
         [Description("行狀態"), NotMapped]
         public RowState RowState { get; set; }
     }
-
+    /// <summary>
+    /// 操作日誌
+    /// </summary>
+    [Description("操作日誌")]
+    public class OperateLog
+    {
+        [Key]
+        public long Id { get; set; }
+        public string UserId { get; set; }
+        public string ProgId { get; set; }
+        public string Action { get; set; }
+        public DateTime OperateTime { get; set; }
+    }
+    /// <summary>
+    /// 錯誤日誌
+    /// </summary>
+    [Description("錯誤日誌")]
+    public class ErrorLog
+    {
+        [Key]
+        public long Id { get; set; }
+        public string UserId { get; set; }
+        public string ProgId { get; set; }
+        public int MessageCode { get; set; }
+        public string Message { get; set; }
+        public DateTime OperateTime { get; set; }
+    }
 }
