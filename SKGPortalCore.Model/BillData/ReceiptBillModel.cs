@@ -42,12 +42,13 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("代收類別代號")]
         public string CollectionTypeId { get; set; }
-        public CollectionTypeDetailModel CollectionTypeDetail { get; set; }
+        [ForeignKey("ChannelId")]
+        public ChannelModel Channel { get; set; }
         /// <summary>
-        /// 代收類別明細序號
+        /// 代收通路
         /// </summary>
-        [Description("代收類別明細序號")]
-        public int CollectionTypeDetailRowId { get; set; }
+        [Description("代收通路")]
+        public string ChannelId { get; set; }
         /// <summary>
         /// 傳輸日期
         /// </summary>
@@ -68,11 +69,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("實繳金額")]
         public decimal PayAmount { get; set; }
-        /// <summary>
-        /// 期別
-        /// </summary>
-        [Description("期別")]
-        public string BillTermId { get; set; }
         /// <summary>
         /// 銀行銷帳編號
         /// </summary>

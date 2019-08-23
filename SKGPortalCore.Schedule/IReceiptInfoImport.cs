@@ -243,7 +243,7 @@ namespace SKGPortalCore.Schedule
             {
                 biz.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.CompareCode.Substring(7).TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, 0, out ChargePayType chargePayType, out decimal channelFee);
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
@@ -347,8 +347,8 @@ namespace SKGPortalCore.Schedule
             {
                 biz.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, 0, out ChargePayType chargePayType, out decimal channelFee);
-                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType,channelFee, compareCodeForCheck));
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
         }
@@ -450,7 +450,7 @@ namespace SKGPortalCore.Schedule
             {
                 biz.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.ISC.Trim(), model.Channel, 0, out ChargePayType chargePayType, out decimal channelFee);
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.ISC.Trim(), model.Channel, model.Barcode3_Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
@@ -554,7 +554,7 @@ namespace SKGPortalCore.Schedule
             {
                 biz.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, 0, out ChargePayType chargePayType, out decimal channelFee);
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
@@ -579,11 +579,11 @@ namespace SKGPortalCore.Schedule
             else compareCodeForCheck = bizCust.BizCustomer.VirtualAccount3 == VirtualAccount3.NoverifyCode ? compareCode : compareCode[0..^1];
             return bizCust;
         }
-        internal static void GetCollectionTypeSet(ApplicationDbContext DataAccess, string collectionTypeId, string channelId, decimal fee, out ChargePayType chargePayType, out decimal channelFee)
+        internal static void GetCollectionTypeSet(ApplicationDbContext DataAccess, string collectionTypeId, string channelId, decimal amount, out ChargePayType chargePayType, out decimal channelFee)
         {
             channelFee = 0;
             chargePayType = DataAccess.CollectionType.Find(collectionTypeId).ChargePayType;
-            var c = DataAccess.CollectionTypeDetail.Where("", collectionTypeId, channelId, fee);
+            var c = DataAccess.CollectionTypeDetail.Where("CollectionTypeId={0} And ChannelId={1} And {2} Between SRange And ERange", collectionTypeId, channelId, amount);
             if (null != c) channelFee = ((List<CollectionTypeDetailModel>)c)[0].Fee;
         }
     }

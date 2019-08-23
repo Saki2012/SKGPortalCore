@@ -4,6 +4,7 @@ using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Models.BillData;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SKGPortalCore.Repository.BillData
@@ -25,6 +26,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             using BizReceiptBill biz = new BizReceiptBill(Message);
+            set.ReceiptBill.ToBillNo = GetBillNo(set.ReceiptBill.CompareCodeForCheck);
             InsertBillReceiptDetail(set.ReceiptBill.BillNo, set.ReceiptBill.ToBillNo);
         }
         protected override void AfterRemoveEntity(ReceiptBillSet set)
@@ -35,6 +37,17 @@ namespace SKGPortalCore.Repository.BillData
         #endregion
 
         #region Private
+        /// <summary>
+        /// 獲取對應的帳單編號
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        private string GetBillNo(string compareCodeForCheck)
+        {
+            List<BillModel> bills = DataAccess.Bill.Where(p => p.CompareCodeForCheck == compareCodeForCheck &&
+             (p.FormStatus == FormStatus.Saved || p.FormStatus == FormStatus.Approved)).OrderBy(p=>p.CreateTime).ToList();
+            return bills[0].BillNo;
+        }
         /// <summary>
         /// 插入帳單收款明細
         /// </summary>
