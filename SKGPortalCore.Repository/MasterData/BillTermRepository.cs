@@ -6,6 +6,9 @@ using SKGPortalCore.Model.MasterData;
 
 namespace SKGPortalCore.Repository.MasterData
 {
+    /// <summary>
+    /// 期別庫
+    /// </summary>
     public class BillTermRepository : BasicRepository<BillTermSet>
     {
         public BillTermRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

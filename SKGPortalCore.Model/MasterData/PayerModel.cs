@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.MasterData
 {
+    /// <summary>
+    /// 繳款人
+    /// </summary>
     [Description("繳款人")]
     public class PayerSet
     {

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

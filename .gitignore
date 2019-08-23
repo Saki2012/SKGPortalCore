@@ -3,6 +3,8 @@ SKGPortalCore/obj
 SKGPortalCore.Business/
 SKGPortalCore.Data/bin
 SKGPortalCore.Data/obj
+SKGPortalCore.Schedule/bin
+SKGPortalCore.Schedule/obj
 SKGPortalCore.Data/Migrations
 SKGPortalCore.Lib/bin
 SKGPortalCore.Lib/obj

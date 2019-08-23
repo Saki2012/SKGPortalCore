@@ -6,6 +6,9 @@ using SKGPortalCore.Models.BillData;
 
 namespace SKGPortalCore.Repository.BillData
 {
+    /// <summary>
+    /// 帳單庫
+    /// </summary>
     public class BillRepository : BasicRepository<BillSet>
     {
         #region Construct

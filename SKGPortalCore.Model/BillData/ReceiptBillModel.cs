@@ -1,8 +1,9 @@
-﻿using SKGPortalCore.Model.MasterData;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Models.BillData;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -116,15 +117,34 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("HiTrust手續費")]
         public decimal HiTrustFee { get; set; }
+        [ForeignKey("ToBillNo")]
+        public BillModel Bill { get; set; }
+        /// <summary>
+        /// 帳單編號
+        /// </summary>
+        [Description("帳單編號")]
+        public string ToBillNo { get; set; }
         /// <summary>
         /// 來源模型
         /// </summary>
         [Description("來源模型")]
         public string Source { get; set; }
+        public ReceiptBillModel RushBill { get; set; }
+        /// <summary>
+        /// 沖抵單號
+        /// </summary>
+        [Description("沖抵單號")]
+        public string RushBillNo { get; set; }
+        public ReceiptBillModel BeRushedBill { get; set; }
+        /// <summary>
+        /// 被沖抵單號
+        /// </summary>
+        [Description("被沖抵單號")]
+        public string BeRushedBillNo { get; set; }
         /// <summary>
         /// 來源主鍵
         /// </summary>
-        [Description("來源主鍵")]
+        [Description("來源Id")]
         public int SourceId { get; set; }
     }
 }

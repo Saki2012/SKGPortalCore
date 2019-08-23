@@ -80,7 +80,7 @@ namespace SKGPortalCore.Repository
                 TSet set = QueryData(key);
                 BeforeRemoveEntity(set);
                 DataAccess.Remove(Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name));
-                AfterRemoveEntity();
+                AfterRemoveEntity(set);
             }
             catch
             {
@@ -203,7 +203,7 @@ namespace SKGPortalCore.Repository
         /// 移除Entity後
         /// </summary>
         /// <param name="set"></param>
-        protected virtual void AfterRemoveEntity() { }
+        protected virtual void AfterRemoveEntity(TSet set) { }
         /// <summary>
         /// 執行SaveChanges後
         /// </summary>

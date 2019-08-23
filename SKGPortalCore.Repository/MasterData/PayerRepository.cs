@@ -6,6 +6,9 @@ using SKGPortalCore.Model.MasterData;
 
 namespace SKGPortalCore.Repository.MasterData
 {
+    /// <summary>
+    /// 繳款人庫
+    /// </summary>
     public class PayerRepository : BasicRepository<PayerSet>
     {
         public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
