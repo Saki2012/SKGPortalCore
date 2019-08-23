@@ -638,14 +638,30 @@ namespace SKGPortalCore.Model
         NetLong = 3,
     }
 
+    /// <summary>
+    /// 行狀態
+    /// </summary>
+    [Description("行狀態")]
     public enum RowState : byte
     {
+        /// <summary>
+        /// 無異動
+        /// </summary>
         [Description("無異動")]
         None = 0,
+        /// <summary>
+        /// 新增
+        /// </summary>
         [Description("新增")]
         Insert = 1,
+        /// <summary>
+        /// 修改
+        /// </summary>
         [Description("修改")]
         Update = 2,
+        /// <summary>
+        /// 刪除
+        /// </summary>
         [Description("刪除")]
         Delete = 3,
     }

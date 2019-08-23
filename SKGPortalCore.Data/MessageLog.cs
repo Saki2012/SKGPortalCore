@@ -78,5 +78,26 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("銷帳編號{0}已存在，請確認！")]
         Code1008,
+        /// <summary>
+        /// 第{0}行：{1} {2} 不為有效數字
+        /// </summary>
+        [Description("第{0}行：{1} {2} 不為有效數字")]
+        Code1009,
+        /// <summary>
+        /// 第{0}行：{1} 不允許為空
+        /// </summary>
+        [Description("第{0}行：{1} 不允許為空")]
+        Code1010,
+        /// <summary>
+        /// 第{0}行：{1} 不為有效日期時間
+        /// </summary>
+        [Description("第{0}行：{1} 不為有效日期時間")]
+        Code1011,
+        /// <summary>
+        /// 第{0}行：存提別不為±
+        /// </summary>
+        [Description("第{0}行：存提別不為±")]
+        Code1012,
+
     }
 }

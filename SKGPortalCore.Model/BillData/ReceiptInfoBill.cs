@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Model.BillData
 {
-    interface IReceiptInfoBill
+    public interface IReceiptInfoBill
     {
         int Id { get; set; }
         string ImportBatchNo { get; set; }
@@ -15,6 +15,9 @@ namespace SKGPortalCore.Model.BillData
     [Description("繳款資訊單-銀行")]
     public class ReceiptInfoBillBankModel : IReceiptInfoBill
     {
+        /// <summary>
+        /// 檔案中的第N行
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 1. 實體帳號(13)
@@ -115,7 +118,9 @@ namespace SKGPortalCore.Model.BillData
     [Description("繳款資訊單-超商")]
     public class ReceiptInfoBillMarketModel : IReceiptInfoBill
     {
-        [Key]
+        /// <summary>
+        /// 檔案中的第N行
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 1. 錄別(1)
@@ -199,7 +204,9 @@ namespace SKGPortalCore.Model.BillData
     [Description("繳款資訊單-超商產險")]
     public class ReceiptInfoBillMarketSPIModel : IReceiptInfoBill
     {
-        [Key]
+        /// <summary>
+        /// 檔案中的第N行
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 錄別(1)
@@ -278,6 +285,9 @@ namespace SKGPortalCore.Model.BillData
     [Description("繳款資訊單-郵局")]
     public class ReceiptInfoBillPostModel : IReceiptInfoBill
     {
+        /// <summary>
+        /// 檔案中的第N行
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 1. 劃撥帳號(8)
@@ -341,7 +351,9 @@ namespace SKGPortalCore.Model.BillData
     [Description("繳款資訊單-農金")]
     public class ReceiptInfoBillFarmModel : IReceiptInfoBill
     {
-        [Key]
+        /// <summary>
+        /// 檔案中的第N行
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 錄別(1)

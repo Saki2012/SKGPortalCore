@@ -29,12 +29,8 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("單據編號"), Key]
         public string BillNo { get; set; }
+        [ForeignKey("CustomerCode")]
         public BizCustomerModel Customer { get; set; }
-        /// <summary>
-        /// 客戶統編
-        /// </summary>
-        [Description("客戶統編")]
-        public string CustomerId { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
@@ -88,6 +84,11 @@ namespace SKGPortalCore.Model.BillData
         [Description("銷帳條碼")]
         public string CompareCode { get; set; }
         /// <summary>
+        /// 銷帳條碼(不含檢碼)
+        /// </summary>
+        [Description("銷帳條碼(不含檢碼)")]
+        public string CompareCodeForCheck { get; set; }
+        /// <summary>
         /// 資訊流資料異常狀態
         /// </summary>
         [Description("資訊流資料異常狀態")]
@@ -103,7 +104,7 @@ namespace SKGPortalCore.Model.BillData
         [Description("通路手續費")]
         public decimal ChannelFee { get; set; }
         /// <summary>
-        /// 通路手續費
+        /// 清算手續費
         /// </summary>
         [Description("清算手續費")]
         public decimal BankFee { get; set; }
@@ -124,11 +125,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號")]
         public string ToBillNo { get; set; }
-        /// <summary>
-        /// 來源模型
-        /// </summary>
-        [Description("來源模型")]
-        public string Source { get; set; }
         public ReceiptBillModel RushBill { get; set; }
         /// <summary>
         /// 沖抵單號
@@ -142,9 +138,14 @@ namespace SKGPortalCore.Model.BillData
         [Description("被沖抵單號")]
         public string BeRushedBillNo { get; set; }
         /// <summary>
-        /// 來源主鍵
+        /// 導入批號
         /// </summary>
-        [Description("來源Id")]
-        public int SourceId { get; set; }
+        [Description("導入批號")]
+        public string ImportBatchNo { get; set; }
+        /// <summary>
+        /// 來源
+        /// </summary>
+        [Description("來源")]
+        public string Source { get; set; }
     }
 }

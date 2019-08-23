@@ -1,8 +1,8 @@
-﻿using GraphQL.Types;
-using SKGPortalCore.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
+using GraphQL.Types;
 
 namespace SKGPortalCore.Lib
 {
@@ -159,7 +159,16 @@ namespace SKGPortalCore.Lib
         {
             return encoding.GetBytes(str).Length;
         }
-        #region Convert
+        /// <summary>
+        /// 檢查是否為數字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsNumberString(this string str)
+        {
+            return Regex.IsMatch(str, "^[0-9]*$");
+        }
+        /// Convert
         public static short ToInt16(this object val)
         {
             return Convert.ToInt16(val);
@@ -216,7 +225,6 @@ namespace SKGPortalCore.Lib
         {
             return val.Length == 8 ? $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}" : val;
         }
-        #endregion
     }
     public static class GraphQLChangeType
     {
