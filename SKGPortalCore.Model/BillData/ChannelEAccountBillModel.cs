@@ -43,16 +43,36 @@ namespace SKGPortalCore.Model.BillData
         [Description("預計匯款日期")]
         public DateTime ExpectRemitDate { get; set; }
         /// <summary>
+        /// 遞延天數
+        /// </summary>
+        [Description("遞延天數")]
+        public int PostponeDays { get; set; }
+        /// <summary>
+        /// 資訊流金額
+        /// </summary>
+        [Description("資訊流金額")]
+        public decimal Amount { get; set; }
+        /// <summary>
+        /// 通路手續費
+        /// </summary>
+        [Description("通路手續費")]
+        public decimal Fee { get; set; }
+        /// <summary>
         /// 預計匯款金額
         /// </summary>
         [Description("預計匯款金額")]
         public decimal ExpectRemitAmount { get; set; }
+        /// <summary>
+        /// 筆數
+        /// </summary>
+        [Description("筆數")]
+        public int PayCount { get; set; }
     }
     /// <summary>
     /// 通路收款明細帳簿
     /// </summary>
     [Description("通路收款明細帳簿")]
-    public class ChannelEAccountBillDetailModel
+    public class ChannelEAccountBillDetailModel:DetailRowState
     {
         public ChannelEAccountBillModel Bill { get; set; }
         /// <summary>
@@ -72,6 +92,5 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("收款單號")]
         public string ReceiptBillNo { get; set; }
-
     }
 }

@@ -29,6 +29,9 @@ namespace SKGPortalCore.Data
         public DbSet<BillTermModel> BillTerm { get; set; }
         public DbSet<BillTermDetailModel> BillTermDetail { get; set; }
         public DbSet<PayerModel> Payer { get; set; }
+
+        public DbSet<ChannelEAccountBillModel> ChannelEAccountBill { get; set; }
+        public DbSet<ChannelEAccountBillDetailModel> ChannelEAccountBillDetail { get; set; }
         #endregion
         #region Private
         /// <summary>

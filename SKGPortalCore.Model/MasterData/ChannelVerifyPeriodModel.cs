@@ -5,10 +5,17 @@ using System.Text;
 
 namespace SKGPortalCore.Model.MasterData
 {
+
+    public class ChannelVerifyPeriodSet
+    {
+        public ChannelVerifyPeriodModel ChannelVerifyPeriod { get; set; }
+    }
+
+
     /// <summary>
     /// 通路核銷週期
     /// </summary>
-    class ChannelVerifyPeriodModel : MasterDataModel
+    public class ChannelVerifyPeriodModel : MasterDataModel
     {
         public ChannelModel Channel { get; set; }
         /// <summary>
@@ -28,22 +35,29 @@ namespace SKGPortalCore.Model.MasterData
         [Description("通路帳務核銷週期")]
         public PayPeriodType PayPeriodType { get; set; }
         /// <summary>
-        /// T+N日
+        /// 日結日
         /// </summary>
-        [Description("T+N日")]
-        public int NDay { get; set; }
-        public int NDayType { get; set; }
-        public int NDayPayPeriod { get; set; }
-        public int WeeklyWeekDay { get; set; }
-        public int WeeklyWeekDayPayPeriod { get; set; }
-        public int TenDayDay1 { get; set; }
-        public int TenDayDay1PeriodStart { get; set; }
-        public int TenDayDay2 { get; set; }
-        public int TenDayDay2PeriodStart { get; set; }
-        public int TenDayDay2PeriodEnd { get; set; }
-        public int TenDayDay3 { get; set; }
-        public int TenDayDay3PeriodStart { get; set; }
-        public int TenDayDay3PeriodEnd { get; set; }
-        public int MonthlyDay { get; set; }
+        [Description("日結日")]
+        public byte NDay { get; set; }
+        /// <summary>
+        /// 週結日
+        /// </summary>
+        public byte WeeklyWeekDay { get; set; }
+        /// <summary>
+        /// 上旬結日
+        /// </summary>
+        public byte TenDayDay1 { get; set; }
+        /// <summary>
+        /// 中旬結日
+        /// </summary>
+        public byte TenDayDay2 { get; set; }
+        /// <summary>
+        /// 下旬結日
+        /// </summary>
+        public byte TenDayDay3 { get; set; }
+        /// <summary>
+        /// 月結日
+        /// </summary>
+        public byte MonthlyDay { get; set; }
     }
 }

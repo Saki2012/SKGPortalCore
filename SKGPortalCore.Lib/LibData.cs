@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -224,6 +225,11 @@ namespace SKGPortalCore.Lib
         public static string ToADDateFormat(this string val)
         {
             return val.Length == 8 ? $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}" : val;
+        }
+
+        public static bool HasData(this IList val)
+        {
+            return null != val && val.Count > 0;
         }
     }
     public static class GraphQLChangeType

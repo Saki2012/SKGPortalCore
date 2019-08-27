@@ -590,9 +590,9 @@ namespace SKGPortalCore.Model
     public enum PayPeriodType : byte
     {
         /// <summary>
-        /// T+N日結
+        /// 日結
         /// </summary>
-        [Description("T+N日結")]
+        [Description("日結")]
         NDay = 1,
         /// <summary>
         /// 週結

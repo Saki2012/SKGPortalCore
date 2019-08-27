@@ -8,6 +8,8 @@ namespace SKGPortalCore.Schedule
         {
             IReceiptInfoImport infoImport = new ReceiptInfoImportBANK();
             infoImport.ExecuteImport();
+            RemitInfoImport remitInfoImport = new RemitInfoImport();
+            remitInfoImport.ExecuteImport();
         }
     }
 }

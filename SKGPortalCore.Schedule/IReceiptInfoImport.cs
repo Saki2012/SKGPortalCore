@@ -152,7 +152,8 @@ namespace SKGPortalCore.Schedule
                 biz.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.CompareCode, out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, "Bank999", model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
-                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+                ReceiptBillSet set = biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck);
+                repo.Create(set);
             }
             repo.CommitData(FuncAction.Create);
         }

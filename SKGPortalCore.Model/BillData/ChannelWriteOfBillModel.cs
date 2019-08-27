@@ -33,6 +33,13 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("預計撥款金額")]
         public decimal PrePayAmount { get; set; }
+
+        public DisbursementBillModel DisBill { get; set; }
+        /// <summary>
+        /// 撥款單號
+        /// </summary>
+        [Description("撥款單號")]
+        public string DisBillNo { get; set; }
     }
     /// <summary>
     /// 通路帳目明細
@@ -57,8 +64,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("通路帳簿單號")]
         public string ChannelEAccountBillNo { get; set; }
-
-        public decimal Value;
     }
     /// <summary>
     /// 金流帳目明細
@@ -83,7 +88,5 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("金流帳簿單號")]
         public string CashFlowBillNo { get; set; }
-
-        public decimal Value;
     }
 }

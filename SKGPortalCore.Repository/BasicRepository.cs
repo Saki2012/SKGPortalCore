@@ -148,6 +148,7 @@ namespace SKGPortalCore.Repository
                 SetApproveInfo(masterData, status);
                 ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Approved : FormStatus.Saved;
             }
+            AfterApprove(set, status);
             return set;
         }
         /// <summary>
@@ -162,6 +163,7 @@ namespace SKGPortalCore.Repository
                 SetInvalidInfo(masterData, status);
                 ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Obsoleted : FormStatus.Saved;
             }
+            AfterInvalid(set, status);
             return set;
         }
         /// <summary>
@@ -176,6 +178,7 @@ namespace SKGPortalCore.Repository
                 SetEndCaseInfo(masterData, status);
                 ((BasicDataModel)masterData).FormStatus = status ? FormStatus.EndCase : FormStatus.Approved;
             }
+            AfterEndCase(set, status);
             return set;
         }
         /// <summary>
@@ -209,6 +212,24 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="set"></param>
         protected virtual void AfterSaveChanges(FuncAction action) { }
+        /// <summary>
+        /// 審核後
+        /// </summary>
+        /// <param name="set"></param>
+        /// <param name="status"></param>
+        protected virtual void AfterApprove(TSet set, bool status) { }
+        /// <summary>
+        /// 作廢後
+        /// </summary>
+        /// <param name="set"></param>
+        /// <param name="status"></param>
+        protected virtual void AfterInvalid(TSet set, bool status) { }
+        /// <summary>
+        /// 結案後
+        /// </summary>
+        /// <param name="set"></param>
+        /// <param name="status"></param>
+        protected virtual void AfterEndCase(TSet set, bool status) { }
         #endregion
         #region Private
         /// <summary>

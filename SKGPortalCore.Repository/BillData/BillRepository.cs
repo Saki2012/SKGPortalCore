@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SKGPortalCore.Business.BillData;
+﻿using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Models.BillData;

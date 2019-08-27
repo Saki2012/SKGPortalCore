@@ -114,46 +114,15 @@ namespace SKGPortalCore.Lib
             DetailFields = detailFields;
             CurrentIdx = 0;
             DetailIdx = 0;
-            SortMaster();
-            SortDetail();
-            SetDefaultComparer();
+            if (!MasterFields[0].IsNullOrEmpty())
+            {
+                SortMaster();
+                SortDetail();
+                SetDefaultComparer();
+            }
         }
         #endregion
         #region Public
-        /// <summary>
-        /// 主表排序
-        /// </summary>
-        public void SortMaster()
-        {
-            Comparison<T1> c = new Comparison<T1>((x, y) =>
-            {
-                int result = 0;
-                foreach (string field in MasterFields)
-                {
-                    if (result == 0) result = T1Reflec.GetValue(x, field).ToString().CompareTo(T1Reflec.GetValue(y, field).ToString());
-                    else return result;
-                }
-                return result;
-            });
-            Master.Sort(c);
-        }
-        /// <summary>
-        /// 子表排序
-        /// </summary>
-        public void SortDetail()
-        {
-            Comparison<T2> c = new Comparison<T2>((x, y) =>
-            {
-                int result = 0;
-                foreach (string field in MasterFields)
-                {
-                    if (result == 0) result = T2Reflec.GetValue(x, field).ToString().CompareTo(T2Reflec.GetValue(y, field).ToString());
-                    else return result;
-                }
-                return result;
-            });
-            Detail.Sort(c);
-        }
         /// <summary>
         /// 主表往下一行
         /// </summary>
@@ -205,6 +174,40 @@ namespace SKGPortalCore.Lib
         }
         #endregion
         #region Private
+        /// <summary>
+        /// 主表排序
+        /// </summary>
+        private void SortMaster()
+        {
+            Comparison<T1> c = new Comparison<T1>((x, y) =>
+            {
+                int result = 0;
+                foreach (string field in MasterFields)
+                {
+                    if (result == 0) result = T1Reflec.GetValue(x, field).ToString().CompareTo(T1Reflec.GetValue(y, field).ToString());
+                    else return result;
+                }
+                return result;
+            });
+            Master.Sort(c);
+        }
+        /// <summary>
+        /// 子表排序
+        /// </summary>
+        private void SortDetail()
+        {
+            Comparison<T2> c = new Comparison<T2>((x, y) =>
+            {
+                int result = 0;
+                foreach (string field in MasterFields)
+                {
+                    if (result == 0) result = T2Reflec.GetValue(x, field).ToString().CompareTo(T2Reflec.GetValue(y, field).ToString());
+                    else return result;
+                }
+                return result;
+            });
+            Detail.Sort(c);
+        }
         /// <summary>
         /// 默認比對規則
         /// </summary>
