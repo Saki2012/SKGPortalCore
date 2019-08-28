@@ -24,28 +24,28 @@ namespace SKGPortalCore.SeedDataInitial
         {
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
-            using ApplicationDbContext db = new ApplicationDbContext(builder.Options);
-            using var transaction = db.Database.BeginTransaction();
+            using ApplicationDbContext dataAccess = new ApplicationDbContext(builder.Options);
+            using var transaction = dataAccess.Database.BeginTransaction();
             try
             {
                 SystemOperator sys = new SystemOperator();
-                if (db.Set<BackendUserModel>().Find("SysOperator") == null)
-                    db.Add(sys.SysOperator);
+                if (dataAccess.Set<BackendUserModel>().Find("SysOperator") == null)
+                    dataAccess.Add(sys.SysOperator);
                 //資料
-                CreateChannel(db, sys);
-                CreateCollectionType(db, sys);
+                CreateChannel(dataAccess, sys);
+                CreateCollectionType(dataAccess, sys);
                 //CreateChannelVerifyPeriod(db);
-                CreateCustomer(db, sys);
-                CreateBizCustomer(db, sys);
-                CreatePayer(db, sys);
-                CreateBillTerm(db, sys);
+                CreateCustomer(dataAccess, sys);
+                CreateBizCustomer(dataAccess, sys);
+                CreatePayer(dataAccess, sys);
+                CreateBillTerm(dataAccess, sys);
                 //單據
-                CreateBill(db, sys);
-                CreateReceiptBill(db, sys);
-                CreateCashFlowBill(db, sys);
+                CreateBill(dataAccess, sys);
+                CreateReceiptBill(dataAccess, sys);
+                CreateCashFlowBill(dataAccess, sys);
 
                 //db.SaveChanges();
-                db.BulkSaveChanges();
+                dataAccess.BulkSaveChanges();
                 transaction.Commit();
             }
             catch (Exception e)
@@ -160,7 +160,7 @@ namespace SKGPortalCore.SeedDataInitial
         {
             BizCustomerRepository repo = new BizCustomerRepository(db);
             repo.User = sys.SysOperator;
-            var customers = new List<BizCustomerSet>() { new BizCustomerSet() { BizCustomer = new BizCustomerModel() { CustomerId = "80425514", CustomerCode = "990521", AccountDeptId = "", RealAccount = "0505100015307", VirtualAccountLen = 13, VirtualAccount1 = VirtualAccount1.Empty, VirtualAccount2 = VirtualAccount2.Empty, VirtualAccount3 = VirtualAccount3.NoverifyCode, ChannelIds = "00,01,02,03,04,05,06,A3,A1", CollectionTypeIds = "6V5,6V6", HiTrustFlag = HiTrustFlag.NoApplication, EntrustCustId = "8551414", AccountStatus = AccountStatus.Enable,Source="" }, BizCustFeeDetail=new List<BizCustFeeDetailModel>(){ new BizCustFeeDetailModel() {  CustomerCode= "990521", ChannelType= CanalisType.Bank , FeeType= FeeType.ClearFee, Fee=10, Percent=0} } },
+            var customers = new List<BizCustomerSet>() { new BizCustomerSet() { BizCustomer = new BizCustomerModel() { CustomerId = "80425514", CustomerCode = "990521", AccountDeptId = "", RealAccount = "0505100015307", VirtualAccountLen = 13, VirtualAccount1 = VirtualAccount1.Empty, VirtualAccount2 = VirtualAccount2.Empty, VirtualAccount3 = VirtualAccount3.NoverifyCode, ChannelIds = "00,01,02,03,04,05,06,A3,A1", CollectionTypeIds = "6V5,6V6", HiTrustFlag = HiTrustFlag.NoApplication, EntrustCustId = "8551414", AccountStatus = AccountStatus.Enable,Source="" }, BizCustomerFeeDetail=new List<BizCustomerFeeDetailModel >(){ new BizCustomerFeeDetailModel () {  CustomerCode= "990521", ChannelType= CanalisType.Bank , FeeType= FeeType.ClearFee, Fee=10, Percent=0} } },
                                                          //new BizCustomerSet(){ },
                                                        };
             foreach (var customer in customers)

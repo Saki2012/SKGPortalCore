@@ -14,6 +14,8 @@ SKGPortalCore.Repository/bin
 SKGPortalCore.Repository/obj
 SKGPortalCore.Graph/bin
 SKGPortalCore.Graph/obj
+SKGPortalCore.NUnit/bin
+SKGPortalCore.NUnit/obj
 SKGPortalCore.SeedDataInitial/bin
 SKGPortalCore.SeedDataInitial/obj
 TestSln/bin

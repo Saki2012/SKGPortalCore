@@ -5,10 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.SourceData
 {
-
+    /// <summary>
+    /// 服務申請書主檔
+    /// </summary>
     [Description("服務申請書主檔")]
     public class ACCFTT
     {
+        public int Id { get; set; }
         /// <summary>
         /// 01.全方位帳號(13位:990343;14位:998;16位:1024;)
         /// X(06)
@@ -166,7 +169,7 @@ namespace SKGPortalCore.Model.SourceData
         public string HIFLAG { get; set; }
         /// <summary>
         /// 32.網路平台使用手續費
-        /// 9(02)
+        /// 9(03)
         /// </summary>
         public string HIFARE { get; set; }
         /// <summary>
@@ -196,7 +199,7 @@ namespace SKGPortalCore.Model.SourceData
         public string EBFEEFLAG { get; set; }
         /// <summary>
         /// 38.e手續費負擔
-        /// 9(02)
+        /// 9(03)
         /// </summary>
         public string EBFEE { get; set; }
         /// <summary>
@@ -221,12 +224,12 @@ namespace SKGPortalCore.Model.SourceData
         public string FUNC { get; set; }
         /// <summary>
         /// 43.郵局通路手續費
-        /// 9(02)
+        /// 9(03)
         /// </summary>
         public string MAFARE { get; set; }
         /// <summary>
         /// 44.臨櫃通路手續費
-        /// 9(02)
+        /// 9(03)
         /// </summary>
         public string NOFARE { get; set; }
         /// <summary>
@@ -324,77 +327,15 @@ namespace SKGPortalCore.Model.SourceData
         /// X(50)
         /// </summary>
         public string FILLER { get; set; }
-
-        public void SetValue(int idx, string value)
-        {
-            idx++;
-            switch (idx)
-            {
-                case 1: KEYNO = value; break;
-                case 2: ACCIDNO = value; break;
-                case 3: CUSTNAME = value; break;
-                case 4: APPBECODE = value; break;
-                case 5: BRCODE = value; break;
-                case 6: IDCODE = value; break;
-                case 7: APPLYDATE = value; break;
-                case 8: CHGDATE = value; break;
-                case 9: APPLYSTAT = value; break;
-                case 10: CHKNUMFLAG = value; break;
-                case 11: CHKAMTFLAG = value; break;
-                case 12: DUETERM = value; break;
-                case 13: CHANNEL = value; break;
-                case 14: FEE = value; break;
-                case 15: RSTORE1 = value; break;
-                case 16: RSTORE2 = value; break;
-                case 17: RSTORE3 = value; break;
-                case 18: RSTORE4 = value; break;
-                case 19: RECVITEM1 = value; break;
-                case 20: RECVITEM2 = value; break;
-                case 21: RECVITEM3 = value; break;
-                case 22: RECVITEM4 = value; break;
-                case 23: RECVITEM5 = value; break;
-                case 24: ACTFEE = value; break;
-                case 25: MARTFEE1 = value; break;
-                case 26: MARTFEE2 = value; break;
-                case 27: MARTFEE3 = value; break;
-                case 28: POSTFLAG = value; break;
-                case 29: ACTFEEPT = value; break;
-                case 30: POSTFEE = value; break;
-                case 31: HIFLAG = value; break;
-                case 32: HIFARE = value; break;
-                case 33: NETDATE = value; break;
-                case 34: AUTOFLAG = value; break;
-                case 35: EBFLAG = value; break;
-                case 36: EBDATE = value; break;
-                case 37: EBFEEFLAG = value; break;
-                case 38: EBFEE = value; break;
-                case 39: EBACTTYPE = value; break;
-                case 40: CHKDUPPAY = value; break;
-                case 41: CUSTID = value; break;
-                case 42: FUNC = value; break;
-                case 43: MAFARE = value; break;
-                case 44: NOFARE = value; break;
-                case 45: CTBCFLAG = value; break;
-                case 46: SHAREBNFTFLG = value; break;
-                case 47: SHAREBEFTPERCENT = value; break;
-                case 48: ACTFEEBEFT = value; break;
-                case 49: ACTFEEMART = value; break;
-                case 50: SHAREACTFLG = value; break;
-                case 51: ACTPERCENT = value; break;
-                case 52: CLEARFEEMART1 = value; break;
-                case 53: CLEARFEEMART2 = value; break;
-                case 54: CLEARFEEMART3 = value; break;
-                case 55: CLEARFEEMART4 = value; break;
-                case 56: CLEARFEEMART5 = value; break;
-                case 57: PAYKINDPOST = value; break;
-                case 58: ACTFEEPOST = value; break;
-                case 59: SHAREPOSTFLG = value; break;
-                case 60: POSTPERCENT = value; break;
-                case 61: AGRIFLAG = value; break;
-                case 62: AGRIFEE = value; break;
-                case 63: FILLER = value; break;
-                default: throw new NotImplementedException();
-            }
-        }
+        /// <summary>
+        /// 導入批號
+        /// </summary>
+        [Description("導入批號")]
+        public string ImportBatchNo { get; set; }
+        /// <summary>
+        /// 原Source
+        /// </summary>
+        [Description("原Source")]
+        public string Source { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using SKGPortalCore.Data;
 
 namespace SKGPortalCore.Schedule
 {
@@ -6,10 +8,18 @@ namespace SKGPortalCore.Schedule
     {
         static void Main(string[] args)
         {
-            IReceiptInfoImport infoImport = new ReceiptInfoImportBANK();
+            DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
+            using ApplicationDbContext dataAccess = new ApplicationDbContext(builder.Options);
+
+
+
+            IImportData infoImport = new ReceiptInfoImportBANK(dataAccess);
             infoImport.ExecuteImport();
-            RemitInfoImport remitInfoImport = new RemitInfoImport();
-            remitInfoImport.ExecuteImport();
+            infoImport = new RemitInfoImport(dataAccess);
+            infoImport.ExecuteImport();
+            infoImport = new ACCFTTImport(dataAccess);
+            infoImport.ExecuteImport();
         }
     }
 }

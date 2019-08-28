@@ -26,11 +26,11 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ReceiptBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizReceiptBill biz = new BizReceiptBill(Message);
-            set.ReceiptBill.ToBillNo = GetBillNo(set.ReceiptBill.CompareCodeForCheck);
+            using BizReceiptBill biz = new BizReceiptBill(Message,DataAccess);
+            biz.SetData(set, action);
+
+           
             InsertBillReceiptDetail(set.ReceiptBill.BillNo, set.ReceiptBill.ToBillNo);
-            if (action == FuncAction.Create)//未來若有修改RemitDate的情況，需進行差異調整
-                set.ReceiptBill.RemitDate = biz.GetRemitDate(set.ReceiptBill, null);
             InsertChannelEAccount(biz, set);
         }
         protected override void AfterRemoveEntity(ReceiptBillSet set)
@@ -42,17 +42,7 @@ namespace SKGPortalCore.Repository.BillData
         #endregion
 
         #region Private
-        /// <summary>
-        /// 獲取對應的帳單編號
-        /// </summary>
-        /// <param name="set"></param>
-        /// <returns></returns>
-        private string GetBillNo(string compareCodeForCheck)
-        {
-            List<string> bills = DataAccess.Set<BillModel>().Where(p => p.CompareCodeForCheck == compareCodeForCheck &&
-             (p.FormStatus == FormStatus.Saved || p.FormStatus == FormStatus.Approved)).OrderByDescending(p => p.CreateTime).Select(p => p.BillNo).ToList();
-            return bills.HasData() ? bills[0] : string.Empty;
-        }
+
         /// <summary>
         /// 插入帳單收款明細
         /// </summary>

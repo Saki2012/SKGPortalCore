@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -12,29 +13,51 @@ using SKGPortalCore.Repository.BillData;
 
 namespace SKGPortalCore.Schedule
 {
-    public class RemitInfoImport
+    public class RemitInfoImport : IImportData
     {
+        #region Property
+        public ApplicationDbContext DataAccess { get; }
 
-        private ApplicationDbContext DataAccess;
 
         /// <summary>
         /// 
         /// </summary>
         private const int StrLen = 128;
+        #endregion
+        #region Construct
+        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
-        /// 執行金流匯款檔導入
+        /// 
         /// </summary>
-        public void ExecuteImport()
+        /// <param name="source"></param>
+        /// <param name="importBatchNo"></param>
+        /// <param name="now"></param>
+        /// <returns></returns>
+        public RemitInfoModel AnalyzeSource(int line, string source, string importBatchNo)
         {
-            Dictionary<int, string> sources = ReadFile();
-            List<RemitInfoModel> sets = AnalyzeFile(sources);
-            CreateCashFlowBill(sets);
+            return new RemitInfoModel()
+            {
+                Id = line,
+                RemitDate = LibData.ByteSubString(source, 0, 8),
+                RemitTime = LibData.ByteSubString(source, 8, 6),
+                Channel = LibData.ByteSubString(source, 14, 2),
+                CollectionType = LibData.ByteSubString(source, 16, 3),
+                Amount = LibData.ByteSubString(source, 19, 11),
+                BatchNo = LibData.ByteSubString(source, 30, 2),
+                Empty = LibData.ByteSubString(source, 32, 96),
+                ImportBatchNo = importBatchNo,
+                Source = source
+            };
         }
+        #endregion
+        #region Private Property
         /// <summary>
         /// 讀資訊流檔
         /// </summary>
         /// <returns></returns>
-        private Dictionary<int, string> ReadFile()
+        Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string filePath = "", strRow;
@@ -64,7 +87,7 @@ namespace SKGPortalCore.Schedule
         /// </summary>
         /// <param name="sources"></param>
         /// <returns></returns>
-        private List<RemitInfoModel> AnalyzeFile(Dictionary<int, string> sources)
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
         {
             List<RemitInfoModel> result = new List<RemitInfoModel>();
             DateTime now = DateTime.Now;
@@ -73,44 +96,24 @@ namespace SKGPortalCore.Schedule
                 result.Add(AnalyzeSource(line, sources[line], importBatchNo));
             return result;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <param name="now"></param>
-        /// <returns></returns>
-        public RemitInfoModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new RemitInfoModel()
-            {
-                Id = line,
-                RemitDate = LibData.ByteSubString(source, 0, 8),
-                RemitTime = LibData.ByteSubString(source, 8, 6),
-                Channel = LibData.ByteSubString(source, 14, 2),
-                CollectionType = LibData.ByteSubString(source, 16, 3),
-                Amount = LibData.ByteSubString(source, 19, 11),
-                BatchNo = LibData.ByteSubString(source, 30, 2),
-                Empty = LibData.ByteSubString(source, 32, 96),
-                ImportBatchNo = importBatchNo,
-                Source = source
-            };
-        }
+
         /// <summary>
         /// 新增繳款資訊
         /// </summary>
         /// <param name="modelSources"></param>
-        private void CreateCashFlowBill(List<RemitInfoModel> modelSources)
+        void IImportData.CreateData(IList modelSources)
         {
+            List<RemitInfoModel> srcs = modelSources as List<RemitInfoModel>;
             var msg = new MessageLog(new GraphQL.ExecutionErrors());
             using BizRemitInfo biz = new BizRemitInfo(msg);
             using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess);
-            foreach (var model in modelSources)
+            foreach (var model in srcs)
             {
                 CashFlowBillSet set = biz.GetCashFlowBillSet(model);
                 repo.Create(set);
             }
             repo.CommitData(FuncAction.Create);
         }
+        #endregion
     }
 }

@@ -20,7 +20,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 商戶手續費管理明細
         /// </summary>
         [Description("商戶手續費管理明細")]
-        public List<BizCustFeeDetailModel> BizCustFeeDetail { get; set; }
+        public List<BizCustomerFeeDetailModel > BizCustomerFeeDetail { get; set; }
     }
     /// <summary>
     /// 商戶資料
@@ -98,16 +98,21 @@ namespace SKGPortalCore.Model.MasterData
         [Description("帳戶狀態")]
         public AccountStatus AccountStatus { get; set; }
         /// <summary>
-        /// 來源核心
+        /// 導入批號
         /// </summary>
-        [Description("來源核心")]
+        [Description("導入批號")]
+        public string ImportBatchNo { get; set; }
+        /// <summary>
+        /// 來源
+        /// </summary>
+        [Description("來源")]
         public string Source { get; set; }
     }
     /// <summary>
     /// 商戶手續費管理明細
     /// </summary>
     [Description("商戶手續費管理明細")]
-    public class BizCustFeeDetailModel:DetailRowState
+    public class BizCustomerFeeDetailModel :DetailRowState
     {
         [ForeignKey("CustomerCode")]
         public BizCustomerModel BizCustomer { get; set; }

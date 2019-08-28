@@ -65,7 +65,6 @@ namespace SKGPortalCore
             //services.AddSingleton<ISessionWapper, SessionWapper<BackendUserModel>>();
             //if(FrontEnd
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -101,7 +100,7 @@ namespace SKGPortalCore
         #endregion
         #region Private
         /// <summary>
-        /// 設置Repository
+        /// 注入Repository
         /// </summary>
         /// <param name="services"></param>
         private void InjectionRepository(ref IServiceCollection services)
@@ -112,7 +111,7 @@ namespace SKGPortalCore
                 services.AddTransient(t);
         }
         /// <summary>
-        /// 
+        /// 注入GraphSchema
         /// </summary>
         /// <param name="services"></param>
         private void InjectionGraphSchema(ref IServiceCollection services)

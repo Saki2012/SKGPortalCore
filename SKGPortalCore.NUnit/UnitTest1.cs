@@ -1,35 +1,38 @@
-﻿using SKGPortalCore.Lib;
-using SKGPortalCore.Model.BillData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using NUnit.Framework;
+using SKGPortalCore.Lib;
+using SKGPortalCore.Model.BillData;
 
-namespace TestSln
+namespace Tests
 {
-    class Program
+    public class Tests
     {
-        static void Main(string[] args)
+        [SetUp]
+        public void Setup()
         {
-            ListRecordComparisonTest();
         }
-        #region ListRecordComparison Test
-        public static void ListRecordComparisonTest()
+
+        [Test]
+        public void ListRecordComparisonTest()
         {
             Random r = new Random(300);
-            int num = 100;
+            int num = 10000;
             for (int times = 0; times < 10; times++)
             {
                 List<ChannelWriteOfDetailModel> channelWriteOfDetail = new List<ChannelWriteOfDetailModel>();
                 List<CashFlowWriteOfDetailModel> cashFlowWriteOfDetail = new List<CashFlowWriteOfDetailModel>();
 
-                for (int i = 0; i < num; i++)
-                    channelWriteOfDetail.Add(new ChannelWriteOfDetailModel() { ChannelEAccountBill = new ChannelEAccountBillModel() { ChannelId = r.Next(3).ToString(), CollectionTypeId = r.Next(5).ToString(), ExpectRemitAmount = 100 } });
-                for (int i = 0; i < num; i++)
-                    cashFlowWriteOfDetail.Add(new CashFlowWriteOfDetailModel() { CashFlowBill = new CashFlowBillModel() { ChannelId = r.Next(3).ToString(), CollectionTypeId = r.Next(5).ToString(), Amount = 100 } });
+                for (int i = 0; i < num * times; i++)
+                    channelWriteOfDetail.Add(new ChannelWriteOfDetailModel() { ChannelEAccountBill = new ChannelEAccountBillModel() { ChannelId = r.Next(10).ToString(), CollectionTypeId = r.Next(10).ToString(), ExpectRemitAmount = 1 } });
+                for (int i = 0; i < num * times; i++)
+                    cashFlowWriteOfDetail.Add(new CashFlowWriteOfDetailModel() { CashFlowBill = new CashFlowBillModel() { ChannelId = r.Next(10).ToString(), CollectionTypeId = r.Next(10).ToString(), Amount = 1 } });
                 CompareData(channelWriteOfDetail, cashFlowWriteOfDetail);
             }
+            Assert.Pass();
         }
+
         private static void CompareData(List<ChannelWriteOfDetailModel> channelWriteOfDetail, List<CashFlowWriteOfDetailModel> cashFlowWriteOfDetail)
         {
             Stopwatch sw = new Stopwatch();
@@ -62,23 +65,21 @@ namespace TestSln
                 while (!rc.IsEof)
                 {
                     times1++;
-                    //rc.BackToBookMark();
+                    rc.BackToBookMark();
                     val += rc.CurrentRow.ChannelEAccountBill.ExpectRemitAmount;
                     while (rc.Compare())
                     {
                         times2++;
-                        //rc.SetBookMark();
+                        rc.SetBookMark();
                         val -= rc.DetailRow.CashFlowBill.Amount;
                         rc.DetailMoveNext();
                     }
                     rc.MoveNext();
                 }
             sw.Stop();
-            Console.WriteLine(Pad("Status:反射Compare"));
+            Console.WriteLine(Pad("Status:�ϮgCompare"));
             Console.WriteLine($"Time:{ sw.ElapsedMilliseconds},MasterTimes:{times1},DetailTimes:{times2},Val:{val}");
         }
-        #endregion
-
         private static string Pad(string s)
         {
             return $"-------------------{s}".PadRight(45, '-');

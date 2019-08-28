@@ -16,45 +16,11 @@ using SKGPortalCore.Repository.MasterData;
 namespace SKGPortalCore.Schedule
 {
     /// <summary>
-    /// 資訊流導入
-    /// </summary>
-    public interface IReceiptInfoImport
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
-        /// <summary>
-        /// 執行資訊流導入
-        /// </summary>
-        public void ExecuteImport()
-        {
-            Dictionary<int, string> sources = ReadFile();
-            IList sets = AnalyzeFile(sources);
-            CreateReceiptInfoBill(sets);
-        }
-        /// <summary>
-        /// 讀資訊流檔
-        /// </summary>
-        /// <returns></returns>
-        private protected Dictionary<int, string> ReadFile();
-        /// <summary>
-        /// 分析資訊流
-        /// </summary>
-        /// <param name="sources"></param>
-        /// <returns></returns>
-        private protected IList AnalyzeFile(Dictionary<int, string> sources);
-        /// <summary>
-        /// 新增繳款資訊
-        /// </summary>
-        /// <param name="modelSources"></param>
-        private protected void CreateReceiptInfoBill(IList modelSources);
-    }
-    /// <summary>
     /// 資訊流導入-銀行
     /// </summary>
-    public class ReceiptInfoImportBANK : IReceiptInfoImport
+    public class ReceiptInfoImportBANK : IImportData
     {
+        #region Propety
         /// <summary>
         /// 
         /// </summary>
@@ -62,50 +28,12 @@ namespace SKGPortalCore.Schedule
         /// <summary>
         /// 
         /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        Dictionary<int, string> IReceiptInfoImport.ReadFile()
-        {
-            Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 1;
-            while (sr.Peek() > 0)
-            {
-                strRow = sr.ReadLine();
-                line++;
-                if (0 == strRow.Length) continue;
-                if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
-                switch (LibData.ByteSubString(strRow, 0, 1))
-                {
-                    case "H"://表頭、檢查是否今日，並且Count歸零
-                        break;
-                    case "T"://表尾、檢查是否筆數正確
-                        break;
-                    default://明細
-                        result.Add(line, strRow);
-                        break;
-                }
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sources"></param>
-        /// <returns></returns>
-        IList IReceiptInfoImport.AnalyzeFile(Dictionary<int, string> sources)
-        {
-            List<ReceiptInfoBillBankModel> result = new List<ReceiptInfoBillBankModel>();
-            DateTime now = DateTime.Now;
-            string importBatchNo = $"BANK{now.ToString("yyyyMMddhhmmss")}";
-            foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
-            return result;
-        }
+        public ApplicationDbContext DataAccess { get; }
+        #endregion
+        #region Construct
+        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
@@ -138,11 +66,56 @@ namespace SKGPortalCore.Schedule
                 Source = source
             };
         }
+        #endregion
+        #region Private Protected
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<int, string> IImportData.ReadFile()
+        {
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            string filePath = "", strRow;
+            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
+            int line = 1;
+            while (sr.Peek() > 0)
+            {
+                strRow = sr.ReadLine();
+                line++;
+                if (0 == strRow.Length) continue;
+                if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
+                switch (LibData.ByteSubString(strRow, 0, 1))
+                {
+                    case "H"://表頭、檢查是否今日，並且Count歸零
+                        break;
+                    case "T"://表尾、檢查是否筆數正確
+                        break;
+                    default://明細
+                        result.Add(line, strRow);
+                        break;
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sources"></param>
+        /// <returns></returns>
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
+        {
+            List<ReceiptInfoBillBankModel> result = new List<ReceiptInfoBillBankModel>();
+            DateTime now = DateTime.Now;
+            string importBatchNo = $"BANK{now.ToString("yyyyMMddhhmmss")}";
+            foreach (int line in sources.Keys)
+                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+            return result;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="modelSources"></param>
-        void IReceiptInfoImport.CreateReceiptInfoBill(IList modelSources)
+        void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
             var msg = new MessageLog(new GraphQL.ExecutionErrors());
@@ -158,12 +131,14 @@ namespace SKGPortalCore.Schedule
             }
             repo.CommitData(FuncAction.Create);
         }
+        #endregion
     }
     /// <summary>
     /// 資訊流導入-郵局
     /// </summary>
-    public class ReceiptInfoImportPOST : IReceiptInfoImport
+    public class ReceiptInfoImportPOST : IImportData
     {
+        #region Property
         /// <summary>
         /// 
         /// </summary>
@@ -171,41 +146,12 @@ namespace SKGPortalCore.Schedule
         /// <summary>
         /// 
         /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        Dictionary<int, string> IReceiptInfoImport.ReadFile()
-        {
-            Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
-            while (sr.Peek() > 0)
-            {
-                strRow = sr.ReadLine();
-                line++;
-                if (0 == LibData.ByteLen(strRow)) continue;
-                if (StrLen != strRow.Length) { /*第N行 Error:長度不符*/}
-                result.Add(line, strRow);
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sources"></param>
-        /// <returns></returns>
-        IList IReceiptInfoImport.AnalyzeFile(Dictionary<int, string> sources)
-        {
-            List<ReceiptInfoBillPostModel> result = new List<ReceiptInfoBillPostModel>();
-            DateTime now = DateTime.Now;
-            string importBatchNo = $"POST{now.ToString("yyyyMMddhhmmss")}";
-            foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
-            return result;
-        }
+        public ApplicationDbContext DataAccess { get; }
+        #endregion
+        #region Construct
+        public ReceiptInfoImportPOST(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
@@ -230,11 +176,47 @@ namespace SKGPortalCore.Schedule
                 Source = source
             };
         }
+        #endregion
+        #region Private Protected
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<int, string> IImportData.ReadFile()
+        {
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            string filePath = "", strRow;
+            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
+            int line = 0;
+            while (sr.Peek() > 0)
+            {
+                strRow = sr.ReadLine();
+                line++;
+                if (0 == LibData.ByteLen(strRow)) continue;
+                if (StrLen != strRow.Length) { /*第N行 Error:長度不符*/}
+                result.Add(line, strRow);
+            }
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sources"></param>
+        /// <returns></returns>
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
+        {
+            List<ReceiptInfoBillPostModel> result = new List<ReceiptInfoBillPostModel>();
+            DateTime now = DateTime.Now;
+            string importBatchNo = $"POST{now.ToString("yyyyMMddhhmmss")}";
+            foreach (int line in sources.Keys)
+                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+            return result;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="modelSources"></param>
-        void IReceiptInfoImport.CreateReceiptInfoBill(IList modelSources)
+        void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillPostModel> models = modelSources as List<ReceiptInfoBillPostModel>;
             var msg = new MessageLog(new GraphQL.ExecutionErrors());
@@ -249,63 +231,27 @@ namespace SKGPortalCore.Schedule
             }
             repo.CommitData(FuncAction.Create);
         }
+        #endregion
     }
     /// <summary>
     /// 資訊流導入-超商
     /// </summary>
-    public class ReceiptInfoImportMARKET : IReceiptInfoImport
+    public class ReceiptInfoImportMARKET : IImportData
     {
+        #region Property
         /// <summary>
         /// 
-        /// </summary>
+        /// </summary>1
         private const int StrLen = 120;
         /// <summary>
         /// 
         /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        Dictionary<int, string> IReceiptInfoImport.ReadFile()
-        {
-            Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
-            while (sr.Peek() > 0)
-            {
-                strRow = sr.ReadLine();
-                line++;
-                if (0 == strRow.Length) continue;
-                if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
-                switch (LibData.ByteSubString(strRow, 0, 1))
-                {
-                    case "1"://表頭、檢查是否今日，並且Count歸零
-                        break;
-                    case "2"://明細
-                        result.Add(line, strRow);
-                        break;
-                    case "3"://表尾、檢查是否筆數正確
-                        break;
-                }
-            }
-            return result;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sources"></param>
-        /// <returns></returns>
-        IList IReceiptInfoImport.AnalyzeFile(Dictionary<int, string> sources)
-        {
-            List<ReceiptInfoBillMarketModel> result = new List<ReceiptInfoBillMarketModel>();
-            DateTime now = DateTime.Now;
-            string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
-            foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
-            return result;
-        }
+        public ApplicationDbContext DataAccess { get; }
+        #endregion
+        #region Construct
+        public ReceiptInfoImportMARKET(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
@@ -334,44 +280,13 @@ namespace SKGPortalCore.Schedule
                 Source = source,
             };
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="modelSources"></param>
-        void IReceiptInfoImport.CreateReceiptInfoBill(IList modelSources)
-        {
-            List<ReceiptInfoBillMarketModel> models = modelSources as List<ReceiptInfoBillMarketModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillMARKET biz = new BizReceiptInfoBillMARKET(msg);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
-            foreach (var model in models)
-            {
-                biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
-                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
-            }
-            repo.CommitData(FuncAction.Create);
-        }
-    }
-    /// <summary>
-    /// 資訊流導入-超商產險
-    /// </summary>
-    public class ReceiptInfoImportMARKETSPI : IReceiptInfoImport
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        private const int StrLen = 120;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
+        #endregion
+        #region Private Protected
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<int, string> IReceiptInfoImport.ReadFile()
+        Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string filePath = "", strRow;
@@ -401,15 +316,55 @@ namespace SKGPortalCore.Schedule
         /// </summary>
         /// <param name="sources"></param>
         /// <returns></returns>
-        IList IReceiptInfoImport.AnalyzeFile(Dictionary<int, string> sources)
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
         {
-            List<ReceiptInfoBillMarketSPIModel> result = new List<ReceiptInfoBillMarketSPIModel>();
+            List<ReceiptInfoBillMarketModel> result = new List<ReceiptInfoBillMarketModel>();
             DateTime now = DateTime.Now;
             string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
                 result.Add(AnalyzeSource(line, sources[line], importBatchNo));
             return result;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelSources"></param>
+        void IImportData.CreateData(IList modelSources)
+        {
+            List<ReceiptInfoBillMarketModel> models = modelSources as List<ReceiptInfoBillMarketModel>;
+            var msg = new MessageLog(new GraphQL.ExecutionErrors());
+            using BizReceiptInfoBillMARKET biz = new BizReceiptInfoBillMARKET(msg);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            foreach (var model in models)
+            {
+                biz.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
+            repo.CommitData(FuncAction.Create);
+        }
+        #endregion
+    }
+    /// <summary>
+    /// 資訊流導入-超商產險
+    /// </summary>
+    public class ReceiptInfoImportMARKETSPI : IImportData
+    {
+        #region Property
+        /// <summary>
+        /// 
+        /// </summary>
+        private const int StrLen = 120;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ApplicationDbContext DataAccess { get; }
+        #endregion
+        #region Construct
+        public ReceiptInfoImportMARKETSPI(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
@@ -437,44 +392,13 @@ namespace SKGPortalCore.Schedule
                 Source = source,
             };
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="modelSources"></param>
-        void IReceiptInfoImport.CreateReceiptInfoBill(IList modelSources)
-        {
-            List<ReceiptInfoBillMarketSPIModel> models = modelSources as List<ReceiptInfoBillMarketSPIModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillMARKETSPI biz = new BizReceiptInfoBillMARKETSPI(msg);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
-            foreach (var model in models)
-            {
-                biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.ISC.Trim(), model.Channel, model.Barcode3_Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
-                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
-            }
-            repo.CommitData(FuncAction.Create);
-        }
-    }
-    /// <summary>
-    /// 資訊流導入-農金
-    /// </summary>
-    public class ReceiptInfoImportFARM : IReceiptInfoImport
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        private const int StrLen = 120;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
+        #endregion
+        #region Private Protected
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<int, string> IReceiptInfoImport.ReadFile()
+        Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string filePath = "", strRow;
@@ -504,15 +428,55 @@ namespace SKGPortalCore.Schedule
         /// </summary>
         /// <param name="sources"></param>
         /// <returns></returns>
-        IList IReceiptInfoImport.AnalyzeFile(Dictionary<int, string> sources)
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
         {
-            List<ReceiptInfoBillFarmModel> result = new List<ReceiptInfoBillFarmModel>();
+            List<ReceiptInfoBillMarketSPIModel> result = new List<ReceiptInfoBillMarketSPIModel>();
             DateTime now = DateTime.Now;
-            string importBatchNo = $"FARM{now.ToString("yyyyMMddhhmmss")}";
+            string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
                 result.Add(AnalyzeSource(line, sources[line], importBatchNo));
             return result;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelSources"></param>
+        void IImportData.CreateData(IList modelSources)
+        {
+            List<ReceiptInfoBillMarketSPIModel> models = modelSources as List<ReceiptInfoBillMarketSPIModel>;
+            var msg = new MessageLog(new GraphQL.ExecutionErrors());
+            using BizReceiptInfoBillMARKETSPI biz = new BizReceiptInfoBillMARKETSPI(msg);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            foreach (var model in models)
+            {
+                biz.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.ISC.Trim(), model.Channel, model.Barcode3_Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
+            repo.CommitData(FuncAction.Create);
+        }
+        #endregion
+    }
+    /// <summary>
+    /// 資訊流導入-農金
+    /// </summary>
+    public class ReceiptInfoImportFARM : IImportData
+    {
+        #region Property
+        /// <summary>
+        /// 
+        /// </summary>
+        private const int StrLen = 120;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ApplicationDbContext DataAccess { get; }
+        #endregion
+        #region Construct
+        public ReceiptInfoImportFARM(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
@@ -541,11 +505,56 @@ namespace SKGPortalCore.Schedule
                 Source = source,
             };
         }
+        #endregion
+        #region Private Protected
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<int, string> IImportData.ReadFile()
+        {
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            string filePath = "", strRow;
+            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
+            int line = 0;
+            while (sr.Peek() > 0)
+            {
+                strRow = sr.ReadLine();
+                line++;
+                if (0 == strRow.Length) continue;
+                if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
+                switch (LibData.ByteSubString(strRow, 0, 1))
+                {
+                    case "1"://表頭、檢查是否今日，並且Count歸零
+                        break;
+                    case "2"://明細
+                        result.Add(line, strRow);
+                        break;
+                    case "3"://表尾、檢查是否筆數正確
+                        break;
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sources"></param>
+        /// <returns></returns>
+        IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
+        {
+            List<ReceiptInfoBillFarmModel> result = new List<ReceiptInfoBillFarmModel>();
+            DateTime now = DateTime.Now;
+            string importBatchNo = $"FARM{now.ToString("yyyyMMddhhmmss")}";
+            foreach (int line in sources.Keys)
+                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+            return result;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="modelSources"></param>
-        void IReceiptInfoImport.CreateReceiptInfoBill(IList modelSources)
+        void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillFarmModel> models = modelSources as List<ReceiptInfoBillFarmModel>;
             var msg = new MessageLog(new GraphQL.ExecutionErrors());
@@ -560,6 +569,7 @@ namespace SKGPortalCore.Schedule
             }
             repo.CommitData(FuncAction.Create);
         }
+        #endregion
     }
     /// <summary>
     /// 資訊流導入-共用方法
