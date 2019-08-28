@@ -106,7 +106,7 @@ namespace SKGPortalCore.Model.MasterData
     /// 期別費用明細
     /// </summary>
     [Description("期別費用明細")]
-    public class BillTermDetailModel
+    public class BillTermDetailModel:DetailRowState
     {
         [ForeignKey("CustomerCode,BillTermId")]
         public BillTermModel BillTerm { get; set; }

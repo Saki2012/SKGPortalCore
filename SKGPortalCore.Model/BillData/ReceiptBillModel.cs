@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Models.BillData;
 
 namespace SKGPortalCore.Model.BillData
 {

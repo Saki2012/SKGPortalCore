@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SKGPortalCore.Model.BillData
@@ -16,6 +17,10 @@ namespace SKGPortalCore.Model.BillData
     /// </summary>
     public class CashFlowBillModel : BillDataModel
     {
+        /// <summary>
+        /// 單據編號
+        /// </summary>
+        [Description("單據編號"), Key]
         public string BillNo { get; set; }
         /// <summary>
         /// 匯款日期
@@ -41,11 +46,11 @@ namespace SKGPortalCore.Model.BillData
         /// 導入批號
         /// </summary>
         [Description("導入批號")]
-        public string ImportBatchNo { get;set;}
+        public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源
         /// </summary>
         [Description("來源")]
-        public string Source { get;set;}
+        public string Source { get; set; }
     }
 }

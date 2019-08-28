@@ -6,18 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
     /// <summary>
-    /// 系統操作
-    /// </summary>
-    public class SystemOperator
-    {
-        public BackendUserModel SysOperator { get; }
-        public SystemOperator()
-        {
-            SysOperator = new BackendUserModel() { KeyId = "SysOperator", UserId = "SysOperator", UserName = "系統操作", AccountStatus = AccountStatus.Enable, DeptId = null, Email = string.Empty };
-        }
-    }
-
-    /// <summary>
     /// 後臺使用者
     /// </summary>
     [Description("後臺使用者")]
@@ -38,7 +26,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// 後臺使用者資料
     /// </summary>
     [Description("後臺使用者資料")]
-    public class BackendUserModel : BasicDataModel, IUserModel
+    public class BackendUserModel : MasterDataModel, IUserModel
     {
         [Key]
         public string KeyId { get; set; }
@@ -72,7 +60,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// 後臺使用者角色權限清單
     /// </summary>
     [Description("後臺使用者角色權限清單")]
-    public class BackendUserRoleModel : IRoleModel
+    public class BackendUserRoleModel :  DetailRowState,IRoleModel
     {
         public BackendUserModel Key { get; set; }
         [Key]

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SKGPortalCore.Model.MasterData
+namespace SKGPortalCore.Model.SourceData
 {
 
     [Description("服務申請書主檔")]

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace SKGPortalCore.Model.BillData
+namespace SKGPortalCore.Model.SourceData
 {
     /// <summary>
     /// 金流匯款檔

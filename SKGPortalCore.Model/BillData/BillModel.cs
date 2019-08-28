@@ -1,5 +1,4 @@
 ﻿using SKGPortalCore.Model;
-using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SKGPortalCore.Models.BillData
+namespace SKGPortalCore.Model.BillData
 {
     /// <summary>
     /// 帳單
@@ -164,7 +163,7 @@ namespace SKGPortalCore.Models.BillData
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RowId { get; set; }
         /// <summary>
         /// 期別行鍵

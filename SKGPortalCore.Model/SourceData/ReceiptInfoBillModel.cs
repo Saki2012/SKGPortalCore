@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SKGPortalCore.Model.BillData
+namespace SKGPortalCore.Model.SourceData
 {
     public interface IReceiptInfoBill
     {

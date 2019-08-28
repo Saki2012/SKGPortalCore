@@ -22,7 +22,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// 前台用戶使用者資料
     /// </summary>
     [Description("用戶使用者資料")]
-    public class CustUserModel : BasicDataModel, IUserModel
+    public class CustUserModel : MasterDataModel, IUserModel
     {
         /// <summary>
         /// KeyId為客戶代號,使用者代號
@@ -70,7 +70,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// 前台使用者角色權限清單
     /// </summary>
     [Description("前台使用者角色權限清單")]
-    public class CustUserRoleModel : IRoleModel
+    public class CustUserRoleModel : DetailRowState, IRoleModel
     {
         [ForeignKey("KeyId")]
         public CustUserModel Key { get; set; }

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using GraphQL;
 using GraphQL.Types;
-using SKGPortalCore.Models.BillData;
+using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.BillData;
 
 namespace SKGPortalCore.Graph.BillData

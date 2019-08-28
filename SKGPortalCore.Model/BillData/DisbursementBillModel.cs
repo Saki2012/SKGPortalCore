@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace SKGPortalCore.Model.BillData
@@ -10,7 +11,7 @@ namespace SKGPortalCore.Model.BillData
     public class DisbursementBillSet
     {
         public DisbursementBillModel DisbursementBill { get; set; }
-        public List<DisbursementDetailModel> DisbursementDetail { get; set; }
+        //public List<DisbursementDetailModel> DisbursementDetail { get; set; }
     }
 
 
@@ -25,6 +26,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("單據編號"), Key]
         public string BillNo { get; set; }
+        [ForeignKey("ChannelWriteOfBillNo")]
         public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
         /// <summary>
         /// 通路帳款核銷單號
@@ -32,8 +34,8 @@ namespace SKGPortalCore.Model.BillData
         public string ChannelWriteOfBillNo { get; set; }
     }
 
-    public class DisbursementDetailModel : DetailRowState
-    {
+    //public class DisbursementDetailModel : DetailRowState
+    //{
 
-    }
+    //}
 }

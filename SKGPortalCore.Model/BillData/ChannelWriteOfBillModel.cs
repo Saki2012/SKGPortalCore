@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace SKGPortalCore.Model.BillData
@@ -33,7 +34,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("預計撥款金額")]
         public decimal PrePayAmount { get; set; }
-
+        [ForeignKey("DisBillNo")]
         public DisbursementBillModel DisBill { get; set; }
         /// <summary>
         /// 撥款單號
@@ -45,8 +46,9 @@ namespace SKGPortalCore.Model.BillData
     /// 通路帳目明細
     /// </summary>
     [Description("通路帳目明細")]
-    public class ChannelWriteOfDetailModel
+    public class ChannelWriteOfDetailModel:DetailRowState
     {
+        [ForeignKey("BillNo")]
         public ChannelWriteOfBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
@@ -58,6 +60,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("序號"), Key]
         public int RowId { get; set; }
+        [ForeignKey("ChannelEAccountBillNo")]
         public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
         /// <summary>
         /// 通路帳簿單號
@@ -69,8 +72,9 @@ namespace SKGPortalCore.Model.BillData
     /// 金流帳目明細
     /// </summary>
     [Description("金流帳目明細")]
-    public class CashFlowWriteOfDetailModel
+    public class CashFlowWriteOfDetailModel : DetailRowState
     {
+        [ForeignKey("BillNo")]
         public ChannelWriteOfBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
@@ -82,6 +86,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("序號"), Key]
         public int RowId { get; set; }
+        [ForeignKey("CashFlowBillNo")]
         public CashFlowBillModel CashFlowBill { get; set; }
         /// <summary>
         /// 金流帳簿單號

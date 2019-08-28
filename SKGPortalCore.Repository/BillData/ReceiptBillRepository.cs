@@ -4,7 +4,6 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Models.BillData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +49,7 @@ namespace SKGPortalCore.Repository.BillData
         /// <returns></returns>
         private string GetBillNo(string compareCodeForCheck)
         {
-            List<string> bills = DataAccess.Bill.Where(p => p.CompareCodeForCheck == compareCodeForCheck &&
+            List<string> bills = DataAccess.Set<BillModel>().Where(p => p.CompareCodeForCheck == compareCodeForCheck &&
              (p.FormStatus == FormStatus.Saved || p.FormStatus == FormStatus.Approved)).OrderByDescending(p => p.CreateTime).Select(p => p.BillNo).ToList();
             return bills.HasData() ? bills[0] : string.Empty;
         }
@@ -91,7 +90,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             if (set.ReceiptBill.RemitDate == DateTime.MinValue) return;
             using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess);
-            if (DataAccess.ChannelEAccountBill.Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)
+            if (DataAccess.Set<ChannelEAccountBillModel>().Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)
             {
                 var accountSet = biz.CreateChannelEAccountBill(set.ReceiptBill);
                 repo.Create(accountSet);
@@ -99,7 +98,7 @@ namespace SKGPortalCore.Repository.BillData
             else
             {
                 var accountSet = repo.QueryData(new object[] { "" });
-                if (DataAccess.ChannelEAccountBillDetail.Where(p => p.ReceiptBillNo == set.ReceiptBill.BillNo).Count() == 0)
+                if (DataAccess.Set<ChannelEAccountBillDetailModel>().Where(p => p.ReceiptBillNo == set.ReceiptBill.BillNo).Count() == 0)
                     accountSet.ChannelEAccountBillDetail.Add(new ChannelEAccountBillDetailModel() { BillNo = accountSet.ChannelEAccountBill.BillNo, ReceiptBillNo = set.ReceiptBill.BillNo, RowState = RowState.Insert });
                 repo.Update(accountSet);
             }

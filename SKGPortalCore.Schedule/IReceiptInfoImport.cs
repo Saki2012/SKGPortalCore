@@ -9,6 +9,7 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 using SKGPortalCore.Repository.MasterData;
 
@@ -157,7 +158,6 @@ namespace SKGPortalCore.Schedule
             }
             repo.CommitData(FuncAction.Create);
         }
-
     }
     /// <summary>
     /// 資訊流導入-郵局
@@ -583,8 +583,8 @@ namespace SKGPortalCore.Schedule
         internal static void GetCollectionTypeSet(ApplicationDbContext DataAccess, string collectionTypeId, string channelId, decimal amount, out ChargePayType chargePayType, out decimal channelFee)
         {
             channelFee = 0;
-            chargePayType = DataAccess.CollectionType.Find(collectionTypeId).ChargePayType;
-            var c = DataAccess.CollectionTypeDetail.Where("CollectionTypeId={0} And ChannelId={1} And {2} Between SRange And ERange", collectionTypeId, channelId, amount);
+            chargePayType = DataAccess.Set<CollectionTypeModel>().Find(collectionTypeId).ChargePayType;
+            var c = DataAccess.Set<CollectionTypeDetailModel>().Where("CollectionTypeId={0} And ChannelId={1} And {2} Between SRange And ERange", collectionTypeId, channelId, amount);
             if (null != c) channelFee = ((List<CollectionTypeDetailModel>)c)[0].Fee;
         }
     }

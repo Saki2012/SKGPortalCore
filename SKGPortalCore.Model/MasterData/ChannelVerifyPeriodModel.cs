@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SKGPortalCore.Model.MasterData
@@ -21,13 +22,13 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號")]
+        [Description("通路代號"),Key]
         public string ChannelId { get; set; }
         public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
         /// 代收類別代號
         /// </summary>
-        [Description("代收類別代號")]
+        [Description("代收類別代號"), Key]
         public string CollectionTypeId { get; set; }
         /// <summary>
         /// 通路帳務核銷週期

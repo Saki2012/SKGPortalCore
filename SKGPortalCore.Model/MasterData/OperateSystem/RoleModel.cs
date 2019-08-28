@@ -25,7 +25,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 角色權限資料
     /// </summary>
-    public class RoleModel : BasicDataModel
+    public class RoleModel : MasterDataModel
     {
         /// <summary>
         /// 角色權限代號
@@ -57,7 +57,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 功能權限設置
     /// </summary>
-    public class RolePermissionModel
+    public class RolePermissionModel:DetailRowState
     {
         [ForeignKey("RoleId")]
         public RoleModel Role { get; set; }
