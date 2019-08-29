@@ -5,6 +5,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     public interface IUserModel
     {
         string KeyId { get; set; }
+        string UserName { get; set; }
     }
     public interface IRoleModel
     {

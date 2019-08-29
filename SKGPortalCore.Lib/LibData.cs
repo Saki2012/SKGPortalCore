@@ -226,10 +226,24 @@ namespace SKGPortalCore.Lib
         {
             return val.Length == 8 ? $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}" : val;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
         public static bool HasData(this IList val)
         {
             return null != val && val.Count > 0;
+        }
+
+        public static Exception GetInnermostException(this Exception ex)
+        {
+            Exception innerEx = ex;
+            while (innerEx.InnerException != null)
+            {
+                innerEx = ex.InnerException;
+            }
+            return innerEx;
         }
     }
     public static class GraphQLChangeType

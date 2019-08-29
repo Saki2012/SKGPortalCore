@@ -1,29 +1,84 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading;
 using GraphQL;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
 
 namespace SKGPortalCore.Data
 {
     public class MessageLog
     {
-        //private string MessageCode;
-        private string Message;
-        private readonly ExecutionErrors Errors;
-        public List<ExecutionError> ErrorMessages = new List<ExecutionError>();
-        public MessageLog(ExecutionErrors errors)
+        #region Property
+        private static readonly Mutex mut = new Mutex();
+        public ExecutionErrors Errors { get; }
+        private string ErrStack
         {
-            Errors = errors;
+            get
+            {
+                StackTrace stack = new StackTrace(2, true);
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine();
+                foreach (var flame in stack.GetFrames())
+                {
+                    if (null != flame.GetFileName())
+                        sb.Append(new StackTrace(flame).ToString());
+                }
+                return sb.ToString();
+            }
         }
 
+        private readonly string LogPath;
+        private readonly string LogFileName;
+
+        #endregion
+        #region Construct
+        public MessageLog(ExecutionErrors errors, string logPath = "", string logFileName = "")
+        {
+            Errors = errors;
+            LogPath = logPath;
+            LogFileName = logFileName;
+        }
+        #endregion
+        #region Public
         public void AddErrorMessage(MessageCode messageCode, params object[] args)
         {
-            //MessageCode MessageCode = messageCode;
-            Message = string.Format($"{messageCode}:{ResxManage.GetDescription(messageCode)}", args);
-            Errors.Add(new ExecutionError(Message));
-            //ErrorLog
+            var err = new ExecutionError(string.Format($"{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
+            Errors.Add(err);
         }
+        public void WriteLogTxt(string user)
+        {
+            if (Errors.Count == 0) return;
+            DateTime now = DateTime.Now;
+            StringBuilder str = new StringBuilder();
+            foreach (var msg in Errors)
+            {
+                str.AppendLine($"{now.ToString()} User:{user} Message:{msg.Message}");
+                if (null != msg.Source)
+                {
+                    if (msg.Code.CompareTo("CustomerMessageCode") != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
+                        str.Append($" Stack Message:{msg.Source}");
+                }
+            }
+            if (!Directory.Exists(LogPath))
+            {
+                Directory.CreateDirectory(LogPath);
+            }
+            mut.WaitOne();
+            try
+            {
+                using StreamWriter sw = new StreamWriter($"{LogPath}{LogFileName}{now.ToString("yyyyMMdd")}.log", true);
+                sw.WriteLine(str.ToString());
+                sw.Close();
+            }
+            finally
+            {
+                mut.ReleaseMutex();
+            }
+        }
+        #endregion
     }
 
     public enum MessageCode

@@ -5,6 +5,7 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SKGPortalCore.Controllers
@@ -39,8 +40,18 @@ namespace SKGPortalCore.Controllers
                 ExposeExceptions = true,
             };
             var result = await _documentExecuter.ExecuteAsync(options);
-            if (result.Errors?.Count > 0) { return BadRequest(result.Errors); }
+            if (result.Errors?.Count > 0) { return BadRequest(/*result.Errors*/GetErrorsMessage(result.Errors)); }
             return Ok(result);
+        }
+        #endregion
+
+        #region Private
+        private string GetErrorsMessage(ExecutionErrors errors)
+        {
+            StringBuilder str = new StringBuilder();
+            foreach (var er in errors)
+                str.AppendLine(er.Message);
+            return str.ToString();
         }
         #endregion
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using GraphQL;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
@@ -147,7 +148,6 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ACCFTT> srcs = modelSources as List<ACCFTT>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
             BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess);
             CustomerRepository custRepo = new CustomerRepository(DataAccess);
             foreach (ACCFTT model in srcs)
@@ -169,7 +169,7 @@ namespace SKGPortalCore.Schedule
                         break;
                     case 1:
                     case 9:
-                        UnableCustomer(model.KEYNO);
+                        UnableBizCustomer(model.KEYNO);
                         break;
                 }
             }
@@ -208,7 +208,7 @@ namespace SKGPortalCore.Schedule
         /// 停用商戶
         /// </summary>
         /// <param name="customerCode"></param>
-        private void UnableCustomer(string customerCode)
+        private void UnableBizCustomer(string customerCode)
         {
             BizCustomerModel bizCustomer = DataAccess.Set<BizCustomerModel>().Find(customerCode);
             if (null != bizCustomer) bizCustomer.AccountStatus = AccountStatus.Unable;

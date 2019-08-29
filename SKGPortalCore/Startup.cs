@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using GraphQL;
 using GraphQL.Http;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,13 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using SKGPortalCore.Data;
-using SKGPortalCore.Graph.BillData;
-using SKGPortalCore.Graph.MasterData;
-using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Repository.BillData;
-using SKGPortalCore.Repository.Func;
-using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore
 {

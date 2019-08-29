@@ -20,12 +20,13 @@ namespace SKGPortalCore.Repository
         protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
-        protected MessageLog Message = new MessageLog(new ExecutionErrors());
+        public MessageLog Message { get; set; }
         #endregion
         #region Construct
-        public BasicRepository(ApplicationDbContext dataAccess)
+        public BasicRepository(ApplicationDbContext dataAccess, MessageLog message = null)
         {
             DataAccess = dataAccess;
+            Message = message ?? new MessageLog(new ExecutionErrors());
         }
         #endregion
         #region Public
@@ -42,12 +43,16 @@ namespace SKGPortalCore.Repository
                 if (masterData is BasicDataModel) SetCreateInfo(masterData);
                 DoCreate(set);
                 AfterSetEntity(set, FuncAction.Create);
-                return set;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                AddExceptionError(ex);
             }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            }
+            return set;
         }
         /// <summary>
         /// 修改
@@ -62,12 +67,16 @@ namespace SKGPortalCore.Repository
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
                 DoUpdate(set);
                 AfterSetEntity(set, FuncAction.Update);
-                return set;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                AddExceptionError(ex);
             }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            }
+            return set;
         }
         /// <summary>
         /// 刪除
@@ -82,9 +91,13 @@ namespace SKGPortalCore.Repository
                 DataAccess.Remove(Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name));
                 AfterRemoveEntity(set);
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                AddExceptionError(ex);
+            }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
             }
         }
         /// <summary>
@@ -142,13 +155,24 @@ namespace SKGPortalCore.Repository
         public TSet Approve(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
-            if (masterData is BasicDataModel)
+            try
             {
-                SetApproveInfo(masterData, status);
-                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Approved : FormStatus.Saved;
+                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
+                if (masterData is BasicDataModel)
+                {
+                    SetApproveInfo(masterData, status);
+                    ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Approved : FormStatus.Saved;
+                }
+                AfterApprove(set, status);
             }
-            AfterApprove(set, status);
+            catch (Exception ex)
+            {
+                AddExceptionError(ex);
+            }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            }
             return set;
         }
         /// <summary>
@@ -157,13 +181,24 @@ namespace SKGPortalCore.Repository
         public TSet Invalid(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
-            if (masterData is BasicDataModel)
+            try
             {
-                SetInvalidInfo(masterData, status);
-                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Obsoleted : FormStatus.Saved;
+                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
+                if (masterData is BasicDataModel)
+                {
+                    SetInvalidInfo(masterData, status);
+                    ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Obsoleted : FormStatus.Saved;
+                }
+                AfterInvalid(set, status);
             }
-            AfterInvalid(set, status);
+            catch (Exception ex)
+            {
+                AddExceptionError(ex);
+            }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            }
             return set;
         }
         /// <summary>
@@ -172,13 +207,24 @@ namespace SKGPortalCore.Repository
         public TSet EndCase(object[] key, bool status)
         {
             TSet set = QueryData(key);
-            dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
-            if (masterData is BasicDataModel)
+            try
             {
-                SetEndCaseInfo(masterData, status);
-                ((BasicDataModel)masterData).FormStatus = status ? FormStatus.EndCase : FormStatus.Approved;
+                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
+                if (masterData is BasicDataModel)
+                {
+                    SetEndCaseInfo(masterData, status);
+                    ((BasicDataModel)masterData).FormStatus = status ? FormStatus.EndCase : FormStatus.Approved;
+                }
+                AfterEndCase(set, status);
             }
-            AfterEndCase(set, status);
+            catch (Exception ex)
+            {
+                AddExceptionError(ex);
+            }
+            finally
+            {
+                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            }
             return set;
         }
         /// <summary>
@@ -187,8 +233,19 @@ namespace SKGPortalCore.Repository
         /// <param name="action"></param>
         public void CommitData(FuncAction action)
         {
+            //try
+            //{
             DataAccess.BulkSaveChanges();
             AfterSaveChanges(action);
+            //}
+            //catch (Exception ex)
+            //{
+            //    AddExceptionError(ex);
+            //}
+            //finally
+            //{
+            //    Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
+            //}
         }
         #endregion
         #region Protected
@@ -415,6 +472,13 @@ namespace SKGPortalCore.Repository
         private PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
         {
             return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
+        }
+
+        private void AddExceptionError(Exception ex)
+        {
+            var innerEx = ex.GetInnermostException();
+            var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
+            Message.Errors.Add(exErr);
         }
         #endregion
 

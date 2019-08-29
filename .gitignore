@@ -21,3 +21,4 @@ SKGPortalCore.SeedDataInitial/obj
 TestSln/bin
 TestSln/obj
 .vs
+*.log
