@@ -6,7 +6,7 @@ namespace SKGPortalCore.Schedule
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");

@@ -18,6 +18,8 @@ SKGPortalCore.NUnit/bin
 SKGPortalCore.NUnit/obj
 SKGPortalCore.SeedDataInitial/bin
 SKGPortalCore.SeedDataInitial/obj
+SKGPortalCore.CheckLog/obj
+SKGPortalCore.CheckLog/bin
 TestSln/bin
 TestSln/obj
 .vs

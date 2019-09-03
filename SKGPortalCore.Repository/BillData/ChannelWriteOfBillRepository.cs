@@ -14,7 +14,7 @@ namespace SKGPortalCore.Repository.BillData
     public class ChannelWriteOfBillRepository : BasicRepository<ChannelWriteOfBillSet>
     {
         #region Construct
-        public ChannelWriteOfBillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
+        public ChannelWriteOfBillRepository(ApplicationDbContext dataAccess ) : base(dataAccess) { }
         #endregion
         #region Protected
         protected override void AfterSetEntity(ChannelWriteOfBillSet set, FuncAction action)
@@ -41,7 +41,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             DisbursementBillSet disbursementBill = new DisbursementBillSet();
             disbursementBill.DisbursementBill.ChannelWriteOfBillNo = channelWriteOfBillNo;
-            DisbursementBillRepository repo = new DisbursementBillRepository(DataAccess);
+            using DisbursementBillRepository repo = new DisbursementBillRepository(DataAccess);
             repo.Create(disbursementBill);
         }
     }

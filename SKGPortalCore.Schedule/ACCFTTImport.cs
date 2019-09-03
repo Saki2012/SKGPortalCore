@@ -13,17 +13,28 @@ using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Schedule
 {
-    public class ACCFTTImport: IImportData
+    public class ACCFTTImport : IImportData
     {
         #region Property
+        /// <summary>
+        /// 
+        /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         /// <summary>
         /// 
         /// </summary>
         private const int StrLen = 256;
         #endregion
         #region Construct
-        public ACCFTTImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        public ACCFTTImport(ApplicationDbContext dataAccess)
+        {
+            DataAccess = dataAccess;
+            Message = new MessageLog();
+        }
         #endregion
         #region Public
         /// <summary>
@@ -106,7 +117,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private
+        #region Implement
         /// <summary>
         /// 讀服務申請書主檔
         /// </summary>
@@ -148,15 +159,16 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ACCFTT> srcs = modelSources as List<ACCFTT>;
-            BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess);
-            CustomerRepository custRepo = new CustomerRepository(DataAccess);
+            BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess) { Message = Message };
+            CustomerRepository custRepo = new CustomerRepository(DataAccess) { Message = Message };
             foreach (ACCFTT model in srcs)
             {
+                Message.Prefix = $"第{model.Id}行:";
                 switch (model.APPLYSTAT.ToInt32())
                 {
                     case 0:
                         {
-                            GetCustomerInfo(model, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet);
+                            GetCustomerInfo(model, bizCustRepo, custRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet);
                             if (CheckCustExist(model.IDCODE))
                                 custRepo.Create(customerSet);
                             else
@@ -176,6 +188,22 @@ namespace SKGPortalCore.Schedule
             bizCustRepo.CommitData(FuncAction.Create);
         }
         /// <summary>
+        /// 
+        /// </summary>
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region Private
+        /// <summary>
         /// 確認商戶資料是否存在
         /// </summary>
         /// <param name="custCode"></param>
@@ -194,15 +222,15 @@ namespace SKGPortalCore.Schedule
             return null == DataAccess.Set<CustomerModel>().Find(custId);
         }
         /// <summary>
-        /// 
+        /// 獲取客戶資料
         /// </summary>
         /// <param name="model"></param>
         /// <param name="bizCustomerSet"></param>
         /// <param name="customerSet"></param>
-        private void GetCustomerInfo(ACCFTT model, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet)
+        private void GetCustomerInfo(ACCFTT model, BizCustomerRepository bizCustRepo, CustomerRepository custRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet)
         {
-            bizCustomerSet = new BizCustomerSet() { };
-            customerSet = new CustomerSet() { };
+            bizCustomerSet = bizCustRepo.QueryData(new object[] { model.KEYNO });
+            customerSet = custRepo.QueryData(new object[] { model.IDCODE });
         }
         /// <summary>
         /// 停用商戶

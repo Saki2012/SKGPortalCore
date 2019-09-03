@@ -26,10 +26,10 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ReceiptBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizReceiptBill biz = new BizReceiptBill(Message,DataAccess);
+            using BizReceiptBill biz = new BizReceiptBill(Message, DataAccess);
             biz.SetData(set, action);
 
-           
+
             InsertBillReceiptDetail(set.ReceiptBill.BillNo, set.ReceiptBill.ToBillNo);
             InsertChannelEAccount(biz, set);
         }

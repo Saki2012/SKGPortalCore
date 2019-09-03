@@ -41,7 +41,7 @@ namespace SKGPortalCore.Graph
     public class BaseQueryType<TSet, TSetType> : ObjectGraphType
         where TSetType : BaseQuerySetGraphType<TSet>
     {
-        public BaseQueryType(BasicRepository<TSet> repository)
+        public BaseQueryType(BasicRepository<TSet> repo)
         {
             Field(
                 type: typeof(TSetType),
@@ -50,10 +50,11 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<StringGraphType> { Name = "jWT" }),
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    var set = repository.QueryData(keyVal);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    var set = repo.QueryData(keyVal);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? set : default;
                 });
             Field(
@@ -63,8 +64,13 @@ namespace SKGPortalCore.Graph
                 arguments: null,
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
-                    return repository.QueryList();
+                    repo.Message = null;
+
+
+
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
+                    return repo.QueryList();
                 });
         }
     }
@@ -72,7 +78,7 @@ namespace SKGPortalCore.Graph
         where TSetType : BaseQuerySetGraphType<TSet>
         where TInputSet : BaseInputSetGraphType<TSet>
     {
-        public BaseMutationType(BasicRepository<TSet> repository)
+        public BaseMutationType(BasicRepository<TSet> repo)
         {
             Field(
                 type: typeof(TSetType),
@@ -81,11 +87,12 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }),
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     TSet set = context.GetArgument<TSet>("set");
-                    TSet result = repository.Create(set);
-                    repository.CommitData(FuncAction.Create);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    TSet result = repo.Create(set);
+                    repo.CommitData(FuncAction.Create);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? result : default;
                 });
             Field(
@@ -96,13 +103,14 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
 #if DEBUG
-                    repository.User = new SystemOperator().SysOperator;
+                    repo.User = new SystemOperator().SysOperator;
 #endif
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     TSet set = context.GetArgument<TSet>("set");
-                    TSet result = repository.Update(set);
-                    repository.CommitData(FuncAction.Update);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    TSet result = repo.Update(set);
+                    repo.CommitData(FuncAction.Update);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? result : default;
                 });
             Field(
@@ -112,11 +120,12 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }),
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     object keyVal = context.GetArgument<object>("keyVal");
-                    repository.Delete(new[] { keyVal });
-                    repository.CommitData(FuncAction.Delete);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    repo.Delete(new[] { keyVal });
+                    repo.CommitData(FuncAction.Delete);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return default;
                 });
             Field(
@@ -126,12 +135,13 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     object keyVal = context.GetArgument<object>("keyVal");
                     bool status = context.GetArgument<bool>("status");
-                    TSet result = repository.Approve(new[] { keyVal }, status);
-                    repository.CommitData(FuncAction.Approve);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    TSet result = repo.Approve(new[] { keyVal }, status);
+                    repo.CommitData(FuncAction.Approve);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? result : default;
                 });
             Field(
@@ -141,12 +151,13 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
                 resolve: context =>
                 {
-                    repository.Message = new MessageLog(new ExecutionErrors());
+                    repo.Message = null;
                     object keyVal = context.GetArgument<object>("keyVal");
                     bool status = context.GetArgument<bool>("status");
-                    TSet result = repository.Invalid(new[] { keyVal }, status);
-                    repository.CommitData(FuncAction.Invalid);
-                    context.Errors.AddRange(repository.Message.Errors);
+                    TSet result = repo.Invalid(new[] { keyVal }, status);
+                    repo.CommitData(FuncAction.Invalid);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? result : default;
                 });
             Field(
@@ -156,12 +167,13 @@ namespace SKGPortalCore.Graph
               arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status" }),
               resolve: context =>
               {
-                  repository.Message = new MessageLog(new ExecutionErrors());
+                  repo.Message = null;
                   object keyVal = context.GetArgument<object>("keyVal");
                   bool status = context.GetArgument<bool>("status");
-                  TSet result = repository.Invalid(new[] { keyVal }, status);
-                  repository.CommitData(FuncAction.EndCase);
-                  context.Errors.AddRange(repository.Message.Errors);
+                  TSet result = repo.Invalid(new[] { keyVal }, status);
+                  repo.CommitData(FuncAction.EndCase);
+                  context.Errors.AddRange(repo.Message.Errors);
+                  repo.Message.WriteLogTxt();
                   return context.Errors.Count == 0 ? result : default;
               });
         }

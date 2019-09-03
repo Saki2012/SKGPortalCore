@@ -17,15 +17,14 @@ namespace SKGPortalCore.Schedule
     {
         #region Property
         public ApplicationDbContext DataAccess { get; }
-
-
+        public MessageLog Message { get; }
         /// <summary>
         /// 
         /// </summary>
         private const int StrLen = 128;
         #endregion
         #region Construct
-        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; Message = new MessageLog(); }
         #endregion
         #region Public
         /// <summary>
@@ -52,7 +51,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Property
+        #region Implement
         /// <summary>
         /// 讀資訊流檔
         /// </summary>
@@ -104,8 +103,7 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<RemitInfoModel> srcs = modelSources as List<RemitInfoModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizRemitInfo biz = new BizRemitInfo(msg);
+            using BizRemitInfo biz = new BizRemitInfo(Message);
             using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess);
             foreach (var model in srcs)
             {
@@ -113,6 +111,16 @@ namespace SKGPortalCore.Schedule
                 repo.Create(set);
             }
             repo.CommitData(FuncAction.Create);
+        }
+
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

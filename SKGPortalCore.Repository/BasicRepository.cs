@@ -20,13 +20,22 @@ namespace SKGPortalCore.Repository
         protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
-        public MessageLog Message { get; set; }
+        private MessageLog _message { get; set; }
+        public MessageLog Message
+        {
+            get
+            {
+                if (null == _message)
+                    _message = new MessageLog(User);
+                return _message;
+            }
+            set { _message = value; }
+        }
         #endregion
         #region Construct
-        public BasicRepository(ApplicationDbContext dataAccess, MessageLog message = null)
+        public BasicRepository(ApplicationDbContext dataAccess)
         {
             DataAccess = dataAccess;
-            Message = message ?? new MessageLog(new ExecutionErrors());
         }
         #endregion
         #region Public
@@ -48,10 +57,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -72,10 +78,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -95,10 +98,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
         }
         /// <summary>
         /// 查詢
@@ -169,10 +169,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -195,10 +192,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -221,10 +215,7 @@ namespace SKGPortalCore.Repository
             {
                 AddExceptionError(ex);
             }
-            finally
-            {
-                Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            }
+            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -233,19 +224,17 @@ namespace SKGPortalCore.Repository
         /// <param name="action"></param>
         public void CommitData(FuncAction action)
         {
-            //try
-            //{
-            DataAccess.BulkSaveChanges();
-            AfterSaveChanges(action);
-            //}
-            //catch (Exception ex)
-            //{
-            //    AddExceptionError(ex);
-            //}
-            //finally
-            //{
-            //    Message.WriteLogTxt($"{User.KeyId}, {User.UserName}");
-            //}
+            if (Message.Errors.Count > 0) { return; }
+            try
+            {
+                DataAccess.BulkSaveChanges();
+                AfterSaveChanges(action);
+            }
+            catch (Exception ex)
+            {
+                AddExceptionError(ex);
+                ErrorRollbackEntities();
+            }
         }
         #endregion
         #region Protected
@@ -309,38 +298,37 @@ namespace SKGPortalCore.Repository
         /// <param name="set"></param>
         private void DoUpdate(TSet set)
         {
-            foreach (var s in set.GetType().GetProperties())
+            foreach (dynamic s in set.GetType().GetProperties())
             {
-                var val = Reflect.GetValue(set, s.Name);
+                dynamic val = Reflect.GetValue(set, s.Name);
                 if (null == val) continue;
                 if (val is IEnumerable<DetailRowState>)
                 {
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
 
                     List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
+                    //if (DataAccess.Entry(val).State != EntityState.Detached) DataAccess.Remove(val);
                     DataAccess.AddRange(insertList);
 
                     List<DetailRowState> updateList = detail.Where(p => p.RowState == RowState.Update).ToList();
-                    foreach (var entity in updateList)
+                    foreach (dynamic entity in updateList)
                     {
-                        var oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
-                        if (null != oldEntity)
-                            DataAccess.Remove(oldEntity);
+                        dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
+                        if (null != oldEntity) DataAccess.Remove(oldEntity);
+                        if (DataAccess.Entry(entity).State != EntityState.Detached) DataAccess.Remove(entity);
                         DataAccess.Update(entity);
                     }
                     List<DetailRowState> deleteList = detail.Where(p => p.RowState == RowState.Delete).ToList();
-                    foreach (var entity in deleteList)
+                    foreach (dynamic entity in deleteList)
                     {
-                        var oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
-                        if (null != oldEntity)
-                            DataAccess.Remove(oldEntity);
+                        dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
+                        if (null != oldEntity) DataAccess.Remove(oldEntity);
                     }
                 }
                 else
                 {
-                    var oldEntity = DataAccess.Find(val.GetType(), GetKeyVals(val));
-                    if (null != oldEntity)
-                        DataAccess.Remove(oldEntity);
+                    dynamic oldEntity = DataAccess.Find(val.GetType(), GetKeyVals(val));
+                    if (null != oldEntity) DataAccess.Remove(oldEntity);
                     DataAccess.Update(val);
                 }
             }
@@ -473,18 +461,35 @@ namespace SKGPortalCore.Repository
         {
             return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
         }
-
+        /// <summary>
+        /// 獲取異常狀況
+        /// </summary>
+        /// <param name="ex"></param>
         private void AddExceptionError(Exception ex)
         {
             var innerEx = ex.GetInnermostException();
             var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
             Message.Errors.Add(exErr);
         }
+        /// <summary>
+        /// 異常時回滾變更的Entities
+        /// </summary>
+        private void ErrorRollbackEntities()
+        {
+            if (Message.Errors.Count > 0)
+            {
+                EntityEntry[] entitys = DataAccess.ChangeTracker.Entries().ToArray();
+                foreach (EntityEntry entity in entitys)
+                    entity.State = EntityState.Detached;
+                entitys = DataAccess.ChangeTracker.Entries().ToArray();
+                foreach (EntityEntry entity in entitys)
+                    entity.State = EntityState.Unchanged;
+            }
+        }
         #endregion
 
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -500,7 +505,6 @@ namespace SKGPortalCore.Repository
                 disposedValue = true;
             }
         }
-
         // TODO: 僅當上方的 Dispose(bool disposing) 具有會釋放 Unmanaged 資源的程式碼時，才覆寫完成項。
         // ~BasicRepository()
         // {

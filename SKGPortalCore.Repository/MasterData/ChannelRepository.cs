@@ -9,6 +9,6 @@ namespace SKGPortalCore.Repository.MasterData
     /// </summary>
     public class ChannelRepository : BasicRepository<ChannelSet>
     {
-        public ChannelRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
+        public ChannelRepository(ApplicationDbContext dataAccess ) : base(dataAccess) { }
     }
 }

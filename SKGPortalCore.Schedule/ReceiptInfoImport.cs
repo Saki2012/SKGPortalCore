@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using GraphQL;
 using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -29,9 +30,17 @@ namespace SKGPortalCore.Schedule
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         #endregion
         #region Construct
-        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
+        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess)
+        {
+            DataAccess = dataAccess;
+            Message = new MessageLog();
+        }
         #endregion
         #region Public
         /// <summary>
@@ -67,7 +76,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Protected
+        #region Implement
         /// <summary>
         /// 
         /// </summary>
@@ -118,18 +127,31 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillBANK biz = new BizReceiptInfoBillBANK(msg);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            using BizReceiptInfoBillBANK biz = new BizReceiptInfoBillBANK(Message);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { Message = Message };
             foreach (var model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.CompareCode, out string compareCodeForCheck);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.CompareCode, out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, "Bank999", model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 ReceiptBillSet set = biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck);
                 repo.Create(set);
             }
             repo.CommitData(FuncAction.Create);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -147,6 +169,10 @@ namespace SKGPortalCore.Schedule
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         #endregion
         #region Construct
         public ReceiptInfoImportPOST(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -177,7 +203,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Protected
+        #region Implement
         /// <summary>
         /// 
         /// </summary>
@@ -219,17 +245,26 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillPostModel> models = modelSources as List<ReceiptInfoBillPostModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillPOST biz = new BizReceiptInfoBillPOST(msg);
+            using BizReceiptInfoBillPOST biz = new BizReceiptInfoBillPOST(Message);
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
             foreach (var model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.CompareCode.Substring(7).TrimStart('0'), out string compareCodeForCheck);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.CompareCode.Substring(7).TrimStart('0'), out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
+        }
+
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -247,6 +282,10 @@ namespace SKGPortalCore.Schedule
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKET(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -281,7 +320,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Protected
+        #region Implement
         /// <summary>
         /// 
         /// </summary>
@@ -332,17 +371,26 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillMarketModel> models = modelSources as List<ReceiptInfoBillMarketModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillMARKET biz = new BizReceiptInfoBillMARKET(msg);
+            using BizReceiptInfoBillMARKET biz = new BizReceiptInfoBillMARKET(Message);
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
             foreach (var model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
+        }
+
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -360,6 +408,10 @@ namespace SKGPortalCore.Schedule
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKETSPI(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -393,7 +445,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Protected
+        #region Implement
         /// <summary>
         /// 
         /// </summary>
@@ -444,17 +496,26 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillMarketSPIModel> models = modelSources as List<ReceiptInfoBillMarketSPIModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillMARKETSPI biz = new BizReceiptInfoBillMARKETSPI(msg);
+            using BizReceiptInfoBillMARKETSPI biz = new BizReceiptInfoBillMARKETSPI(Message);
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
             foreach (var model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.ISC.Trim(), model.Channel, model.Barcode3_Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
+        }
+
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -472,6 +533,10 @@ namespace SKGPortalCore.Schedule
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public MessageLog Message { get; }
         #endregion
         #region Construct
         public ReceiptInfoImportFARM(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -506,7 +571,7 @@ namespace SKGPortalCore.Schedule
             };
         }
         #endregion
-        #region Private Protected
+        #region Implement
         /// <summary>
         /// 
         /// </summary>
@@ -557,17 +622,26 @@ namespace SKGPortalCore.Schedule
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillFarmModel> models = modelSources as List<ReceiptInfoBillFarmModel>;
-            var msg = new MessageLog(new GraphQL.ExecutionErrors());
-            using BizReceiptInfoBillFARM biz = new BizReceiptInfoBillFARM(msg);
+            using BizReceiptInfoBillFARM biz = new BizReceiptInfoBillFARM(Message);
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
             foreach (var model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
                 ReceiptInfoImportComm.GetCollectionTypeSet(DataAccess, model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
                 repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
             }
             repo.CommitData(FuncAction.Create);
+        }
+
+        void IImportData.MoveToSuccessFolder()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IImportData.MoveToFailFolder()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
@@ -576,10 +650,10 @@ namespace SKGPortalCore.Schedule
     /// </summary>
     public static class ReceiptInfoImportComm
     {
-        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext DataAccess, string compareCode, out string compareCodeForCheck)
+        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext dataAccess,MessageLog message, string compareCode, out string compareCodeForCheck)
         {
             compareCodeForCheck = string.Empty;
-            using BizCustomerRepository biz = new BizCustomerRepository(DataAccess);
+            using BizCustomerRepository biz = new BizCustomerRepository(dataAccess);
             var bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 6) });
             if (null == bizCust)
                 bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 4) });

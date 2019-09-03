@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using GraphQL;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Data
 {
@@ -13,7 +14,7 @@ namespace SKGPortalCore.Data
     {
         #region Property
         private static readonly Mutex mut = new Mutex();
-        public ExecutionErrors Errors { get; }
+        private IUserModel User { get; set; }
         private string ErrStack
         {
             get
@@ -29,33 +30,38 @@ namespace SKGPortalCore.Data
                 return sb.ToString();
             }
         }
-
         private readonly string LogPath;
         private readonly string LogFileName;
-
+        public ExecutionErrors Errors { get; }
+        /// <summary>
+        /// 錯誤訊息前綴
+        /// </summary>
+        public string Prefix { get; set; }
         #endregion
         #region Construct
-        public MessageLog(ExecutionErrors errors, string logPath = "", string logFileName = "")
+        public MessageLog(IUserModel user, string logPath = @"./", string logFileName = "SKGPortalCore")
         {
-            Errors = errors;
+            Errors = new ExecutionErrors();
             LogPath = logPath;
             LogFileName = logFileName;
+            Prefix = string.Empty;
+            User = user;
         }
         #endregion
         #region Public
         public void AddErrorMessage(MessageCode messageCode, params object[] args)
         {
-            var err = new ExecutionError(string.Format($"{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
+            var err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
         }
-        public void WriteLogTxt(string user)
+        public void WriteLogTxt()
         {
             if (Errors.Count == 0) return;
             DateTime now = DateTime.Now;
             StringBuilder str = new StringBuilder();
             foreach (var msg in Errors)
             {
-                str.AppendLine($"{now.ToString()} User:{user} Message:{msg.Message}");
+                str.AppendLine($"{now.ToString()} User:{User.KeyId}, {User.UserName} Message:{msg.Message}");
                 if (null != msg.Source)
                 {
                     if (msg.Code.CompareTo("CustomerMessageCode") != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
@@ -124,9 +130,9 @@ namespace SKGPortalCore.Data
         [Description("{0}只能輸入數字！")]
         Code1006,
         /// <summary>
-        /// 銀行銷帳編號長度不符，應為{0}碼，但不前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。
+        /// 銀行銷帳編號長度不符，應為{0}碼，但目前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。
         /// </summary>
-        [Description("銀行銷帳編號長度不符，應為{0}碼，但不前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。")]
+        [Description("銀行銷帳編號長度不符，應為{0}碼，但目前產生資料為{1}碼，請檢查客戶參數設定與代收申請書設定是否正確。")]
         Code1007,
         /// <summary>
         /// 銷帳編號{0}已存在，請確認！
@@ -153,6 +159,5 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("第{0}行：存提別不為±")]
         Code1012,
-
     }
 }

@@ -9,6 +9,6 @@ namespace SKGPortalCore.Repository.MasterData
     /// </summary>
     public class BizCustomerRepository : BasicRepository<BizCustomerSet>
     {
-        public BizCustomerRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
+        public BizCustomerRepository(ApplicationDbContext dataAccess ) : base(dataAccess) { }
     }
 }

@@ -11,7 +11,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// </summary>
     public class PayerRepository : BasicRepository<PayerSet>
     {
-        public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
+        public PayerRepository(ApplicationDbContext dataAccess  ) : base(dataAccess) { }
 
         protected override void AfterSetEntity(PayerSet set, FuncAction action)
         {
