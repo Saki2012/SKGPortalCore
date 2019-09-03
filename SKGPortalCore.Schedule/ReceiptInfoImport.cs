@@ -10,6 +10,7 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 using SKGPortalCore.Repository.MasterData;
@@ -39,7 +40,7 @@ namespace SKGPortalCore.Schedule
         public ReceiptInfoImportBANK(ApplicationDbContext dataAccess)
         {
             DataAccess = dataAccess;
-            Message = new MessageLog();
+            Message = new MessageLog(SystemOperator.SysOperator);
         }
         #endregion
         #region Public
@@ -650,10 +651,10 @@ namespace SKGPortalCore.Schedule
     /// </summary>
     public static class ReceiptInfoImportComm
     {
-        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext dataAccess,MessageLog message, string compareCode, out string compareCodeForCheck)
+        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext dataAccess, MessageLog message, string compareCode, out string compareCodeForCheck)
         {
             compareCodeForCheck = string.Empty;
-            using BizCustomerRepository biz = new BizCustomerRepository(dataAccess);
+            using BizCustomerRepository biz = new BizCustomerRepository(dataAccess) { Message = message };
             var bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 6) });
             if (null == bizCust)
                 bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 4) });

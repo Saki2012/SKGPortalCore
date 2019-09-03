@@ -41,7 +41,7 @@ namespace SKGPortalCore.Schedule
             }
             finally
             {
-                Message.WriteLogTxt("排程");
+                Message.WriteLogTxt();
             }
         }
         /// <summary>

@@ -8,6 +8,7 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.MasterData;
 
@@ -33,7 +34,7 @@ namespace SKGPortalCore.Schedule
         public ACCFTTImport(ApplicationDbContext dataAccess)
         {
             DataAccess = dataAccess;
-            Message = new MessageLog();
+            Message = new MessageLog(SystemOperator.SysOperator);
         }
         #endregion
         #region Public

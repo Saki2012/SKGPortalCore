@@ -103,7 +103,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
 #if DEBUG
-                    repo.User = new SystemOperator().SysOperator;
+                    repo.User = SystemOperator.SysOperator;
 #endif
                     repo.Message = null;
                     TSet set = context.GetArgument<TSet>("set");

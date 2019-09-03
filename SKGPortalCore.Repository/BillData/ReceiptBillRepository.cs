@@ -18,7 +18,7 @@ namespace SKGPortalCore.Repository.BillData
         #region Construct
         public ReceiptBillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
-            User = new SystemOperator().SysOperator;
+            User =  SystemOperator.SysOperator;
         }
         #endregion
 

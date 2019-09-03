@@ -8,6 +8,7 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 
@@ -24,7 +25,7 @@ namespace SKGPortalCore.Schedule
         private const int StrLen = 128;
         #endregion
         #region Construct
-        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; Message = new MessageLog(); }
+        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; Message = new MessageLog(SystemOperator.SysOperator); }
         #endregion
         #region Public
         /// <summary>

@@ -45,7 +45,7 @@ namespace SKGPortalCore.Data
             LogPath = logPath;
             LogFileName = logFileName;
             Prefix = string.Empty;
-            User = user;
+            User = user ?? SystemOperator.SysOperator;
         }
         #endregion
         #region Public
