@@ -12,7 +12,7 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.MasterData;
 
-namespace SKGPortalCore.Schedule
+namespace SKGPortalCore.Schedule.Import
 {
     public class ACCFTTImport : IImportData
     {
@@ -134,7 +134,7 @@ namespace SKGPortalCore.Schedule
                 strRow = sr.ReadLine();
                 line++;
                 if (0 == strRow.Length) continue;
-                if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
+                if (StrLen != strRow.ByteLen()) { /*第N行 Error:長度不符*/}
                 result.Add(line, strRow);
             }
             return result;

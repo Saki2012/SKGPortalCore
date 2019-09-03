@@ -5,7 +5,7 @@ using GraphQL;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 
-namespace SKGPortalCore.Schedule
+namespace SKGPortalCore.Schedule.Import
 {
     /// <summary>
     /// 資訊流導入

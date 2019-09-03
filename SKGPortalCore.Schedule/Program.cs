@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Data;
+using SKGPortalCore.Schedule.Import;
 
 namespace SKGPortalCore.Schedule
 {

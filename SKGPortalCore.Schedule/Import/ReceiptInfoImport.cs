@@ -15,7 +15,7 @@ using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 using SKGPortalCore.Repository.MasterData;
 
-namespace SKGPortalCore.Schedule
+namespace SKGPortalCore.Schedule.Import
 {
     /// <summary>
     /// 資訊流導入-銀行

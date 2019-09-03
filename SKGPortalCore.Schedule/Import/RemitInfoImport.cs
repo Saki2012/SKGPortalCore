@@ -12,7 +12,7 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 
-namespace SKGPortalCore.Schedule
+namespace SKGPortalCore.Schedule.Import
 {
     public class RemitInfoImport : IImportData
     {
