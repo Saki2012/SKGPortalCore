@@ -30,10 +30,13 @@ namespace SKGPortalCore.Controllers.Func
         [HttpPost("[Action]")]
         public IActionResult Login(LoginInfo info)
         {
+#if DEBUG
+            info.CustomerId = "80425514";info.UserId = "admin";info.Pasuwado = "123456";
+#endif
             CustUserSet userSet = _accountRepository.Login(info.CustomerId, info.UserId, info.Pasuwado);
             if (null == userSet) return BadRequest();
             _sessionWapper.User = userSet.User;
-            Dictionary<string, string> permissions = BizAccount.GetRolePermissionsToken(_sessionWapper.SessionId, userSet.UserRoles);
+            Dictionary<string, string> permissions = AccountLogin.GetRolePermissionsToken(_sessionWapper.SessionId, userSet.UserRoles);
             return Ok(permissions);
         }
         #endregion

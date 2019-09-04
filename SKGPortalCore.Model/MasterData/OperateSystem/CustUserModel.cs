@@ -7,21 +7,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
     /// <summary>
-    /// 前台用戶使用者
+    /// 前台用戶
     /// </summary>
-    [Description("前台用戶使用者")]
+    [Description("前台用戶")]
     public class CustUserSet
     {
         /// <summary>
-        /// 前台用戶使用者資料
+        /// 前台用戶資料
         /// </summary>
         public CustUserModel User { get; set; }
         public List<CustUserRoleModel> UserRoles { get; set; }
     }
     /// <summary>
-    /// 前台用戶使用者資料
+    /// 前台用戶資料
     /// </summary>
-    [Description("用戶使用者資料")]
+    [Description("用戶資料")]
     public class CustUserModel : MasterDataModel, IUserModel
     {
         /// <summary>
@@ -38,12 +38,12 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 使用者代號
         /// </summary>
-        [Description("使用者代號")]
+        [Description("用戶代號")]
         public string UserId { get; set; }
         /// <summary>
         /// 使用者名稱
         /// </summary>
-        [Description("使用者名稱")]
+        [Description("用戶名稱")]
         public string UserName { get; set; }
         /// <summary>
         /// 密碼
@@ -69,7 +69,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 前台使用者角色權限清單
     /// </summary>
-    [Description("前台使用者角色權限清單")]
+    [Description("前台用戶角色權限清單")]
     public class CustUserRoleModel : DetailRowState, IRoleModel
     {
         [ForeignKey("KeyId")]

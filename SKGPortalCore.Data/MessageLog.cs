@@ -54,6 +54,16 @@ namespace SKGPortalCore.Data
             var err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
         }
+        /// <summary>
+        /// 獲取異常狀況
+        /// </summary>
+        /// <param name="ex"></param>
+        public void AddExceptionError(Exception ex)
+        {
+            var innerEx = ex.GetInnermostException();
+            var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
+            Errors.Add(exErr);
+        }
         public void WriteLogTxt()
         {
             if (Errors.Count == 0) return;
@@ -95,9 +105,9 @@ namespace SKGPortalCore.Data
         [Description("{0}不允許為空")]
         Code0001,
         /// <summary>
-        /// 您沒有權限執行{0}
+        /// 您沒有權限對{0}進行{1}
         /// </summary>
-        [Description("您沒有權限執行{0}")]
+        [Description("您沒有權限對{0}進行{1}")]
         Code0002,
         /// <summary>
         /// 銀行銷帳編號長度({0})與組合方式({1})不符!

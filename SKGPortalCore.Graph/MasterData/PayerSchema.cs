@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GraphQL;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Http;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.MasterData;
 

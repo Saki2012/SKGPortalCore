@@ -44,7 +44,7 @@ namespace SKGPortalCore.Lib
         /// <summary>
         /// 合併
         /// </summary>
-        /// <param name="mergeStr"></param>
+        /// <param name="mergeStr">合併連接字 Ex:,</param>
         /// <param name="mergeEmpty"></param>
         /// <param name="strs"></param>
         /// <returns></returns>

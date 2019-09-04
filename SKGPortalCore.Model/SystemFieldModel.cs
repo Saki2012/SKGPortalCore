@@ -40,7 +40,7 @@ namespace SKGPortalCore.Model
         /// <summary>
         /// 創建時間
         /// </summary>
-        [Description("創建時間")]
+        [Description("創建時間")/*, Column(TypeName = "datetime")*/]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// 修改人員
@@ -96,18 +96,54 @@ namespace SKGPortalCore.Model
         [Description("行狀態"), NotMapped]
         public RowState RowState { get; set; }
     }
+
     /// <summary>
     /// 操作日誌
     /// </summary>
     [Description("操作日誌")]
     public class OperateLog
     {
-        [Key]
+        /// <summary>
+        /// ID
+        /// </summary>
+        [Description("ID"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+        /// <summary>
+        /// 使用者ID
+        /// </summary>
+        [Description("使用者ID")]
         public string UserId { get; set; }
+        /// <summary>
+        /// 登入IP位置
+        /// </summary>
+        [Description("登入IP位置")]
+        public string IP { get; set; }
+        /// <summary>
+        /// 瀏覽器資訊
+        /// </summary>
+        [Description("瀏覽器資訊")]
+        public string Browser { get; set; }
+        /// <summary>
+        /// ProgId
+        /// </summary>
+        [Description("ProgId")]
         public string ProgId { get; set; }
+        /// <summary>
+        /// 資料主鍵
+        /// </summary>
+        [Description("資料主鍵")]
+        public string PK { get; set; }
+        /// <summary>
+        /// 操作時間
+        /// </summary>
+        [Description("操作時間")]
+        public DateTime OperateTime { get; set; } = DateTime.Now;
+        /// <summary>
+        /// 動作
+        /// </summary>
+        [Description("動作")]
         public string Action { get; set; }
-        public DateTime OperateTime { get; set; }
+
     }
     /// <summary>
     /// 錯誤日誌
@@ -119,7 +155,7 @@ namespace SKGPortalCore.Model
         public long Id { get; set; }
         public string UserId { get; set; }
         public string ProgId { get; set; }
-        public int MessageCode { get; set; }
+        public string MessageCode { get; set; }
         public string Message { get; set; }
         public DateTime OperateTime { get; set; }
     }

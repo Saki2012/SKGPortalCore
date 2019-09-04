@@ -20,7 +20,7 @@ namespace SKGPortalCore.Repository
         protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
-        private MessageLog _message { get; set; }
+        private MessageLog _message;
         public MessageLog Message
         {
             get
@@ -44,7 +44,7 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        public TSet Create(TSet set)
+        public virtual TSet Create(TSet set)
         {
             try
             {
@@ -55,9 +55,8 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
@@ -65,27 +64,27 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
-        public TSet Update(TSet set)
+        public virtual TSet Update(TSet set)
         {
+            TSet curSet = default;
             try
             {
                 dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
-                DoUpdate(set);
+                DoUpdate(set, out curSet);
                 AfterSetEntity(set, FuncAction.Update);
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
-            return set;
+            return curSet;
         }
         /// <summary>
         /// 刪除
         /// </summary>
         /// <param name="key"></param>
-        public void Delete(object[] key)
+        public virtual void Delete(object[] key)
         {
             try
             {
@@ -96,16 +95,15 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
         }
         /// <summary>
         /// 查詢
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public TSet QueryData(object[] key)
+        public virtual TSet QueryData(object[] key)
         {
             var setProperties = typeof(TSet).GetProperties();
             var instance = Activator.CreateInstance<TSet>();
@@ -142,7 +140,7 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
-        public List<object> QueryList()
+        public virtual List<object> QueryList()
         {
             return new List<object>();
         }
@@ -152,7 +150,7 @@ namespace SKGPortalCore.Repository
         /// <param name="key"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public TSet Approve(object[] key, bool status)
+        public virtual TSet Approve(object[] key, bool status)
         {
             TSet set = QueryData(key);
             try
@@ -167,15 +165,14 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
         /// 作廢
         /// </summary>
-        public TSet Invalid(object[] key, bool status)
+        public virtual TSet Invalid(object[] key, bool status)
         {
             TSet set = QueryData(key);
             try
@@ -190,15 +187,14 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
         /// 結案
         /// </summary>
-        public TSet EndCase(object[] key, bool status)
+        public virtual TSet EndCase(object[] key, bool status)
         {
             TSet set = QueryData(key);
             try
@@ -213,18 +209,17 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
+                Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
             return set;
         }
         /// <summary>
         /// 執行更新
         /// </summary>
         /// <param name="action"></param>
-        public void CommitData(FuncAction action)
+        public virtual void CommitData(FuncAction action)
         {
-            if (Message.Errors.Count > 0) { return; }
+            if (Message.Errors.Count > 0) { ErrorRollbackEntities(); return; }
             try
             {
                 DataAccess.BulkSaveChanges();
@@ -232,9 +227,27 @@ namespace SKGPortalCore.Repository
             }
             catch (Exception ex)
             {
-                AddExceptionError(ex);
-                ErrorRollbackEntities();
+                Message.AddExceptionError(ex);
             }
+            ErrorRollbackEntities();
+        }
+        /// <summary>
+        /// 獲取表頭主鍵
+        /// </summary>
+        /// <param name="set"></param>
+        /// <returns></returns>
+        public object[] GetPKVals(TSet set)
+        {
+            foreach (dynamic s in set.GetType().GetProperties())
+            {
+                dynamic val = Reflect.GetValue(set, s.Name);
+                if (null == val) continue;
+                if (val is BasicDataModel)
+                {
+                    return GetKeyVals(val);
+                }
+            }
+            return null;
         }
         #endregion
         #region Protected
@@ -296,8 +309,10 @@ namespace SKGPortalCore.Repository
         /// 處理修改動作
         /// </summary>
         /// <param name="set"></param>
-        private void DoUpdate(TSet set)
+        private void DoUpdate(TSet set, out TSet curSet)
         {
+            curSet = default;
+            object[] keys = null;
             foreach (dynamic s in set.GetType().GetProperties())
             {
                 dynamic val = Reflect.GetValue(set, s.Name);
@@ -307,9 +322,11 @@ namespace SKGPortalCore.Repository
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
 
                     List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
-                    //if (DataAccess.Entry(val).State != EntityState.Detached) DataAccess.Remove(val);
-                    DataAccess.AddRange(insertList);
-
+                    foreach (dynamic entity in insertList)
+                    {
+                        DataAccess.Add(entity);
+                        SetRefModel(entity);
+                    }
                     List<DetailRowState> updateList = detail.Where(p => p.RowState == RowState.Update).ToList();
                     foreach (dynamic entity in updateList)
                     {
@@ -317,6 +334,7 @@ namespace SKGPortalCore.Repository
                         if (null != oldEntity) DataAccess.Remove(oldEntity);
                         if (DataAccess.Entry(entity).State != EntityState.Detached) DataAccess.Remove(entity);
                         DataAccess.Update(entity);
+                        SetRefModel(entity);
                     }
                     List<DetailRowState> deleteList = detail.Where(p => p.RowState == RowState.Delete).ToList();
                     foreach (dynamic entity in deleteList)
@@ -327,11 +345,15 @@ namespace SKGPortalCore.Repository
                 }
                 else
                 {
-                    dynamic oldEntity = DataAccess.Find(val.GetType(), GetKeyVals(val));
+                    keys = GetKeyVals(val);
+                    dynamic oldEntity = DataAccess.Find(val.GetType(), keys);
                     if (null != oldEntity) DataAccess.Remove(oldEntity);
                     DataAccess.Update(val);
+                    SetRefModel(val);
                 }
             }
+            if (null != keys)
+                curSet = QueryData(keys);
         }
         /// <summary>
         /// 設置新增時使用者資料
@@ -460,16 +482,6 @@ namespace SKGPortalCore.Repository
         private PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
         {
             return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
-        }
-        /// <summary>
-        /// 獲取異常狀況
-        /// </summary>
-        /// <param name="ex"></param>
-        private void AddExceptionError(Exception ex)
-        {
-            var innerEx = ex.GetInnermostException();
-            var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
-            Message.Errors.Add(exErr);
         }
         /// <summary>
         /// 異常時回滾變更的Entities

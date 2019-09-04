@@ -1,4 +1,6 @@
-﻿using SKGPortalCore.Business.BillData;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
+using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
@@ -8,6 +10,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 帳單庫
     /// </summary>
+    [ProgId("Bill"),Description("帳單")]
     public class BillRepository : BasicRepository<BillSet>
     {
         #region Construct
@@ -18,7 +21,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             using BizBill biz = new BizBill(Message, DataAccess, User);
-            biz.SetData(set, action);
+            biz.SetData(set/*, action*/);
             biz.CheckData(set);
         }
         #endregion

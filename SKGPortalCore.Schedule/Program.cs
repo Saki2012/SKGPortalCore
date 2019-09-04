@@ -9,10 +9,7 @@ namespace SKGPortalCore.Schedule
     {
         static void Main()
         {
-            DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
-            using ApplicationDbContext dataAccess = new ApplicationDbContext(builder.Options);
-
+            using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
             IImportData infoImport = new ReceiptInfoImportBANK(dataAccess);
             infoImport.ExecuteImport();
             infoImport = new RemitInfoImport(dataAccess);

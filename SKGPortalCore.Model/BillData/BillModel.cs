@@ -36,7 +36,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key, StringLength(20)]
+        [Description("帳單編號"), Key, MaxLength(20)]
         public string BillNo { get; set; }
         [ForeignKey("CustomerCode,BillTermId")]
         public BillTermModel BillTerm { get; set; }
@@ -74,52 +74,52 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號")]
+        [Description("匯入批號"), Required,MaxLength(15)]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 銀行銷帳編號(不含檢碼)
         /// </summary>
-        [Description("銀行銷帳編號")]
+        [Description("銀行銷帳編號"), Required]
         public string CompareCodeForCheck { get; set; }
         /// <summary>
         /// 銀行條碼
         /// </summary>
-        [Description("銀行條碼")]
+        [Description("銀行條碼"), Required]
         public string BankBarCode { get; set; }
         /// <summary>
         /// 超商條碼1
         /// </summary>
-        [Description("超商條碼1")]
+        [Description("超商條碼1"), Required]
         public string MarketBarCode1 { get; set; }
         /// <summary>
         /// 超商條碼2
         /// </summary>
-        [Description("超商條碼2")]
+        [Description("超商條碼2"), Required]
         public string MarketBarCode2 { get; set; }
         /// <summary>
         /// 超商條碼3
         /// </summary>
-        [Description("超商條碼3")]
+        [Description("超商條碼3"), Required]
         public string MarketBarCode3 { get; set; }
         /// <summary>
         /// 郵局條碼1
         /// </summary>
-        [Description("郵局條碼1")]
+        [Description("郵局條碼1"), Required]
         public string PostBarCode1 { get; set; }
         /// <summary>
         /// 郵局條碼2
         /// </summary>
-        [Description("郵局條碼2")]
+        [Description("郵局條碼2"), Required]
         public string PostBarCode2 { get; set; }
         /// <summary>
         /// 郵局條碼3
         /// </summary>
-        [Description("郵局條碼3")]
+        [Description("郵局條碼3"), Required]
         public string PostBarCode3 { get; set; }
         /// <summary>
         /// 繳款截止日
         /// </summary>
-        [Description("繳款截止日")]
+        [Description("繳款截止日"), Required]
         public DateTime PayEndDate { get; set; }
         /// <summary>
         /// 應繳金額
@@ -139,12 +139,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單備註1
         /// </summary>
-        [Description("帳單備註1")]
+        [Description("帳單備註1"), Required]
         public string Memo1 { get; set; }
         /// <summary>
         /// 帳單備註2
         /// </summary>
-        [Description("帳單備註2")]
+        [Description("帳單備註2"), Required]
         public string Memo2 { get; set; }
     }
     /// <summary>
@@ -199,7 +199,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號")]
+        [Description("收款單號"), Required]
         public string ReceiptBillNo { get; set; }
     }
 }

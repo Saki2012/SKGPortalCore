@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Http;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.BillData;
 
@@ -15,16 +16,11 @@ namespace SKGPortalCore.Graph.BillData
     //Operate
     public class ReceiptBillQuery : BaseQueryType<ReceiptBillSet,ReceiptBillSetType>
     {
-        public ReceiptBillQuery(ReceiptBillRepository repository) : base(repository)
-        {
-        }
+        public ReceiptBillQuery(ReceiptBillRepository repository) : base(repository) { }
     }
     public class ReceiptBillMutation : BaseMutationType<ReceiptBillSet, ReceiptBillSetType, ReceiptBillSetInputType>
     {
-        public ReceiptBillMutation(ReceiptBillRepository repository) : base(repository)
-        {
-
-        }
+        public ReceiptBillMutation(ReceiptBillRepository repository) : base(repository) { }
     }
     //Input
     public class ReceiptBillSetInputType : BaseInputSetGraphType<ReceiptBillSet> { }

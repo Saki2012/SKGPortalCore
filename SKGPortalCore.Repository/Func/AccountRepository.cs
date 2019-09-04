@@ -21,8 +21,8 @@ namespace SKGPortalCore.Repository.Func
             Func<CustUserRoleModel, bool> where2 = new Func<CustUserRoleModel, bool>(p => p.KeyId == key);
             var UserRoles = DataAccess.Set<CustUserRoleModel>().Include(p => p.Role).ThenInclude(role => role.Permissions)
                 .Where(where2).ToList();
-            CustUserSet user = new CustUserSet() { User = DataAccess.Set<CustUserModel>().Find(), UserRoles = UserRoles };
-            if (!BizAccount.CheckAccountPasuwado(user, pasuwado)) return null;
+            CustUserSet user = new CustUserSet() { User = DataAccess.Set<CustUserModel>().Find(key), UserRoles = UserRoles };
+            if (!AccountLogin.CheckAccountPasuwado(user, pasuwado)) return null;
             return user;
         }
     }

@@ -4,10 +4,10 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 namespace SKGPortalCore.Repository.MasterData
 {
     /// <summary>
-    /// 角色權限庫
+    /// 前台用戶庫
     /// </summary>
-    public class RoleRepository : BasicRepository<RoleSet>
+    public class CustUserRepository : BasicRepository<CustUserSet>
     {
-        public RoleRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
+        public CustUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
     }
 }

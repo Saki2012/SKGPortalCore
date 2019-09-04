@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using GraphQL;
 using GraphQL.Http;
+using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,13 +55,13 @@ namespace SKGPortalCore
                 options.Cookie.Name = "YouKnowDaWaeOfDevil";
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
             });
-            //if(BackEnd)
-            //services.AddSingleton<ISessionWapper, SessionWapper<BackendUserModel>>();
-            //if(FrontEnd
+#if BackEnd
+            services.AddSingleton<ISessionWapper, SessionWapper<BackendUserModel>>();
+#else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
+#endif
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
             InjectionRepository(ref services);
             InjectionGraphSchema(ref services);
         }
@@ -83,6 +84,9 @@ namespace SKGPortalCore
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+#if DEBUG
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+#endif
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -8,6 +8,8 @@ namespace SKGPortalCore.Data
     {
         public string SessionId { get; }
         IUserModel User { get; set; }
+        public string IP { get; }
+        public string Browser { get; }
         void Clear();
     }
     public interface ISessionWapper<T> : ISessionWapper where T : IUserModel { }
@@ -37,6 +39,8 @@ namespace SKGPortalCore.Data
                 Session.SetObject(_userKey, value);
             }
         }
+        public string IP { get { return _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(); } }
+        public string Browser { get {return _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString(); } }
         public string SessionId
         {
             get

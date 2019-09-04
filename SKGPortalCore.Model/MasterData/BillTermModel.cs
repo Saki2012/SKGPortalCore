@@ -39,7 +39,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 期別代號
         /// </summary>
-        [Description("期別代號"), Key]
+        [Description("期別代號"), Key, MaxLength(20)]
         public string BillTermId { get; set; }
         /// <summary>
         /// 期別名稱

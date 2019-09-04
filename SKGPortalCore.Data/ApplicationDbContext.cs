@@ -9,6 +9,9 @@ namespace SKGPortalCore.Data
 {
     public class ApplicationDbContext : DbContext// IdentityDbContext
     {
+        #region Property
+        public DbSet<OperateLog> OperateLog { get; set; }
+        #endregion
         #region Construct
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         #endregion
@@ -39,6 +42,27 @@ namespace SKGPortalCore.Data
             }
         }
         #endregion
+    }
 
+    public class LibDataAccess
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static ApplicationDbContext CreateDataAccess()
+        {
+            return new ApplicationDbContext(GetConnectionOption());
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static DbContextOptions<ApplicationDbContext> GetConnectionOption()
+        {
+            DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
+            return builder.Options;
+        }
     }
 }
