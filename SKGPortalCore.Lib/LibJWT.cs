@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SKGPortalCore.Lib
 {
-    public class JWTHelper
+    public class LibJWT
     {
         /// <summary>
         /// 產生JWT Token

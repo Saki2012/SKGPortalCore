@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Model;
 
@@ -11,6 +12,7 @@ namespace SKGPortalCore.Data
     {
         #region Property
         public DbSet<OperateLog> OperateLog { get; set; }
+        public DbSet<DataFlowNo> DataFlowNo { get; set; }
         #endregion
         #region Construct
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -64,5 +66,9 @@ namespace SKGPortalCore.Data
             builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
             return builder.Options;
         }
+        /// <summary>
+        /// 獲取主鍵流水碼
+        /// </summary>
+        //public static string GetFlowCode { get { lock (typeof(string)) { Thread.Sleep(100); return DateTime.Now.ToString("yyyyMMddHHmmss"); } } }
     }
 }

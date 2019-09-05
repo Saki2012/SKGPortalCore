@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SKGPortalCore.Lib
 {
-    public class ExcelHelper
+    public class LibExcel
     {
     }
 }

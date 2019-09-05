@@ -36,7 +36,7 @@ namespace SKGPortalCore.Business.Func
             }
             foreach (string funcName in funcPermissionDic.Keys)
             {
-                funcPermissionTokenDic.Add(funcName, JWTHelper.GenerateToken(secret, funcName, funcPermissionDic[funcName].ToString()));
+                funcPermissionTokenDic.Add(funcName, LibJWT.GenerateToken(secret, funcName, funcPermissionDic[funcName].ToString()));
             }
             return funcPermissionTokenDic;
         }
@@ -80,7 +80,7 @@ namespace SKGPortalCore.Business.Func
         /// <returns></returns>
         private static bool CheckAuthenticate(string secret, string token, string claimType, FuncAction claimValue)
         {
-            if (!JWTHelper.TryValidateToken(secret, token, out ClaimsPrincipal principal)) return false;
+            if (!LibJWT.TryValidateToken(secret, token, out ClaimsPrincipal principal)) return false;
             string srcActionType = principal.Claims.Where(c => c.Type == "ClaimType").Select(c => c.Value).SingleOrDefault().ToString();
             int srcAction = principal.Claims.Where(c => c.Type == "ClaimValue").Select(c => c.Value).SingleOrDefault().ToInt32();
             if (srcActionType.CompareTo(claimType) != 0 || (int)claimValue != ((int)claimValue & srcAction)) return false;

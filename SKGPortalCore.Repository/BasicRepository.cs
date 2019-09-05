@@ -31,6 +31,29 @@ namespace SKGPortalCore.Repository
             }
             set { _message = value; }
         }
+        private DataFlowNo dataFlowNo;
+        public DataFlowNo DataFlowNo
+        {
+            get
+            {
+                if (null == dataFlowNo)
+                {
+                    string progId = ResxManage.GetProgId(this);
+                    dataFlowNo = DataAccess.Find<DataFlowNo>(progId);
+                    if (null == dataFlowNo)
+                    {
+                        dataFlowNo = new DataFlowNo() { ProgId = progId, FlowDate = DateTime.Today, FlowNo = 0 };
+                        DataAccess.Add(dataFlowNo);
+                    }
+                }
+                if (dataFlowNo.FlowDate != DateTime.Today)
+                {
+                    dataFlowNo.FlowDate = DateTime.Today;
+                    dataFlowNo.FlowNo = 0;
+                }
+                return dataFlowNo;
+            }
+        }
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -499,7 +522,6 @@ namespace SKGPortalCore.Repository
             }
         }
         #endregion
-
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫
         protected virtual void Dispose(bool disposing)
