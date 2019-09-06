@@ -21,37 +21,37 @@ namespace SKGPortalCore.Model.SourceData
         /// 1. 匯款日期(8)
         /// </summary>
         [Description("匯款日期"), MaxLength(8)]
-        public string RemitDate { get { return _RemitDate; } set { _RemitDate = value.ByteSubString(0, 8); } }
+        public string RemitDate { get { return _RemitDate; } set { _RemitDate = value.PadLeft(8, '0').ByteSubString(0, 8); } }
         /// <summary>
         /// 2. 匯款時間(6)
         /// </summary>
         [Description("交易日期"), MaxLength(6)]
-        public string RemitTime { get { return _RemitTime; } set { _RemitTime = value.ByteSubString(0, 6); } }
+        public string RemitTime { get { return _RemitTime; } set { _RemitTime = value.PadLeft(6, '0').ByteSubString(0, 6); } }
         /// <summary>
         /// 3. 超商通路(2)
         /// </summary>
         [Description("超商通路"), MaxLength(2)]
-        public string Channel { get { return _Channel; } set { _Channel = value.ByteSubString(0, 2); } }
+        public string Channel { get { return _Channel; } set { _Channel = value.PadLeft(2, '0').ByteSubString(0, 2); } }
         /// <summary>
         /// 4. 代收項目(3)
         /// </summary>
         [Description("代收項目"), MaxLength(3)]
-        public string CollectionType { get { return _CollectionType; } set { _CollectionType = value.ByteSubString(0, 3); } }
+        public string CollectionType { get { return _CollectionType; } set { _CollectionType = value.PadLeft(3, '0').ByteSubString(0, 3); } }
         /// <summary>
         /// 5. 交易金額(11)
         /// </summary>
         [Description("交易金額"), MaxLength(11)]
-        public string Amount { get { return _Amount; } set { _Amount = value.ByteSubString(0, 11); } }
+        public string Amount { get { return _Amount; } set { _Amount = value.PadLeft(11, '0').ByteSubString(0, 11); } }
         /// <summary>
         /// 6. 批號(2)
         /// </summary>
         [Description("批號"), MaxLength(2)]
-        public string BatchNo { get { return _BatchNo; } set { _BatchNo = value.ByteSubString(0, 2); } }
+        public string BatchNo { get { return _BatchNo; } set { _BatchNo = value.PadLeft(2, '0').ByteSubString(0, 2); } }
         /// <summary>
         /// 7. 保留(96)
         /// </summary>
         [Description("保留"), MaxLength(96)]
-        public string Empty { get { return _Empty; } set { _Empty = value.ByteSubString(0, 96); } }
+        public string Empty { get { return _Empty; } set { _Empty = value.PadLeft(96, '0').ByteSubString(0, 96); } }
         /// <summary>
         /// 導入批號
         /// </summary>

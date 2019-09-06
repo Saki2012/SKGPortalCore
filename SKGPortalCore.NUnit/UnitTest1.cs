@@ -35,8 +35,7 @@ namespace Tests
         }
         [Test]
         public void CheckACCFTT() {
-            string src = "";
-            ACCFTT accftt = new ACCFTT() { Source = src };
+            ACCFTT accftt = new ACCFTT() {  };
             if (accftt.Source != accftt.Src) {/*Error*/ }
         }
 

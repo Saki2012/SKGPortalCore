@@ -30,29 +30,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         private const int StrLen = 256;
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "ACCFTT";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ACCFTTImport(ApplicationDbContext dataAccess)
@@ -70,7 +74,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string strRow;
-            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
+            using StreamReader sr = new StreamReader(SrcFile/*, Encoding.GetEncoding(950)*/);
             int line = 1;
             while (sr.Peek() > 0)
             {
@@ -113,14 +117,8 @@ namespace SKGPortalCore.Schedule.Import
                     case 0:
                         {
                             GetCustomerInfo(model, bizCustRepo, custRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet);
-                            if (CheckCustExist(model.IDCODE))
-                                custRepo.Create(customerSet);
-                            else
-                                custRepo.Update(customerSet);
-                            if (CheckBizCustExist(model.KEYNO))
-                                bizCustRepo.Create(bizCustomerSet);
-                            else
-                                bizCustRepo.Update(bizCustomerSet);
+                            if (!CheckCustExist(model.IDCODE)) custRepo.Create(customerSet); else custRepo.Update(customerSet);
+                            if (!CheckBizCustExist(model.KEYNO)) bizCustRepo.Create(bizCustomerSet); else bizCustRepo.Update(bizCustomerSet);
                         }
                         break;
                     case 1:
@@ -141,7 +139,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }
@@ -155,7 +153,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <returns></returns>
         private bool CheckBizCustExist(string custCode)
         {
-            return null == DataAccess.Set<BizCustomerModel>().Find(custCode);
+            return null != DataAccess.Set<BizCustomerModel>().Find(custCode);
         }
         /// <summary>
         /// 確認客戶資料是否存在
@@ -164,7 +162,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <returns></returns>
         private bool CheckCustExist(string custId)
         {
-            return null == DataAccess.Set<CustomerModel>().Find(custId);
+            return null != DataAccess.Set<CustomerModel>().Find(custId);
         }
         /// <summary>
         /// 獲取客戶資料

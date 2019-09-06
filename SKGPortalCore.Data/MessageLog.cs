@@ -42,7 +42,7 @@ namespace SKGPortalCore.Data
         public string Prefix { get; set; }
         #endregion
         #region Construct
-        public MessageLog(IUserModel user, string logPath = @"./", string logFileName = "SKGPortalCore")
+        public MessageLog(IUserModel user, string logPath = @"./Log/", string logFileName = "SKGPortalCore")
         {
             Errors = new ExecutionErrors();
             LogPath = logPath;
@@ -81,7 +81,7 @@ namespace SKGPortalCore.Data
                 if (null != msg.Source)
                 {
                     if (msg.Code.CompareTo("CustomerMessageCode") != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
-                        str.Append($" Stack Message:{msg.Source}");
+                        str.AppendLine($" Stack Message:{msg.Source}");
                 }
             }
             if (!Directory.Exists(LogPath))
@@ -105,6 +105,11 @@ namespace SKGPortalCore.Data
 
     public enum MessageCode
     {
+        /// <summary>
+        /// {0}
+        /// </summary>
+        [Description("{0}")]
+        Code0000,
         /// <summary>
         /// {0}不允許為空
         /// </summary>

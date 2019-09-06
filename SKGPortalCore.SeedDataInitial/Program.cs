@@ -1,16 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SKGPortalCore.Controllers.BillData;
-using SKGPortalCore.Controllers.MasterData;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
 using SKGPortalCore.Repository.MasterData;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace SKGPortalCore.SeedDataInitial
 {
@@ -21,15 +19,14 @@ namespace SKGPortalCore.SeedDataInitial
         static void Main()
         {
             CreateSeedData();
+            CreateImportData();
         }
 
         public static void CreateSeedData()
         {
-            Stopwatch sw = new Stopwatch();
             try
             {
                 using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
-                sw.Start();
                 if (dataAccess.Set<BackendUserModel>().Find("SysOperator") == null)
                     dataAccess.Add(SystemOperator.SysOperator);
                 //資料
@@ -37,7 +34,6 @@ namespace SKGPortalCore.SeedDataInitial
                 CreateRole(dataAccess);
                 CreateChannel(dataAccess);
                 CreateCollectionType(dataAccess);
-                //CreateChannelVerifyPeriod(db);
                 CreateCustomer(dataAccess);
                 CreateBizCustomer(dataAccess);
                 CreatePayer(dataAccess);
@@ -45,7 +41,6 @@ namespace SKGPortalCore.SeedDataInitial
                 //單據
                 CreateBill(dataAccess);
                 CreateReceiptBill(dataAccess);
-                CreateCashFlowBill(dataAccess);
 
                 dataAccess.BulkSaveChanges();
             }
@@ -53,15 +48,27 @@ namespace SKGPortalCore.SeedDataInitial
             {
                 Message.AddExceptionError(e);
             }
-            finally
+            Message.WriteLogTxt();
+        }
+        public static void CreateImportData()
+        {
+            try
             {
-                sw.Stop();
+                if (!Directory.Exists($@".\ImportData")) { Directory.CreateDirectory($@".\ImportData"); }
+                ACCFTTData();
+                ReceiptInfoBankData();
+                ReceiptInfoPostData();
+                ReceiptInfoMarketData();
+                ReceiptInfoMarketSPIData();
+                ReceiptInfoFarmData();
+                RemitInfoData();
+            }
+            catch (Exception e)
+            {
+                Message.AddExceptionError(e);
             }
             Message.WriteLogTxt();
-            Console.WriteLine($"執行時間：{sw.Elapsed.ToString()}");
-            Console.ReadLine();
         }
-
         #region MasterData
         /// <summary>
         /// 新增「前台用戶使用者」-初始資料
@@ -72,6 +79,7 @@ namespace SKGPortalCore.SeedDataInitial
             try
             {
                 Message.Prefix = "新增「前台用戶使用者」-初始資料：";
+                Message.AddErrorMessage(MessageCode.Code1008, "Test");
                 using CustUserRepository repo = new CustUserRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message }; ;
                 var users = new List<CustUserSet>() { new CustUserSet() { User = new CustUserModel() { KeyId = "80425514,admin", CustomerId = "80425514", UserId = "admin", UserName = "管理員", Pasuwado = "123456", AccountStatus = AccountStatus.Enable }, UserRoles = new List<CustUserRoleModel>() { new CustUserRoleModel() { KeyId = "80425514,admin", RoleId = "admin" } } } };
 
@@ -326,14 +334,128 @@ namespace SKGPortalCore.SeedDataInitial
             using BillRepository repo = new BillRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message };
 
         }
-        /// <summary>
-        /// 新增「金流帳簿」-初始資料
-        /// </summary>
-        /// <param name="db"></param>
-        private static void CreateCashFlowBill(ApplicationDbContext dataAccess)
-        {
-            using BillRepository repo = new BillRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message };
+        #endregion
 
+        #region ImportData
+        /// <summary>
+        /// 服務申請書
+        /// </summary>
+        private static void ACCFTTData()
+        {
+            List<ACCFTT> accftts = new List<ACCFTT>() {
+                //每筆總手續費-有分潤
+                new ACCFTT() { KEYNO="912", ACCIDNO="7745251524762", CUSTNAME="每筆總手續費-有分潤", APPBECODE="0499", BRCODE="0499", IDCODE="03458902", APPLYDATE=DateTime.Now.ToString("yyyyMMdd"), CHGDATE=DateTime.Now.ToString("yyyyMMdd"), APPLYSTAT="0", CHKNUMFLAG="2", CHKAMTFLAG="N", DUETERM="0", CHANNEL="4", FEE="0", RSTORE1="1", RSTORE2="1", RSTORE3="1", RSTORE4="1", RECVITEM1="6V1", RECVITEM2="6V2", RECVITEM3="", RECVITEM4="", RECVITEM5="", ACTFEE="0", MARTFEE1="00", MARTFEE2="00", MARTFEE3="00", POSTFLAG="1", ACTFEEPT="0", POSTFEE="0", HIFLAG="0", HIFARE="000", NETDATE="00000000", AUTOFLAG="0", EBFLAG="0", EBDATE="00000000", EBFEEFLAG="1", EBFEE="0", EBACTTYPE="2", CHKDUPPAY="0", CUSTID="1234567", FUNC="0", MAFARE="0", NOFARE="0", CTBCFLAG="0", SHAREBNFTFLG="1", SHAREBEFTPERCENT="20", ACTFEEBEFT="50", ACTFEEMART="15", SHAREACTFLG="1", ACTPERCENT="50", CLEARFEEMART1="0", CLEARFEEMART2="0", CLEARFEEMART3="0", CLEARFEEMART4="0", CLEARFEEMART5="0", PAYKINDPOST="0", ACTFEEPOST="15", SHAREPOSTFLG="1", POSTPERCENT="50", AGRIFLAG="1", AGRIFEE="25", FILLER=""},
+                new ACCFTT() { KEYNO="", ACCIDNO="", CUSTNAME="", APPBECODE="", BRCODE="", IDCODE="", APPLYDATE="", CHGDATE="", APPLYSTAT="", CHKNUMFLAG="", CHKAMTFLAG="", DUETERM="", CHANNEL="", FEE="", RSTORE1="", RSTORE2="", RSTORE3="", RSTORE4="", RECVITEM1="", RECVITEM2="", RECVITEM3="", RECVITEM4="", RECVITEM5="", ACTFEE="", MARTFEE1="", MARTFEE2="", MARTFEE3="", POSTFLAG="", ACTFEEPT="", POSTFEE="", HIFLAG="", HIFARE="", NETDATE="", AUTOFLAG="", EBFLAG="", EBDATE="", EBFEEFLAG="", EBFEE="", EBACTTYPE="", CHKDUPPAY="", CUSTID="", FUNC="", MAFARE="", NOFARE="", CTBCFLAG="", SHAREBNFTFLG="", SHAREBEFTPERCENT="", ACTFEEBEFT="", ACTFEEMART="", SHAREACTFLG="", ACTPERCENT="", CLEARFEEMART1="", CLEARFEEMART2="", CLEARFEEMART3="", CLEARFEEMART4="", CLEARFEEMART5="", PAYKINDPOST="", ACTFEEPOST="", SHAREPOSTFLG="", POSTPERCENT="", AGRIFLAG="", AGRIFEE="", FILLER=""},
+                new ACCFTT() { KEYNO="", ACCIDNO="", CUSTNAME="", APPBECODE="", BRCODE="", IDCODE="", APPLYDATE="", CHGDATE="", APPLYSTAT="", CHKNUMFLAG="", CHKAMTFLAG="", DUETERM="", CHANNEL="", FEE="", RSTORE1="", RSTORE2="", RSTORE3="", RSTORE4="", RECVITEM1="", RECVITEM2="", RECVITEM3="", RECVITEM4="", RECVITEM5="", ACTFEE="", MARTFEE1="", MARTFEE2="", MARTFEE3="", POSTFLAG="", ACTFEEPT="", POSTFEE="", HIFLAG="", HIFARE="", NETDATE="", AUTOFLAG="", EBFLAG="", EBDATE="", EBFEEFLAG="", EBFEE="", EBACTTYPE="", CHKDUPPAY="", CUSTID="", FUNC="", MAFARE="", NOFARE="", CTBCFLAG="", SHAREBNFTFLG="", SHAREBEFTPERCENT="", ACTFEEBEFT="", ACTFEEMART="", SHAREACTFLG="", ACTPERCENT="", CLEARFEEMART1="", CLEARFEEMART2="", CLEARFEEMART3="", CLEARFEEMART4="", CLEARFEEMART5="", PAYKINDPOST="", ACTFEEPOST="", SHAREPOSTFLG="", POSTPERCENT="", AGRIFLAG="", AGRIFEE="", FILLER=""},
+            };
+            bool err = false;
+            accftts.ForEach(p => { if (p.Source != new ACCFTT() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "服務申請書Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\ACCFTT\ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            accftts.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 資訊流-銀行
+        /// </summary>
+        private static void ReceiptInfoBankData()
+        {
+            List<ReceiptInfoBillBankModel> banks = new List<ReceiptInfoBillBankModel>() {
+                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
+                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
+                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
+            };
+            bool err = false;
+            banks.ForEach(p => { if (p.Source != new ReceiptInfoBillBankModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-銀行Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_BANK.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            banks.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 資訊流-郵局
+        /// </summary>
+        private static void ReceiptInfoPostData()
+        {
+            List<ReceiptInfoBillPostModel> posts = new List<ReceiptInfoBillPostModel>() {
+                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty=""},
+                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
+                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
+            };
+            bool err = false;
+            posts.ForEach(p => { if (p.Source != new ReceiptInfoBillPostModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-郵局Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_POST.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            posts.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 資訊流-超商
+        /// </summary>
+        private static void ReceiptInfoMarketData()
+        {
+            List<ReceiptInfoBillMarketModel> marts = new List<ReceiptInfoBillMarketModel>() {
+                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+            };
+            bool err = false;
+            marts.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-超商Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_MART.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            marts.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 資訊流-超商產險
+        /// </summary>
+        private static void ReceiptInfoMarketSPIData()
+        {
+            List<ReceiptInfoBillMarketSPIModel> martSPIs = new List<ReceiptInfoBillMarketSPIModel>() {
+                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
+                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
+                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
+            };
+            bool err = false;
+            martSPIs.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketSPIModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-超商產險Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_MARTSPI.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            martSPIs.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 資訊流-農金
+        /// </summary>
+        private static void ReceiptInfoFarmData()
+        {
+            List<ReceiptInfoBillFarmModel> farms = new List<ReceiptInfoBillFarmModel>() {
+                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
+                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
+                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
+            };
+            bool err = false;
+            farms.ForEach(p => { if (p.Source != new ReceiptInfoBillFarmModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-農金Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_FARM.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            farms.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
+        }
+        /// <summary>
+        /// 匯款檔
+        /// </summary>
+        private static void RemitInfoData()
+        {
+            List<RemitInfoModel> rts = new List<RemitInfoModel>() {
+                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
+                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
+                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
+            };
+            bool err = false;
+            rts.ForEach(p => { if (p.Source != new RemitInfoModel() { Source = p.Source }.Source) { err = true; return; } });
+            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "匯款檔Source拆分組合異常"); return; }
+            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_RT.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            rts.ForEach(p => sw.WriteLine(p.Source));
+            sw.Close();
         }
         #endregion
     }

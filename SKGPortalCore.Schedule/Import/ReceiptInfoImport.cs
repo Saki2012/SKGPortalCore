@@ -36,29 +36,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         private const int StrLen = 128;
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "SKG_BANK";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\TransactionListDaily\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\TransactionListDaily\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\TransactionListDaily\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
 
         #endregion
         #region Construct
@@ -141,7 +145,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }
@@ -167,29 +171,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         public MessageLog Message { get; }
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "SKG_POST";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\TransactionListDaily\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\TransactionListDaily\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\TransactionListDaily\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportPOST(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -257,7 +265,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }
@@ -283,29 +291,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         public MessageLog Message { get; }
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "SKG_MART";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\TransactionListDaily\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\TransactionListDaily\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\TransactionListDaily\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKET(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -382,7 +394,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }
@@ -408,29 +420,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         public MessageLog Message { get; }
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "SKG_MARTSPI";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\TransactionListDaily\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\TransactionListDaily\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\TransactionListDaily\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKETSPI(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -507,7 +523,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }
@@ -533,29 +549,33 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         public MessageLog Message { get; }
         /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        private const string FileName = "SKG_FARM";
+        /// <summary>
         /// 原檔案存放位置
         /// </summary>
-        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        private const string SrcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\TransactionListDaily\";
         /// <summary>
         /// 成功檔案存放位置
         /// </summary>
-        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        private const string SuccessPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\TransactionListDaily\";
         /// <summary>
         /// 失敗檔案存放位置
         /// </summary>
-        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        private const string FailPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\TransactionListDaily\";
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportFARM(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
@@ -632,7 +652,7 @@ namespace SKGPortalCore.Schedule.Import
                 string file;
                 do
                 {
-                    file = isSuccess ? SuccFile : FailFile;
+                    file = isSuccess ? SuccessFile : FailFile;
                 } while (File.Exists(file));
                 File.Move(SrcFile, file);
             }

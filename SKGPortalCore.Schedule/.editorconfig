@@ -1,4 +1,0 @@
-﻿[*.cs]
-
-# IDE0067: 必須在超出範圍前處置物件
-dotnet_diagnostic.IDE0067.severity = none
