@@ -4,6 +4,7 @@ using System.Diagnostics;
 using NUnit.Framework;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.SourceData;
 
 namespace Tests
 {
@@ -32,6 +33,13 @@ namespace Tests
             }
             Assert.Pass();
         }
+        [Test]
+        public void CheckACCFTT() {
+            string src = "";
+            ACCFTT accftt = new ACCFTT() { Source = src };
+            if (accftt.Source != accftt.Src) {/*Error*/ }
+        }
+
 
         private static void CompareData(List<ChannelWriteOfDetailModel> channelWriteOfDetail, List<CashFlowWriteOfDetailModel> cashFlowWriteOfDetail)
         {

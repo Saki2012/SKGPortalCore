@@ -24,8 +24,7 @@ namespace SKGPortalCore.Repository.BillData
             {
                 if (p.Bill.BillNo.IsNullOrEmpty())
                 {
-                    string progId = ResxManage.GetProgId(this);
-                    string billNo = $"{progId.Substring(0, progId.Length > 5 ? 5 : progId.Length)}{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billNo = $"Bill{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.Bill.BillNo = billNo;
                     if (null != p.BillDetail) p.BillDetail.ForEach(p => p.BillNo = billNo);
                     if (null != p.BillReceiptDetail) p.BillReceiptDetail.ForEach(p => p.BillNo = billNo);

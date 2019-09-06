@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Model;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Data
 {

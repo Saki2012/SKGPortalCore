@@ -10,8 +10,4 @@
     <PackageReference Include="JWT" Version="5.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
-  </ItemGroup>
-
 </Project>

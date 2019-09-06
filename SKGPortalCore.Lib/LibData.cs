@@ -235,6 +235,38 @@ namespace SKGPortalCore.Lib
         {
             return null != val && val.Count > 0;
         }
+        /// <summary>
+        /// 獲取亂數
+        /// </summary>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public static string GenRandomString(int len)
+        {
+            Random rd = new Random(Convert.ToInt32(DateTime.Now.Ticks % int.MaxValue));
+            return GenRandomString(rd, len);
+        }
+        /// <summary>
+        /// 獲取亂數
+        /// </summary>
+        /// <param name="rd"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
+        public static string GenRandomString(Random rd, int len)
+        {
+            string result = string.Empty;
+            for (int i = 0; i < len; i++)
+            {
+                char c = ' ';
+                while (c == ' ')
+                {
+                    int num = rd.Next(48, 122);
+                    if ((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122))
+                        c = (char)num;
+                }
+                result += c.ToString();
+            }
+            return result;
+        }
 
         public static Exception GetInnermostException(this Exception ex)
         {

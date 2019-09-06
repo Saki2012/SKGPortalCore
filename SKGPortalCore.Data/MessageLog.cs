@@ -67,6 +67,9 @@ namespace SKGPortalCore.Data
             var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
             Errors.Add(exErr);
         }
+        /// <summary>
+        /// 異常紀錄寫入檔案內
+        /// </summary>
         public void WriteLogTxt()
         {
             if (Errors.Count == 0) return;
@@ -89,7 +92,7 @@ namespace SKGPortalCore.Data
             try
             {
                 using StreamWriter sw = new StreamWriter($"{LogPath}{LogFileName}{now.ToString("yyyyMMdd")}.log", true);
-                sw.WriteLine(str.ToString());
+                sw.Write(str.ToString());
                 sw.Close();
             }
             finally

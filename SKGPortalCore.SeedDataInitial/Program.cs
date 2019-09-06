@@ -10,6 +10,7 @@ using SKGPortalCore.Repository.BillData;
 using SKGPortalCore.Repository.MasterData;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SKGPortalCore.SeedDataInitial
 {
@@ -24,9 +25,11 @@ namespace SKGPortalCore.SeedDataInitial
 
         public static void CreateSeedData()
         {
-            using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
+            Stopwatch sw = new Stopwatch();
             try
             {
+                using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
+                sw.Start();
                 if (dataAccess.Set<BackendUserModel>().Find("SysOperator") == null)
                     dataAccess.Add(SystemOperator.SysOperator);
                 //資料
@@ -50,7 +53,13 @@ namespace SKGPortalCore.SeedDataInitial
             {
                 Message.AddExceptionError(e);
             }
+            finally
+            {
+                sw.Stop();
+            }
             Message.WriteLogTxt();
+            Console.WriteLine($"執行時間：{sw.Elapsed.ToString()}");
+            Console.ReadLine();
         }
 
         #region MasterData

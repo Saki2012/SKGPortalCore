@@ -1,11 +1,7 @@
-﻿using SKGPortalCore.Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace SKGPortalCore.Lib
 {

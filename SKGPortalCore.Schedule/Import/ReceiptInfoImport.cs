@@ -26,55 +26,46 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        private const int StrLen = 128;
-        /// <summary>
-        /// 
-        /// </summary>
         public ApplicationDbContext DataAccess { get; }
         /// <summary>
         /// 
         /// </summary>
         public MessageLog Message { get; }
+        /// <summary>
+        /// 
+        /// </summary>
+        private const int StrLen = 128;
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+
         #endregion
         #region Construct
         public ReceiptInfoImportBANK(ApplicationDbContext dataAccess)
         {
             DataAccess = dataAccess;
             Message = new MessageLog(SystemOperator.SysOperator);
-        }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <param name="now"></param>
-        /// <returns></returns>
-        public ReceiptInfoBillBankModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new ReceiptInfoBillBankModel()
-            {
-                Id = line,
-                RealAccount = LibData.ByteSubString(source, 0, 13),
-                TradeDate = LibData.ByteSubString(source, 13, 8),
-                TradeTime = LibData.ByteSubString(source, 21, 6),
-                CompareCode = LibData.ByteSubString(source, 27, 16),
-                PN = LibData.ByteSubString(source, 43, 1),
-                Amount = LibData.ByteSubString(source, 44, 10),
-                Summary = LibData.ByteSubString(source, 54, 10),
-                Branch = LibData.ByteSubString(source, 64, 4),
-                TradeChannel = LibData.ByteSubString(source, 68, 2),
-                Channel = LibData.ByteSubString(source, 70, 2),
-                ChangeDate = LibData.ByteSubString(source, 72, 8),
-                BizDate = LibData.ByteSubString(source, 80, 8),
-                Serial = LibData.ByteSubString(source, 88, 6),
-                CustomerCode = LibData.ByteSubString(source, 94, 6),
-                Fee = LibData.ByteSubString(source, 100, 3),
-                Empty = LibData.ByteSubString(source, 103, 25),
-                ImportBatchNo = importBatchNo,
-                Source = source
-            };
         }
         #endregion
         #region Implement
@@ -85,9 +76,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 1;
+            int line = 1; string strRow;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -118,7 +108,7 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"BANK{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new ReceiptInfoBillBankModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
         /// <summary>
@@ -143,16 +133,18 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        void IImportData.MoveToSuccessFolder()
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }
@@ -174,35 +166,33 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         public MessageLog Message { get; }
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportPOST(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <returns></returns>
-        public ReceiptInfoBillPostModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new ReceiptInfoBillPostModel()
-            {
-                Id = line,
-                CollectionType = LibData.ByteSubString(source, 0, 8),
-                TradeDate = LibData.ByteSubString(source, 8, 7),
-                Branch = LibData.ByteSubString(source, 15, 6),
-                Channel = LibData.ByteSubString(source, 21, 4),
-                TradeSer = LibData.ByteSubString(source, 25, 7),
-                PN = LibData.ByteSubString(source, 32, 1),
-                Amount = LibData.ByteSubString(source, 33, 11),
-                CompareCode = LibData.ByteSubString(source, 44, 24),
-                Empty = LibData.ByteSubString(source, 68, 42),
-                ImportBatchNo = importBatchNo,
-                Source = source
-            };
-        }
         #endregion
         #region Implement
         /// <summary>
@@ -212,9 +202,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
+            string strRow; int line = 0;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -236,7 +225,7 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"POST{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new ReceiptInfoBillPostModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
         /// <summary>
@@ -257,15 +246,21 @@ namespace SKGPortalCore.Schedule.Import
             }
             repo.CommitData(FuncAction.Create);
         }
-
-        void IImportData.MoveToSuccessFolder()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }
@@ -287,39 +282,33 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         public MessageLog Message { get; }
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKET(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <returns></returns>
-        public ReceiptInfoBillMarketModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new ReceiptInfoBillMarketModel()
-            {
-                Id = line,
-                Idx = LibData.ByteSubString(source, 0, 1),
-                CollectionType = LibData.ByteSubString(source, 1, 8),
-                Channel = LibData.ByteSubString(source, 9, 8),
-                Store = LibData.ByteSubString(source, 17, 8),
-                TransAccount = LibData.ByteSubString(source, 25, 14),
-                TransType = LibData.ByteSubString(source, 39, 3),
-                PayStatus = LibData.ByteSubString(source, 42, 2),
-                AccountingDay = LibData.ByteSubString(source, 44, 8),
-                PayDate = LibData.ByteSubString(source, 52, 8),
-                Barcode1 = LibData.ByteSubString(source, 60, 9),
-                Barcode2 = LibData.ByteSubString(source, 69, 20),
-                Barcode3 = LibData.ByteSubString(source, 89, 15),
-                Empty = LibData.ByteSubString(source, 104, 16),
-                ImportBatchNo = importBatchNo,
-                Source = source,
-            };
-        }
         #endregion
         #region Implement
         /// <summary>
@@ -329,9 +318,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
+            int line = 0; string strRow;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -362,7 +350,7 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new ReceiptInfoBillMarketModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
         /// <summary>
@@ -383,15 +371,21 @@ namespace SKGPortalCore.Schedule.Import
             }
             repo.CommitData(FuncAction.Create);
         }
-
-        void IImportData.MoveToSuccessFolder()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }
@@ -413,38 +407,33 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         public MessageLog Message { get; }
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportMARKETSPI(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <returns></returns>
-        public ReceiptInfoBillMarketSPIModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new ReceiptInfoBillMarketSPIModel()
-            {
-                Id = line,
-                Idx = LibData.ByteSubString(source, 0, 1),
-                Channel = LibData.ByteSubString(source, 1, 8),
-                ISC = LibData.ByteSubString(source, 9, 8),
-                TransDate = LibData.ByteSubString(source, 17, 8),
-                PayDate = LibData.ByteSubString(source, 25, 8),
-                Barcode2 = LibData.ByteSubString(source, 33, 16),
-                Barcode3_Date = LibData.ByteSubString(source, 49, 4),
-                Barcode3_CompareCode = LibData.ByteSubString(source, 53, 2),
-                Barcode3_Amount = LibData.ByteSubString(source, 55, 9),
-                Empty1 = LibData.ByteSubString(source, 64, 18),
-                Store = LibData.ByteSubString(source, 82, 6),
-                Empty2 = LibData.ByteSubString(source, 88, 32),
-                ImportBatchNo = importBatchNo,
-                Source = source,
-            };
-        }
         #endregion
         #region Implement
         /// <summary>
@@ -454,9 +443,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
+            int line = 0; string strRow;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -487,7 +475,7 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new ReceiptInfoBillMarketSPIModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
         /// <summary>
@@ -508,15 +496,21 @@ namespace SKGPortalCore.Schedule.Import
             }
             repo.CommitData(FuncAction.Create);
         }
-
-        void IImportData.MoveToSuccessFolder()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }
@@ -538,39 +532,33 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         public MessageLog Message { get; }
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public ReceiptInfoImportFARM(ApplicationDbContext dataAccess) { DataAccess = dataAccess; }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <returns></returns>
-        public ReceiptInfoBillFarmModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new ReceiptInfoBillFarmModel()
-            {
-                Id = line,
-                Idx = LibData.ByteSubString(source, 0, 1),
-                CollectionType = LibData.ByteSubString(source, 1, 8),
-                Channel = LibData.ByteSubString(source, 9, 8),
-                Store = LibData.ByteSubString(source, 17, 8),
-                TransAccount = LibData.ByteSubString(source, 25, 14),
-                TransType = LibData.ByteSubString(source, 39, 3),
-                PayStatus = LibData.ByteSubString(source, 42, 2),
-                AccountingDay = LibData.ByteSubString(source, 44, 8),
-                PayDate = LibData.ByteSubString(source, 52, 8),
-                Barcode1 = LibData.ByteSubString(source, 60, 9),
-                Barcode2 = LibData.ByteSubString(source, 69, 20),
-                Barcode3 = LibData.ByteSubString(source, 89, 15),
-                Empty = LibData.ByteSubString(source, 104, 16),
-                ImportBatchNo = importBatchNo,
-                Source = source,
-            };
-        }
         #endregion
         #region Implement
         /// <summary>
@@ -580,9 +568,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 0;
+            int line = 0; string strRow;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -613,7 +600,7 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"FARM{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new ReceiptInfoBillFarmModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
         /// <summary>
@@ -634,15 +621,21 @@ namespace SKGPortalCore.Schedule.Import
             }
             repo.CommitData(FuncAction.Create);
         }
-
-        void IImportData.MoveToSuccessFolder()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }

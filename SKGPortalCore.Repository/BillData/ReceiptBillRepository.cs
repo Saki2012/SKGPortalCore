@@ -6,19 +6,29 @@ using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.BillData
 {
     /// <summary>
     /// 收款單庫
     /// </summary>
+    [ProgId("ReceiptBill"), Description("收款單")]
     public class ReceiptBillRepository : BasicRepository<ReceiptBillSet>
     {
         #region Construct
         public ReceiptBillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
-            User =  SystemOperator.SysOperator;
+            SetFlowNo = new Action<ReceiptBillSet>(p =>
+            {
+                if (p.ReceiptBill.BillNo.IsNullOrEmpty())
+                {
+                    string billNo = $"Rec{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    p.ReceiptBill.BillNo = billNo;
+                }
+            });
         }
         #endregion
 
@@ -28,8 +38,6 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterSetEntity(set, action);
             using BizReceiptBill biz = new BizReceiptBill(Message, DataAccess);
             biz.SetData(set, action);
-
-
             InsertBillReceiptDetail(set.ReceiptBill.BillNo, set.ReceiptBill.ToBillNo);
             InsertChannelEAccount(biz, set);
         }
@@ -67,9 +75,9 @@ namespace SKGPortalCore.Repository.BillData
             if (billNo.IsNullOrEmpty()) return;
             using BillRepository rep = new BillRepository(DataAccess);
             BillSet billSet = rep.QueryData(new object[] { billNo });
-            if (null == billSet) { /*add Message:查無帳單*/return; }
+            if (null == billSet) { return; }
             BillReceiptDetailModel receiptDetail = billSet.BillReceiptDetail.FirstOrDefault(p => p.BillNo == billNo && p.ReceiptBillNo == receiptBillNo);
-            if (null == receiptDetail) { /*add Message 已無存在*/return; }
+            if (null == receiptDetail) { return; }
             receiptDetail.RowState = RowState.Delete;
             rep.Update(billSet);
         }

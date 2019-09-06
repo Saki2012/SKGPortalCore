@@ -23,34 +23,33 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         private const int StrLen = 128;
+        /// <summary>
+        /// 原檔案存放位置
+        /// </summary>
+        private const string srcPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ACCFTT\";
+        /// <summary>
+        /// 成功檔案存放位置
+        /// </summary>
+        private const string successPath = @"D:\iBankRoot\Ftp_SKGPortalCore\SuccessFolder\ACCFTT\";
+        /// <summary>
+        /// 失敗檔案存放位置
+        /// </summary>
+        private const string failPath = @"D:\iBankRoot\Ftp_SKGPortalCore\ErrorFolder\ACCFTT\";
+        /// <summary>
+        /// 原資料
+        /// </summary>
+        private string SrcFile { get { return $"{srcPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        /// <summary>
+        /// 成功資料
+        /// </summary>
+        private string SuccFile { get { return $"{successPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        /// <summary>
+        /// 失敗資料
+        /// </summary>
+        private string FailFile { get { return $"{failPath}ACCFTT.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
         #endregion
         #region Construct
         public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; Message = new MessageLog(SystemOperator.SysOperator); }
-        #endregion
-        #region Public
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="importBatchNo"></param>
-        /// <param name="now"></param>
-        /// <returns></returns>
-        public RemitInfoModel AnalyzeSource(int line, string source, string importBatchNo)
-        {
-            return new RemitInfoModel()
-            {
-                Id = line,
-                RemitDate = LibData.ByteSubString(source, 0, 8),
-                RemitTime = LibData.ByteSubString(source, 8, 6),
-                Channel = LibData.ByteSubString(source, 14, 2),
-                CollectionType = LibData.ByteSubString(source, 16, 3),
-                Amount = LibData.ByteSubString(source, 19, 11),
-                BatchNo = LibData.ByteSubString(source, 30, 2),
-                Empty = LibData.ByteSubString(source, 32, 96),
-                ImportBatchNo = importBatchNo,
-                Source = source
-            };
-        }
         #endregion
         #region Implement
         /// <summary>
@@ -60,9 +59,8 @@ namespace SKGPortalCore.Schedule.Import
         Dictionary<int, string> IImportData.ReadFile()
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
-            string filePath = "", strRow;
-            using StreamReader sr = new StreamReader(filePath, Encoding.GetEncoding(950));
-            int line = 1;
+            string strRow; int line = 1;
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
@@ -93,10 +91,9 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"RT{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
-                result.Add(AnalyzeSource(line, sources[line], importBatchNo));
+                result.Add(new RemitInfoModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             return result;
         }
-
         /// <summary>
         /// 新增繳款資訊
         /// </summary>
@@ -113,15 +110,21 @@ namespace SKGPortalCore.Schedule.Import
             }
             repo.CommitData(FuncAction.Create);
         }
-
-        void IImportData.MoveToSuccessFolder()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isSuccess"></param>
+        void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            throw new NotImplementedException();
-        }
-
-        void IImportData.MoveToFailFolder()
-        {
-            throw new NotImplementedException();
+            if (File.Exists(SrcFile))
+            {
+                string file;
+                do
+                {
+                    file = isSuccess ? SuccFile : FailFile;
+                } while (File.Exists(file));
+                File.Move(SrcFile, file);
+            }
         }
         #endregion
     }
