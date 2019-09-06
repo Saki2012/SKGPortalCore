@@ -10,6 +10,9 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Data
 {
+    /// <summary>
+    /// 訊息紀錄
+    /// </summary>
     public class MessageLog
     {
         #region Property

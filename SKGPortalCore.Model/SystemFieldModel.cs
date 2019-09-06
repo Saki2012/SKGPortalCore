@@ -146,9 +146,9 @@ namespace SKGPortalCore.Model
 
     }
     /// <summary>
-    /// 流水號表
+    /// 編碼規則表
     /// </summary>
-    [Description("流水號表")]
+    [Description("編碼規則表")]
     public class DataFlowNo
     {
         /// <summary>

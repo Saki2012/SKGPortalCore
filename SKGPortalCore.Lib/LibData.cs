@@ -103,6 +103,7 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static bool IsNullOrEmpty(this object val)
         {
+            if (null == val) return true;
             return val.GetType() switch
             {
                 Type type when type == typeof(string) => string.IsNullOrEmpty(val.ToString()),
@@ -215,7 +216,6 @@ namespace SKGPortalCore.Lib
         {
             string[] strsDate = datetime.AddYears(-1911).ToString("yyy/MM/dd").Split('/');
             return $"{strsDate[0]}{strsDate[1]}{strsDate[2]}";
-
         }
         /// <summary>
         /// 轉換為yyyy/MM/dd

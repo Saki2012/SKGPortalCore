@@ -46,7 +46,7 @@ namespace SKGPortalCore.Lib
 
             return Expression.Lambda<Func<object, string, object>>(methodBody, instance, memberName).Compile();
         }
-        public Action<object, string, object> GenerateSetValue(Type type)
+        private Action<object, string, object> GenerateSetValue(Type type)
         {
             var instance = Expression.Parameter(typeof(object), "instance");
             var memberName = Expression.Parameter(typeof(string), "memberName");

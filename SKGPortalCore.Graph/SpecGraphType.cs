@@ -121,7 +121,7 @@ namespace SKGPortalCore.Graph
                     string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     TSet set = context.GetArgument<TSet>("set");
                     Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(repo.GetPKVals(set)), ResxManage.GetDescription(FuncAction.Create));
+                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, "", ResxManage.GetDescription(FuncAction.Create));
                     if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Create))
                     {
                         repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Create));

@@ -46,14 +46,23 @@ namespace SKGPortalCore.Repository
                         DataAccess.Add(dataFlowNo);
                     }
                 }
-                if (dataFlowNo.FlowDate != DateTime.Today)
+                else
                 {
-                    dataFlowNo.FlowDate = DateTime.Today;
-                    dataFlowNo.FlowNo = 0;
+                    if (dataFlowNo.FlowDate != DateTime.Today)
+                    {
+                        dataFlowNo.FlowDate = DateTime.Today;
+                        dataFlowNo.FlowNo = 0;
+                    }
+                    DataAccess.Update(dataFlowNo);
                 }
                 return dataFlowNo;
             }
+            set { dataFlowNo = null; }
         }
+        /// <summary>
+        /// 設置編碼規則
+        /// </summary>
+        protected Action<TSet> SetFlowNo { get; set; }
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -71,6 +80,7 @@ namespace SKGPortalCore.Repository
         {
             try
             {
+                SetFlowNo?.Invoke(set);
                 dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetCreateInfo(masterData);
                 DoCreate(set);
@@ -324,14 +334,21 @@ namespace SKGPortalCore.Repository
             {
                 dynamic entity = Reflect.GetValue(set, props.Name);
                 if (null == entity) continue;
-                if (entity is IEnumerable) { DataAccess.AddRange(entity); }
-                else { DataAccess.Add(entity); }
+                if (entity is IEnumerable)
+                {
+                    foreach (dynamic ety in entity)
+                    {
+                        DataAccess.Add(ety);
+                        SetRefModel(ety);
+                    }
+                }
+                else
+                {
+                    DataAccess.Add(entity);
+                    SetRefModel(entity);
+                }
             }
         }
-        /// <summary>
-        /// 處理修改動作
-        /// </summary>
-        /// <param name="set"></param>
         private void DoUpdate(TSet set, out TSet curSet)
         {
             curSet = default;
@@ -390,6 +407,10 @@ namespace SKGPortalCore.Repository
             model.ModifyStaff = User.KeyId;
             model.ModifyTime = now;
         }
+        /// <summary>
+        /// 處理修改動作
+        /// </summary>
+        /// <param name="set"></param>
         /// <summary>
         /// 設置修改時使用者資料
         /// </summary>
