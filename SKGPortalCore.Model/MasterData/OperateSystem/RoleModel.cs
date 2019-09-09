@@ -40,7 +40,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 前/後台
         /// </summary>
-        [Description("前/後台")]
+        [Description("前/後台"),Key]
         public EndType EndType { get; set; }
         /// <summary>
         /// 是否為管理者
@@ -59,13 +59,18 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// </summary>
     public class RolePermissionModel:DetailRowState
     {
-        [ForeignKey("RoleId")]
+        [ForeignKey("RoleId,EndType")]
         public RoleModel Role { get; set; }
         /// <summary>
         /// 角色權限代號
         /// </summary>
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
+        /// <summary>
+        /// 前/後台
+        /// </summary>
+        [Description("前/後台"), Key]
+        public EndType EndType { get; set; }
         /// <summary>
         /// 序號
         /// </summary>

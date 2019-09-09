@@ -60,18 +60,23 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// 後臺使用者角色權限清單
     /// </summary>
     [Description("後臺使用者角色權限清單")]
-    public class BackendUserRoleModel :  DetailRowState,IRoleModel
+    public class BackendUserRoleModel : DetailRowState, IRoleModel
     {
         public BackendUserModel Key { get; set; }
         [Key]
         public string KeyId { get; set; }
-        [ForeignKey("RoleId")]
+        [ForeignKey("RoleId,EndType")]
         public RoleModel Role { get; set; }
         /// <summary>
         /// 角色權限代號
         /// </summary>
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
+        /// <summary>
+        /// 前/後台
+        /// </summary>
+        [Description("前/後台")]
+        public EndType EndType { get; set; } = EndType.Backend;
         [NotMapped]
         public List<RolePermissionModel> Permissions { get; set; }
     }

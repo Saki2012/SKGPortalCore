@@ -123,7 +123,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
             using BizReceiptInfoBillBANK biz = new BizReceiptInfoBillBANK(Message);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { Message = Message };
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
             foreach (var model in models)
             {
                 biz.CheckData(model);
@@ -244,7 +244,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillPostModel> models = modelSources as List<ReceiptInfoBillPostModel>;
             using BizReceiptInfoBillPOST biz = new BizReceiptInfoBillPOST(Message);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
             foreach (var model in models)
             {
                 biz.CheckData(model);
@@ -373,7 +373,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillMarketModel> models = modelSources as List<ReceiptInfoBillMarketModel>;
             using BizReceiptInfoBillMARKET biz = new BizReceiptInfoBillMARKET(Message);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) {User= SystemOperator.SysOperator };
             foreach (var model in models)
             {
                 biz.CheckData(model);
@@ -502,7 +502,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillMarketSPIModel> models = modelSources as List<ReceiptInfoBillMarketSPIModel>;
             using BizReceiptInfoBillMARKETSPI biz = new BizReceiptInfoBillMARKETSPI(Message);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) {User= SystemOperator.SysOperator };
             foreach (var model in models)
             {
                 biz.CheckData(model);
@@ -631,7 +631,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillFarmModel> models = modelSources as List<ReceiptInfoBillFarmModel>;
             using BizReceiptInfoBillFARM biz = new BizReceiptInfoBillFARM(Message);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess);
+            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) {User= SystemOperator.SysOperator };
             foreach (var model in models)
             {
                 biz.CheckData(model);

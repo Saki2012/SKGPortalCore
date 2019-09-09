@@ -19,8 +19,7 @@ namespace SKGPortalCore.Repository.Func
             string key = $"{customerId},{userId}";
             Func<CustUserModel, bool> where1 = new Func<CustUserModel, bool>(p => p.KeyId == key);
             Func<CustUserRoleModel, bool> where2 = new Func<CustUserRoleModel, bool>(p => p.KeyId == key);
-            var UserRoles = DataAccess.Set<CustUserRoleModel>().Include(p => p.Role).ThenInclude(role => role.Permissions)
-                .Where(where2).ToList();
+            var UserRoles = DataAccess.Set<CustUserRoleModel>().Include(p => p.Role).ThenInclude(role => role.Permissions).Where(where2).ToList();
             CustUserSet user = new CustUserSet() { User = DataAccess.Set<CustUserModel>().Find(key), UserRoles = UserRoles };
             if (!AccountLogin.CheckAccountPasuwado(user, pasuwado)) return null;
             return user;

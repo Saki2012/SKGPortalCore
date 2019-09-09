@@ -106,7 +106,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<RemitInfoModel> srcs = modelSources as List<RemitInfoModel>;
             using BizRemitInfo biz = new BizRemitInfo(Message);
-            using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess);
+            using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess) { User = SystemOperator.SysOperator };
             foreach (var model in srcs)
             {
                 CashFlowBillSet set = biz.GetCashFlowBillSet(model);

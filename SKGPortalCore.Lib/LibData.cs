@@ -67,36 +67,6 @@ namespace SKGPortalCore.Lib
             return result;
         }
         /// <summary>
-        /// 組合In語句
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fieldName"></param>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static string DataIn<T>(string fieldName, IList<T> list)
-        {
-            string result = string.Empty;
-            if (null == list && list.Count == 0) { return result; }
-            else if (list.Count == 1)
-            {
-                result = $"{fieldName}={list[0].Quote()}";
-            }
-            else if (list.Count > 250)
-            {
-                //In語句若超過250則要有狀況或提示
-            }
-            else
-            {
-                string[] arr = new string[list.Count];
-                for (int i = 0; i < list.Count; i++)
-                {
-                    arr[i] = list[i].Quote();
-                }
-                result = $"{fieldName} In ({Merge(",", true, arr)})";
-            }
-            return result;
-        }
-        /// <summary>
         /// 字串是否為空
         /// </summary>
         /// <param name="val"></param>
@@ -169,6 +139,20 @@ namespace SKGPortalCore.Lib
         public static bool IsNumberString(this string str)
         {
             return Regex.IsMatch(str, "^[0-9]*$");
+        }
+        /// <summary>
+        /// 包含資料
+        /// </summary>
+        /// <param name="val"></param>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        public static bool In(this object val, params dynamic[] elements)
+        {
+            foreach (dynamic element in elements)
+            {
+                if (element.GetType() == val.GetType() && string.Compare(element.ToString(), val.ToString()) == 0) return true;
+            }
+            return false;
         }
         /// Convert
         public static short ToInt16(this object val)

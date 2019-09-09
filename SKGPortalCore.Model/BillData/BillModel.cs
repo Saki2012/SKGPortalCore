@@ -1,10 +1,9 @@
-﻿using SKGPortalCore.Model;
-using SKGPortalCore.Model.MasterData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SKGPortalCore.Model.MasterData;
 
 namespace SKGPortalCore.Model.BillData
 {

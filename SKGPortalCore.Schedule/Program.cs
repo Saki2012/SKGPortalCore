@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
 using SKGPortalCore.Data;
 using SKGPortalCore.Schedule.Import;
 
