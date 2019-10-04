@@ -52,13 +52,18 @@ namespace SKGPortalCore.Data
         }
         #endregion
         #region Public
+        /// <summary>
+        /// 添加自定義錯誤訊息
+        /// </summary>
+        /// <param name="messageCode"></param>
+        /// <param name="args"></param>
         public void AddErrorMessage(MessageCode messageCode, params object[] args)
         {
             var err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
         }
         /// <summary>
-        /// 獲取異常狀況
+        /// 添加異常狀況
         /// </summary>
         /// <param name="ex"></param>
         public void AddExceptionError(Exception ex)

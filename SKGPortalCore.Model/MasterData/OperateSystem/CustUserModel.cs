@@ -76,17 +76,12 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         public CustUserModel Key { get; set; }
         [Description, Key]
         public string KeyId { get; set; }
-        [ForeignKey("RoleId,EndType")]
+        [ForeignKey("RoleId")]
         public RoleModel Role { get; set; }
         /// <summary>
         /// 角色權限代號
         /// </summary>
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
-        /// <summary>
-        /// 前/後台
-        /// </summary>
-        [Description("前/後台")]
-        public EndType EndType { get; set; } = EndType.Frontend;
     }
 }

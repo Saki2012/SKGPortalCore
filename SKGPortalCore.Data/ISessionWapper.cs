@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
@@ -13,6 +14,7 @@ namespace SKGPortalCore.Data
         void Clear();
     }
     public interface ISessionWapper<T> : ISessionWapper where T : IUserModel { }
+    [Serializable]
     public class SessionWapper<T> : ISessionWapper<T>, ISessionWapper where T : IUserModel
     {
         private static readonly string _userKey = "session.user";

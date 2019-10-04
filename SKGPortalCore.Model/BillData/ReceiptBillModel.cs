@@ -142,5 +142,15 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("來源")]
         public string Source { get; set; }
+        /// <summary>
+        /// 異常資料
+        /// </summary>
+        [Description("異常資料")]
+        public bool ErrData { get; set; }
+        /// <summary>
+        /// 異常訊息
+        /// </summary>
+        [Description("異常訊息")]
+        public string ErrMessage { get; set; }
     }
 }

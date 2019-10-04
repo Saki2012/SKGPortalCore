@@ -6,6 +6,10 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj" />
     <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />

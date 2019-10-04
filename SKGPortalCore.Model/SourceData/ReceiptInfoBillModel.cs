@@ -49,7 +49,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 7. 摘要(10)
         /// </summary>
         [Description("摘要"), MaxLength(10)]
-        public string Summary { get { return _Summary; } set { _Summary = value.PadLeft(10, '0').ByteSubString(0, 10); } }
+        public string Summary { get { return _Summary; } set { _Summary = value.PadRight(10, ' ').ByteSubString(0, 10); } }
         /// <summary>
         /// 8. 代理行(4)
         /// </summary>
@@ -347,7 +347,7 @@ namespace SKGPortalCore.Model.SourceData
         [Description("保留欄位1"), MaxLength(18)]
         public string Empty1 { get { return _Empty1; } set { _Empty1 = value.PadLeft(18, '0').ByteSubString(0, 18); } }
         /// <summary>
-        /// 代收門市
+        /// 代收門市(6)
         /// </summary>
         [Description("代收門市"), MaxLength(6)]
         public string Store { get { return _Store; } set { _Store = value.PadLeft(6, '0').ByteSubString(0, 6); } }

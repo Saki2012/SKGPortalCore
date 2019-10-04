@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,7 +26,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 後臺使用者資料
     /// </summary>
-    [Description("後臺使用者資料")]
+    [Description("後臺使用者資料"), Serializable]
     public class BackendUserModel : MasterDataModel, IUserModel
     {
         [Key]
@@ -65,18 +66,13 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         public BackendUserModel Key { get; set; }
         [Key]
         public string KeyId { get; set; }
-        [ForeignKey("RoleId,EndType")]
+        [ForeignKey("RoleId")]
         public RoleModel Role { get; set; }
         /// <summary>
         /// 角色權限代號
         /// </summary>
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
-        /// <summary>
-        /// 前/後台
-        /// </summary>
-        [Description("前/後台")]
-        public EndType EndType { get; set; } = EndType.Backend;
         [NotMapped]
         public List<RolePermissionModel> Permissions { get; set; }
     }

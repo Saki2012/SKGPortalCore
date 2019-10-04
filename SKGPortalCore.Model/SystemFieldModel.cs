@@ -19,6 +19,7 @@ namespace SKGPortalCore.Model
     /// <summary>
     /// (主資料)系統欄位
     /// </summary>
+    [Serializable]
     public class MasterDataModel : BasicDataModel
     {
         /// <summary>
@@ -30,6 +31,7 @@ namespace SKGPortalCore.Model
     /// <summary>
     /// 基本系統欄位
     /// </summary>
+    [Serializable]
     public class BasicDataModel
     {
         /// <summary>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using GraphQL;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Schedule.Import
 {
@@ -21,7 +20,6 @@ namespace SKGPortalCore.Schedule.Import
         /// 
         /// </summary>
         public ApplicationDbContext DataAccess { get; }
-
         /// <summary>
         /// 執行資訊流導入
         /// </summary>

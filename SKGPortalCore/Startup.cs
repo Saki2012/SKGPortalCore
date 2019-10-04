@@ -20,15 +20,14 @@ namespace SKGPortalCore
 {
     public class Startup
     {
-        #region Property & Construct
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        #region Property
         public IConfiguration Configuration { get; }
         #endregion
+
+        #region Construct
+        public Startup(IConfiguration configuration) { Configuration = configuration; }
+        #endregion
+
         #region Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -49,12 +48,13 @@ namespace SKGPortalCore
                     p.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 }).
             SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
             services.AddSession(options =>
-            {
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                options.Cookie.Name = "YouKnowDaWaeOfDevil";
-                options.IdleTimeout = TimeSpan.FromMinutes(20);
-            });
+             {
+                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                 options.Cookie.Name = "YouKnowDaWaeOfDevil";
+                 options.IdleTimeout = TimeSpan.FromMinutes(20);
+             });
 #if BackEnd
             services.AddSingleton<ISessionWapper, SessionWapper<BackendUserModel>>();
 #else
@@ -95,6 +95,7 @@ namespace SKGPortalCore
             });
         }
         #endregion
+
         #region Private
         /// <summary>
         /// 注入Repository

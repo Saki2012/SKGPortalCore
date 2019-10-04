@@ -59,7 +59,7 @@ namespace SKGPortalCore.Repository.BillData
         private void InsertBillReceiptDetail(string receiptBillNo, string billNo)
         {
             if (billNo.IsNullOrEmpty()) return;
-            using BillRepository rep = new BillRepository(DataAccess);
+            using BillRepository rep = new BillRepository(DataAccess) { User = User };
             BillSet billSet = rep.QueryData(new object[] { billNo });
             if (null == billSet) { /*add Message:查無帳單*/ return; }
             billSet.BillReceiptDetail.Add(new BillReceiptDetailModel() { BillNo = billNo, ReceiptBillNo = receiptBillNo, RowState = RowState.Insert });
@@ -73,7 +73,7 @@ namespace SKGPortalCore.Repository.BillData
         private void RemoveBillReceiptDetail(string receiptBillNo, string billNo)
         {
             if (billNo.IsNullOrEmpty()) return;
-            using BillRepository rep = new BillRepository(DataAccess);
+            using BillRepository rep = new BillRepository(DataAccess) { User = User };
             BillSet billSet = rep.QueryData(new object[] { billNo });
             if (null == billSet) { return; }
             BillReceiptDetailModel receiptDetail = billSet.BillReceiptDetail.FirstOrDefault(p => p.BillNo == billNo && p.ReceiptBillNo == receiptBillNo);
@@ -87,7 +87,7 @@ namespace SKGPortalCore.Repository.BillData
         private void InsertChannelEAccount(BizReceiptBill biz, ReceiptBillSet set)
         {
             if (set.ReceiptBill.RemitDate == DateTime.MinValue) return;
-            using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess);
+            using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess) { User = User };
             if (DataAccess.Set<ChannelEAccountBillModel>().Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)
             {
                 var accountSet = biz.CreateChannelEAccountBill(set.ReceiptBill);
@@ -106,7 +106,7 @@ namespace SKGPortalCore.Repository.BillData
         /// </summary>
         private void RemoveChannelEAccount()
         {
-            using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess);
+            using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess) { User = User };
 
         }
         #endregion

@@ -35,6 +35,8 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("通路手續費清算方式")]
         public ChargePayType ChargePayType { get; set; }
+        
+        public int Fuckyou { get; set; }
     }
     /// <summary>
     /// 代收類別費率明細

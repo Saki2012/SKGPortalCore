@@ -340,13 +340,13 @@ namespace SKGPortalCore.Graph
         internal static void SetDebugUser(BasicRepository<TSet> repo, ResolveFieldContext<object> context, string progId)
         {
 #if DEBUG
-            //repo.User = SystemOperator.SysOperator;
-            using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
-            AccountRepository accountRepository = new AccountRepository(dataAccess);
-            CustUserSet userSet = accountRepository.Login("80425514", "admin", "123456");
-            repo.User = userSet.User;
-            Dictionary<string, string> permissions = AccountLogin.GetRolePermissionsToken(((ISessionWapper)context.UserContext).SessionId, userSet.UserRoles);
-            context.Arguments["jwt"] = permissions[progId];
+            repo.User = SystemOperator.SysOperator;
+            //using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
+            //AccountRepository accountRepository = new AccountRepository(dataAccess);
+            //CustUserSet userSet = accountRepository.Login("80425514", "admin", "123456");
+            //repo.User = userSet.User;
+            //Dictionary<string, string> permissions = AccountLogin.GetRolePermissionsToken(((ISessionWapper)context.UserContext).SessionId, userSet.UserRoles);
+            //context.Arguments["jwt"] = permissions[progId];
 #endif
         }
 

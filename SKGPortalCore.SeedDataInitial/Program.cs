@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -32,14 +34,14 @@ namespace SKGPortalCore.SeedDataInitial
                 CreateImportData(out List<ACCFTT> accftts, out List<ReceiptInfoBillBankModel> banks, out List<ReceiptInfoBillPostModel> posts, out List<ReceiptInfoBillMarketModel> marts, out List<ReceiptInfoBillMarketSPIModel> martSPIs, out List<ReceiptInfoBillFarmModel> farms, out List<RemitInfoModel> rts);
                 //資料
                 CreateRole(dataAccess);
-                CreateChannel(dataAccess);
-                CreateCollectionType(dataAccess);
+                CreateChannel(dataAccess);//OK
+                CreateCollectionType(dataAccess);//OK
                 CreateBizCustInfo(dataAccess, accftts);
                 CreatePayer(dataAccess);
                 CreateBillTerm(dataAccess);
                 //單據
                 CreateBill(dataAccess);
-                CreateReceiptBill(dataAccess);
+                CreateReceiptBill(dataAccess, banks, posts, marts, martSPIs, farms);
 
                 dataAccess.BulkSaveChanges();
             }
@@ -52,7 +54,7 @@ namespace SKGPortalCore.SeedDataInitial
                 Message.WriteLogTxt();
             }
         }
-        public static void CreateImportData(out List<ACCFTT> accftts, out List<ReceiptInfoBillBankModel> banks, out List<ReceiptInfoBillPostModel> posts, out List<ReceiptInfoBillMarketModel> marts, out List<ReceiptInfoBillMarketSPIModel> martSPIs, out List<ReceiptInfoBillFarmModel> farms, out List<RemitInfoModel> rts)
+        private static void CreateImportData(out List<ACCFTT> accftts, out List<ReceiptInfoBillBankModel> banks, out List<ReceiptInfoBillPostModel> posts, out List<ReceiptInfoBillMarketModel> marts, out List<ReceiptInfoBillMarketSPIModel> martSPIs, out List<ReceiptInfoBillFarmModel> farms, out List<RemitInfoModel> rts)
         {
             accftts = new List<ACCFTT>(); banks = new List<ReceiptInfoBillBankModel>(); posts = new List<ReceiptInfoBillPostModel>(); marts = new List<ReceiptInfoBillMarketModel>(); martSPIs = new List<ReceiptInfoBillMarketSPIModel>(); farms = new List<ReceiptInfoBillFarmModel>(); rts = new List<RemitInfoModel>();
             try
@@ -84,8 +86,8 @@ namespace SKGPortalCore.SeedDataInitial
                 Message.Prefix = "新增「角色權限」-初始資料：";
                 using RoleRepository repo = new RoleRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message }; ;
                 var roles = new List<RoleSet>() {
-                    new RoleSet() { Role = new RoleModel() { RoleId = "admin", RoleName = "管理員", EndType = EndType.Frontend, IsAdmin = true } },
-                    new RoleSet() { Role = new RoleModel() { RoleId = "admin", RoleName = "管理員", EndType = EndType.Backend, IsAdmin = true } },
+                    new RoleSet() { Role = new RoleModel() { RoleId = "BackEndAdmin", RoleName = "管理員", EndType = EndType.Frontend, IsAdmin = true } },
+                    new RoleSet() { Role = new RoleModel() { RoleId = "FrontEndAdmin", RoleName = "管理員", EndType = EndType.Backend, IsAdmin = true } },
                  };
                 foreach (var role in roles)
                 {
@@ -287,13 +289,63 @@ namespace SKGPortalCore.SeedDataInitial
             }
         }
         /// <summary>
-        /// 新增「收款單(自收款)」-初始資料
+        /// 新增「收款單」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        private static void CreateReceiptBill(ApplicationDbContext dataAccess)
+        private static void CreateReceiptBill(ApplicationDbContext dataAccess, List<ReceiptInfoBillBankModel> banks,
+            List<ReceiptInfoBillPostModel> posts, List<ReceiptInfoBillMarketModel> marts,
+            List<ReceiptInfoBillMarketSPIModel> martSPIs, List<ReceiptInfoBillFarmModel> farms)
         {
-            using BillRepository repo = new BillRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message };
+            using BizReceiptInfoBillBANK bizBank = new BizReceiptInfoBillBANK(Message, dataAccess);
+            using ReceiptBillRepository repoBank = new ReceiptBillRepository(dataAccess) { Message = Message, User = SystemOperator.SysOperator };
+            foreach (var model in banks)
+            {
+                bizBank.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(dataAccess, Message, model.CompareCode, out string compareCodeForCheck);
+                bizBank.GetCollectionTypeSet("Bank999", model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                ReceiptBillSet set = bizBank.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck);
+                repoBank.Create(set);
+            }
 
+            using BizReceiptInfoBillPOST bizPost = new BizReceiptInfoBillPOST(Message, dataAccess);
+            using ReceiptBillRepository repoPost = new ReceiptBillRepository(dataAccess) { Message = Message, User = SystemOperator.SysOperator };
+            foreach (var model in posts)
+            {
+                bizPost.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(dataAccess, Message, model.CompareCode.Substring(7).TrimStart('0'), out string compareCodeForCheck);
+                bizPost.GetCollectionTypeSet(model.CollectionType, model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repoPost.Create(bizPost.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
+
+            using BizReceiptInfoBillMARKET bizMARKET = new BizReceiptInfoBillMARKET(Message, dataAccess);
+            using ReceiptBillRepository repoMARKET = new ReceiptBillRepository(dataAccess) { User = SystemOperator.SysOperator };
+            foreach (var model in marts)
+            {
+                bizMARKET.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(dataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                bizMARKET.GetCollectionTypeSet(model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repoMARKET.Create(bizMARKET.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
+
+            using BizReceiptInfoBillMARKETSPI bizMARKETSPI = new BizReceiptInfoBillMARKETSPI(Message, dataAccess);
+            using ReceiptBillRepository repoMARKETSPI = new ReceiptBillRepository(dataAccess) { User = SystemOperator.SysOperator };
+            foreach (var model in martSPIs)
+            {
+                bizMARKETSPI.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(dataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                bizMARKETSPI.GetCollectionTypeSet(model.ISC.Trim(), model.Channel, model.Barcode3_Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repoMARKETSPI.Create(bizMARKETSPI.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
+
+            using BizReceiptInfoBillFARM bizFARM = new BizReceiptInfoBillFARM(Message, dataAccess);
+            using ReceiptBillRepository repoFARM = new ReceiptBillRepository(dataAccess) { User = SystemOperator.SysOperator };
+            foreach (var model in farms)
+            {
+                bizFARM.CheckData(model);
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(dataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                bizFARM.GetCollectionTypeSet(model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
+                repoFARM.Create(bizFARM.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+            }
         }
         #endregion
 
@@ -323,12 +375,12 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<ReceiptInfoBillBankModel> ReceiptInfoBankData()
         {
             List<ReceiptInfoBillBankModel> banks = new List<ReceiptInfoBillBankModel>() {
-                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
-                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
-                new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
+                new ReceiptInfoBillBankModel() { RealAccount="770259918032",  TradeDate="20190910",  TradeTime="000000",  CompareCode="7891237419638525",  PN="+",  Amount="5000",  Summary="銀行通路",  Branch="0499",  TradeChannel="SA",  Channel="00",  ChangeDate="20190910",  BizDate="20190910",  Serial="000001",  CustomerCode="33458902",  Fee="000",  Empty=""  },
+                //new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
+                //new ReceiptInfoBillBankModel() { RealAccount="",  TradeDate="",  TradeTime="",  CompareCode="",  PN="",  Amount="",  Summary="",  Branch="",  TradeChannel="",  Channel="",  ChangeDate="",  BizDate="",  Serial="",  CustomerCode="",  Fee="",  Empty="" },
             };
             bool err = false;
-            banks.ForEach(p => { if (p.Source != new ReceiptInfoBillBankModel() { Source = p.Source }.Source) { err = true; return; } });
+            banks.ForEach(p => { if (p.Source != new ReceiptInfoBillBankModel() { Source = p.Source }.Src) { err = true; return; } });
             if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-銀行Source拆分組合異常"); return null; }
             using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_BANK.{DateTime.Now.ToString("yyyyMMdd")}", false);
             banks.ForEach(p => sw.WriteLine(p.Source));
@@ -341,9 +393,9 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<ReceiptInfoBillPostModel> ReceiptInfoPostData()
         {
             List<ReceiptInfoBillPostModel> posts = new List<ReceiptInfoBillPostModel>() {
-                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty=""},
-                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
-                new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
+                new ReceiptInfoBillPostModel() { CollectionType="50084884", TradeDate="1080910", Branch="004596", Channel="05", TradeSer="0000001", PN="+", Amount="6000", CompareCode="500848848879",  Empty="" },
+                //new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
+                //new ReceiptInfoBillPostModel() { CollectionType="", TradeDate="", Branch="", Channel="", TradeSer="", PN="", Amount="", CompareCode="", Empty="" },
             };
             bool err = false;
             posts.ForEach(p => { if (p.Source != new ReceiptInfoBillPostModel() { Source = p.Source }.Source) { err = true; return; } });
@@ -359,9 +411,9 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<ReceiptInfoBillMarketModel> ReceiptInfoMarketData()
         {
             List<ReceiptInfoBillMarketModel> marts = new List<ReceiptInfoBillMarketModel>() {
-                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
-                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
-                new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+                new ReceiptInfoBillMarketModel() { Idx = "2", CollectionType = "6V1", Channel = "01", Store = "02048888", TransAccount = "77855941", TransType = "336", PayStatus = "21", AccountingDay = "20190910", PayDate = "20190910", Barcode1 = "89858", Barcode2 = "78494", Barcode3 = "963852",  Empty="" },
+                //new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+                //new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
             };
             bool err = false;
             marts.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketModel() { Source = p.Source }.Source) { err = true; return; } });
@@ -377,9 +429,9 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<ReceiptInfoBillMarketSPIModel> ReceiptInfoMarketSPIData()
         {
             List<ReceiptInfoBillMarketSPIModel> martSPIs = new List<ReceiptInfoBillMarketSPIModel>() {
-                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
-                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
-                new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
+                new ReceiptInfoBillMarketSPIModel() { Idx="2", Channel="01", ISC="I0O", TransDate="20190910", PayDate="20190910", Barcode2="3000585", Barcode3_Date="1004", Barcode3_CompareCode="3", Barcode3_Amount="1420", Empty1="", Store="030", Empty2=""},
+                //new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
+                //new ReceiptInfoBillMarketSPIModel() { Idx="", Channel="", ISC="", TransDate="", PayDate="", Barcode2="", Barcode3_Date="", Barcode3_CompareCode="", Barcode3_Amount="", Empty1="", Store="", Empty2=""},
             };
             bool err = false;
             martSPIs.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketSPIModel() { Source = p.Source }.Source) { err = true; return; } });
@@ -395,9 +447,9 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<ReceiptInfoBillFarmModel> ReceiptInfoFarmData()
         {
             List<ReceiptInfoBillFarmModel> farms = new List<ReceiptInfoBillFarmModel>() {
-                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
-                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
-                new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
+                new ReceiptInfoBillFarmModel() { Idx="2", CollectionType="6V1", Channel="05", Store="3", TransAccount="884212", TransType="1", PayStatus="1", AccountingDay="20190910", PayDate="20190910", Barcode1="85274", Barcode2="9639", Barcode3="789456",  Empty="" },
+                //new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
+                //new ReceiptInfoBillFarmModel() { Idx="", CollectionType="", Channel="", Store="", TransAccount="", TransType="", PayStatus="", AccountingDay="", PayDate="", Barcode1="", Barcode2="", Barcode3="", Empty=""},
             };
             bool err = false;
             farms.ForEach(p => { if (p.Source != new ReceiptInfoBillFarmModel() { Source = p.Source }.Source) { err = true; return; } });
@@ -413,9 +465,9 @@ namespace SKGPortalCore.SeedDataInitial
         private static List<RemitInfoModel> RemitInfoData()
         {
             List<RemitInfoModel> rts = new List<RemitInfoModel>() {
-                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
-                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
-                new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo="", Empty="" },
+                new RemitInfoModel() { RemitDate="20190910", RemitTime="145833", Channel="03", CollectionType="6V1", Amount="90000", BatchNo="03030",  Empty=""  },
+                //new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo=""},
+                //new RemitInfoModel() { RemitDate="", RemitTime="", Channel="", CollectionType="", Amount="", BatchNo=""},
             };
             bool err = false;
             rts.ForEach(p => { if (p.Source != new RemitInfoModel() { Source = p.Source }.Source) { err = true; return; } });
@@ -426,5 +478,25 @@ namespace SKGPortalCore.SeedDataInitial
             return rts;
         }
         #endregion
+    }
+    /// <summary>
+    /// 資訊流導入-共用方法
+    /// </summary>
+    public static class ReceiptInfoImportComm
+    {
+        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext dataAccess, MessageLog message, string compareCode, out string compareCodeForCheck)
+        {
+            compareCodeForCheck = string.Empty;
+            using BizCustomerRepository biz = new BizCustomerRepository(dataAccess) { Message = message };
+            var bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 6) });
+            if (null == bizCust)
+                bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 4) });
+            if (null == bizCust)
+                bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 3) });
+            if (null == bizCust) return null;
+            if (bizCust.BizCustomer.AccountStatus == AccountStatus.Unable) compareCodeForCheck = compareCode;
+            else compareCodeForCheck = bizCust.BizCustomer.VirtualAccount3 == VirtualAccount3.NoverifyCode ? compareCode : compareCode.Substring(0, compareCode.Length - 1);
+            return bizCust;
+        }
     }
 }

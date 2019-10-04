@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using GraphQL.Types;
@@ -211,7 +213,7 @@ namespace SKGPortalCore.Lib
             return val.Length == 8 ? $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}" : val;
         }
         /// <summary>
-        /// 
+        /// 檢查列表是否有值
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
@@ -251,7 +253,11 @@ namespace SKGPortalCore.Lib
             }
             return result;
         }
-
+        /// <summary>
+        /// 獲取最底層的Exception
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public static Exception GetInnermostException(this Exception ex)
         {
             Exception innerEx = ex;
@@ -260,6 +266,33 @@ namespace SKGPortalCore.Lib
                 innerEx = ex.InnerException;
             }
             return innerEx;
+        }
+        /// <summary>
+        /// 序列化成byte[]
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static byte[] ObjectToByteArray(this object obj)
+        {
+            var binaryFormatter = new BinaryFormatter();
+            using var memoryStream = new MemoryStream();
+            binaryFormatter.Serialize(memoryStream, obj);
+            return memoryStream.ToArray();
+        }
+        /// <summary>
+        /// 反序列化
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static T ByteArrayToObject<T>(this byte[] bytes)
+        {
+            using var memoryStream = new MemoryStream();
+            var binaryFormatter = new BinaryFormatter();
+            memoryStream.Write(bytes, 0, bytes.Length);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            var obj = binaryFormatter.Deserialize(memoryStream);
+            return (T)obj;
         }
     }
     public static class GraphQLChangeType

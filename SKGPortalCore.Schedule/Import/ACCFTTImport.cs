@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using GraphQL;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
