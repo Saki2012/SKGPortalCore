@@ -57,7 +57,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 功能權限設置
     /// </summary>
-    public class RolePermissionModel:DetailRowState
+    public class RolePermissionModel : DetailRowState
     {
         [ForeignKey("RoleId")]
         public RoleModel Role { get; set; }

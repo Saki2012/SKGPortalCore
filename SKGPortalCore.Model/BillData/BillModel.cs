@@ -73,7 +73,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required,MaxLength(15)]
+        [Description("匯入批號"), Required, MaxLength(15)]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 銀行銷帳編號(不含檢碼)

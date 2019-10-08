@@ -25,10 +25,12 @@ namespace SKGPortalCore.Data
                 StackTrace stack = new StackTrace(2, true);
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                foreach (var flame in stack.GetFrames())
+                foreach (StackFrame flame in stack.GetFrames())
                 {
                     if (null != flame.GetFileName())
+                    {
                         sb.Append(new StackTrace(flame).ToString());
+                    }
                 }
                 return sb.ToString();
             }
@@ -59,7 +61,7 @@ namespace SKGPortalCore.Data
         /// <param name="args"></param>
         public void AddErrorMessage(MessageCode messageCode, params object[] args)
         {
-            var err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
+            ExecutionError err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
         }
         /// <summary>
@@ -68,8 +70,8 @@ namespace SKGPortalCore.Data
         /// <param name="ex"></param>
         public void AddExceptionError(Exception ex)
         {
-            var innerEx = ex.GetInnermostException();
-            var exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
+            Exception innerEx = ex.GetInnermostException();
+            ExecutionError exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
             Errors.Add(exErr);
         }
         /// <summary>
@@ -77,16 +79,22 @@ namespace SKGPortalCore.Data
         /// </summary>
         public void WriteLogTxt()
         {
-            if (Errors.Count == 0) return;
+            if (Errors.Count == 0)
+            {
+                return;
+            }
+
             DateTime now = DateTime.Now;
             StringBuilder str = new StringBuilder();
-            foreach (var msg in Errors)
+            foreach (ExecutionError msg in Errors)
             {
                 str.AppendLine($"{now.ToString()} User:{User.KeyId}, {User.UserName} Message:{msg.Message}");
                 if (null != msg.Source)
                 {
                     if (msg.Code.CompareTo("CustomerMessageCode") != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
+                    {
                         str.AppendLine($" Stack Message:{msg.Source}");
+                    }
                 }
             }
             if (!Directory.Exists(LogPath))

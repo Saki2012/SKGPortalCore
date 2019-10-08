@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SKGPortalCore.Business.BillData;
+﻿using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
@@ -14,7 +11,7 @@ namespace SKGPortalCore.Repository.BillData
     public class ChannelWriteOfBillRepository : BasicRepository<ChannelWriteOfBillSet>
     {
         #region Construct
-        public ChannelWriteOfBillRepository(ApplicationDbContext dataAccess ) : base(dataAccess) { }
+        public ChannelWriteOfBillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
         #endregion
         #region Protected
         protected override void AfterSetEntity(ChannelWriteOfBillSet set, FuncAction action)

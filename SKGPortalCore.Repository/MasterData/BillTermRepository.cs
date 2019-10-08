@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Business.MasterData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -17,7 +16,8 @@ namespace SKGPortalCore.Repository.MasterData
     public class BillTermRepository : BasicRepository<BillTermSet>
     {
         #region Construct
-        public BillTermRepository(ApplicationDbContext dataAccess) : base(dataAccess) {
+        public BillTermRepository(ApplicationDbContext dataAccess) : base(dataAccess)
+        {
             DataFlowNo = null;
             SetFlowNo = new Action<BillTermSet>(p =>
             {
@@ -25,7 +25,10 @@ namespace SKGPortalCore.Repository.MasterData
                 {
                     string billNo = $"Term{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.BillTerm.BillTermId = billNo;
-                    if (null != p.BillTermDetail) p.BillTermDetail.ForEach(p => p.BillTermId = billNo);
+                    if (null != p.BillTermDetail)
+                    {
+                        p.BillTermDetail.ForEach(p => p.BillTermId = billNo);
+                    }
                 }
             });
 

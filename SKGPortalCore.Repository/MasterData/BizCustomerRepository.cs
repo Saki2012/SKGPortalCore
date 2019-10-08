@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SKGPortalCore.Business.MasterData;
+﻿using SKGPortalCore.Business.MasterData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData;

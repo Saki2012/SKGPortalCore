@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
-using System.Linq;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -19,7 +16,9 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             if (action == FuncAction.Create)
+            {
                 WriteBackBillNo(set.DisbursementBill.BillNo, set.DisbursementBill.ChannelWriteOfBillNo);
+            }
         }
         protected override void AfterRemoveEntity(DisbursementBillSet set)
         {
@@ -35,7 +34,7 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterInvalid(DisbursementBillSet set, bool status)
         {
             base.AfterInvalid(set, status);
-            if(status)
+            if (status)
             {
                 WriteBackBillNo(set.DisbursementBill.BillNo, null);
             }
@@ -47,9 +46,9 @@ namespace SKGPortalCore.Repository.BillData
         #endregion
 
         #region Private
-        private void WriteBackBillNo(string billNo , string channelWriteOfBillNo)
+        private void WriteBackBillNo(string billNo, string channelWriteOfBillNo)
         {
-            ChannelWriteOfBillModel b= DataAccess.Set<ChannelWriteOfBillModel>().FirstOrDefault(p => p.BillNo == channelWriteOfBillNo);
+            ChannelWriteOfBillModel b = DataAccess.Set<ChannelWriteOfBillModel>().FirstOrDefault(p => p.BillNo == channelWriteOfBillNo);
             b.DisBillNo = billNo;
             DataAccess.Set<ChannelWriteOfBillModel>().Update(b);
         }

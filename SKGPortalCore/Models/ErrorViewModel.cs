@@ -1,5 +1,3 @@
-using System;
-
 namespace SKGPortalCore.Models
 {
     public class ErrorViewModel

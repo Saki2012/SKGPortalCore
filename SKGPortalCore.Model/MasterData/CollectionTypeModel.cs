@@ -35,14 +35,14 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("通路手續費清算方式")]
         public ChargePayType ChargePayType { get; set; }
-        
+
         public int Fuckyou { get; set; }
     }
     /// <summary>
     /// 代收類別費率明細
     /// </summary>
     [Description("代收類別費率明細")]
-    public class CollectionTypeDetailModel:DetailRowState
+    public class CollectionTypeDetailModel : DetailRowState
     {
         [ForeignKey("CollectionTypeId")]
         public CollectionTypeModel CollectionType { get; set; }

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace SKGPortalCore.Model.MasterData
 {
     /// <summary>
     /// 客戶Admin密碼函
     /// </summary>
-    class CustomerAdminPaswadoModel
+    internal class CustomerAdminPaswadoModel
     {
         /// <summary>
         /// 客戶統編

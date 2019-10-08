@@ -1,5 +1,4 @@
-﻿using SKGPortalCore.Lib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
+using SKGPortalCore.Lib;
 
 namespace SKGPortalCore.Lib
 {
@@ -19,8 +19,16 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable Where(this IQueryable source, string predicate, params object[] values)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException("predicate");
+            }
+
             LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, typeof(bool), predicate, values);
             return source.Provider.CreateQuery(
                 Expression.Call(
@@ -31,8 +39,16 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable Select(this IQueryable source, string selector, params object[] values)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (selector == null) throw new ArgumentNullException("selector");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException("selector");
+            }
+
             LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, values);
             return source.Provider.CreateQuery(
                 Expression.Call(
@@ -48,8 +64,16 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable OrderBy(this IQueryable source, string ordering, params object[] values)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (ordering == null) throw new ArgumentNullException("ordering");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (ordering == null)
+            {
+                throw new ArgumentNullException("ordering");
+            }
+
             ParameterExpression[] parameters = new ParameterExpression[] {
                 Expression.Parameter(source.ElementType, "") };
             ExpressionParser parser = new ExpressionParser(parameters, ordering, values);
@@ -71,7 +95,11 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable Take(this IQueryable source, int count)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
             return source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Take",
@@ -81,7 +109,11 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable Skip(this IQueryable source, int count)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
             return source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Skip",
@@ -91,9 +123,21 @@ namespace SKGPortalCore.Lib
 
         public static IQueryable GroupBy(this IQueryable source, string keySelector, string elementSelector, params object[] values)
         {
-            if (source == null) throw new ArgumentNullException("source");
-            if (keySelector == null) throw new ArgumentNullException("keySelector");
-            if (elementSelector == null) throw new ArgumentNullException("elementSelector");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException("keySelector");
+            }
+
+            if (elementSelector == null)
+            {
+                throw new ArgumentNullException("elementSelector");
+            }
+
             LambdaExpression keyLambda = DynamicExpression.ParseLambda(source.ElementType, null, keySelector, values);
             LambdaExpression elementLambda = DynamicExpression.ParseLambda(source.ElementType, null, elementSelector, values);
             return source.Provider.CreateQuery(
@@ -105,7 +149,11 @@ namespace SKGPortalCore.Lib
 
         public static bool Any(this IQueryable source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
             return (bool)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Any",
@@ -114,7 +162,11 @@ namespace SKGPortalCore.Lib
 
         public static int Count(this IQueryable source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
             return (int)source.Provider.Execute(
                 Expression.Call(
                     typeof(Queryable), "Count",
@@ -131,7 +183,11 @@ namespace SKGPortalCore.Lib
             sb.Append("{");
             for (int i = 0; i < props.Length; i++)
             {
-                if (i > 0) sb.Append(", ");
+                if (i > 0)
+                {
+                    sb.Append(", ");
+                }
+
                 sb.Append(props[i].Name);
                 sb.Append("=");
                 sb.Append(props[i].GetValue(this, null));
@@ -152,15 +208,9 @@ namespace SKGPortalCore.Lib
             this.type = type ?? throw new ArgumentNullException("type");
         }
 
-        public string Name
-        {
-            get { return name; }
-        }
+        public string Name => name;
 
-        public Type Type
-        {
-            get { return type; }
-        }
+        public Type Type => type;
     }
 
     public static class DynamicExpression
@@ -231,11 +281,18 @@ namespace SKGPortalCore.Lib
 
         public bool Equals(Signature other)
         {
-            if (properties.Length != other.properties.Length) return false;
+            if (properties.Length != other.properties.Length)
+            {
+                return false;
+            }
+
             for (int i = 0; i < properties.Length; i++)
             {
                 if (properties[i].Name != other.properties[i].Name ||
-                    properties[i].Type != other.properties[i].Type) return false;
+                    properties[i].Type != other.properties[i].Type)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -249,7 +306,7 @@ namespace SKGPortalCore.Lib
 
         private readonly ModuleBuilder module;
         private readonly Dictionary<Signature, Type> classes;
-        int classCount;
+        private int classCount;
         private readonly ReaderWriterLock rwLock;
 
         private ClassFactory()
@@ -292,7 +349,7 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        Type CreateDynamicClass(DynamicProperty[] properties)
+        private Type CreateDynamicClass(DynamicProperty[] properties)
         {
             LockCookie cookie = rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
@@ -325,7 +382,7 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
+        private FieldInfo[] GenerateProperties(TypeBuilder tb, DynamicProperty[] properties)
         {
             FieldInfo[] fields = new FieldBuilder[properties.Length];
             for (int i = 0; i < properties.Length; i++)
@@ -355,7 +412,7 @@ namespace SKGPortalCore.Lib
             return fields;
         }
 
-        void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
+        private void GenerateEquals(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("Equals",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -392,7 +449,7 @@ namespace SKGPortalCore.Lib
             gen.Emit(OpCodes.Ret);
         }
 
-        void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
+        private void GenerateGetHashCode(TypeBuilder tb, FieldInfo[] fields)
         {
             MethodBuilder mb = tb.DefineMethod("GetHashCode",
                 MethodAttributes.Public | MethodAttributes.ReuseSlot |
@@ -424,10 +481,7 @@ namespace SKGPortalCore.Lib
             this.position = position;
         }
 
-        public int Position
-        {
-            get { return position; }
-        }
+        public int Position => position;
 
         public override string ToString()
         {
@@ -437,14 +491,14 @@ namespace SKGPortalCore.Lib
 
     internal class ExpressionParser
     {
-        struct Token
+        private struct Token
         {
             public TokenId id;
             public string text;
             public int pos;
         }
 
-        enum TokenId
+        private enum TokenId
         {
             Unknown,
             End,
@@ -480,13 +534,13 @@ namespace SKGPortalCore.Lib
             DoubleBar
         }
 
-        interface ILogicalSignatures
+        private interface ILogicalSignatures
         {
             void F(bool x, bool y);
             void F(bool? x, bool? y);
         }
 
-        interface IArithmeticSignatures
+        private interface IArithmeticSignatures
         {
             void F(int x, int y);
             void F(uint x, uint y);
@@ -504,7 +558,7 @@ namespace SKGPortalCore.Lib
             void F(decimal? x, decimal? y);
         }
 
-        interface IRelationalSignatures : IArithmeticSignatures
+        private interface IRelationalSignatures : IArithmeticSignatures
         {
             void F(string x, string y);
             void F(char x, char y);
@@ -515,13 +569,13 @@ namespace SKGPortalCore.Lib
             void F(TimeSpan? x, TimeSpan? y);
         }
 
-        interface IEqualitySignatures : IRelationalSignatures
+        private interface IEqualitySignatures : IRelationalSignatures
         {
             void F(bool x, bool y);
             void F(bool? x, bool? y);
         }
 
-        interface IAddSignatures : IArithmeticSignatures
+        private interface IAddSignatures : IArithmeticSignatures
         {
             void F(DateTime x, TimeSpan y);
             void F(TimeSpan x, TimeSpan y);
@@ -529,13 +583,13 @@ namespace SKGPortalCore.Lib
             void F(TimeSpan? x, TimeSpan? y);
         }
 
-        interface ISubtractSignatures : IAddSignatures
+        private interface ISubtractSignatures : IAddSignatures
         {
             void F(DateTime x, DateTime y);
             void F(DateTime? x, DateTime? y);
         }
 
-        interface INegationSignatures
+        private interface INegationSignatures
         {
             void F(int x);
             void F(long x);
@@ -549,13 +603,13 @@ namespace SKGPortalCore.Lib
             void F(decimal? x);
         }
 
-        interface INotSignatures
+        private interface INotSignatures
         {
             void F(bool x);
             void F(bool? x);
         }
 
-        interface IEnumerableSignatures
+        private interface IEnumerableSignatures
         {
             void Where(bool predicate);
             void Any();
@@ -587,7 +641,7 @@ namespace SKGPortalCore.Lib
             void Average(decimal? selector);
         }
 
-        static readonly Type[] predefinedTypes = {
+        private static readonly Type[] predefinedTypes = {
             typeof(object),
             typeof(bool),
             typeof(char),
@@ -609,50 +663,66 @@ namespace SKGPortalCore.Lib
             typeof(Math),
             typeof(Convert)
         };
-
-        static readonly Expression trueLiteral = Expression.Constant(true);
-        static readonly Expression falseLiteral = Expression.Constant(false);
-        static readonly Expression nullLiteral = Expression.Constant(null);
-
-        static readonly string keywordIt = "it";
-        static readonly string keywordIif = "iif";
-        static readonly string keywordNew = "new";
-
-        static Dictionary<string, object> keywords;
+        private static readonly Expression trueLiteral = Expression.Constant(true);
+        private static readonly Expression falseLiteral = Expression.Constant(false);
+        private static readonly Expression nullLiteral = Expression.Constant(null);
+        private static readonly string keywordIt = "it";
+        private static readonly string keywordIif = "iif";
+        private static readonly string keywordNew = "new";
+        private static Dictionary<string, object> keywords;
 
         private readonly Dictionary<string, object> symbols;
-        IDictionary<string, object> externals;
+        private IDictionary<string, object> externals;
         private readonly Dictionary<Expression, string> literals;
-        ParameterExpression it;
+        private ParameterExpression it;
         private readonly string text;
-        int textPos;
+        private int textPos;
         private readonly int textLen;
-        char ch;
-        Token token;
+        private char ch;
+        private Token token;
 
         public ExpressionParser(ParameterExpression[] parameters, string expression, object[] values)
         {
-            if (keywords == null) keywords = CreateKeywords();
+            if (keywords == null)
+            {
+                keywords = CreateKeywords();
+            }
+
             symbols = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             literals = new Dictionary<Expression, string>();
-            if (parameters != null) ProcessParameters(parameters);
-            if (values != null) ProcessValues(values);
+            if (parameters != null)
+            {
+                ProcessParameters(parameters);
+            }
+
+            if (values != null)
+            {
+                ProcessValues(values);
+            }
+
             text = expression ?? throw new ArgumentNullException("expression");
             textLen = text.Length;
             SetTextPos(0);
             NextToken();
         }
 
-        void ProcessParameters(ParameterExpression[] parameters)
+        private void ProcessParameters(ParameterExpression[] parameters)
         {
             foreach (ParameterExpression pe in parameters)
+            {
                 if (!string.IsNullOrEmpty(pe.Name))
+                {
                     AddSymbol(pe.Name, pe);
+                }
+            }
+
             if (parameters.Length == 1 && string.IsNullOrEmpty(parameters[0].Name))
+            {
                 it = parameters[0];
+            }
         }
 
-        void ProcessValues(object[] values)
+        private void ProcessValues(object[] values)
         {
             for (int i = 0; i < values.Length; i++)
             {
@@ -668,10 +738,13 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        void AddSymbol(string name, object value)
+        private void AddSymbol(string name, object value)
         {
             if (symbols.ContainsKey(name))
+            {
                 throw ParseError(Res.DuplicateIdentifier, name);
+            }
+
             symbols.Add(name, value);
         }
 
@@ -680,8 +753,13 @@ namespace SKGPortalCore.Lib
             int exprPos = token.pos;
             Expression expr = ParseExpression();
             if (resultType != null)
+            {
                 if ((expr = PromoteExpression(expr, resultType, true)) == null)
+                {
                     throw ParseError(exprPos, Res.ExpressionTypeMismatch, GetTypeName(resultType));
+                }
+            }
+
             ValidateToken(TokenId.End, Res.SyntaxError);
             return expr;
         }
@@ -704,7 +782,11 @@ namespace SKGPortalCore.Lib
                     ascending = false;
                 }
                 orderings.Add(new DynamicOrdering { Selector = expr, Ascending = ascending });
-                if (token.id != TokenId.Comma) break;
+                if (token.id != TokenId.Comma)
+                {
+                    break;
+                }
+
                 NextToken();
             }
             ValidateToken(TokenId.End, Res.SyntaxError);
@@ -713,7 +795,7 @@ namespace SKGPortalCore.Lib
 #pragma warning restore 0219
 
         // ?: operator
-        Expression ParseExpression()
+        private Expression ParseExpression()
         {
             int errorPos = token.pos;
             Expression expr = ParseLogicalOr();
@@ -730,7 +812,7 @@ namespace SKGPortalCore.Lib
         }
 
         // ||, or operator
-        Expression ParseLogicalOr()
+        private Expression ParseLogicalOr()
         {
             Expression left = ParseLogicalAnd();
             while (token.id == TokenId.DoubleBar || TokenIdentifierIs("or"))
@@ -745,7 +827,7 @@ namespace SKGPortalCore.Lib
         }
 
         // &&, and operator
-        Expression ParseLogicalAnd()
+        private Expression ParseLogicalAnd()
         {
             Expression left = ParseComparison();
             while (token.id == TokenId.DoubleAmphersand || TokenIdentifierIs("and"))
@@ -760,7 +842,7 @@ namespace SKGPortalCore.Lib
         }
 
         // =, ==, !=, <>, >, >=, <, <= operators
-        Expression ParseComparison()
+        private Expression ParseComparison()
         {
             Expression left = ParseAdditive();
             while (token.id == TokenId.Equal || token.id == TokenId.DoubleEqual ||
@@ -843,7 +925,7 @@ namespace SKGPortalCore.Lib
         }
 
         // +, -, & operators
-        Expression ParseAdditive()
+        private Expression ParseAdditive()
         {
             Expression left = ParseMultiplicative();
             while (token.id == TokenId.Plus || token.id == TokenId.Minus ||
@@ -856,7 +938,10 @@ namespace SKGPortalCore.Lib
                 {
                     case TokenId.Plus:
                         if (left.Type == typeof(string) || right.Type == typeof(string))
+                        {
                             goto case TokenId.Amphersand;
+                        }
+
                         CheckAndPromoteOperands(typeof(IAddSignatures), op.text, ref left, ref right, op.pos);
                         left = GenerateAdd(left, right);
                         break;
@@ -873,7 +958,7 @@ namespace SKGPortalCore.Lib
         }
 
         // *, /, %, mod operators
-        Expression ParseMultiplicative()
+        private Expression ParseMultiplicative()
         {
             Expression left = ParseUnary();
             while (token.id == TokenId.Asterisk || token.id == TokenId.Slash ||
@@ -901,7 +986,7 @@ namespace SKGPortalCore.Lib
         }
 
         // -, !, not unary operators
-        Expression ParseUnary()
+        private Expression ParseUnary()
         {
             if (token.id == TokenId.Minus || token.id == TokenId.Exclamation ||
                 TokenIdentifierIs("not"))
@@ -931,7 +1016,7 @@ namespace SKGPortalCore.Lib
             return ParsePrimary();
         }
 
-        Expression ParsePrimary()
+        private Expression ParsePrimary()
         {
             Expression expr = ParsePrimaryStart();
             while (true)
@@ -953,7 +1038,7 @@ namespace SKGPortalCore.Lib
             return expr;
         }
 
-        Expression ParsePrimaryStart()
+        private Expression ParsePrimaryStart()
         {
             switch (token.id)
             {
@@ -972,7 +1057,7 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        Expression ParseStringLiteral()
+        private Expression ParseStringLiteral()
         {
             ValidateToken(TokenId.StringLiteral);
             char quote = token.text[0];
@@ -981,14 +1066,21 @@ namespace SKGPortalCore.Lib
             while (true)
             {
                 int i = s.IndexOf(quote, start);
-                if (i < 0) break;
+                if (i < 0)
+                {
+                    break;
+                }
+
                 s = s.Remove(i, 1);
                 start = i + 1;
             }
             if (quote == '\'')
             {
                 if (s.Length != 1)
+                {
                     throw ParseError(Res.InvalidCharacterLiteral);
+                }
+
                 NextToken();
                 return CreateLiteral(s[0], s);
             }
@@ -996,32 +1088,53 @@ namespace SKGPortalCore.Lib
             return CreateLiteral(s, s);
         }
 
-        Expression ParseIntegerLiteral()
+        private Expression ParseIntegerLiteral()
         {
             ValidateToken(TokenId.IntegerLiteral);
             string text = token.text;
             if (text[0] != '-')
             {
                 if (!ulong.TryParse(text, out ulong value))
+                {
                     throw ParseError(Res.InvalidIntegerLiteral, text);
+                }
+
                 NextToken();
-                if (value <= int.MaxValue) return CreateLiteral((int)value, text);
-                if (value <= uint.MaxValue) return CreateLiteral((uint)value, text);
-                if (value <= long.MaxValue) return CreateLiteral((long)value, text);
+                if (value <= int.MaxValue)
+                {
+                    return CreateLiteral((int)value, text);
+                }
+
+                if (value <= uint.MaxValue)
+                {
+                    return CreateLiteral((uint)value, text);
+                }
+
+                if (value <= long.MaxValue)
+                {
+                    return CreateLiteral((long)value, text);
+                }
+
                 return CreateLiteral(value, text);
             }
             else
             {
                 if (!long.TryParse(text, out long value))
+                {
                     throw ParseError(Res.InvalidIntegerLiteral, text);
+                }
+
                 NextToken();
                 if (value >= int.MinValue && value <= int.MaxValue)
+                {
                     return CreateLiteral((int)value, text);
+                }
+
                 return CreateLiteral(value, text);
             }
         }
 
-        Expression ParseRealLiteral()
+        private Expression ParseRealLiteral()
         {
             ValidateToken(TokenId.RealLiteral);
             string text = token.text;
@@ -1029,25 +1142,35 @@ namespace SKGPortalCore.Lib
             char last = text[text.Length - 1];
             if (last == 'F' || last == 'f')
             {
-                if (float.TryParse(text.Substring(0, text.Length - 1), out float f)) value = f;
+                if (float.TryParse(text.Substring(0, text.Length - 1), out float f))
+                {
+                    value = f;
+                }
             }
             else
             {
-                if (double.TryParse(text, out double d)) value = d;
+                if (double.TryParse(text, out double d))
+                {
+                    value = d;
+                }
             }
-            if (value == null) throw ParseError(Res.InvalidRealLiteral, text);
+            if (value == null)
+            {
+                throw ParseError(Res.InvalidRealLiteral, text);
+            }
+
             NextToken();
             return CreateLiteral(value, text);
         }
 
-        Expression CreateLiteral(object value, string text)
+        private Expression CreateLiteral(object value, string text)
         {
             ConstantExpression expr = Expression.Constant(value);
             literals.Add(expr, text);
             return expr;
         }
 
-        Expression ParseParenExpression()
+        private Expression ParseParenExpression()
         {
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
             NextToken();
@@ -1057,15 +1180,31 @@ namespace SKGPortalCore.Lib
             return e;
         }
 
-        Expression ParseIdentifier()
+        private Expression ParseIdentifier()
         {
             ValidateToken(TokenId.Identifier);
             if (keywords.TryGetValue(token.text, out object value))
             {
-                if (value is Type) return ParseTypeAccess((Type)value);
-                if (value == (object)keywordIt) return ParseIt();
-                if (value == (object)keywordIif) return ParseIif();
-                if (value == (object)keywordNew) return ParseNew();
+                if (value is Type)
+                {
+                    return ParseTypeAccess((Type)value);
+                }
+
+                if (value == (object)keywordIt)
+                {
+                    return ParseIt();
+                }
+
+                if (value == (object)keywordIif)
+                {
+                    return ParseIif();
+                }
+
+                if (value == (object)keywordNew)
+                {
+                    return ParseNew();
+                }
+
                 NextToken();
                 return (Expression)value;
             }
@@ -1078,37 +1217,53 @@ namespace SKGPortalCore.Lib
                 }
                 else
                 {
-                    if (expr is LambdaExpression lambda) return ParseLambdaInvocation(lambda);
+                    if (expr is LambdaExpression lambda)
+                    {
+                        return ParseLambdaInvocation(lambda);
+                    }
                 }
                 NextToken();
                 return expr;
             }
-            if (it != null) return ParseMemberAccess(null, it);
+            if (it != null)
+            {
+                return ParseMemberAccess(null, it);
+            }
+
             throw ParseError(Res.UnknownIdentifier, token.text);
         }
 
-        Expression ParseIt()
+        private Expression ParseIt()
         {
             if (it == null)
+            {
                 throw ParseError(Res.NoItInScope);
+            }
+
             NextToken();
             return it;
         }
 
-        Expression ParseIif()
+        private Expression ParseIif()
         {
             int errorPos = token.pos;
             NextToken();
             Expression[] args = ParseArgumentList();
             if (args.Length != 3)
+            {
                 throw ParseError(errorPos, Res.IifRequiresThreeArgs);
+            }
+
             return GenerateConditional(args[0], args[1], args[2], errorPos);
         }
 
-        Expression GenerateConditional(Expression test, Expression expr1, Expression expr2, int errorPos)
+        private Expression GenerateConditional(Expression test, Expression expr1, Expression expr2, int errorPos)
         {
             if (test.Type != typeof(bool))
+            {
                 throw ParseError(errorPos, Res.FirstExprMustBeBool);
+            }
+
             if (expr1.Type != expr2.Type)
             {
                 Expression expr1as2 = expr2 != nullLiteral ? PromoteExpression(expr1, expr2.Type, true) : null;
@@ -1126,14 +1281,17 @@ namespace SKGPortalCore.Lib
                     string type1 = expr1 != nullLiteral ? expr1.Type.Name : "null";
                     string type2 = expr2 != nullLiteral ? expr2.Type.Name : "null";
                     if (expr1as2 != null && expr2as1 != null)
+                    {
                         throw ParseError(errorPos, Res.BothTypesConvertToOther, type1, type2);
+                    }
+
                     throw ParseError(errorPos, Res.NeitherTypeConvertsToOther, type1, type2);
                 }
             }
             return Expression.Condition(test, expr1, expr2);
         }
 
-        Expression ParseNew()
+        private Expression ParseNew()
         {
             NextToken();
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
@@ -1153,12 +1311,20 @@ namespace SKGPortalCore.Lib
                 }
                 else
                 {
-                    if (!(expr is MemberExpression me)) throw ParseError(exprPos, Res.MissingAsClause);
+                    if (!(expr is MemberExpression me))
+                    {
+                        throw ParseError(exprPos, Res.MissingAsClause);
+                    }
+
                     propName = me.Member.Name;
                 }
                 expressions.Add(expr);
                 properties.Add(new DynamicProperty(propName, expr.Type));
-                if (token.id != TokenId.Comma) break;
+                if (token.id != TokenId.Comma)
+                {
+                    break;
+                }
+
                 NextToken();
             }
             ValidateToken(TokenId.CloseParen, Res.CloseParenOrCommaExpected);
@@ -1166,28 +1332,37 @@ namespace SKGPortalCore.Lib
             Type type = DynamicExpression.CreateClass(properties);
             MemberBinding[] bindings = new MemberBinding[properties.Count];
             for (int i = 0; i < bindings.Length; i++)
+            {
                 bindings[i] = Expression.Bind(type.GetProperty(properties[i].Name), expressions[i]);
+            }
+
             return Expression.MemberInit(Expression.New(type), bindings);
         }
 
-        Expression ParseLambdaInvocation(LambdaExpression lambda)
+        private Expression ParseLambdaInvocation(LambdaExpression lambda)
         {
             int errorPos = token.pos;
             NextToken();
             Expression[] args = ParseArgumentList();
             if (FindMethod(lambda.Type, "Invoke", false, args, out MethodBase method) != 1)
+            {
                 throw ParseError(errorPos, Res.ArgsIncompatibleWithLambda);
+            }
+
             return Expression.Invoke(lambda, args);
         }
 
-        Expression ParseTypeAccess(Type type)
+        private Expression ParseTypeAccess(Type type)
         {
             int errorPos = token.pos;
             NextToken();
             if (token.id == TokenId.Question)
             {
                 if (!type.IsValueType || IsNullableType(type))
+                {
                     throw ParseError(errorPos, Res.TypeHasNoNullableForm, GetTypeName(type));
+                }
+
                 type = typeof(Nullable<>).MakeGenericType(type);
                 NextToken();
             }
@@ -1198,7 +1373,10 @@ namespace SKGPortalCore.Lib
                 {
                     case 0:
                         if (args.Length == 1)
+                        {
                             return GenerateConversion(args[0], type, errorPos);
+                        }
+
                         throw ParseError(errorPos, Res.NoMatchingConstructor, GetTypeName(type));
                     case 1:
                         return Expression.New((ConstructorInfo)method, args);
@@ -1211,29 +1389,45 @@ namespace SKGPortalCore.Lib
             return ParseMemberAccess(type, null);
         }
 
-        Expression GenerateConversion(Expression expr, Type type, int errorPos)
+        private Expression GenerateConversion(Expression expr, Type type, int errorPos)
         {
             Type exprType = expr.Type;
-            if (exprType == type) return expr;
+            if (exprType == type)
+            {
+                return expr;
+            }
+
             if (exprType.IsValueType && type.IsValueType)
             {
                 if ((IsNullableType(exprType) || IsNullableType(type)) &&
                     GetNonNullableType(exprType) == GetNonNullableType(type))
+                {
                     return Expression.Convert(expr, type);
+                }
+
                 if ((IsNumericType(exprType) || IsEnumType(exprType)) &&
                     IsNumericType(type) || IsEnumType(type))
+                {
                     return Expression.ConvertChecked(expr, type);
+                }
             }
             if (exprType.IsAssignableFrom(type) || type.IsAssignableFrom(exprType) ||
                 exprType.IsInterface || type.IsInterface)
+            {
                 return Expression.Convert(expr, type);
+            }
+
             throw ParseError(errorPos, Res.CannotConvertValue,
                 GetTypeName(exprType), GetTypeName(type));
         }
 
-        Expression ParseMemberAccess(Type type, Expression instance)
+        private Expression ParseMemberAccess(Type type, Expression instance)
         {
-            if (instance != null) type = instance.Type;
+            if (instance != null)
+            {
+                type = instance.Type;
+            }
+
             int errorPos = token.pos;
             string id = GetIdentifier();
             NextToken();
@@ -1257,10 +1451,16 @@ namespace SKGPortalCore.Lib
                     case 1:
                         MethodInfo method = (MethodInfo)mb;
                         if (!IsPredefinedType(method.DeclaringType))
+                        {
                             throw ParseError(errorPos, Res.MethodsAreInaccessible, GetTypeName(method.DeclaringType));
+                        }
+
                         if (method.ReturnType == typeof(void))
+                        {
                             throw ParseError(errorPos, Res.MethodIsVoid,
                                 id, GetTypeName(method.DeclaringType));
+                        }
+
                         return Expression.Call(instance, method, args);
                     default:
                         throw ParseError(errorPos, Res.AmbiguousMethodInvocation,
@@ -1271,25 +1471,35 @@ namespace SKGPortalCore.Lib
             {
                 MemberInfo member = FindPropertyOrField(type, id, instance == null);
                 if (member == null)
+                {
                     throw ParseError(errorPos, Res.UnknownPropertyOrField,
                         id, GetTypeName(type));
+                }
+
                 return member is PropertyInfo ?
                     Expression.Property(instance, (PropertyInfo)member) :
                     Expression.Field(instance, (FieldInfo)member);
             }
         }
 
-        static Type FindGenericType(Type generic, Type type)
+        private static Type FindGenericType(Type generic, Type type)
         {
             while (type != null && type != typeof(object))
             {
-                if (type.IsGenericType && type.GetGenericTypeDefinition() == generic) return type;
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == generic)
+                {
+                    return type;
+                }
+
                 if (generic.IsInterface)
                 {
                     foreach (Type intfType in type.GetInterfaces())
                     {
                         Type found = FindGenericType(generic, intfType);
-                        if (found != null) return found;
+                        if (found != null)
+                        {
+                            return found;
+                        }
                     }
                 }
                 type = type.BaseType;
@@ -1297,7 +1507,7 @@ namespace SKGPortalCore.Lib
             return null;
         }
 
-        Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
+        private Expression ParseAggregate(Expression instance, Type elementType, string methodName, int errorPos)
         {
             ParameterExpression outerIt = it;
             ParameterExpression innerIt = Expression.Parameter(elementType, "");
@@ -1305,7 +1515,10 @@ namespace SKGPortalCore.Lib
             Expression[] args = ParseArgumentList();
             it = outerIt;
             if (FindMethod(typeof(IEnumerableSignatures), methodName, false, args, out MethodBase signature) != 1)
+            {
                 throw ParseError(errorPos, Res.NoApplicableAggregate, methodName);
+            }
+
             Type[] typeArgs;
             if (signature.Name == "Min" || signature.Name == "Max")
             {
@@ -1326,7 +1539,7 @@ namespace SKGPortalCore.Lib
             return Expression.Call(typeof(Enumerable), signature.Name, typeArgs, args);
         }
 
-        Expression[] ParseArgumentList()
+        private Expression[] ParseArgumentList()
         {
             ValidateToken(TokenId.OpenParen, Res.OpenParenExpected);
             NextToken();
@@ -1336,19 +1549,23 @@ namespace SKGPortalCore.Lib
             return args;
         }
 
-        Expression[] ParseArguments()
+        private Expression[] ParseArguments()
         {
             List<Expression> argList = new List<Expression>();
             while (true)
             {
                 argList.Add(ParseExpression());
-                if (token.id != TokenId.Comma) break;
+                if (token.id != TokenId.Comma)
+                {
+                    break;
+                }
+
                 NextToken();
             }
             return argList.ToArray();
         }
 
-        Expression ParseElementAccess(Expression expr)
+        private Expression ParseElementAccess(Expression expr)
         {
             int errorPos = token.pos;
             ValidateToken(TokenId.OpenBracket, Res.OpenParenExpected);
@@ -1359,10 +1576,16 @@ namespace SKGPortalCore.Lib
             if (expr.Type.IsArray)
             {
                 if (expr.Type.GetArrayRank() != 1 || args.Length != 1)
+                {
                     throw ParseError(errorPos, Res.CannotIndexMultiDimArray);
+                }
+
                 Expression index = PromoteExpression(args[0], typeof(int), true);
                 if (index == null)
+                {
                     throw ParseError(errorPos, Res.InvalidIndex);
+                }
+
                 return Expression.ArrayIndex(expr, index);
             }
             else
@@ -1381,49 +1604,64 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        static bool IsPredefinedType(Type type)
+        private static bool IsPredefinedType(Type type)
         {
-            foreach (Type t in predefinedTypes) if (t == type) return true;
+            foreach (Type t in predefinedTypes)
+            {
+                if (t == type)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 
-        static bool IsNullableType(Type type)
+        private static bool IsNullableType(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        static Type GetNonNullableType(Type type)
+        private static Type GetNonNullableType(Type type)
         {
             return IsNullableType(type) ? type.GetGenericArguments()[0] : type;
         }
 
-        static string GetTypeName(Type type)
+        private static string GetTypeName(Type type)
         {
             Type baseType = GetNonNullableType(type);
             string s = baseType.Name;
-            if (type != baseType) s += '?';
+            if (type != baseType)
+            {
+                s += '?';
+            }
+
             return s;
         }
 
-        static bool IsNumericType(Type type)
+        private static bool IsNumericType(Type type)
         {
             return GetNumericTypeKind(type) != 0;
         }
 
-        static bool IsSignedIntegralType(Type type)
+        private static bool IsSignedIntegralType(Type type)
         {
             return GetNumericTypeKind(type) == 2;
         }
 
-        static bool IsUnsignedIntegralType(Type type)
+        private static bool IsUnsignedIntegralType(Type type)
         {
             return GetNumericTypeKind(type) == 3;
         }
 
-        static int GetNumericTypeKind(Type type)
+        private static int GetNumericTypeKind(Type type)
         {
             type = GetNonNullableType(type);
-            if (type.IsEnum) return 0;
+            if (type.IsEnum)
+            {
+                return 0;
+            }
+
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Char:
@@ -1446,36 +1684,42 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        static bool IsEnumType(Type type)
+        private static bool IsEnumType(Type type)
         {
             return GetNonNullableType(type).IsEnum;
         }
 
-        void CheckAndPromoteOperand(Type signatures, string opName, ref Expression expr, int errorPos)
+        private void CheckAndPromoteOperand(Type signatures, string opName, ref Expression expr, int errorPos)
         {
             Expression[] args = new Expression[] { expr };
             if (FindMethod(signatures, "F", false, args, out MethodBase method) != 1)
+            {
                 throw ParseError(errorPos, Res.IncompatibleOperand,
                     opName, GetTypeName(args[0].Type));
+            }
+
             expr = args[0];
         }
 
-        void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
+        private void CheckAndPromoteOperands(Type signatures, string opName, ref Expression left, ref Expression right, int errorPos)
         {
             Expression[] args = new Expression[] { left, right };
             if (FindMethod(signatures, "F", false, args, out MethodBase method) != 1)
+            {
                 throw IncompatibleOperandsError(opName, left, right, errorPos);
+            }
+
             left = args[0];
             right = args[1];
         }
 
-        Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
+        private Exception IncompatibleOperandsError(string opName, Expression left, Expression right, int pos)
         {
             return ParseError(pos, Res.IncompatibleOperands,
                 opName, GetTypeName(left.Type), GetTypeName(right.Type));
         }
 
-        MemberInfo FindPropertyOrField(Type type, string memberName, bool staticAccess)
+        private MemberInfo FindPropertyOrField(Type type, string memberName, bool staticAccess)
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
@@ -1483,12 +1727,15 @@ namespace SKGPortalCore.Lib
             {
                 MemberInfo[] members = t.FindMembers(MemberTypes.Property | MemberTypes.Field,
                     flags, Type.FilterNameIgnoreCase, memberName);
-                if (members.Length != 0) return members[0];
+                if (members.Length != 0)
+                {
+                    return members[0];
+                }
             }
             return null;
         }
 
-        int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
+        private int FindMethod(Type type, string methodName, bool staticAccess, Expression[] args, out MethodBase method)
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.DeclaredOnly |
                 (staticAccess ? BindingFlags.Static : BindingFlags.Instance);
@@ -1497,13 +1744,16 @@ namespace SKGPortalCore.Lib
                 MemberInfo[] members = t.FindMembers(MemberTypes.Method,
                     flags, Type.FilterNameIgnoreCase, methodName);
                 int count = FindBestMethod(members.Cast<MethodBase>(), args, out method);
-                if (count != 0) return count;
+                if (count != 0)
+                {
+                    return count;
+                }
             }
             method = null;
             return 0;
         }
 
-        int FindIndexer(Type type, Expression[] args, out MethodBase method)
+        private int FindIndexer(Type type, Expression[] args, out MethodBase method)
         {
             foreach (Type t in SelfAndBaseTypes(type))
             {
@@ -1515,14 +1765,17 @@ namespace SKGPortalCore.Lib
                         Select(p => (MethodBase)p.GetGetMethod()).
                         Where(m => m != null);
                     int count = FindBestMethod(methods, args, out method);
-                    if (count != 0) return count;
+                    if (count != 0)
+                    {
+                        return count;
+                    }
                 }
             }
             method = null;
             return 0;
         }
 
-        static IEnumerable<Type> SelfAndBaseTypes(Type type)
+        private static IEnumerable<Type> SelfAndBaseTypes(Type type)
         {
             if (type.IsInterface)
             {
@@ -1533,7 +1786,7 @@ namespace SKGPortalCore.Lib
             return SelfAndBaseClasses(type);
         }
 
-        static IEnumerable<Type> SelfAndBaseClasses(Type type)
+        private static IEnumerable<Type> SelfAndBaseClasses(Type type)
         {
             while (type != null)
             {
@@ -1542,23 +1795,26 @@ namespace SKGPortalCore.Lib
             }
         }
 
-        static void AddInterface(List<Type> types, Type type)
+        private static void AddInterface(List<Type> types, Type type)
         {
             if (!types.Contains(type))
             {
                 types.Add(type);
-                foreach (Type t in type.GetInterfaces()) AddInterface(types, t);
+                foreach (Type t in type.GetInterfaces())
+                {
+                    AddInterface(types, t);
+                }
             }
         }
 
-        class MethodData
+        private class MethodData
         {
             public MethodBase MethodBase;
             public ParameterInfo[] Parameters;
             public Expression[] Args;
         }
 
-        int FindBestMethod(IEnumerable<MethodBase> methods, Expression[] args, out MethodBase method)
+        private int FindBestMethod(IEnumerable<MethodBase> methods, Expression[] args, out MethodBase method)
         {
             MethodData[] applicable = methods.
                 Select(m => new MethodData { MethodBase = m, Parameters = m.GetParameters() }).
@@ -1573,7 +1829,11 @@ namespace SKGPortalCore.Lib
             if (applicable.Length == 1)
             {
                 MethodData md = applicable[0];
-                for (int i = 0; i < args.Length; i++) args[i] = md.Args[i];
+                for (int i = 0; i < args.Length; i++)
+                {
+                    args[i] = md.Args[i];
+                }
+
                 method = md.MethodBase;
             }
             else
@@ -1583,31 +1843,49 @@ namespace SKGPortalCore.Lib
             return applicable.Length;
         }
 
-        bool IsApplicable(MethodData method, Expression[] args)
+        private bool IsApplicable(MethodData method, Expression[] args)
         {
-            if (method.Parameters.Length != args.Length) return false;
+            if (method.Parameters.Length != args.Length)
+            {
+                return false;
+            }
+
             Expression[] promotedArgs = new Expression[args.Length];
             for (int i = 0; i < args.Length; i++)
             {
                 ParameterInfo pi = method.Parameters[i];
-                if (pi.IsOut) return false;
+                if (pi.IsOut)
+                {
+                    return false;
+                }
+
                 Expression promoted = PromoteExpression(args[i], pi.ParameterType, false);
-                if (promoted == null) return false;
+                if (promoted == null)
+                {
+                    return false;
+                }
+
                 promotedArgs[i] = promoted;
             }
             method.Args = promotedArgs;
             return true;
         }
 
-        Expression PromoteExpression(Expression expr, Type type, bool exact)
+        private Expression PromoteExpression(Expression expr, Type type, bool exact)
         {
-            if (expr.Type == type) return expr;
+            if (expr.Type == type)
+            {
+                return expr;
+            }
+
             if (expr is ConstantExpression ce)
             {
                 if (ce == nullLiteral)
                 {
                     if (!type.IsValueType || IsNullableType(type))
+                    {
                         return Expression.Constant(null, type);
+                    }
                 }
                 else
                 {
@@ -1624,96 +1902,165 @@ namespace SKGPortalCore.Lib
                                 value = ParseNumber(text, target);
                                 break;
                             case TypeCode.Double:
-                                if (target == typeof(decimal)) value = ParseNumber(text, target);
+                                if (target == typeof(decimal))
+                                {
+                                    value = ParseNumber(text, target);
+                                }
+
                                 break;
                             case TypeCode.String:
                                 value = ParseEnum(text, target);
                                 break;
                         }
                         if (value != null)
+                        {
                             return Expression.Constant(value, type);
+                        }
                     }
                 }
             }
             if (IsCompatibleWith(expr.Type, type))
             {
-                if (type.IsValueType || exact) return Expression.Convert(expr, type);
+                if (type.IsValueType || exact)
+                {
+                    return Expression.Convert(expr, type);
+                }
+
                 return expr;
             }
             return null;
         }
 
-        static object ParseNumber(string text, Type type)
+        private static object ParseNumber(string text, Type type)
         {
             switch (Type.GetTypeCode(GetNonNullableType(type)))
             {
                 case TypeCode.SByte:
                     sbyte sb;
-                    if (sbyte.TryParse(text, out sb)) return sb;
+                    if (sbyte.TryParse(text, out sb))
+                    {
+                        return sb;
+                    }
+
                     break;
                 case TypeCode.Byte:
                     byte b;
-                    if (byte.TryParse(text, out b)) return b;
+                    if (byte.TryParse(text, out b))
+                    {
+                        return b;
+                    }
+
                     break;
                 case TypeCode.Int16:
                     short s;
-                    if (short.TryParse(text, out s)) return s;
+                    if (short.TryParse(text, out s))
+                    {
+                        return s;
+                    }
+
                     break;
                 case TypeCode.UInt16:
                     ushort us;
-                    if (ushort.TryParse(text, out us)) return us;
+                    if (ushort.TryParse(text, out us))
+                    {
+                        return us;
+                    }
+
                     break;
                 case TypeCode.Int32:
                     int i;
-                    if (int.TryParse(text, out i)) return i;
+                    if (int.TryParse(text, out i))
+                    {
+                        return i;
+                    }
+
                     break;
                 case TypeCode.UInt32:
                     uint ui;
-                    if (uint.TryParse(text, out ui)) return ui;
+                    if (uint.TryParse(text, out ui))
+                    {
+                        return ui;
+                    }
+
                     break;
                 case TypeCode.Int64:
                     long l;
-                    if (long.TryParse(text, out l)) return l;
+                    if (long.TryParse(text, out l))
+                    {
+                        return l;
+                    }
+
                     break;
                 case TypeCode.UInt64:
                     ulong ul;
-                    if (ulong.TryParse(text, out ul)) return ul;
+                    if (ulong.TryParse(text, out ul))
+                    {
+                        return ul;
+                    }
+
                     break;
                 case TypeCode.Single:
                     float f;
-                    if (float.TryParse(text, out f)) return f;
+                    if (float.TryParse(text, out f))
+                    {
+                        return f;
+                    }
+
                     break;
                 case TypeCode.Double:
                     double d;
-                    if (double.TryParse(text, out d)) return d;
+                    if (double.TryParse(text, out d))
+                    {
+                        return d;
+                    }
+
                     break;
                 case TypeCode.Decimal:
                     decimal e;
-                    if (decimal.TryParse(text, out e)) return e;
+                    if (decimal.TryParse(text, out e))
+                    {
+                        return e;
+                    }
+
                     break;
             }
             return null;
         }
 
-        static object ParseEnum(string name, Type type)
+        private static object ParseEnum(string name, Type type)
         {
             if (type.IsEnum)
             {
                 MemberInfo[] memberInfos = type.FindMembers(MemberTypes.Field,
                     BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Static,
                     Type.FilterNameIgnoreCase, name);
-                if (memberInfos.Length != 0) return ((FieldInfo)memberInfos[0]).GetValue(null);
+                if (memberInfos.Length != 0)
+                {
+                    return ((FieldInfo)memberInfos[0]).GetValue(null);
+                }
             }
             return null;
         }
 
-        static bool IsCompatibleWith(Type source, Type target)
+        private static bool IsCompatibleWith(Type source, Type target)
         {
-            if (source == target) return true;
-            if (!target.IsValueType) return target.IsAssignableFrom(source);
+            if (source == target)
+            {
+                return true;
+            }
+
+            if (!target.IsValueType)
+            {
+                return target.IsAssignableFrom(source);
+            }
+
             Type st = GetNonNullableType(source);
             Type tt = GetNonNullableType(target);
-            if (st != source && tt == target) return false;
+            if (st != source && tt == target)
+            {
+                return false;
+            }
+
             TypeCode sc = st.IsEnum ? TypeCode.Object : Type.GetTypeCode(st);
             TypeCode tc = tt.IsEnum ? TypeCode.Object : Type.GetTypeCode(tt);
             switch (sc)
@@ -1825,13 +2172,17 @@ namespace SKGPortalCore.Lib
                     }
                     break;
                 default:
-                    if (st == tt) return true;
+                    if (st == tt)
+                    {
+                        return true;
+                    }
+
                     break;
             }
             return false;
         }
 
-        static bool IsBetterThan(Expression[] args, MethodData m1, MethodData m2)
+        private static bool IsBetterThan(Expression[] args, MethodData m1, MethodData m2)
         {
             bool better = false;
             for (int i = 0; i < args.Length; i++)
@@ -1839,8 +2190,15 @@ namespace SKGPortalCore.Lib
                 int c = CompareConversions(args[i].Type,
                     m1.Parameters[i].ParameterType,
                     m2.Parameters[i].ParameterType);
-                if (c < 0) return false;
-                if (c > 0) better = true;
+                if (c < 0)
+                {
+                    return false;
+                }
+
+                if (c > 0)
+                {
+                    better = true;
+                }
             }
             return better;
         }
@@ -1848,31 +2206,59 @@ namespace SKGPortalCore.Lib
         // Return 1 if s -> t1 is a better conversion than s -> t2
         // Return -1 if s -> t2 is a better conversion than s -> t1
         // Return 0 if neither conversion is better
-        static int CompareConversions(Type s, Type t1, Type t2)
+        private static int CompareConversions(Type s, Type t1, Type t2)
         {
-            if (t1 == t2) return 0;
-            if (s == t1) return 1;
-            if (s == t2) return -1;
+            if (t1 == t2)
+            {
+                return 0;
+            }
+
+            if (s == t1)
+            {
+                return 1;
+            }
+
+            if (s == t2)
+            {
+                return -1;
+            }
+
             bool t1t2 = IsCompatibleWith(t1, t2);
             bool t2t1 = IsCompatibleWith(t2, t1);
-            if (t1t2 && !t2t1) return 1;
-            if (t2t1 && !t1t2) return -1;
-            if (IsSignedIntegralType(t1) && IsUnsignedIntegralType(t2)) return 1;
-            if (IsSignedIntegralType(t2) && IsUnsignedIntegralType(t1)) return -1;
+            if (t1t2 && !t2t1)
+            {
+                return 1;
+            }
+
+            if (t2t1 && !t1t2)
+            {
+                return -1;
+            }
+
+            if (IsSignedIntegralType(t1) && IsUnsignedIntegralType(t2))
+            {
+                return 1;
+            }
+
+            if (IsSignedIntegralType(t2) && IsUnsignedIntegralType(t1))
+            {
+                return -1;
+            }
+
             return 0;
         }
 
-        Expression GenerateEqual(Expression left, Expression right)
+        private Expression GenerateEqual(Expression left, Expression right)
         {
             return Expression.Equal(left, right);
         }
 
-        Expression GenerateNotEqual(Expression left, Expression right)
+        private Expression GenerateNotEqual(Expression left, Expression right)
         {
             return Expression.NotEqual(left, right);
         }
 
-        Expression GenerateGreaterThan(Expression left, Expression right)
+        private Expression GenerateGreaterThan(Expression left, Expression right)
         {
             if (left.Type == typeof(string))
             {
@@ -1884,7 +2270,7 @@ namespace SKGPortalCore.Lib
             return Expression.GreaterThan(left, right);
         }
 
-        Expression GenerateGreaterThanEqual(Expression left, Expression right)
+        private Expression GenerateGreaterThanEqual(Expression left, Expression right)
         {
             if (left.Type == typeof(string))
             {
@@ -1896,7 +2282,7 @@ namespace SKGPortalCore.Lib
             return Expression.GreaterThanOrEqual(left, right);
         }
 
-        Expression GenerateLessThan(Expression left, Expression right)
+        private Expression GenerateLessThan(Expression left, Expression right)
         {
             if (left.Type == typeof(string))
             {
@@ -1908,7 +2294,7 @@ namespace SKGPortalCore.Lib
             return Expression.LessThan(left, right);
         }
 
-        Expression GenerateLessThanEqual(Expression left, Expression right)
+        private Expression GenerateLessThanEqual(Expression left, Expression right)
         {
             if (left.Type == typeof(string))
             {
@@ -1920,7 +2306,7 @@ namespace SKGPortalCore.Lib
             return Expression.LessThanOrEqual(left, right);
         }
 
-        Expression GenerateAdd(Expression left, Expression right)
+        private Expression GenerateAdd(Expression left, Expression right)
         {
             if (left.Type == typeof(string) && right.Type == typeof(string))
             {
@@ -1929,12 +2315,12 @@ namespace SKGPortalCore.Lib
             return Expression.Add(left, right);
         }
 
-        Expression GenerateSubtract(Expression left, Expression right)
+        private Expression GenerateSubtract(Expression left, Expression right)
         {
             return Expression.Subtract(left, right);
         }
 
-        Expression GenerateStringConcat(Expression left, Expression right)
+        private Expression GenerateStringConcat(Expression left, Expression right)
         {
             return Expression.Call(
                 null,
@@ -1942,31 +2328,39 @@ namespace SKGPortalCore.Lib
                 new[] { left, right });
         }
 
-        MethodInfo GetStaticMethod(string methodName, Expression left, Expression right)
+        private MethodInfo GetStaticMethod(string methodName, Expression left, Expression right)
         {
             return left.Type.GetMethod(methodName, new[] { left.Type, right.Type });
         }
 
-        Expression GenerateStaticMethodCall(string methodName, Expression left, Expression right)
+        private Expression GenerateStaticMethodCall(string methodName, Expression left, Expression right)
         {
             return Expression.Call(null, GetStaticMethod(methodName, left, right), new[] { left, right });
         }
 
-        void SetTextPos(int pos)
+        private void SetTextPos(int pos)
         {
             textPos = pos;
             ch = textPos < textLen ? text[textPos] : '\0';
         }
 
-        void NextChar()
+        private void NextChar()
         {
-            if (textPos < textLen) textPos++;
+            if (textPos < textLen)
+            {
+                textPos++;
+            }
+
             ch = textPos < textLen ? text[textPos] : '\0';
         }
 
-        void NextToken()
+        private void NextToken()
         {
-            while (char.IsWhiteSpace(ch)) NextChar();
+            while (char.IsWhiteSpace(ch))
+            {
+                NextChar();
+            }
+
             TokenId t;
             int tokenPos = textPos;
             switch (ch)
@@ -2106,9 +2500,16 @@ namespace SKGPortalCore.Lib
                     do
                     {
                         NextChar();
-                        while (textPos < textLen && ch != quote) NextChar();
+                        while (textPos < textLen && ch != quote)
+                        {
+                            NextChar();
+                        }
+
                         if (textPos == textLen)
+                        {
                             throw ParseError(textPos, Res.UnterminatedStringLiteral);
+                        }
+
                         NextChar();
                     } while (ch == quote);
                     t = TokenId.StringLiteral;
@@ -2144,14 +2545,22 @@ namespace SKGPortalCore.Lib
                         {
                             t = TokenId.RealLiteral;
                             NextChar();
-                            if (ch == '+' || ch == '-') NextChar();
+                            if (ch == '+' || ch == '-')
+                            {
+                                NextChar();
+                            }
+
                             ValidateDigit();
                             do
                             {
                                 NextChar();
                             } while (char.IsDigit(ch));
                         }
-                        if (ch == 'F' || ch == 'f') NextChar();
+                        if (ch == 'F' || ch == 'f')
+                        {
+                            NextChar();
+                        }
+
                         break;
                     }
                     if (textPos == textLen)
@@ -2166,45 +2575,58 @@ namespace SKGPortalCore.Lib
             token.pos = tokenPos;
         }
 
-        bool TokenIdentifierIs(string id)
+        private bool TokenIdentifierIs(string id)
         {
             return token.id == TokenId.Identifier && string.Equals(id, token.text, StringComparison.OrdinalIgnoreCase);
         }
 
-        string GetIdentifier()
+        private string GetIdentifier()
         {
             ValidateToken(TokenId.Identifier, Res.IdentifierExpected);
             string id = token.text;
-            if (id.Length > 1 && id[0] == '@') id = id.Substring(1);
+            if (id.Length > 1 && id[0] == '@')
+            {
+                id = id.Substring(1);
+            }
+
             return id;
         }
 
-        void ValidateDigit()
+        private void ValidateDigit()
         {
-            if (!char.IsDigit(ch)) throw ParseError(textPos, Res.DigitExpected);
+            if (!char.IsDigit(ch))
+            {
+                throw ParseError(textPos, Res.DigitExpected);
+            }
         }
 
-        void ValidateToken(TokenId t, string errorMessage)
+        private void ValidateToken(TokenId t, string errorMessage)
         {
-            if (token.id != t) throw ParseError(errorMessage);
+            if (token.id != t)
+            {
+                throw ParseError(errorMessage);
+            }
         }
 
-        void ValidateToken(TokenId t)
+        private void ValidateToken(TokenId t)
         {
-            if (token.id != t) throw ParseError(Res.SyntaxError);
+            if (token.id != t)
+            {
+                throw ParseError(Res.SyntaxError);
+            }
         }
 
-        Exception ParseError(string format, params object[] args)
+        private Exception ParseError(string format, params object[] args)
         {
             return ParseError(token.pos, format, args);
         }
 
-        Exception ParseError(int pos, string format, params object[] args)
+        private Exception ParseError(int pos, string format, params object[] args)
         {
             return new ParseException(string.Format(System.Globalization.CultureInfo.CurrentCulture, format, args), pos);
         }
 
-        static Dictionary<string, object> CreateKeywords()
+        private static Dictionary<string, object> CreateKeywords()
         {
             Dictionary<string, object> d = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
             {
@@ -2215,12 +2637,16 @@ namespace SKGPortalCore.Lib
                 { keywordIif, keywordIif },
                 { keywordNew, keywordNew }
             };
-            foreach (Type type in predefinedTypes) d.Add(type.Name, type);
+            foreach (Type type in predefinedTypes)
+            {
+                d.Add(type.Name, type);
+            }
+
             return d;
         }
     }
 
-    static class Res
+    internal static class Res
     {
         public const string DuplicateIdentifier = "The identifier '{0}' was defined more than once";
         public const string ExpressionTypeMismatch = "Expression of type '{0}' expected";

@@ -1,12 +1,11 @@
-﻿using GraphQL;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKGPortalCore.Controllers
 {
@@ -39,18 +38,20 @@ namespace SKGPortalCore.Controllers
                 Inputs = query.Variables?.ToInputs(),
                 ExposeExceptions = true,
             };
-            var result = await _documentExecuter.ExecuteAsync(options);
+            ExecutionResult result = await _documentExecuter.ExecuteAsync(options);
             if (result.Errors?.Count > 0) { return BadRequest(/*result.Errors*/GetErrorsMessage(result.Errors)); }
             return Ok(result);
         }
         #endregion
-
         #region Private
         private string GetErrorsMessage(ExecutionErrors errors)
         {
             StringBuilder str = new StringBuilder();
-            foreach (var er in errors)
+            foreach (ExecutionError er in errors)
+            {
                 str.AppendLine(er.Message);
+            }
+
             return str.ToString();
         }
         #endregion

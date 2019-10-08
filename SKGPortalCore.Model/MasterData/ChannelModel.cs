@@ -48,7 +48,7 @@ namespace SKGPortalCore.Model.MasterData
     /// 交易代號與平台通路代號關聯表
     /// </summary>
     [Description("交易代號與平台通路代號關聯表")]
-    public class ChannelMapModel:DetailRowState
+    public class ChannelMapModel : DetailRowState
     {
         [ForeignKey("ChannelId")]
         public ChannelModel Channel { get; set; }

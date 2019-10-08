@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SKGPortalCore.Lib
 {
@@ -39,11 +38,11 @@ namespace SKGPortalCore.Lib
         /// <summary>
         /// 主表當前行項
         /// </summary>
-        public T1 CurrentRow { get { return Master[CurrentIdx]; } }
+        public T1 CurrentRow => Master[CurrentIdx];
         /// <summary>
         /// 子表當前行項
         /// </summary>
-        public T2 DetailRow { get { return Detail[DetailIdx]; } }
+        public T2 DetailRow => Detail[DetailIdx];
         /// <summary>
         /// 主表Index
         /// </summary>
@@ -62,11 +61,11 @@ namespace SKGPortalCore.Lib
         /// <summary>
         /// 是否到尾
         /// </summary>
-        public bool IsEof { get { return Master?.Count == CurrentIdx; } }
+        public bool IsEof => Master?.Count == CurrentIdx;
         /// <summary>
         /// 是否可比對
         /// </summary>
-        public bool Enable { get { return Master != null && Detail != null; } }
+        public bool Enable => Master != null && Detail != null;
         /// <summary>
         /// 子表Index標籤
         /// </summary>
@@ -164,11 +163,18 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public bool Compare()
         {
-            if (Detail?.Count == DetailIdx) return false;
+            if (Detail?.Count == DetailIdx)
+            {
+                return false;
+            }
+
             while (CompareFunc(CurrentRow, DetailRow) > 0)
             {
                 DetailMoveNext();
-                if (Detail?.Count == DetailIdx) return false;
+                if (Detail?.Count == DetailIdx)
+                {
+                    return false;
+                }
             }
             return CompareFunc(CurrentRow, DetailRow) >= 0;
         }
@@ -184,8 +190,14 @@ namespace SKGPortalCore.Lib
                 int result = 0;
                 foreach (string field in MasterFields)
                 {
-                    if (result == 0) result = T1Reflec.GetValue(x, field).ToString().CompareTo(T1Reflec.GetValue(y, field).ToString());
-                    else return result;
+                    if (result == 0)
+                    {
+                        result = T1Reflec.GetValue(x, field).ToString().CompareTo(T1Reflec.GetValue(y, field).ToString());
+                    }
+                    else
+                    {
+                        return result;
+                    }
                 }
                 return result;
             });
@@ -201,8 +213,14 @@ namespace SKGPortalCore.Lib
                 int result = 0;
                 foreach (string field in MasterFields)
                 {
-                    if (result == 0) result = T2Reflec.GetValue(x, field).ToString().CompareTo(T2Reflec.GetValue(y, field).ToString());
-                    else return result;
+                    if (result == 0)
+                    {
+                        result = T2Reflec.GetValue(x, field).ToString().CompareTo(T2Reflec.GetValue(y, field).ToString());
+                    }
+                    else
+                    {
+                        return result;
+                    }
                 }
                 return result;
             });
@@ -219,8 +237,14 @@ namespace SKGPortalCore.Lib
                 int len = MasterFields.Length;
                 for (int i = 0; i < len; i++)
                 {
-                    if (result == 0) result = T1Reflec.GetValue(x, MasterFields[i]).ToString().CompareTo(T2Reflec.GetValue(y, DetailFields[i]).ToString());
-                    else return result;
+                    if (result == 0)
+                    {
+                        result = T1Reflec.GetValue(x, MasterFields[i]).ToString().CompareTo(T2Reflec.GetValue(y, DetailFields[i]).ToString());
+                    }
+                    else
+                    {
+                        return result;
+                    }
                 }
                 return result;
             });

@@ -1,10 +1,9 @@
-﻿using SKGPortalCore.Model.MasterData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using SKGPortalCore.Model.MasterData;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -72,7 +71,7 @@ namespace SKGPortalCore.Model.BillData
     /// 通路收款明細帳簿
     /// </summary>
     [Description("通路收款明細帳簿")]
-    public class ChannelEAccountBillDetailModel:DetailRowState
+    public class ChannelEAccountBillDetailModel : DetailRowState
     {
         public ChannelEAccountBillModel Bill { get; set; }
         /// <summary>

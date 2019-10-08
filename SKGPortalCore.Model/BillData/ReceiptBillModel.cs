@@ -61,7 +61,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 預計匯款日
         /// </summary>
-        [Description("預計匯款日")] 
+        [Description("預計匯款日")]
         public DateTime RemitDate { get; set; }
         /// <summary>
         /// 實繳金額

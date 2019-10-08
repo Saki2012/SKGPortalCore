@@ -24,7 +24,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門代號
         /// </summary>
-        [Description("部門代號"),Key]
+        [Description("部門代號"), Key]
         public string DeptId { get; set; }
         /// <summary>
         /// 部門名稱

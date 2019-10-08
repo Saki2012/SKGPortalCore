@@ -25,12 +25,15 @@ namespace SKGPortalCore.Business.Func
         {
             Dictionary<string, int> funcPermissionDic = new Dictionary<string, int>();
             Dictionary<string, string> funcPermissionTokenDic = new Dictionary<string, string>();
-            foreach (var userRole in userRoles)
+            foreach (CustUserRoleModel userRole in userRoles)
             {
-                foreach (var permission in userRole.Role.Permissions)
+                foreach (RolePermissionModel permission in userRole.Role.Permissions)
                 {
                     if (!funcPermissionDic.ContainsKey(permission.FuncName))
+                    {
                         funcPermissionDic.TryAdd(permission.FuncName, 0);
+                    }
+
                     funcPermissionDic[permission.FuncName] |= permission.FuncAction;
                 }
             }
@@ -80,10 +83,18 @@ namespace SKGPortalCore.Business.Func
         /// <returns></returns>
         private static bool CheckAuthenticate(string secret, string token, string claimType, FuncAction claimValue)
         {
-            if (!LibJWT.TryValidateToken(secret, token, out ClaimsPrincipal principal)) return false;
+            if (!LibJWT.TryValidateToken(secret, token, out ClaimsPrincipal principal))
+            {
+                return false;
+            }
+
             string srcActionType = principal.Claims.Where(c => c.Type == "ClaimType").Select(c => c.Value).SingleOrDefault().ToString();
             int srcAction = principal.Claims.Where(c => c.Type == "ClaimValue").Select(c => c.Value).SingleOrDefault().ToInt32();
-            if (srcActionType.CompareTo(claimType) != 0 || (int)claimValue != ((int)claimValue & srcAction)) return false;
+            if (srcActionType.CompareTo(claimType) != 0 || (int)claimValue != ((int)claimValue & srcAction))
+            {
+                return false;
+            }
+
             return true;
         }
         #endregion

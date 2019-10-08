@@ -10,6 +10,7 @@ using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.MasterData;
+
 namespace SKGPortalCore.Schedule.Import
 {
     public class ACCFTTImport : IImportData
@@ -24,7 +25,7 @@ namespace SKGPortalCore.Schedule.Import
         /// </summary>
         public MessageLog Message { get; }
         /// <summary>
-        /// 
+        /// 資訊流長度(byte)
         /// </summary>
         private const int StrLen = 256;
         /// <summary>
@@ -46,21 +47,24 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile => $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}";
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile => $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile => $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         #endregion
         #region Construct
-        public ACCFTTImport(ApplicationDbContext dataAccess)
+        public ACCFTTImport(ApplicationDbContext dataAccess, MessageLog messageLog = null)
         {
             DataAccess = dataAccess;
-            Message = new MessageLog(SystemOperator.SysOperator);
+            Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
+            Directory.CreateDirectory(SrcPath);
+            Directory.CreateDirectory(SuccessPath);
+            Directory.CreateDirectory(FailPath);
         }
         #endregion
         #region Implement
@@ -77,7 +81,11 @@ namespace SKGPortalCore.Schedule.Import
             while (sr.Peek() > 0)
             {
                 strRow = sr.ReadLine();
-                if (0 == strRow.Length) continue;
+                if (0 == strRow.Length)
+                {
+                    continue;
+                }
+
                 if (StrLen != strRow.ByteLen()) { Message.AddErrorMessage(MessageCode.Code1003, line, StrLen); }
                 result.Add(line++, strRow);
             }
@@ -94,7 +102,10 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"ACCFTT{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
+            {
                 result.Add(new ACCFTT() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
+            }
+
             return result;
         }
         /// <summary>
@@ -115,10 +126,39 @@ namespace SKGPortalCore.Schedule.Import
                 {
                     case 0:
                         {
-                            GetCustomerInfo(model, bizCustRepo, custRepo, custUserRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet,out CustUserSet custUserSet);
-                            if (null == customerSet) custRepo.Create(bizACCFTT.SetCustomer(model, customerSet)); else custRepo.Update(bizACCFTT.SetCustomer(model, customerSet));
-                            if (null == bizCustomerSet) bizCustRepo.Create(bizACCFTT.SetBizCustomer(model, bizCustomerSet)); else bizCustRepo.Update(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
-                            if (null == custUserSet) custUserRepo.Create(bizACCFTT.AddAdminAccount(model));
+                            DataAccess.Database.BeginTransaction();
+                            try
+                            {
+                                GetCustomerInfo(model, bizCustRepo, custRepo, custUserRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet, out CustUserSet custUserSet);
+                                if (null == customerSet)
+                                {
+                                    custRepo.Create(bizACCFTT.SetCustomer(model, customerSet));
+                                }
+                                else
+                                {
+                                    custRepo.Update(bizACCFTT.SetCustomer(model, customerSet));
+                                }
+                                custRepo.CommitData(FuncAction.Create);
+                                if (null == bizCustomerSet)
+                                {
+                                    bizCustRepo.Create(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
+                                }
+                                else
+                                {
+                                    bizCustRepo.Update(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
+                                }
+                                bizCustRepo.CommitData(FuncAction.Create);
+                                if (null == custUserSet)
+                                {
+                                    custUserRepo.Create(bizACCFTT.AddAdminAccount(model));
+                                    custUserRepo.CommitData(FuncAction.Create);
+                                }
+                                DataAccess.Database.CommitTransaction();
+                            }
+                            catch
+                            {
+                                DataAccess.Database.RollbackTransaction();
+                            }
                         }
                         break;
                     case 1:
@@ -127,14 +167,12 @@ namespace SKGPortalCore.Schedule.Import
                         break;
                 }
             }
-            bizCustRepo.CommitData(FuncAction.Create);
         }
         /// <summary>
         /// 
         /// </summary>
         void IImportData.MoveToOverFolder(bool isSuccess)
         {
-            return;
             if (File.Exists(SrcFile))
             {
                 string file;
@@ -166,7 +204,11 @@ namespace SKGPortalCore.Schedule.Import
         private void UnableBizCustomer(string customerCode)
         {
             BizCustomerModel bizCustomer = DataAccess.Set<BizCustomerModel>().Find(customerCode);
-            if (null != bizCustomer) bizCustomer.AccountStatus = AccountStatus.Unable;
+            if (null != bizCustomer)
+            {
+                bizCustomer.AccountStatus = AccountStatus.Unable;
+            }
+
             DataAccess.Set<BizCustomerModel>().Update(bizCustomer);
         }
         #endregion

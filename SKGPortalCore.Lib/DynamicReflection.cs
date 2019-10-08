@@ -29,41 +29,41 @@ namespace SKGPortalCore.Lib
         #region Private
         private Func<object, string, object> GenerateGetValue(Type type)
         {
-            var instance = Expression.Parameter(typeof(object), "instance");
-            var memberName = Expression.Parameter(typeof(string), "memberName");
-            var nameHash = Expression.Variable(typeof(int), "nameHash");
-            var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties())
+            ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
+            ParameterExpression memberName = Expression.Parameter(typeof(string), "memberName");
+            ParameterExpression nameHash = Expression.Variable(typeof(int), "nameHash");
+            BinaryExpression calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
+            List<SwitchCase> cases = new List<SwitchCase>();
+            foreach (System.Reflection.PropertyInfo propertyInfo in type.GetProperties())
             {
-                var property = Expression.Property(Expression.Convert(instance, type), propertyInfo.Name);
-                var propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
+                MemberExpression property = Expression.Property(Expression.Convert(instance, type), propertyInfo.Name);
+                ConstantExpression propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
 
                 cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), propertyHash));
             }
-            var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
-            var methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
+            SwitchExpression switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
+            BlockExpression methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
 
             return Expression.Lambda<Func<object, string, object>>(methodBody, instance, memberName).Compile();
         }
         private Action<object, string, object> GenerateSetValue(Type type)
         {
-            var instance = Expression.Parameter(typeof(object), "instance");
-            var memberName = Expression.Parameter(typeof(string), "memberName");
-            var newValue = Expression.Parameter(typeof(object), "newValue");
-            var nameHash = Expression.Variable(typeof(int), "nameHash");
-            var getHashCode = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties())
+            ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
+            ParameterExpression memberName = Expression.Parameter(typeof(string), "memberName");
+            ParameterExpression newValue = Expression.Parameter(typeof(object), "newValue");
+            ParameterExpression nameHash = Expression.Variable(typeof(int), "nameHash");
+            BinaryExpression getHashCode = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
+            List<SwitchCase> cases = new List<SwitchCase>();
+            foreach (System.Reflection.PropertyInfo propertyInfo in type.GetProperties())
             {
-                var property = Expression.Property(Expression.Convert(instance, type), propertyInfo.Name);
-                var setValue = Expression.Assign(property, Expression.Convert(newValue, propertyInfo.PropertyType));
-                var propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
+                MemberExpression property = Expression.Property(Expression.Convert(instance, type), propertyInfo.Name);
+                BinaryExpression setValue = Expression.Assign(property, Expression.Convert(newValue, propertyInfo.PropertyType));
+                ConstantExpression propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
 
                 cases.Add(Expression.SwitchCase(Expression.Convert(setValue, typeof(object)), propertyHash));
             }
-            var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
-            var methodBody = Expression.Block(typeof(object), new[] { nameHash }, getHashCode, switchEx);
+            SwitchExpression switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
+            BlockExpression methodBody = Expression.Block(typeof(object), new[] { nameHash }, getHashCode, switchEx);
 
             return Expression.Lambda<Action<object, string, object>>(methodBody, instance, memberName, newValue).Compile();
         }
@@ -103,43 +103,43 @@ namespace SKGPortalCore.Lib
         private Func<object, string, object> GenerateGetValue()
         {
 
-            var type = typeof(T);
-            var instance = Expression.Parameter(typeof(object), "instance");
-            var memberName = Expression.Parameter(typeof(string), "memberName");
-            var nameHash = Expression.Variable(typeof(int), "nameHash");
-            var calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties())
+            Type type = typeof(T);
+            ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
+            ParameterExpression memberName = Expression.Parameter(typeof(string), "memberName");
+            ParameterExpression nameHash = Expression.Variable(typeof(int), "nameHash");
+            BinaryExpression calHash = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
+            List<SwitchCase> cases = new List<SwitchCase>();
+            foreach (System.Reflection.PropertyInfo propertyInfo in type.GetProperties())
             {
-                var property = Expression.Property(Expression.Convert(instance, typeof(T)), propertyInfo.Name);
-                var propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
+                MemberExpression property = Expression.Property(Expression.Convert(instance, typeof(T)), propertyInfo.Name);
+                ConstantExpression propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
 
                 cases.Add(Expression.SwitchCase(Expression.Convert(property, typeof(object)), propertyHash));
             }
-            var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
-            var methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
+            SwitchExpression switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
+            BlockExpression methodBody = Expression.Block(typeof(object), new[] { nameHash }, calHash, switchEx);
 
             return Expression.Lambda<Func<object, string, object>>(methodBody, instance, memberName).Compile();
         }
         private Action<object, string, object> GenerateSetValue()
         {
-            var type = typeof(T);
-            var instance = Expression.Parameter(typeof(object), "instance");
-            var memberName = Expression.Parameter(typeof(string), "memberName");
-            var newValue = Expression.Parameter(typeof(object), "newValue");
-            var nameHash = Expression.Variable(typeof(int), "nameHash");
-            var getHashCode = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
-            var cases = new List<SwitchCase>();
-            foreach (var propertyInfo in type.GetProperties())
+            Type type = typeof(T);
+            ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
+            ParameterExpression memberName = Expression.Parameter(typeof(string), "memberName");
+            ParameterExpression newValue = Expression.Parameter(typeof(object), "newValue");
+            ParameterExpression nameHash = Expression.Variable(typeof(int), "nameHash");
+            BinaryExpression getHashCode = Expression.Assign(nameHash, Expression.Call(memberName, typeof(object).GetMethod("GetHashCode")));
+            List<SwitchCase> cases = new List<SwitchCase>();
+            foreach (System.Reflection.PropertyInfo propertyInfo in type.GetProperties())
             {
-                var property = Expression.Property(Expression.Convert(instance, typeof(T)), propertyInfo.Name);
-                var setValue = Expression.Assign(property, Expression.Convert(newValue, propertyInfo.PropertyType));
-                var propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
+                MemberExpression property = Expression.Property(Expression.Convert(instance, typeof(T)), propertyInfo.Name);
+                BinaryExpression setValue = Expression.Assign(property, Expression.Convert(newValue, propertyInfo.PropertyType));
+                ConstantExpression propertyHash = Expression.Constant(propertyInfo.Name.GetHashCode(), typeof(int));
 
                 cases.Add(Expression.SwitchCase(Expression.Convert(setValue, typeof(object)), propertyHash));
             }
-            var switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
-            var methodBody = Expression.Block(typeof(object), new[] { nameHash }, getHashCode, switchEx);
+            SwitchExpression switchEx = Expression.Switch(nameHash, Expression.Constant(null), cases.ToArray());
+            BlockExpression methodBody = Expression.Block(typeof(object), new[] { nameHash }, getHashCode, switchEx);
 
             return Expression.Lambda<Action<object, string, object>>(methodBody, instance, memberName, newValue).Compile();
         }

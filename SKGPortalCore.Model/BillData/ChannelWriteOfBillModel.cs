@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -46,7 +44,7 @@ namespace SKGPortalCore.Model.BillData
     /// 通路帳目明細
     /// </summary>
     [Description("通路帳目明細")]
-    public class ChannelWriteOfDetailModel:DetailRowState
+    public class ChannelWriteOfDetailModel : DetailRowState
     {
         [ForeignKey("BillNo")]
         public ChannelWriteOfBillModel Bill { get; set; }

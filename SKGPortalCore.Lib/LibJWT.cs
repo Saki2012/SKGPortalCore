@@ -1,10 +1,9 @@
-﻿using JWT;
-using JWT.Algorithms;
-using JWT.Serializers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
+using JWT;
+using JWT.Algorithms;
+using JWT.Serializers;
 
 namespace SKGPortalCore.Lib
 {
@@ -23,12 +22,12 @@ namespace SKGPortalCore.Lib
             IJsonSerializer serializer = new JsonNetSerializer();
             IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
             IJwtEncoder encoder = new JwtEncoder(algorithm, serializer, urlEncoder);
-            var payload = new Dictionary<string, object>
+            Dictionary<string, object> payload = new Dictionary<string, object>
                         {
                             {"ClaimType", claimType},
                             {"ClaimValue",claimValue }
                         };
-            var token = encoder.Encode(payload, secret);
+            string token = encoder.Encode(payload, secret);
             return token;
         }
         /// <summary>
@@ -49,21 +48,21 @@ namespace SKGPortalCore.Lib
                 IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
                 IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
 
-                var payload = decoder.DecodeToObject(token, secret, verify: true);
+                IDictionary<string, object> payload = decoder.DecodeToObject(token, secret, verify: true);
                 List<Claim> claims = new List<Claim>();
 
-                foreach (var item in payload)
+                foreach (KeyValuePair<string, object> item in payload)
                 {
                     if (item.Value == null)
                     {
                         continue;
                     }
 
-                    var key = item.Key;
-                    var value = item.Value.ToString();
+                    string key = item.Key;
+                    string value = item.Value.ToString();
                     claims.Add(new Claim(key, value));
                 }
-                var identity = new ClaimsIdentity(claims, "JWT");
+                ClaimsIdentity identity = new ClaimsIdentity(claims, "JWT");
                 principal = new ClaimsPrincipal(identity);
                 return true;
             }

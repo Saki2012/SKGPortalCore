@@ -9,17 +9,17 @@ namespace SKGPortalCore.Lib
     {
         public static string GetProgId(object member)
         {
-            var attribute = member.GetType().GetCustomAttribute<ProgIdAttribute>();
+            ProgIdAttribute attribute = member.GetType().GetCustomAttribute<ProgIdAttribute>();
             return GetProgId(attribute);
         }
         public static string GetProgId(PropertyInfo property)
         {
-            var attribute = property.GetCustomAttribute<ProgIdAttribute>();
+            ProgIdAttribute attribute = property.GetCustomAttribute<ProgIdAttribute>();
             return GetProgId(attribute);
         }
         public static string GetProgId<T>()
         {
-            var attribute = typeof(T).GetCustomAttribute<ProgIdAttribute>();
+            ProgIdAttribute attribute = typeof(T).GetCustomAttribute<ProgIdAttribute>();
             return GetProgId(attribute);
         }
         private static string GetProgId(ProgIdAttribute attribute)
@@ -31,22 +31,22 @@ namespace SKGPortalCore.Lib
 
         public static string GetDescription(Enum member)
         {
-            var attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
         public static string GetDescription(object member)
         {
-            var attribute = member.GetType().GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute attribute = member.GetType().GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
         public static string GetDescription(PropertyInfo property)
         {
-            var attribute = property.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
         public static string GetDescription<T>()
         {
-            var attribute = typeof(T).GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute attribute = typeof(T).GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
         private static string GetDescription(DescriptionAttribute attribute)

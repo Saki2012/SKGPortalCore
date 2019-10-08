@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SKGPortalCore.Model.MasterData.OperateSystem
+﻿namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
     public interface IUserModel
     {

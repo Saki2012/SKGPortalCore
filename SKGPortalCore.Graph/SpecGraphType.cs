@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using GraphQL;
 using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository;
-using SKGPortalCore.Repository.Func;
 
 namespace SKGPortalCore.Graph
 {
@@ -69,7 +66,7 @@ namespace SKGPortalCore.Graph
                         repo.Message.WriteLogTxt();
                         return default;
                     }
-                    var set = repo.QueryData(keyVal);
+                    TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
                     return context.Errors.Count == 0 ? set : default;
@@ -232,7 +229,7 @@ namespace SKGPortalCore.Graph
                     string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
                     Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId,session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Invalid));
+                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Invalid));
                     if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Invalid))
                     {
                         repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Invalid));
@@ -296,7 +293,11 @@ namespace SKGPortalCore.Graph
                 if (!SetType(propertyName, descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                    if (property.PropertyType == changeType)
+                    {
+                        continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                    }
+
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -323,7 +324,11 @@ namespace SKGPortalCore.Graph
                 if (!SetType(propertyName, descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                    if (property.PropertyType == changeType)
+                    {
+                        continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                    }
+
                     Field(changeType, propertyName, descript);
                 }
             }

@@ -1,14 +1,13 @@
-﻿using SKGPortalCore.Business.BillData;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -58,7 +57,11 @@ namespace SKGPortalCore.Repository.BillData
         /// <param name="billNo"></param>
         private void InsertBillReceiptDetail(string receiptBillNo, string billNo)
         {
-            if (billNo.IsNullOrEmpty()) return;
+            if (billNo.IsNullOrEmpty())
+            {
+                return;
+            }
+
             using BillRepository rep = new BillRepository(DataAccess) { User = User };
             BillSet billSet = rep.QueryData(new object[] { billNo });
             if (null == billSet) { /*add Message:查無帳單*/ return; }
@@ -72,7 +75,11 @@ namespace SKGPortalCore.Repository.BillData
         /// <param name="billNo"></param>
         private void RemoveBillReceiptDetail(string receiptBillNo, string billNo)
         {
-            if (billNo.IsNullOrEmpty()) return;
+            if (billNo.IsNullOrEmpty())
+            {
+                return;
+            }
+
             using BillRepository rep = new BillRepository(DataAccess) { User = User };
             BillSet billSet = rep.QueryData(new object[] { billNo });
             if (null == billSet) { return; }
@@ -86,18 +93,25 @@ namespace SKGPortalCore.Repository.BillData
         /// </summary>
         private void InsertChannelEAccount(BizReceiptBill biz, ReceiptBillSet set)
         {
-            if (set.ReceiptBill.RemitDate == DateTime.MinValue) return;
+            if (set.ReceiptBill.RemitDate == DateTime.MinValue)
+            {
+                return;
+            }
+
             using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess) { User = User };
             if (DataAccess.Set<ChannelEAccountBillModel>().Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)
             {
-                var accountSet = biz.CreateChannelEAccountBill(set.ReceiptBill);
+                ChannelEAccountBillSet accountSet = biz.CreateChannelEAccountBill(set.ReceiptBill);
                 repo.Create(accountSet);
             }
             else
             {
-                var accountSet = repo.QueryData(new object[] { "" });
+                ChannelEAccountBillSet accountSet = repo.QueryData(new object[] { "" });
                 if (DataAccess.Set<ChannelEAccountBillDetailModel>().Where(p => p.ReceiptBillNo == set.ReceiptBill.BillNo).Count() == 0)
+                {
                     accountSet.ChannelEAccountBillDetail.Add(new ChannelEAccountBillDetailModel() { BillNo = accountSet.ChannelEAccountBill.BillNo, ReceiptBillNo = set.ReceiptBill.BillNo, RowState = RowState.Insert });
+                }
+
                 repo.Update(accountSet);
             }
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
@@ -26,8 +25,15 @@ namespace SKGPortalCore.Repository.BillData
                 {
                     string billNo = $"Bill{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.Bill.BillNo = billNo;
-                    if (null != p.BillDetail) p.BillDetail.ForEach(p => p.BillNo = billNo);
-                    if (null != p.BillReceiptDetail) p.BillReceiptDetail.ForEach(p => p.BillNo = billNo);
+                    if (null != p.BillDetail)
+                    {
+                        p.BillDetail.ForEach(p => p.BillNo = billNo);
+                    }
+
+                    if (null != p.BillReceiptDetail)
+                    {
+                        p.BillReceiptDetail.ForEach(p => p.BillNo = billNo);
+                    }
                 }
             });
         }

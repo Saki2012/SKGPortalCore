@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -53,18 +52,28 @@ namespace SKGPortalCore.Lib
         public static string Merge(string mergeStr, bool hasEmpty, params object[] strs)
         {
             int len = strs.Length;
-            if (null == strs || len == 0) return string.Empty;
+            if (null == strs || len == 0)
+            {
+                return string.Empty;
+            }
+
             string result = strs[0].ToString(), s;
             for (int i = 1; i < len; i++)
             {
                 //Q:Null Value And DbNull
                 s = strs[i].ToString();
                 if (i == 1 && string.IsNullOrEmpty(result))
+                {
                     result = s;
+                }
                 else if (hasEmpty || (!string.IsNullOrEmpty(result) && !string.IsNullOrEmpty(s)))
+                {
                     result = $"{result}{mergeStr}{s}";
+                }
                 else if (!string.IsNullOrEmpty(s))
+                {
                     result = s;
+                }
             }
             return result;
         }
@@ -75,7 +84,11 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static bool IsNullOrEmpty(this object val)
         {
-            if (null == val) return true;
+            if (null == val)
+            {
+                return true;
+            }
+
             return val.GetType() switch
             {
                 Type type when type == typeof(string) => string.IsNullOrEmpty(val.ToString()),
@@ -152,7 +165,10 @@ namespace SKGPortalCore.Lib
         {
             foreach (dynamic element in elements)
             {
-                if (element.GetType() == val.GetType() && string.Compare(element.ToString(), val.ToString()) == 0) return true;
+                if (element.GetType() == val.GetType() && string.Compare(element.ToString(), val.ToString()) == 0)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -247,7 +263,9 @@ namespace SKGPortalCore.Lib
                 {
                     int num = rd.Next(48, 122);
                     if ((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122))
+                    {
                         c = (char)num;
+                    }
                 }
                 result += c.ToString();
             }
@@ -274,8 +292,8 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static byte[] ObjectToByteArray(this object obj)
         {
-            var binaryFormatter = new BinaryFormatter();
-            using var memoryStream = new MemoryStream();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+            using MemoryStream memoryStream = new MemoryStream();
             binaryFormatter.Serialize(memoryStream, obj);
             return memoryStream.ToArray();
         }
@@ -287,11 +305,11 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static T ByteArrayToObject<T>(this byte[] bytes)
         {
-            using var memoryStream = new MemoryStream();
-            var binaryFormatter = new BinaryFormatter();
+            using MemoryStream memoryStream = new MemoryStream();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
             memoryStream.Write(bytes, 0, bytes.Length);
             memoryStream.Seek(0, SeekOrigin.Begin);
-            var obj = binaryFormatter.Deserialize(memoryStream);
+            object obj = binaryFormatter.Deserialize(memoryStream);
             return (T)obj;
         }
     }
@@ -315,11 +333,14 @@ namespace SKGPortalCore.Lib
                     return typeof(DateTimeGraphType);
                 default:
                     if (type.IsEnum)
-                        return GetEnumerationGraphType(type);
+                    {
+                        return GetEnumerationGraphType(/*type*/);
+                    }
+
                     return type;
             }
         }
-        private static Type GetEnumerationGraphType(Type type)
+        private static Type GetEnumerationGraphType(/*Type type*/)
         {
             return typeof(IntGraphType);
             /*

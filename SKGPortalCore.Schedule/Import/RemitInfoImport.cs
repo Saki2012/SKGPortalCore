@@ -20,7 +20,7 @@ namespace SKGPortalCore.Schedule.Import
         public ApplicationDbContext DataAccess { get; }
         public MessageLog Message { get; }
         /// <summary>
-        /// 
+        /// 資訊流長度(byte)
         /// </summary>
         private const int StrLen = 128;
         /// <summary>
@@ -42,18 +42,25 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 原資料
         /// </summary>
-        private string SrcFile { get { return $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}"; } }
+        private string SrcFile => $"{SrcPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}";
         /// <summary>
         /// 成功資料
         /// </summary>
-        private string SuccessFile { get { return $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string SuccessFile => $"{SuccessPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         /// <summary>
         /// 失敗資料
         /// </summary>
-        private string FailFile { get { return $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}"; } }
+        private string FailFile => $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         #endregion
         #region Construct
-        public RemitInfoImport(ApplicationDbContext dataAccess) { DataAccess = dataAccess; Message = new MessageLog(SystemOperator.SysOperator); }
+        public RemitInfoImport(ApplicationDbContext dataAccess, MessageLog messageLog = null)
+        {
+            DataAccess = dataAccess;
+            Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
+            Directory.CreateDirectory(SrcPath);
+            Directory.CreateDirectory(SuccessPath);
+            Directory.CreateDirectory(FailPath);
+        }
         #endregion
         #region Implement
         /// <summary>
@@ -69,7 +76,11 @@ namespace SKGPortalCore.Schedule.Import
             {
                 strRow = sr.ReadLine();
                 line++;
-                if (0 == strRow.Length) continue;
+                if (0 == strRow.Length)
+                {
+                    continue;
+                }
+
                 if (StrLen != LibData.ByteLen(strRow)) { /*第N行 Error:長度不符*/}
                 switch (LibData.ByteSubString(strRow, 0, 1))
                 {
@@ -95,11 +106,14 @@ namespace SKGPortalCore.Schedule.Import
             DateTime now = DateTime.Now;
             string importBatchNo = $"RT{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
+            {
                 result.Add(new RemitInfoModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
+            }
+
             return result;
         }
         /// <summary>
-        /// 新增繳款資訊
+        /// 新增資料
         /// </summary>
         /// <param name="modelSources"></param>
         void IImportData.CreateData(IList modelSources)
@@ -107,7 +121,7 @@ namespace SKGPortalCore.Schedule.Import
             List<RemitInfoModel> srcs = modelSources as List<RemitInfoModel>;
             using BizRemitInfo biz = new BizRemitInfo(Message);
             using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess) { User = SystemOperator.SysOperator };
-            foreach (var model in srcs)
+            foreach (RemitInfoModel model in srcs)
             {
                 CashFlowBillSet set = biz.GetCashFlowBillSet(model);
                 repo.Create(set);
@@ -115,7 +129,7 @@ namespace SKGPortalCore.Schedule.Import
             repo.CommitData(FuncAction.Create);
         }
         /// <summary>
-        /// 
+        /// 將檔案移動至成功/失敗資料夾中
         /// </summary>
         /// <param name="isSuccess"></param>
         void IImportData.MoveToOverFolder(bool isSuccess)

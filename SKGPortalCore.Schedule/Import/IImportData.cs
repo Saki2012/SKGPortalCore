@@ -33,8 +33,8 @@ namespace SKGPortalCore.Schedule.Import
             }
             catch (Exception ex)
             {
-                var innerEx = ex.GetInnermostException();
-                var exErr = new ExecutionError("異常發生", innerEx) { Source = innerEx.ToString() };
+                Exception innerEx = ex.GetInnermostException();
+                ExecutionError exErr = new ExecutionError("異常發生", innerEx) { Source = innerEx.ToString() };
                 Message.Errors.Add(exErr);
             }
             finally

@@ -23,33 +23,15 @@ namespace SKGPortalCore.Data
         {
             _httpContextAccessor = httpContextAccessor;
         }
-        private ISession Session
-        {
-            get
-            {
-                return _httpContextAccessor.HttpContext.Session;
-            }
-        }
+        private ISession Session => _httpContextAccessor.HttpContext.Session;
         public IUserModel User
         {
-            get
-            {
-                return Session.GetObject<T>(_userKey);
-            }
-            set
-            {
-                Session.SetObject(_userKey, value);
-            }
+            get => Session.GetObject<T>(_userKey);
+            set => Session.SetObject(_userKey, value);
         }
-        public string IP { get { return _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString(); } }
-        public string Browser { get {return _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString(); } }
-        public string SessionId
-        {
-            get
-            {
-                return Session.Id;
-            }
-        }
+        public string IP => _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+        public string Browser => _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString();
+        public string SessionId => Session.Id;
         public void Clear()
         {
             Session.Clear();
@@ -63,7 +45,7 @@ namespace SKGPortalCore.Data
         }
         public static T GetObject<T>(this ISession session, string key)
         {
-            var value = session.GetString(key);
+            string value = session.GetString(key);
             return value == null ? default : JsonConvert.DeserializeObject<T>(value);
         }
     }

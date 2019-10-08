@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SKGPortalCore.Model.MasterData
 {
@@ -22,7 +19,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號"),Key]
+        [Description("通路代號"), Key]
         public string ChannelId { get; set; }
         public CollectionTypeModel CollectionType { get; set; }
         /// <summary>

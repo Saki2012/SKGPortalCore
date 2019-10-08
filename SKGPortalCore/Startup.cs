@@ -103,10 +103,12 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void InjectionRepository(ref IServiceCollection services)
         {
-            var assembly = Assembly.Load("SKGPortalCore.Repository");
-            var types = assembly.ExportedTypes.Where(p => p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
-            foreach (var t in types)
+            Assembly assembly = Assembly.Load("SKGPortalCore.Repository");
+            Type[] types = assembly.ExportedTypes.Where(p => p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
+            foreach (Type t in types)
+            {
                 services.AddTransient(t);
+            }
         }
         /// <summary>
         /// 注入GraphSchema
@@ -114,20 +116,31 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void InjectionGraphSchema(ref IServiceCollection services)
         {
-            var assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
-            var fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
-            foreach (var t in fieldTypes)
+            Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
+            Type[] fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
+            foreach (Type t in fieldTypes)
+            {
                 services.AddTransient(t);
-            var setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
-            foreach (var t in setTypes)
+            }
+
+            Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
+            foreach (Type t in setTypes)
+            {
                 services.AddTransient(t);
-            var operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
-            foreach (var t in operateTypes)
+            }
+
+            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
+            foreach (Type t in operateTypes)
+            {
                 services.AddTransient(t);
-            var sp = services.BuildServiceProvider();
-            var schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
-            foreach (var t in schemaTypes)
+            }
+
+            ServiceProvider sp = services.BuildServiceProvider();
+            Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
+            foreach (Type t in schemaTypes)
+            {
                 services.AddSingleton(t, Activator.CreateInstance(t, new FuncDependencyResolver(type => sp.GetService(type))));
+            }
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();

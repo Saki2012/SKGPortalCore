@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GraphQL;
-using GraphQL.Types;
-using Microsoft.AspNetCore.Http;
-using SKGPortalCore.Business.Func;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
+﻿using GraphQL;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.MasterData;
 

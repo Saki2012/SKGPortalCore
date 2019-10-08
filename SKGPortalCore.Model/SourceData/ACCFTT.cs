@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Lib;
 
 namespace SKGPortalCore.Model.SourceData
@@ -10,7 +8,7 @@ namespace SKGPortalCore.Model.SourceData
     /// 服務申請書主檔
     /// </summary>
     [Description("服務申請書主檔")]
-    public class ACCFTT: IImportSource
+    public class ACCFTT : IImportSource
     {
         #region Public
         public int Id { get; set; }
@@ -19,379 +17,379 @@ namespace SKGPortalCore.Model.SourceData
         /// X(06)
         /// </summary>
         [Description("全方位帳號"), MaxLength(6)]
-        public string KEYNO { get { return _KEYNO; } set { _KEYNO = value.PadRight(6,' ').ByteSubString(0, 6); } }
+        public string KEYNO { get => _KEYNO; set => _KEYNO = value.PadRight(6, ' ').ByteSubString(0, 6); }
         /// <summary>
         /// 02.實體帳號
         /// 9(13)
         /// </summary>
         [Description("實體帳號"), MaxLength(13)]
-        public string ACCIDNO { get { return _ACCIDNO; } set { _ACCIDNO = value.PadLeft(13,'0').ByteSubString(0, 13); } }
+        public string ACCIDNO { get => _ACCIDNO; set => _ACCIDNO = value.PadLeft(13, '0').ByteSubString(0, 13); }
         /// <summary>
         /// 03.戶名
         /// X(40)
         /// </summary>
         [Description("戶名"), MaxLength(40)]
-        public string CUSTNAME { get { return _CUSTNAME; } set { _CUSTNAME = value.PadRight(40, ' ').ByteSubString(0, 40); } }
+        public string CUSTNAME { get => _CUSTNAME; set => _CUSTNAME = value.PadRight(40, ' ').ByteSubString(0, 40); }
         /// <summary>
         /// 04.申請分行
         /// X(04)
         /// </summary>
         [Description("申請分行"), MaxLength(4)]
-        public string APPBECODE { get { return _APPBECODE; } set { _APPBECODE = value.PadLeft(4, '0').ByteSubString(0, 4); } }
+        public string APPBECODE { get => _APPBECODE; set => _APPBECODE = value.PadLeft(4, '0').ByteSubString(0, 4); }
         /// <summary>
         /// 05.所屬分行(帳務分行)
         /// X(04)
         /// </summary>
         [Description("所屬分行"), MaxLength(4)]
-        public string BRCODE { get { return _BRCODE; } set { _BRCODE = value.PadLeft(4, '0').ByteSubString(0, 4); } }
+        public string BRCODE { get => _BRCODE; set => _BRCODE = value.PadLeft(4, '0').ByteSubString(0, 4); }
         /// <summary>
         /// 06.統一編號(第十一碼有值時為重號)
         /// X(11)
         /// </summary>
         [Description("統一編號"), MaxLength(11)]
-        public string IDCODE { get { return _IDCODE; } set { _IDCODE = value.PadLeft(11, '0').ByteSubString(0, 11); } }
+        public string IDCODE { get => _IDCODE; set => _IDCODE = value.PadLeft(11, '0').ByteSubString(0, 11); }
         /// <summary>
         /// 07.申請日期
         /// X(8)
         /// </summary>
         [Description("申請日期"), MaxLength(8)]
-        public string APPLYDATE { get { return _APPLYDATE; } set { _APPLYDATE = value.PadLeft(8, '0').ByteSubString(0, 8); } }
+        public string APPLYDATE { get => _APPLYDATE; set => _APPLYDATE = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 08.最後異動日期
         /// X(8)
         /// </summary>
         [Description("最後異動日期"), MaxLength(8)]
-        public string CHGDATE { get { return _CHGDATE; } set { _CHGDATE = value.PadLeft(8, '0').ByteSubString(0, 8); } }
+        public string CHGDATE { get => _CHGDATE; set => _CHGDATE = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 09.申請狀態(0:申請 1:中止 9:終止)
         /// 9(01)
         /// </summary>
         [Description("申請狀態"), MaxLength(1)]
-        public string APPLYSTAT { get { return _APPLYSTAT; } set { _APPLYSTAT = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string APPLYSTAT { get => _APPLYSTAT; set => _APPLYSTAT = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 10.採用檢碼(Y:是 N:否)針對14碼、(2:二位檢碼 1:一位檢碼 0:否) 針對16位
         /// X(1)
         /// </summary>
         [Description("採用檢碼"), MaxLength(1)]
-        public string CHKNUMFLAG { get { return _CHKNUMFLAG; } set { _CHKNUMFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string CHKNUMFLAG { get => _CHKNUMFLAG; set => _CHKNUMFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 11.是否檢核金額(Y:是 N:否)
         /// X(01)
         /// </summary>
         [Description("是否檢核金額"), MaxLength(1)]
-        public string CHKAMTFLAG { get { return _CHKAMTFLAG; } set { _CHKAMTFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string CHKAMTFLAG { get => _CHKAMTFLAG; set => _CHKAMTFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 12.是否檢核繳款期限(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("是否檢核繳款期限"), MaxLength(1)]
-        public string DUETERM { get { return _DUETERM; } set { _DUETERM = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string DUETERM { get => _DUETERM; set => _DUETERM = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 13.繳款通路(9:全部 0:除自動化 1:除臨櫃 2:僅臨櫃超商 3:僅匯款 4:僅超商郵局) 
         /// X(01)
         /// </summary>
         [Description("繳款通路"), MaxLength(1)]
-        public string CHANNEL { get { return _CHANNEL; } set { _CHANNEL = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string CHANNEL { get => _CHANNEL; set => _CHANNEL = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 14.全方位手續費
         /// 9(03)
         /// </summary>
         [Description("全方位手續費"), MaxLength(3)]
-        public string FEE { get { return _FEE; } set { _FEE = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string FEE { get => _FEE; set => _FEE = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 15.代收超商(7-11)(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("代收超商(7-11)"), MaxLength(1)]
-        public string RSTORE1 { get { return _RSTORE1; } set { _RSTORE1 = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string RSTORE1 { get => _RSTORE1; set => _RSTORE1 = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 16.代收超商(全家)(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("代收超商(全家)"), MaxLength(1)]
-        public string RSTORE2 { get { return _RSTORE2; } set { _RSTORE2 = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string RSTORE2 { get => _RSTORE2; set => _RSTORE2 = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 17.代收超商(OK)(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("代收超商(OK)"), MaxLength(1)]
-        public string RSTORE3 { get { return _RSTORE3; } set { _RSTORE3 = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string RSTORE3 { get => _RSTORE3; set => _RSTORE3 = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 18.代收超商(萊爾富)(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("代收超商(萊爾富)"), MaxLength(1)]
-        public string RSTORE4 { get { return _RSTORE4; } set { _RSTORE4 = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string RSTORE4 { get => _RSTORE4; set => _RSTORE4 = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 19.超商代收項目1
         /// X(03)
         /// </summary>
         [Description("超商代收項目1"), MaxLength(3)]
-        public string RECVITEM1 { get { return _RECVITEM1; } set { _RECVITEM1 = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string RECVITEM1 { get => _RECVITEM1; set => _RECVITEM1 = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 20.超商代收項目2
         /// X(03)
         /// </summary>
         [Description("超商代收項目2"), MaxLength(3)]
-        public string RECVITEM2 { get { return _RECVITEM2; } set { _RECVITEM2 = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string RECVITEM2 { get => _RECVITEM2; set => _RECVITEM2 = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 21.超商代收項目3
         /// X(03)
         /// </summary>
         [Description("超商代收項目3"), MaxLength(3)]
-        public string RECVITEM3 { get { return _RECVITEM3; } set { _RECVITEM3 = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string RECVITEM3 { get => _RECVITEM3; set => _RECVITEM3 = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 22.超商代收項目4
         /// X(03)
         /// </summary>
         [Description("超商代收項目4"), MaxLength(3)]
-        public string RECVITEM4 { get { return _RECVITEM4; } set { _RECVITEM4 = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string RECVITEM4 { get => _RECVITEM4; set => _RECVITEM4 = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 23.超商代收項目5
         /// X(03)
         /// </summary>
         [Description("超商代收項目5"), MaxLength(3)]
-        public string RECVITEM5 { get { return _RECVITEM5; } set { _RECVITEM5 = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string RECVITEM5 { get => _RECVITEM5; set => _RECVITEM5 = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 24.超商清算手續費
         /// 9(02)
         /// </summary>
         [Description("超商清算手續費"), MaxLength(2)]
-        public string ACTFEE { get { return _ACTFEE; } set { _ACTFEE = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTFEE { get => _ACTFEE; set => _ACTFEE = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 25.分行分擔超商代收手續費(20000元以下)
         /// 9(02)
         /// </summary>
         [Description("分行分擔超商代收手續費(20000元以下)"), MaxLength(2)]
-        public string MARTFEE1 { get { return _MARTFEE1; } set { _MARTFEE1 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string MARTFEE1 { get => _MARTFEE1; set => _MARTFEE1 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 26.分行分擔超商代收手續費(20001~40000元)
         /// 9(02)
         /// </summary>
         [Description("分行分擔超商代收手續費(20001~40000元)"), MaxLength(2)]
-        public string MARTFEE2 { get { return _MARTFEE2; } set { _MARTFEE2 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string MARTFEE2 { get => _MARTFEE2; set => _MARTFEE2 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 27.分行分擔超商代收手續費(40001元以上)
         /// 9(02)
         /// </summary>
         [Description("分行分擔超商代收手續費(40001元以上)"), MaxLength(2)]
-        public string MARTFEE3 { get { return _MARTFEE3; } set { _MARTFEE3 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string MARTFEE3 { get => _MARTFEE3; set => _MARTFEE3 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 28.郵局申請狀態(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("郵局申請狀態"), MaxLength(1)]
-        public string POSTFLAG { get { return _POSTFLAG; } set { _POSTFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string POSTFLAG { get => _POSTFLAG; set => _POSTFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 29.郵局清算手續費
         /// 9(02)
         /// </summary>
         [Description("郵局清算手續費"), MaxLength(2)]
-        public string ACTFEEPT { get { return _ACTFEEPT; } set { _ACTFEEPT = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTFEEPT { get => _ACTFEEPT; set => _ACTFEEPT = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 30.分行分擔郵局代收手續費
         /// 9(02)
         /// </summary>
         [Description("分行分擔郵局代收手續費"), MaxLength(2)]
-        public string POSTFEE { get { return _POSTFEE; } set { _POSTFEE = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string POSTFEE { get => _POSTFEE; set => _POSTFEE = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 31.網路平台申請(0:未申請 1:單機版 2:網路版-分潤 3:網路版-長期)
         /// X(01)
         /// </summary>
         [Description("網路平台申請"), MaxLength(1)]
-        public string HIFLAG { get { return _HIFLAG; } set { _HIFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string HIFLAG { get => _HIFLAG; set => _HIFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 32.網路平台使用手續費
         /// 9(03)
         /// </summary>
         [Description("網路平台使用手續費"), MaxLength(3)]
-        public string HIFARE { get { return _HIFARE; } set { _HIFARE = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string HIFARE { get => _HIFARE; set => _HIFARE = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 33.代收網啟用日期
         /// X(08)
         /// </summary>
         [Description("代收網啟用日期"), MaxLength(8)]
-        public string NETDATE { get { return _NETDATE; } set { _NETDATE = value.PadLeft(8, '0').ByteSubString(0, 8); } }
+        public string NETDATE { get => _NETDATE; set => _NETDATE = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 34.自動約定扣款(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("自動約定扣款"), MaxLength(1)]
-        public string AUTOFLAG { get { return _AUTOFLAG; } set { _AUTOFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string AUTOFLAG { get => _AUTOFLAG; set => _AUTOFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 35.全國性e繳費(1:是 0:否)
         /// 9(01)
         /// </summary>
         [Description("全國性e繳費"), MaxLength(1)]
-        public string EBFLAG { get { return _EBFLAG; } set { _EBFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string EBFLAG { get => _EBFLAG; set => _EBFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 36.全國性e繳費日期(西元年月日)
         /// X(08)
         /// </summary>
         [Description("全國性e繳費日期"), MaxLength(8)]
-        public string EBDATE { get { return _EBDATE; } set { _EBDATE = value.PadLeft(8, '0').ByteSubString(0, 8); } }
+        public string EBDATE { get => _EBDATE; set => _EBDATE = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 37.e手續費負擔方式(1:使用者 2:企業者)
         /// 9(01)
         /// </summary>
         [Description("e手續費負擔方式"), MaxLength(1)]
-        public string EBFEEFLAG { get { return _EBFEEFLAG; } set { _EBFEEFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string EBFEEFLAG { get => _EBFEEFLAG; set => _EBFEEFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 38.e手續費負擔
         /// 9(03)
         /// </summary>
         [Description("e手續費負擔"), MaxLength(3)]
-        public string EBFEE { get { return _EBFEE; } set { _EBFEE = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string EBFEE { get => _EBFEE; set => _EBFEE = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 39.e手續費結算方式(1:直接月結 2:人工月結 3:每筆結)
         /// 9(01)
         /// </summary>
         [Description("e手續費結算方式"), MaxLength(1)]
-        public string EBACTTYPE { get { return _EBACTTYPE; } set { _EBACTTYPE = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string EBACTTYPE { get => _EBACTTYPE; set => _EBACTTYPE = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 40.檢核重複繳款
         /// 9(01)
         /// </summary>
         [Description("檢核重複繳款"), MaxLength(1)]
-        public string CHKDUPPAY { get { return _CHKDUPPAY; } set { _CHKDUPPAY = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string CHKDUPPAY { get => _CHKDUPPAY; set => _CHKDUPPAY = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 41.委託單位代號(代理)
         /// 9(07)
         /// </summary>
         [Description("委託單位代號"), MaxLength(7)]
-        public string CUSTID { get { return _CUSTID; } set { _CUSTID = value.PadLeft(7, '0').ByteSubString(0, 7); } }
+        public string CUSTID { get => _CUSTID; set => _CUSTID = value.PadLeft(7, '0').ByteSubString(0, 7); }
         /// <summary>
         /// 42.用途(0:一般 1:期貨或信託 2:代收網 3:發送Mail 5:代收網及發送Mail)
         /// 9(01)
         /// </summary>
         [Description("用途"), MaxLength(1)]
-        public string FUNC { get { return _FUNC; } set { _FUNC = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string FUNC { get => _FUNC; set => _FUNC = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 43.郵局通路手續費
         /// 9(03)
         /// </summary>
         [Description("郵局通路手續費"), MaxLength(3)]
-        public string MAFARE { get { return _MAFARE; } set { _MAFARE = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string MAFARE { get => _MAFARE; set => _MAFARE = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 44.臨櫃通路手續費
         /// 9(03)
         /// </summary>
         [Description("臨櫃通路手續費"), MaxLength(3)]
-        public string NOFARE { get { return _NOFARE; } set { _NOFARE = value.PadLeft(3, '0').ByteSubString(0, 3); } }
+        public string NOFARE { get => _NOFARE; set => _NOFARE = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 45.申請中信平台繳學費(1:是 0:否)
         /// X(01)
         /// </summary>
         [Description("申請中信平台繳學費"), MaxLength(1)]
-        public string CTBCFLAG { get { return _CTBCFLAG; } set { _CTBCFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string CTBCFLAG { get => _CTBCFLAG; set => _CTBCFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 46.全方位帳號-是否分潤
         /// X(01)
         /// </summary>
         [Description("全方位帳號-是否分潤"), MaxLength(1)]
-        public string SHAREBNFTFLG { get { return _SHAREBNFTFLG; } set { _SHAREBNFTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string SHAREBNFTFLG { get => _SHAREBNFTFLG; set => _SHAREBNFTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 47.全方位帳號-分潤%
         /// 9(02)
         /// </summary>
         [Description("全方位帳號-分潤%"), MaxLength(2)]
-        public string SHAREBEFTPERCENT { get { return _SHAREBEFTPERCENT; } set { _SHAREBEFTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string SHAREBEFTPERCENT { get => _SHAREBEFTPERCENT; set => _SHAREBEFTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 48.全方位帳號-每筆手續費
         /// 9(02)
         /// </summary>
         [Description("全方位帳號-每筆手續費"), MaxLength(2)]
-        public string ACTFEEBEFT { get { return _ACTFEEBEFT; } set { _ACTFEEBEFT = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTFEEBEFT { get => _ACTFEEBEFT; set => _ACTFEEBEFT = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 49.超商通路每筆總手續費
         /// 9(02)
         /// </summary>
         [Description("超商通路每筆總手續費"), MaxLength(2)]
-        public string ACTFEEMART { get { return _ACTFEEMART; } set { _ACTFEEMART = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTFEEMART { get => _ACTFEEMART; set => _ACTFEEMART = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 50.超商通路-是否分潤
         /// X(01)
         /// </summary>
         [Description("超商通路-是否分潤"), MaxLength(1)]
-        public string SHAREACTFLG { get { return _SHAREACTFLG; } set { _SHAREACTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string SHAREACTFLG { get => _SHAREACTFLG; set => _SHAREACTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 51.超商通路-分潤%
         /// 9(02)
         /// </summary>
         [Description("超商通路-分潤%"), MaxLength(2)]
-        public string ACTPERCENT { get { return _ACTPERCENT; } set { _ACTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTPERCENT { get => _ACTPERCENT; set => _ACTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 52.超商通路-清算手續費1
         /// 9(02)
         /// </summary>
         [Description("超商通路-清算手續費1"), MaxLength(2)]
-        public string CLEARFEEMART1 { get { return _CLEARFEEMART1; } set { _CLEARFEEMART1 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string CLEARFEEMART1 { get => _CLEARFEEMART1; set => _CLEARFEEMART1 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 53.超商通路-清算手續費2
         /// 9(02)
         /// </summary>
         [Description("超商通路-清算手續費2"), MaxLength(2)]
-        public string CLEARFEEMART2 { get { return _CLEARFEEMART2; } set { _CLEARFEEMART2 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string CLEARFEEMART2 { get => _CLEARFEEMART2; set => _CLEARFEEMART2 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 54.超商通路-清算手續費3
         /// 9(02)
         /// </summary>
         [Description("超商通路-清算手續費3"), MaxLength(2)]
-        public string CLEARFEEMART3 { get { return _CLEARFEEMART3; } set { _CLEARFEEMART3 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string CLEARFEEMART3 { get => _CLEARFEEMART3; set => _CLEARFEEMART3 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 55.超商通路-清算手續費4
         /// 9(02)
         /// </summary>
         [Description("超商通路-清算手續費4"), MaxLength(2)]
-        public string CLEARFEEMART4 { get { return _CLEARFEEMART4; } set { _CLEARFEEMART4 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string CLEARFEEMART4 { get => _CLEARFEEMART4; set => _CLEARFEEMART4 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 56.超商通路-清算手續費5
         /// 9(02)
         /// </summary>
         [Description("超商通路-清算手續費5"), MaxLength(2)]
-        public string CLEARFEEMART5 { get { return _CLEARFEEMART5; } set { _CLEARFEEMART5 = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string CLEARFEEMART5 { get => _CLEARFEEMART5; set => _CLEARFEEMART5 = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 57.郵局手續費收費方式
         /// X(01)
         /// </summary>
         [Description("郵局手續費收費方式"), MaxLength(1)]
-        public string PAYKINDPOST { get { return _PAYKINDPOST; } set { _PAYKINDPOST = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string PAYKINDPOST { get => _PAYKINDPOST; set => _PAYKINDPOST = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 58.郵局通路每筆總手續費
         /// 9(02)
         /// </summary>
         [Description("郵局通路每筆總手續費"), MaxLength(2)]
-        public string ACTFEEPOST { get { return _ACTFEEPOST; } set { _ACTFEEPOST = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string ACTFEEPOST { get => _ACTFEEPOST; set => _ACTFEEPOST = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 59.郵局通路-是否分潤
         /// X(01)
         /// </summary>
         [Description("郵局通路-是否分潤"), MaxLength(1)]
-        public string SHAREPOSTFLG { get { return _SHAREPOSTFLG; } set { _SHAREPOSTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string SHAREPOSTFLG { get => _SHAREPOSTFLG; set => _SHAREPOSTFLG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 60.郵局通路-分潤%
         /// 9(02)
         /// </summary>
         [Description("郵局通路-分潤%"), MaxLength(2)]
-        public string POSTPERCENT { get { return _POSTPERCENT; } set { _POSTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string POSTPERCENT { get => _POSTPERCENT; set => _POSTPERCENT = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 61.農金平台申請
         /// X(01)
         /// </summary>
         [Description("農金平台申請"), MaxLength(1)]
-        public string AGRIFLAG { get { return _AGRIFLAG; } set { _AGRIFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); } }
+        public string AGRIFLAG { get => _AGRIFLAG; set => _AGRIFLAG = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 62.農金平台手續費
         /// 9(02)
         /// </summary>
         [Description("農金平台手續費"), MaxLength(2)]
-        public string AGRIFEE { get { return _AGRIFEE; } set { _AGRIFEE = value.PadLeft(2, '0').ByteSubString(0, 2); } }
+        public string AGRIFEE { get => _AGRIFEE; set => _AGRIFEE = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 63.保留
         /// X(50)
         /// </summary>
         [Description("保留"), MaxLength(50)]
-        public string FILLER { get { return _FILLER; } set { _FILLER = value.PadLeft(50, ' ').ByteSubString(0, 50); } }
+        public string FILLER { get => _FILLER; set => _FILLER = value.PadLeft(50, ' ').ByteSubString(0, 50); }
         /// <summary>
         /// 導入批號
         /// </summary>
@@ -404,7 +402,7 @@ namespace SKGPortalCore.Model.SourceData
         public string Source
         {
 
-            get { return $"{_KEYNO}{_ACCIDNO}{_CUSTNAME}{_APPBECODE}{_BRCODE}{_IDCODE}{_APPLYDATE}{_CHGDATE}{_APPLYSTAT}{_CHKNUMFLAG}{_CHKAMTFLAG}{_DUETERM}{_CHANNEL}{_FEE}{_RSTORE1}{_RSTORE2}{_RSTORE3}{_RSTORE4}{_RECVITEM1}{_RECVITEM2}{_RECVITEM3}{_RECVITEM4}{_RECVITEM5}{_ACTFEE}{_MARTFEE1}{_MARTFEE2}{_MARTFEE3}{_POSTFLAG}{_ACTFEEPT}{_POSTFEE}{_HIFLAG}{_HIFARE}{_NETDATE}{_AUTOFLAG}{_EBFLAG}{_EBDATE}{_EBFEEFLAG}{_EBFEE}{_EBACTTYPE}{_CHKDUPPAY}{_CUSTID}{_FUNC}{_MAFARE}{_NOFARE}{_CTBCFLAG}{_SHAREBNFTFLG}{_SHAREBEFTPERCENT}{_ACTFEEBEFT}{_ACTFEEMART}{_SHAREACTFLG}{_ACTPERCENT}{_CLEARFEEMART1}{_CLEARFEEMART2}{_CLEARFEEMART3}{_CLEARFEEMART4}{_CLEARFEEMART5}{_PAYKINDPOST}{_ACTFEEPOST}{_SHAREPOSTFLG}{_POSTPERCENT}{_AGRIFLAG}{_AGRIFEE}{_FILLER}"; }
+            get => $"{_KEYNO}{_ACCIDNO}{_CUSTNAME}{_APPBECODE}{_BRCODE}{_IDCODE}{_APPLYDATE}{_CHGDATE}{_APPLYSTAT}{_CHKNUMFLAG}{_CHKAMTFLAG}{_DUETERM}{_CHANNEL}{_FEE}{_RSTORE1}{_RSTORE2}{_RSTORE3}{_RSTORE4}{_RECVITEM1}{_RECVITEM2}{_RECVITEM3}{_RECVITEM4}{_RECVITEM5}{_ACTFEE}{_MARTFEE1}{_MARTFEE2}{_MARTFEE3}{_POSTFLAG}{_ACTFEEPT}{_POSTFEE}{_HIFLAG}{_HIFARE}{_NETDATE}{_AUTOFLAG}{_EBFLAG}{_EBDATE}{_EBFEEFLAG}{_EBFEE}{_EBACTTYPE}{_CHKDUPPAY}{_CUSTID}{_FUNC}{_MAFARE}{_NOFARE}{_CTBCFLAG}{_SHAREBNFTFLG}{_SHAREBEFTPERCENT}{_ACTFEEBEFT}{_ACTFEEMART}{_SHAREACTFLG}{_ACTPERCENT}{_CLEARFEEMART1}{_CLEARFEEMART2}{_CLEARFEEMART3}{_CLEARFEEMART4}{_CLEARFEEMART5}{_PAYKINDPOST}{_ACTFEEPOST}{_SHAREPOSTFLG}{_POSTPERCENT}{_AGRIFLAG}{_AGRIFEE}{_FILLER}";
             set
             {
                 _KEYNO = value.ByteSubString(0, 6);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SKGPortalCore.Schedule
+﻿namespace SKGPortalCore.Schedule
 {
     /// <summary>
     /// 發送排程狀況Mail至IT人員
@@ -26,6 +22,17 @@ namespace SKGPortalCore.Schedule
         /// 副本
         /// </summary>
         public string CC { get; set; }
+        #endregion
+
+        #region Construct
+
+        #endregion
+
+        #region Public
+        public void SendData()
+        {
+
+        }
         #endregion
     }
 }
