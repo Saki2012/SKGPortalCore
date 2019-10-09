@@ -22,7 +22,8 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             bool err = false;
             rts.ForEach(p => { if (p.Source != new RemitInfoModel() { Source = p.Source }.Source) { err = true; return; } });
             if (err) { Message.AddErrorMessage(MessageCode.Code0000, "匯款檔Source拆分組合異常"); return null; }
-            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_RT.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            string path = $@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\"; Directory.CreateDirectory(path);
+            using StreamWriter sw = new StreamWriter($@"{path}SKG_RT.{DateTime.Now.ToString("yyyyMMdd")}", false, Encoding.GetEncoding(950));
             rts.ForEach(p => sw.WriteLine(p.Source));
             sw.Close();
             return rts;

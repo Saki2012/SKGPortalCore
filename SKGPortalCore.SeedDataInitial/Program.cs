@@ -78,11 +78,11 @@ namespace SKGPortalCore.SeedDataInitial
         private static void ImportReceiptData()
         {
             ImportData = new ReceiptInfoImportBANK(DataAccess); ImportData.ExecuteImport();
-            ImportData = new ReceiptInfoImportPOST(DataAccess); ImportData.ExecuteImport();
-            ImportData = new ReceiptInfoImportMARKET(DataAccess); ImportData.ExecuteImport();
-            ImportData = new ReceiptInfoImportMARKETSPI(DataAccess); ImportData.ExecuteImport();
-            ImportData = new ReceiptInfoImportFARM(DataAccess); ImportData.ExecuteImport();
-            ImportData = new RemitInfoImport(DataAccess); ImportData.ExecuteImport();
+            //ImportData = new ReceiptInfoImportPOST(DataAccess); ImportData.ExecuteImport();
+            //ImportData = new ReceiptInfoImportMARKET(DataAccess); ImportData.ExecuteImport();
+            //ImportData = new ReceiptInfoImportMARKETSPI(DataAccess); ImportData.ExecuteImport();
+            //ImportData = new ReceiptInfoImportFARM(DataAccess); ImportData.ExecuteImport();
+            //ImportData = new RemitInfoImport(DataAccess); ImportData.ExecuteImport();
         }
     }
 }

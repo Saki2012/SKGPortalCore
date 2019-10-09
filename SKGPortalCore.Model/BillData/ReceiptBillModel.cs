@@ -126,6 +126,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("沖抵單號")]
         public string RushBillNo { get; set; }
+        [ForeignKey("BeRushedBillNo")]
         public ReceiptBillModel BeRushedBill { get; set; }
         /// <summary>
         /// 被沖抵單號

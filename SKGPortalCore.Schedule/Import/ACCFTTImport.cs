@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -76,7 +77,7 @@ namespace SKGPortalCore.Schedule.Import
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string strRow;
-            using StreamReader sr = new StreamReader(SrcFile/*, Encoding.GetEncoding(950)*/);
+            using StreamReader sr = new StreamReader(SrcFile, Encoding.GetEncoding(950));
             int line = 1;
             while (sr.Peek() > 0)
             {

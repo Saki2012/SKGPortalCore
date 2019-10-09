@@ -229,6 +229,16 @@ namespace SKGPortalCore.Lib
             return val.Length == 8 ? $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}" : val;
         }
         /// <summary>
+        /// 民國年轉西元年
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static DateTime ROCDateToCEDate(this string val)
+        {
+            return val.Length == 7 ? $"{val.Substring(0, 3).ToInt32() + 1911}/{val.Substring(3, 2)}/{val.Substring(5, 2)}".ToDateTime() : DateTime.MinValue;
+        }
+
+        /// <summary>
         /// 檢查列表是否有值
         /// </summary>
         /// <param name="val"></param>

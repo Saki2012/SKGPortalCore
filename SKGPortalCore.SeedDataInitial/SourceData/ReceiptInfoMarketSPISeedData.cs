@@ -22,7 +22,8 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             bool err = false;
             martSPIs.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketSPIModel() { Source = p.Source }.Source) { err = true; return; } });
             if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-超商產險Source拆分組合異常"); return null; }
-            using StreamWriter sw = new StreamWriter($@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\SKG_MARTSPI.{DateTime.Now.ToString("yyyyMMdd")}", false);
+            string path = $@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\"; Directory.CreateDirectory(path);
+            using StreamWriter sw = new StreamWriter($@"{path}SKG_MARTSPI.{DateTime.Now.ToString("yyyyMMdd")}", false, Encoding.GetEncoding(950));
             martSPIs.ForEach(p => sw.WriteLine(p.Source));
             sw.Close();
             return martSPIs;
