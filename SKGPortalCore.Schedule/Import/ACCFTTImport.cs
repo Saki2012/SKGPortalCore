@@ -131,23 +131,11 @@ namespace SKGPortalCore.Schedule.Import
                             try
                             {
                                 GetCustomerInfo(model, bizCustRepo, custRepo, custUserRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet, out CustUserSet custUserSet);
-                                if (null == customerSet)
-                                {
-                                    custRepo.Create(bizACCFTT.SetCustomer(model, customerSet));
-                                }
-                                else
-                                {
-                                    custRepo.Update(bizACCFTT.SetCustomer(model, customerSet));
-                                }
+                                if (null == customerSet) custRepo.Create(bizACCFTT.SetCustomer(model, customerSet));
+                                else custRepo.Update(bizACCFTT.SetCustomer(model, customerSet));
                                 custRepo.CommitData(FuncAction.Create);
-                                if (null == bizCustomerSet)
-                                {
-                                    bizCustRepo.Create(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
-                                }
-                                else
-                                {
-                                    bizCustRepo.Update(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
-                                }
+                                if (null == bizCustomerSet) bizCustRepo.Create(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
+                                else bizCustRepo.Update(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
                                 bizCustRepo.CommitData(FuncAction.Create);
                                 if (null == custUserSet)
                                 {

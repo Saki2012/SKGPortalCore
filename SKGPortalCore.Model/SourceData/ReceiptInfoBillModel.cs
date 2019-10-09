@@ -34,7 +34,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 4. 全方位銷帳編號(16)
         /// </summary>
         [Description("全方位銷帳編號"), MaxLength(16)]
-        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadRight(16, ' ').ByteSubString(0, 16); }
         /// <summary>
         /// 5. 金額符號±(1)
         /// </summary>

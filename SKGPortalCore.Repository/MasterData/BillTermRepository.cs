@@ -31,7 +31,6 @@ namespace SKGPortalCore.Repository.MasterData
                     }
                 }
             });
-
         }
         #endregion
         #region Protected

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
@@ -18,6 +20,10 @@ namespace SKGPortalCore.SeedDataInitial
         public static void Main()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            if (DataAccess.Set<BackendUserModel>().Find("SysOperator") == null) DataAccess.Add(SystemOperator.SysOperator);
+            //資料
+            RoleSeeddData.CreateRole(Message, DataAccess);//OK
+            DataAccess.BulkSaveChanges();
             CreateImportDataSources();
             ImportData = new ACCFTTImport(DataAccess); ImportData.ExecuteImport();//優先生成商戶資料
             CreateSeedData(DataAccess);
@@ -31,9 +37,6 @@ namespace SKGPortalCore.SeedDataInitial
         {
             try
             {
-                if (dataAccess.Set<BackendUserModel>().Find("SysOperator") == null) dataAccess.Add(SystemOperator.SysOperator);
-                //資料
-                RoleSeeddData.CreateRole(Message, dataAccess);//OK
                 ChannelSeedData.CreateChannel(Message, dataAccess);//OK
                 CollectionTypeSeedData.CreateCollectionType(Message, dataAccess);//OK
                 PayerSeedData.CreatePayer(Message, dataAccess);
