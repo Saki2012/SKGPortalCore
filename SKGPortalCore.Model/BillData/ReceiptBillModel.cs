@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Model.MasterData;
+using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -81,7 +82,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 銷帳條碼(不含檢碼)
         /// </summary>
-        [Description("銷帳條碼(不含檢碼)")]
+        [Description("銷帳條碼(不含檢碼)"), Index]
         public string CompareCodeForCheck { get; set; }
         /// <summary>
         /// 資訊流資料異常狀態

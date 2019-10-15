@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -7,7 +8,9 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -17,6 +20,12 @@ namespace SKGPortalCore.Repository.BillData
     [ProgId("ReceiptBill"), Description("收款單")]
     public class ReceiptBillRepository : BasicRepository<ReceiptBillSet>
     {
+        #region Property
+        public Dictionary<string, BizCustomerSet> BizCustSetDic = new Dictionary<string, BizCustomerSet>();//{ get; set; }
+        public Dictionary<string, CollectionTypeSet> ColSetDic = new Dictionary<string, CollectionTypeSet>();// { get; set; }
+        public readonly Dictionary<string, ChannelVerifyPeriodModel> PeriodDic = new Dictionary<string, ChannelVerifyPeriodModel>();
+        #endregion
+
         #region Construct
         public ReceiptBillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
@@ -28,6 +37,7 @@ namespace SKGPortalCore.Repository.BillData
                     p.ReceiptBill.BillNo = billNo;
                 }
             });
+            IsSetRefModel = false;
         }
         #endregion
 
@@ -36,8 +46,12 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             using BizReceiptBill biz = new BizReceiptBill(Message, DataAccess);
-            biz.SetData(set, action);
-            InsertBillReceiptDetail(set.ReceiptBill.BillNo, set.ReceiptBill.ToBillNo);
+            BizCustomerSet bizCustSet = GetBizCustomerSet(set.ReceiptBill.CompareCode, out string compareCodeForCheck);
+            GetCollectionTypeSet(set.ReceiptBill.CollectionTypeId, set.ReceiptBill.ChannelId, set.ReceiptBill.PayAmount, out ChargePayType chargePayType, out decimal channelFee);
+            ChannelVerifyPeriodModel periodModel = GetChannelVerifyPeriod(set.ReceiptBill.CollectionTypeId, set.ReceiptBill.ChannelId);
+            biz.SetData(set, bizCustSet.BizCustomerFeeDetail, compareCodeForCheck, chargePayType, channelFee);
+            biz.SetData(set, periodModel, action);
+            InsertBillReceiptDetail(set.ReceiptBill, set.ReceiptBill.ToBillNo);
             InsertChannelEAccount(biz, set);
         }
         protected override void AfterRemoveEntity(ReceiptBillSet set)
@@ -50,23 +64,115 @@ namespace SKGPortalCore.Repository.BillData
 
         #region Private
 
+
+        /// <summary>
+        /// 根據銷帳編號獲取商戶資料
+        /// </summary>
+        /// <param name="compareCode"></param>
+        /// <param name="compareCodeForCheck"></param>
+        /// <returns></returns>
+        private BizCustomerSet GetBizCustomerSet(string compareCode, out string compareCodeForCheck)
+        {
+            compareCodeForCheck = string.Empty;
+            BizCustomerSet bizCust = null;
+            string custCode6 = compareCode.Substring(0, 6),
+                   custCode4 = compareCode.Substring(0, 4),
+                   custCode3 = compareCode.Substring(0, 3);
+
+            if (null == bizCust && BizCustSetDic.ContainsKey(custCode6))
+                bizCust = BizCustSetDic[custCode6];
+            if (null == bizCust && BizCustSetDic.ContainsKey(custCode4))
+                bizCust = BizCustSetDic[custCode4];
+            if (null == bizCust && BizCustSetDic.ContainsKey(custCode3))
+                bizCust = BizCustSetDic[custCode3];
+
+            if (null == bizCust)
+            {
+                using BizCustomerRepository biz = new BizCustomerRepository(DataAccess) { Message = Message };
+                bizCust = biz.QueryData(new object[] { custCode6 });
+                if (null != bizCust)
+                    BizCustSetDic.Add(custCode6, bizCust);
+                if (null == bizCust)
+                    bizCust = biz.QueryData(new object[] { custCode4 });
+                if (null != bizCust)
+                    BizCustSetDic.Add(custCode4, bizCust);
+                if (null == bizCust)
+                    bizCust = biz.QueryData(new object[] { custCode3 });
+                if (null != bizCust)
+                    BizCustSetDic.Add(custCode3, bizCust);
+                if (null == bizCust)
+                    return null;
+            }
+            if (bizCust.BizCustomer.AccountStatus == AccountStatus.Unable)
+                compareCodeForCheck = compareCode;
+            else
+                compareCodeForCheck = bizCust.BizCustomer.VirtualAccount3 == VirtualAccount3.NoverifyCode ? compareCode : compareCode.Substring(0, compareCode.Length - 1);
+            return bizCust;
+        }
+        /// <summary>
+        /// 獲取代收類別
+        /// </summary>
+        /// <param name="DataAccess"></param>
+        /// <param name="collectionTypeId"></param>
+        /// <param name="channelId"></param>
+        /// <param name="amount"></param>
+        /// <param name="chargePayType"></param>
+        /// <param name="channelFee"></param>
+        private void GetCollectionTypeSet(string collectionTypeId, string channelId, decimal amount, out ChargePayType chargePayType, out decimal channelFee)
+        {
+            using CollectionTypeRepository colRepo = new CollectionTypeRepository(DataAccess);
+            CollectionTypeSet colSet = null;
+            channelFee = 0;
+            chargePayType = ChargePayType.Deduction;
+            if (!ColSetDic.ContainsKey(collectionTypeId))
+            {
+                colSet = colRepo.QueryData(new object[] { collectionTypeId });
+                ColSetDic.Add(collectionTypeId, colSet);
+            }
+            colSet = ColSetDic[collectionTypeId];
+            if (null == colSet) return;
+            chargePayType = colSet.CollectionType.ChargePayType;
+            CollectionTypeDetailModel c = colSet.CollectionTypeDetail.FirstOrDefault(p => p.CollectionTypeId == collectionTypeId && p.ChannelId == channelId && p.SRange <= amount && p.ERange >= amount);
+            if (null != c) channelFee = c.Fee;
+        }
+        /// <summary>
+        /// 獲取預計匯款
+        /// </summary>
+        /// <param name="collectionTypeId"></param>
+        /// <param name="channelId"></param>
+        private ChannelVerifyPeriodModel GetChannelVerifyPeriod(string collectionTypeId, string channelId)
+        {
+            string pk = $"{collectionTypeId},{channelId}";
+            ChannelVerifyPeriodModel periodModel = null;
+            if (!PeriodDic.ContainsKey(pk))
+            {
+                periodModel = DataAccess.Set<ChannelVerifyPeriodModel>().FirstOrDefault(p => p.ChannelId == channelId && p.CollectionTypeId == collectionTypeId);
+                PeriodDic.Add(pk, periodModel);
+            }
+            periodModel = PeriodDic[pk];
+            return periodModel;
+        }
+
         /// <summary>
         /// 插入帳單收款明細
         /// </summary>
         /// <param name="receiptBillNo"></param>
         /// <param name="billNo"></param>
-        private void InsertBillReceiptDetail(string receiptBillNo, string billNo)
+        private void InsertBillReceiptDetail(ReceiptBillModel receipt, string billNo)
         {
-            if (billNo.IsNullOrEmpty())
-            {
-                return;
-            }
-
-            using BillRepository rep = new BillRepository(DataAccess) { User = User };
-            BillSet billSet = rep.QueryData(new object[] { billNo });
-            if (null == billSet) { /*add Message:查無帳單*/ return; }
-            billSet.BillReceiptDetail.Add(new BillReceiptDetailModel() { BillNo = billNo, ReceiptBillNo = receiptBillNo, RowState = RowState.Insert });
-            rep.Update(billSet);
+            if (billNo.IsNullOrEmpty()) return;
+            using BizBill bizBill = new BizBill(Message);
+            //using BillRepository rep = new BillRepository(DataAccess) { User = User };
+            //BillSet billSet = rep.QueryData(new object[] { billNo });
+            //if (null == billSet) { /*add Message:查無帳單*/ return; }
+            //billSet.BillReceiptDetail.Add(new BillReceiptDetailModel() { BillNo = billNo, ReceiptBill = receipt, ReceiptBillNo = receipt.BillNo, RowState = RowState.Insert });
+            //rep.Update(billSet);
+            BillModel bill = DataAccess.Find<BillModel>(billNo);
+            BillReceiptDetailModel dt = new BillReceiptDetailModel() { BillNo = billNo, ReceiptBill = receipt, ReceiptBillNo = receipt.BillNo, RowState = RowState.Insert };
+            DataAccess.Add(dt);
+            bill.HasPayAmount += receipt.PayAmount;
+            bill.PayStatus = bizBill.GetPayStatus(bill.PayAmount, bill.HasPayAmount);
+            DataAccess.Update(bill);
         }
         /// <summary>
         /// 移除帳單收款明細
@@ -75,11 +181,7 @@ namespace SKGPortalCore.Repository.BillData
         /// <param name="billNo"></param>
         private void RemoveBillReceiptDetail(string receiptBillNo, string billNo)
         {
-            if (billNo.IsNullOrEmpty())
-            {
-                return;
-            }
-
+            if (billNo.IsNullOrEmpty()) return;
             using BillRepository rep = new BillRepository(DataAccess) { User = User };
             BillSet billSet = rep.QueryData(new object[] { billNo });
             if (null == billSet) { return; }
@@ -93,10 +195,7 @@ namespace SKGPortalCore.Repository.BillData
         /// </summary>
         private void InsertChannelEAccount(BizReceiptBill biz, ReceiptBillSet set)
         {
-            if (set.ReceiptBill.RemitDate == DateTime.MinValue)
-            {
-                return;
-            }
+            if (set.ReceiptBill.RemitDate == DateTime.MinValue) return;
 
             using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess) { User = User };
             if (DataAccess.Set<ChannelEAccountBillModel>().Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)

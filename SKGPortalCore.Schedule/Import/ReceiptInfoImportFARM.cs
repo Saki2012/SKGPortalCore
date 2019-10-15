@@ -11,6 +11,8 @@ using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.BillData;
+using SKGPortalCore.Repository.MasterData;
+
 namespace SKGPortalCore.Schedule.Import
 {
 
@@ -128,14 +130,14 @@ namespace SKGPortalCore.Schedule.Import
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillFarmModel> models = modelSources as List<ReceiptInfoBillFarmModel>;
+            using BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess) { Message = Message };
             using BizReceiptInfoBillFARM biz = new BizReceiptInfoBillFARM(Message, DataAccess);
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
             foreach (ReceiptInfoBillFarmModel model in models)
             {
                 biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                biz.GetCollectionTypeSet(model.CollectionType, model.Channel, model.Barcode3.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
-                repo.Create(biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck));
+                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(bizCustRepo,  model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
+                repo.Create(biz.GetReceiptBillSet(model));
             }
             repo.CommitData(FuncAction.Create);
         }

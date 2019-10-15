@@ -20,13 +20,13 @@ namespace SKGPortalCore.SeedDataInitial
         public static void Main()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (DataAccess.Set<BackendUserModel>().Find("SysOperator") == null) DataAccess.Add(SystemOperator.SysOperator);
-            //資料
-            RoleSeeddData.CreateRole(Message, DataAccess);//OK
-            DataAccess.BulkSaveChanges();
+            //if (DataAccess.Set<BackendUserModel>().Find("SysOperator") == null) DataAccess.Add(SystemOperator.SysOperator);
+            ////資料
+            //RoleSeeddData.CreateRole(Message, DataAccess);//OK
+            //DataAccess.BulkSaveChanges();
             CreateImportDataSources();
-            ImportData = new ACCFTTImport(DataAccess); ImportData.ExecuteImport();//優先生成商戶資料
-            CreateSeedData(DataAccess);
+            //ImportData = new ACCFTTImport(DataAccess); ImportData.ExecuteImport();//優先生成商戶資料
+            //CreateSeedData(DataAccess);
             ImportReceiptData();
         }
         /// <summary>
@@ -39,10 +39,11 @@ namespace SKGPortalCore.SeedDataInitial
             {
                 ChannelSeedData.CreateChannel(Message, dataAccess);//OK
                 CollectionTypeSeedData.CreateCollectionType(Message, dataAccess);//OK
+                //ChannelVerifyPeriodSeedData.CreateChannelVerifyPeriod(Message, dataAccess);
                 PayerSeedData.CreatePayer(Message, dataAccess);
                 BillTermSeedData.CreateBillTerm(Message, dataAccess);
                 //單據
-                BillSeedData.CreateBill(Message, dataAccess);
+                //BillSeedData.CreateBill(Message, dataAccess);
                 dataAccess.BulkSaveChanges();
             }
             catch (Exception e)

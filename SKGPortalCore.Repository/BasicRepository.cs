@@ -65,6 +65,7 @@ namespace SKGPortalCore.Repository
         /// 設置編碼規則
         /// </summary>
         protected Action<TSet> SetFlowNo { get; set; }
+        protected bool IsSetRefModel { get; set; } = true;
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -83,12 +84,6 @@ namespace SKGPortalCore.Repository
             try
             {
                 SetFlowNo?.Invoke(set);
-                dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
-                if (masterData is BasicDataModel)
-                {
-                    SetCreateInfo(masterData);
-                }
-
                 DoCreate(set);
                 AfterSetEntity(set, FuncAction.Create);
             }
@@ -105,23 +100,18 @@ namespace SKGPortalCore.Repository
         /// <returns></returns>
         public virtual TSet Update(TSet set)
         {
-            TSet curSet = default;
             try
             {
                 dynamic masterData = Reflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
-                if (masterData is BasicDataModel)
-                {
-                    SetModifyInfo(masterData);
-                }
-
-                DoUpdate(set, out curSet);
+                if (masterData is BasicDataModel) SetModifyInfo(masterData);
+                DoUpdate(set);
                 AfterSetEntity(set, FuncAction.Update);
             }
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
             }
-            return curSet;
+            return set;
         }
         /// <summary>
         /// 刪除
@@ -159,25 +149,18 @@ namespace SKGPortalCore.Repository
                     Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
                     object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
                     IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
-                    foreach (object model in models)
-                    {
-                        SetRefModel(model);
-                    }
-                    Type listType = typeof(List<>).MakeGenericType(new[] { modelType });
-                    IList list = (IList)Activator.CreateInstance(listType, models);
-                    instance.GetType().GetProperties()[setLen].SetValue(instance, list);
+                    foreach (object model in models) SetRefModel(model);
+                    Type tp = typeof(List<>).MakeGenericType(new[] { modelType });
+                    IList list = (IList)Activator.CreateInstance(tp);
+                    Reflect.SetValue(instance, setProperty.Name, list);
                 }
                 else
                 {
                     pkCondition = GetPKCondition(GetKeyPropertiesByModelType(setProperty.PropertyType));
                     object model = DataAccess.Find(setProperty.PropertyType, key);
-                    if (null == model)
-                    {
-                        return default;
-                    }
-
+                    if (null == model) return default;
                     SetRefModel(model);
-                    instance.GetType().GetProperties()[setLen].SetValue(instance, model);
+                    Reflect.SetValue(instance, setProperty.Name, model);
                 }
                 setLen++;
             }
@@ -366,27 +349,23 @@ namespace SKGPortalCore.Repository
                 }
                 else
                 {
+                    if (entity is BasicDataModel) SetCreateInfo(entity);
                     DataAccess.Add(entity);
                     SetRefModel(entity);
                 }
             }
         }
-        private void DoUpdate(TSet set, out TSet curSet)
+        private void DoUpdate(TSet set)
         {
-            curSet = default;
             object[] keys = null;
             foreach (dynamic s in set.GetType().GetProperties())
             {
                 dynamic val = Reflect.GetValue(set, s.Name);
-                if (null == val)
-                {
-                    continue;
-                }
+                if (null == val) continue;
 
                 if (val is IEnumerable<DetailRowState>)
                 {
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
-
                     List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
                     foreach (dynamic entity in insertList)
                     {
@@ -414,28 +393,17 @@ namespace SKGPortalCore.Repository
                     foreach (dynamic entity in deleteList)
                     {
                         dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
-                        if (null != oldEntity)
-                        {
-                            DataAccess.Remove(oldEntity);
-                        }
+                        if (null != oldEntity) DataAccess.Remove(oldEntity);
                     }
                 }
                 else
                 {
                     keys = GetKeyVals(val);
                     dynamic oldEntity = DataAccess.Find(val.GetType(), keys);
-                    if (null != oldEntity)
-                    {
-                        DataAccess.Remove(oldEntity);
-                    }
-
+                    if (null != oldEntity) DataAccess.Remove(oldEntity);
                     DataAccess.Update(val);
                     SetRefModel(val);
                 }
-            }
-            if (null != keys)
-            {
-                curSet = QueryData(keys);
             }
         }
         /// <summary>
@@ -526,15 +494,12 @@ namespace SKGPortalCore.Repository
         /// <param name="fieldsProp"></param>
         private void SetRefModel(object model)
         {
-            if (null == model)
-            {
-                return;
-            }
-
+            if (!IsSetRefModel) return;
+            if (null == model) return;
             IEnumerable<ReferenceEntry> refs = DataAccess.Entry(model).References;
             foreach (ReferenceEntry refE in refs)
             {
-                refE.Load();
+                if (!refE.IsLoaded) refE.Load();
             }
         }
         /// <summary>

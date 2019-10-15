@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using Toolbelt.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Data
 {
@@ -22,6 +23,7 @@ namespace SKGPortalCore.Data
         {
             base.OnModelCreating(builder);
             ModelDbSetting(builder);
+            builder.BuildIndexesFromAnnotations();//設置Index套件
         }
         #endregion
         #region Private

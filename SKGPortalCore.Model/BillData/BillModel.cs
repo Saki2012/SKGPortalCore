@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SKGPortalCore.Model.MasterData;
+using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -78,7 +80,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 銀行銷帳編號(不含檢碼)
         /// </summary>
-        [Description("銀行銷帳編號"), Required]
+        [Description("銀行銷帳編號"), Required, Index]
         public string CompareCodeForCheck { get; set; }
         /// <summary>
         /// 銀行條碼

@@ -3,7 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Model.MasterData
 {
-
+    /// <summary>
+    /// 通路核銷週期
+    /// </summary>
     public class ChannelVerifyPeriodSet
     {
         public ChannelVerifyPeriodModel ChannelVerifyPeriod { get; set; }

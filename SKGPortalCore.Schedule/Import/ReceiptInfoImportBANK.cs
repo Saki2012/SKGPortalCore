@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -25,7 +26,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        public ApplicationDbContext DataAccess { get; }
+        public ApplicationDbContext DataAccess { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -65,7 +66,7 @@ namespace SKGPortalCore.Schedule.Import
 
         #endregion
         #region Construct
-        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess,MessageLog messageLog=null)
+        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess, MessageLog messageLog = null)
         {
             DataAccess = dataAccess;
             Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
@@ -131,18 +132,47 @@ namespace SKGPortalCore.Schedule.Import
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
-            using BizReceiptInfoBillBANK biz = new BizReceiptInfoBillBANK(Message, DataAccess);
-            using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
-            foreach (ReceiptInfoBillBankModel model in models)
+            List<ReceiptInfoBillBankModel> split = new List<ReceiptInfoBillBankModel>();
+            for (int i = 0; i < models.Count; i++)
             {
-                biz.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(DataAccess, Message, model.CompareCode, out string compareCodeForCheck);
-                biz.GetCollectionTypeSet("Bank999", model.Channel, model.Amount.ToDecimal(), out ChargePayType chargePayType, out decimal channelFee);
-                ReceiptBillSet set = biz.GetReceiptBillSet(model, bizCust, chargePayType, channelFee, compareCodeForCheck);
-                repo.Create(set);
+                split.Add(models[i]);
+                if (i != 0 && i % 299 == i)
+                {
+                    Thread thread1 = new Thread(new ParameterizedThreadStart(CT));
+                    thread1.Start(models);
+                    split.Clear();
+                }
             }
-            repo.CommitData(FuncAction.Create);
+            Thread thread = new Thread(new ParameterizedThreadStart(CT));
+            thread.Start(split);
+
+
         }
+
+        public static void CT(object list)
+        {
+            MessageLog Message = new MessageLog(SystemOperator.SysOperator);
+            using BizReceiptInfoBillBANK receiptRepo = new BizReceiptInfoBillBANK(Message, LibDataAccess.CreateDataAccess());
+            using ReceiptBillRepository billRepo = new ReceiptBillRepository(LibDataAccess.CreateDataAccess()) { Message = Message, User = SystemOperator.SysOperator };
+            List<ReceiptInfoBillBankModel> models = list as List<ReceiptInfoBillBankModel>;
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            int i = models.Count;
+            sw.Reset();
+            sw.Start();
+            models.ForEach(model =>
+            {
+                receiptRepo.CheckData(model);
+                ReceiptBillSet set = receiptRepo.GetReceiptBillSet(model);
+                billRepo.Create(set);
+                Console.WriteLine($"Create:{sw.Elapsed.TotalSeconds},");
+            });
+            billRepo.CommitData(FuncAction.Create);
+            Console.WriteLine($"CommitData Time:{sw.Elapsed.TotalSeconds}");
+            sw.Stop();
+
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -167,10 +197,9 @@ namespace SKGPortalCore.Schedule.Import
     /// </summary>
     public static class ReceiptInfoImportComm
     {
-        internal static BizCustomerSet GetBizCustomerSet(ApplicationDbContext dataAccess, MessageLog message, string compareCode, out string compareCodeForCheck)
+        internal static BizCustomerSet GetBizCustomerSet(BizCustomerRepository biz, string compareCode, out string compareCodeForCheck)
         {
             compareCodeForCheck = string.Empty;
-            using BizCustomerRepository biz = new BizCustomerRepository(dataAccess) { Message = message };
             BizCustomerSet bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 6) });
             if (null == bizCust)
                 bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 4) });
