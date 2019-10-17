@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -26,7 +27,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        public ApplicationDbContext DataAccess { get; set; }
+        public ApplicationDbContext DataAccess { get; }
         /// <summary>
         /// 
         /// </summary>
@@ -132,47 +133,23 @@ namespace SKGPortalCore.Schedule.Import
         void IImportData.CreateData(IList modelSources)
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
-            List<ReceiptInfoBillBankModel> split = new List<ReceiptInfoBillBankModel>();
-            for (int i = 0; i < models.Count; i++)
-            {
-                split.Add(models[i]);
-                if (i != 0 && i % 299 == i)
-                {
-                    Thread thread1 = new Thread(new ParameterizedThreadStart(CT));
-                    thread1.Start(models);
-                    split.Clear();
-                }
-            }
-            Thread thread = new Thread(new ParameterizedThreadStart(CT));
-            thread.Start(split);
-
-
-        }
-
-        public static void CT(object list)
-        {
-            MessageLog Message = new MessageLog(SystemOperator.SysOperator);
-            using BizReceiptInfoBillBANK receiptRepo = new BizReceiptInfoBillBANK(Message, LibDataAccess.CreateDataAccess());
-            using ReceiptBillRepository billRepo = new ReceiptBillRepository(LibDataAccess.CreateDataAccess()) { Message = Message, User = SystemOperator.SysOperator };
-            List<ReceiptInfoBillBankModel> models = list as List<ReceiptInfoBillBankModel>;
+            using ReceiptBillRepository billRepo = new ReceiptBillRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
+            using BizReceiptInfoBillBANK receiptRepo = new BizReceiptInfoBillBANK(Message, DataAccess);
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            int i = models.Count;
             sw.Reset();
             sw.Start();
+            int i = 0;
             models.ForEach(model =>
             {
                 receiptRepo.CheckData(model);
                 ReceiptBillSet set = receiptRepo.GetReceiptBillSet(model);
                 billRepo.Create(set);
-                Console.WriteLine($"Create:{sw.Elapsed.TotalSeconds},");
+            Console.WriteLine($"({++i})Create Time:{sw.Elapsed.TotalSeconds}");
             });
             billRepo.CommitData(FuncAction.Create);
             Console.WriteLine($"CommitData Time:{sw.Elapsed.TotalSeconds}");
             sw.Stop();
-
         }
-
-
         /// <summary>
         /// 
         /// </summary>

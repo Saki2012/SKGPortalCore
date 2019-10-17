@@ -43,7 +43,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             using BizBill biz = new BizBill(Message, DataAccess, User);
-            biz.SetData(set/*, action*/);
+            biz.SetData(set);
             biz.CheckData(set);
         }
         #endregion

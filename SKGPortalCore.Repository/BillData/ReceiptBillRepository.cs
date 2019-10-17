@@ -120,12 +120,12 @@ namespace SKGPortalCore.Repository.BillData
         /// <param name="channelFee"></param>
         private void GetCollectionTypeSet(string collectionTypeId, string channelId, decimal amount, out ChargePayType chargePayType, out decimal channelFee)
         {
-            using CollectionTypeRepository colRepo = new CollectionTypeRepository(DataAccess);
             CollectionTypeSet colSet = null;
             channelFee = 0;
             chargePayType = ChargePayType.Deduction;
             if (!ColSetDic.ContainsKey(collectionTypeId))
             {
+                using CollectionTypeRepository colRepo = new CollectionTypeRepository(DataAccess);
                 colSet = colRepo.QueryData(new object[] { collectionTypeId });
                 ColSetDic.Add(collectionTypeId, colSet);
             }
