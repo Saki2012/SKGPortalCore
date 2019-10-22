@@ -80,10 +80,10 @@ namespace SKGPortalCore.Model
         [Description("已撥款")]
         Disbursed = 2,
     }
-
     /// <summary>
     /// 自組銷帳編號1
     /// </summary>
+    [Description("自組銷帳編號1")]
     public enum VirtualAccount1 : byte
     {
         /// <summary>
@@ -100,6 +100,7 @@ namespace SKGPortalCore.Model
     /// <summary>
     /// 自組銷帳編號2
     /// </summary>
+    [Description("自組銷帳編號2")]
     public enum VirtualAccount2 : byte
     {
         /// <summary>
@@ -121,6 +122,7 @@ namespace SKGPortalCore.Model
     /// <summary>
     /// 自組銷帳編號3
     /// </summary>
+    [Description("自組銷帳編號3")]
     public enum VirtualAccount3 : byte
     {
         /// <summary>
@@ -196,6 +198,7 @@ namespace SKGPortalCore.Model
     /// <summary>
     /// 帳單基本資料
     /// </summary>
+    [Description("帳單基本資料")]
     public enum BillInfo : byte
     {
         /// <summary>
@@ -488,6 +491,10 @@ namespace SKGPortalCore.Model
         Introducer = 1,
 
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Description("")]
     public enum SetOpportunity : int
     {
         [Description("新增")]
@@ -637,7 +644,6 @@ namespace SKGPortalCore.Model
         [Description("網路版-長期")]
         NetLong = 3,
     }
-
     /// <summary>
     /// 行狀態
     /// </summary>

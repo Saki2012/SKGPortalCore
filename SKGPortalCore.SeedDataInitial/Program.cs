@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Schedule.Import;
 using SKGPortalCore.SeedDataInitial.BillData;
@@ -19,11 +20,8 @@ namespace SKGPortalCore.SeedDataInitial
 
         public static void Main()
         {
-
-            SKGPortalCore.Lib.LibExcel excel = new Lib.LibExcel();
-            excel.Export();
-
-            return;
+            //TestWordToPDF.Main();
+            //return;
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             if (DataAccess.Set<BackendUserModel>().Find("SysOperator") == null) DataAccess.Add(SystemOperator.SysOperator);
