@@ -37,8 +37,7 @@ namespace SKGPortalCore.Repository.MasterData
         protected override void AfterSetEntity(BillTermSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizBillTerm biz = new BizBillTerm(Message, DataAccess);
-            biz.CheckData(set);
+            BizBillTerm.CheckData( Message, set);
         }
         #endregion
     }

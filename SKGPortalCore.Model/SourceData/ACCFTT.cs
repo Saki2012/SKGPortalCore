@@ -59,7 +59,7 @@ namespace SKGPortalCore.Model.SourceData
         /// X(8)
         /// </summary>
         [Description("最後異動日期"), MaxLength(8)]
-        public string CHGDATE { get => _CHGDATE.PadLeft(8, '0').ByteSubString(0, 8); set => _CHGDATE = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string CHGDATE { get => _CHGDATE.PadLeft(8, ' ').ByteSubString(0, 8); set => _CHGDATE = value.PadLeft(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 09.申請狀態(0:申請 1:中止 9:終止)
         /// 9(01)
@@ -125,31 +125,31 @@ namespace SKGPortalCore.Model.SourceData
         /// X(03)
         /// </summary>
         [Description("超商代收項目1"), MaxLength(3)]
-        public string RECVITEM1 { get => _RECVITEM1.PadLeft(3, '0').ByteSubString(0, 3); set => _RECVITEM1 = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        public string RECVITEM1 { get => _RECVITEM1.PadLeft(3, ' ').ByteSubString(0, 3); set => _RECVITEM1 = value.PadLeft(3, ' ').ByteSubString(0, 3); }
         /// <summary>
         /// 20.超商代收項目2
         /// X(03)
         /// </summary>
         [Description("超商代收項目2"), MaxLength(3)]
-        public string RECVITEM2 { get => _RECVITEM2.PadLeft(3, '0').ByteSubString(0, 3); set => _RECVITEM2 = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        public string RECVITEM2 { get => _RECVITEM2.PadLeft(3, ' ').ByteSubString(0, 3); set => _RECVITEM2 = value.PadLeft(3, ' ').ByteSubString(0, 3); }
         /// <summary>
         /// 21.超商代收項目3
         /// X(03)
         /// </summary>
         [Description("超商代收項目3"), MaxLength(3)]
-        public string RECVITEM3 { get => _RECVITEM3.PadLeft(3, '0').ByteSubString(0, 3); set => _RECVITEM3 = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        public string RECVITEM3 { get => _RECVITEM3.PadLeft(3, ' ').ByteSubString(0, 3); set => _RECVITEM3 = value.PadLeft(3, ' ').ByteSubString(0, 3); }
         /// <summary>
         /// 22.超商代收項目4
         /// X(03)
         /// </summary>
         [Description("超商代收項目4"), MaxLength(3)]
-        public string RECVITEM4 { get => _RECVITEM4.PadLeft(3, '0').ByteSubString(0, 3); set => _RECVITEM4 = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        public string RECVITEM4 { get => _RECVITEM4.PadLeft(3, ' ').ByteSubString(0, 3); set => _RECVITEM4 = value.PadLeft(3, ' ').ByteSubString(0, 3); }
         /// <summary>
         /// 23.超商代收項目5
         /// X(03)
         /// </summary>
         [Description("超商代收項目5"), MaxLength(3)]
-        public string RECVITEM5 { get => _RECVITEM5.PadLeft(3, '0').ByteSubString(0, 3); set => _RECVITEM5 = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        public string RECVITEM5 { get => _RECVITEM5.PadLeft(3, ' ').ByteSubString(0, 3); set => _RECVITEM5 = value.PadLeft(3, ' ').ByteSubString(0, 3); }
         /// <summary>
         /// 24.超商清算手續費
         /// 9(02)

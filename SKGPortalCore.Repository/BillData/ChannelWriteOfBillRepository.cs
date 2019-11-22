@@ -17,8 +17,7 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ChannelWriteOfBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizChannelWriteOfBill biz = new BizChannelWriteOfBill(Message);
-            biz.CheckData(set);
+            BizChannelWriteOfBill.CheckData(set);
         }
 
         protected override void AfterApprove(ChannelWriteOfBillSet set, bool status)
@@ -26,20 +25,9 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterApprove(set, status);
             if (status)
             {
-                CreateDisbursementBill(set.ChannelWriteOfBill.BillNo);
             }
         }
         #endregion
-        /// <summary>
-        /// 產生撥款單
-        /// </summary>
-        /// <param name="channelWriteOfBillNo"></param>
-        private void CreateDisbursementBill(string channelWriteOfBillNo)
-        {
-            DisbursementBillSet disbursementBill = new DisbursementBillSet();
-            disbursementBill.DisbursementBill.ChannelWriteOfBillNo = channelWriteOfBillNo;
-            using DisbursementBillRepository repo = new DisbursementBillRepository(DataAccess);
-            repo.Create(disbursementBill);
-        }
+
     }
 }

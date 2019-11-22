@@ -15,8 +15,7 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ChannelEAccountBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizChannelEAccountBill biz = new BizChannelEAccountBill(Message);
-            biz.SetData(set);
+            BizChannelEAccountBill.SetData(set);
         }
         protected override void AfterRemoveEntity(ChannelEAccountBillSet set)
         {

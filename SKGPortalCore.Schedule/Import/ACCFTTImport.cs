@@ -116,7 +116,6 @@ namespace SKGPortalCore.Schedule.Import
         void IImportData.CreateData(IList modelSources)
         {
             List<ACCFTT> srcs = modelSources as List<ACCFTT>;
-            using BizACCFTT bizACCFTT = new BizACCFTT(Message);
             using BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
             using CustomerRepository custRepo = new CustomerRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
             using CustUserRepository custUserRepo = new CustUserRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
@@ -131,15 +130,15 @@ namespace SKGPortalCore.Schedule.Import
                             try
                             {
                                 GetCustomerInfo(model, bizCustRepo, custRepo, custUserRepo, out BizCustomerSet bizCustomerSet, out CustomerSet customerSet, out CustUserSet custUserSet);
-                                if (null == customerSet) custRepo.Create(bizACCFTT.SetCustomer(model, customerSet));
-                                else custRepo.Update(bizACCFTT.SetCustomer(model, customerSet));
+                                if (null == customerSet) custRepo.Create(BizACCFTT.SetCustomer(model, customerSet));
+                                else custRepo.Update(BizACCFTT.SetCustomer(model, customerSet));
                                 custRepo.CommitData(FuncAction.Create);
-                                if (null == bizCustomerSet) bizCustRepo.Create(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
-                                else bizCustRepo.Update(bizACCFTT.SetBizCustomer(model, bizCustomerSet));
+                                if (null == bizCustomerSet) bizCustRepo.Create(BizACCFTT.SetBizCustomer(model, bizCustomerSet));
+                                else bizCustRepo.Update(BizACCFTT.SetBizCustomer(model, bizCustomerSet));
                                 bizCustRepo.CommitData(FuncAction.Create);
                                 if (null == custUserSet)
                                 {
-                                    custUserRepo.Create(bizACCFTT.AddAdminAccount(model));
+                                    custUserRepo.Create(BizACCFTT.AddAdminAccount(model));
                                     custUserRepo.CommitData(FuncAction.Create);
                                 }
                                 DataAccess.Database.CommitTransaction();

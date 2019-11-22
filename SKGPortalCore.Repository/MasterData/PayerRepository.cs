@@ -28,8 +28,7 @@ namespace SKGPortalCore.Repository.MasterData
         protected override void AfterSetEntity(PayerSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizPayer biz = new BizPayer(Message);
-            biz.CheckData(set);
+            BizPayer.CheckData( Message, set);
         }
     }
 }

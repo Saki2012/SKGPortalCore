@@ -42,9 +42,8 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(BillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizBill biz = new BizBill(Message, DataAccess, User);
-            biz.SetData(set);
-            biz.CheckData(set);
+            BizBill.SetData(set, Message, DataAccess);
+            BizBill.CheckData(set, Message, DataAccess);
         }
         #endregion
     }

@@ -20,6 +20,7 @@ SKGPortalCore.SeedDataInitial/bin
 SKGPortalCore.SeedDataInitial/obj
 SKGPortalCore.CheckLog/obj
 SKGPortalCore.CheckLog/bin
+SKGPortalCore.Repository/SKGPortalCore.Business
 TestSln/bin
 TestSln/obj
 .vs

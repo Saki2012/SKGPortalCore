@@ -119,11 +119,10 @@ namespace SKGPortalCore.Schedule.Import
         void IImportData.CreateData(IList modelSources)
         {
             List<RemitInfoModel> srcs = modelSources as List<RemitInfoModel>;
-            using BizRemitInfo biz = new BizRemitInfo(Message);
             using CashFlowBillRepository repo = new CashFlowBillRepository(DataAccess) { User = SystemOperator.SysOperator };
             foreach (RemitInfoModel model in srcs)
             {
-                CashFlowBillSet set = biz.GetCashFlowBillSet(model);
+                CashFlowBillSet set = BizRemitInfo.GetCashFlowBillSet(model);
                 repo.Create(set);
             }
             repo.CommitData(FuncAction.Create);

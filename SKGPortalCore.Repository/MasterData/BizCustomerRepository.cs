@@ -15,8 +15,7 @@ namespace SKGPortalCore.Repository.MasterData
         protected override void AfterSetEntity(BizCustomerSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizBizCustomer bizCustomer = new BizBizCustomer(Message);
-            bizCustomer.CheckData(set);
+            BizBizCustomer.CheckData(set);
         }
     }
 }

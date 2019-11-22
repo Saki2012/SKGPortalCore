@@ -20,9 +20,6 @@ namespace SKGPortalCore.SeedDataInitial
 
         public static void Main()
         {
-            //TestWordToPDF.Main();
-            //return;
-
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             if (DataAccess.Set<BackendUserModel>().Find("SysOperator") == null) DataAccess.Add(SystemOperator.SysOperator);
             //資料
@@ -47,7 +44,7 @@ namespace SKGPortalCore.SeedDataInitial
                 PayerSeedData.CreatePayer(Message, dataAccess);
                 BillTermSeedData.CreateBillTerm(Message, dataAccess);
                 //單據
-                BillSeedData.CreateBill(Message, dataAccess);
+                //BillSeedData.CreateBill(Message, dataAccess);
                 dataAccess.BulkSaveChanges();
             }
             catch (Exception e)

@@ -45,14 +45,13 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ReceiptBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            using BizReceiptBill biz = new BizReceiptBill(Message, DataAccess);
             BizCustomerSet bizCustSet = GetBizCustomerSet(set.ReceiptBill.CompareCode, out string compareCodeForCheck);
             GetCollectionTypeSet(set.ReceiptBill.CollectionTypeId, set.ReceiptBill.ChannelId, set.ReceiptBill.PayAmount, out ChargePayType chargePayType, out decimal channelFee);
             ChannelVerifyPeriodModel periodModel = GetChannelVerifyPeriod(set.ReceiptBill.CollectionTypeId, set.ReceiptBill.ChannelId);
-            biz.SetData(set, bizCustSet.BizCustomerFeeDetail, compareCodeForCheck, chargePayType, channelFee);
-            biz.SetData(set, periodModel, action);
+            BizReceiptBill.SetData(set, bizCustSet.BizCustomerFeeDetail, compareCodeForCheck, chargePayType, channelFee);
+            BizReceiptBill.SetData(DataAccess,set, periodModel, action);
             InsertBillReceiptDetail(set.ReceiptBill, set.ReceiptBill.ToBillNo);
-            InsertChannelEAccount(biz, set);
+            InsertChannelEAccount( set);
         }
         protected override void AfterRemoveEntity(ReceiptBillSet set)
         {
@@ -161,7 +160,6 @@ namespace SKGPortalCore.Repository.BillData
         private void InsertBillReceiptDetail(ReceiptBillModel receipt, string billNo)
         {
             if (billNo.IsNullOrEmpty()) return;
-            using BizBill bizBill = new BizBill(Message);
             //using BillRepository rep = new BillRepository(DataAccess) { User = User };
             //BillSet billSet = rep.QueryData(new object[] { billNo });
             //if (null == billSet) { /*add Message:查無帳單*/ return; }
@@ -171,7 +169,7 @@ namespace SKGPortalCore.Repository.BillData
             BillReceiptDetailModel dt = new BillReceiptDetailModel() { BillNo = billNo, ReceiptBill = receipt, ReceiptBillNo = receipt.BillNo, RowState = RowState.Insert };
             DataAccess.Add(dt);
             bill.HasPayAmount += receipt.PayAmount;
-            bill.PayStatus = bizBill.GetPayStatus(bill.PayAmount, bill.HasPayAmount);
+            bill.PayStatus = BizBill.GetPayStatus(bill.PayAmount, bill.HasPayAmount);
             DataAccess.Update(bill);
         }
         /// <summary>
@@ -193,14 +191,14 @@ namespace SKGPortalCore.Repository.BillData
         /// <summary>
         /// 插入通路電子帳簿
         /// </summary>
-        private void InsertChannelEAccount(BizReceiptBill biz, ReceiptBillSet set)
+        private void InsertChannelEAccount(ReceiptBillSet set)
         {
             if (set.ReceiptBill.RemitDate == DateTime.MinValue) return;
 
             using ChannelEAccountBillRepository repo = new ChannelEAccountBillRepository(DataAccess) { User = User };
             if (DataAccess.Set<ChannelEAccountBillModel>().Where(p => p.CollectionTypeId == set.ReceiptBill.CollectionTypeId && p.ExpectRemitDate == set.ReceiptBill.RemitDate).Count() == 0)
             {
-                ChannelEAccountBillSet accountSet = biz.CreateChannelEAccountBill(set.ReceiptBill);
+                ChannelEAccountBillSet accountSet = BizReceiptBill.CreateChannelEAccountBill(set.ReceiptBill);
                 repo.Create(accountSet);
             }
             else

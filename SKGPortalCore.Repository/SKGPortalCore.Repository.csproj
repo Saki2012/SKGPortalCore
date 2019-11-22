@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Business\SKGPortalCore.Business.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj" />
     <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />
     <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
   </ItemGroup>

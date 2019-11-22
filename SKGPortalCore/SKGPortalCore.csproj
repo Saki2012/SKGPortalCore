@@ -26,9 +26,6 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Business\SKGPortalCore.Business.csproj">
-      <Private>true</Private>
-    </ProjectReference>
     <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj">
       <Private>true</Private>
     </ProjectReference>
