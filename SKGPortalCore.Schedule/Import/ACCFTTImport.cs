@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
@@ -11,6 +10,7 @@ using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.MasterData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 
 namespace SKGPortalCore.Schedule.Import
 {

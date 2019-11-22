@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Business.BillData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -38,6 +38,7 @@ namespace SKGPortalCore.Repository.BillData
             });
         }
         #endregion
+
         #region Protected
         protected override void AfterSetEntity(BillSet set, FuncAction action)
         {

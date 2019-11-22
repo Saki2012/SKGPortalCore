@@ -1,7 +1,7 @@
-﻿using SKGPortalCore.Business.BillData;
-using SKGPortalCore.Data;
+﻿using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData
 {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Business.MasterData;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
 
 namespace SKGPortalCore.Repository.MasterData
 {
