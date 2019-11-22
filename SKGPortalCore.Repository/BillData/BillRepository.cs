@@ -29,7 +29,6 @@ namespace SKGPortalCore.Repository.BillData
                     {
                         p.BillDetail.ForEach(p => p.BillNo = billNo);
                     }
-
                     if (null != p.BillReceiptDetail)
                     {
                         p.BillReceiptDetail.ForEach(p => p.BillNo = billNo);

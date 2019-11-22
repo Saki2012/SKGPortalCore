@@ -11,7 +11,7 @@ namespace SKGPortalCore.Repository.BillData
         public DisbursementBillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
         #endregion
 
-        #region
+        #region Protect
         protected override void AfterSetEntity(DisbursementBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);

@@ -134,15 +134,14 @@ namespace SKGPortalCore.Schedule.Import
         {
             List<ReceiptInfoBillBankModel> models = modelSources as List<ReceiptInfoBillBankModel>;
             using ReceiptBillRepository billRepo = new ReceiptBillRepository(DataAccess) { Message = Message, User = SystemOperator.SysOperator };
-            using BizReceiptInfoBillBANK receiptRepo = new BizReceiptInfoBillBANK(Message, DataAccess);
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Reset();
             sw.Start();
             int i = 0;
             models.ForEach(model =>
             {
-                receiptRepo.CheckData(model);
-                ReceiptBillSet set = receiptRepo.GetReceiptBillSet(model);
+                BizReceiptInfoBillBANK.CheckData(model,Message);
+                ReceiptBillSet set = BizReceiptInfoBillBANK.GetReceiptBillSet(model);
                 billRepo.Create(set);
             Console.WriteLine($"({++i})Create Time:{sw.Elapsed.TotalSeconds}");
             });

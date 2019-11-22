@@ -104,7 +104,7 @@ namespace SKGPortalCore
         private void InjectionRepository(ref IServiceCollection services)
         {
             Assembly assembly = Assembly.Load("SKGPortalCore.Repository");
-            Type[] types = assembly.ExportedTypes.Where(p => p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
+            Type[] types = assembly.ExportedTypes.Where(p => !p.Namespace.Contains("SKGPortalCore.Business") && p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
             foreach (Type t in types)
             {
                 services.AddTransient(t);
