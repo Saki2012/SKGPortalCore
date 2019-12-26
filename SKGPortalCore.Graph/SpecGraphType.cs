@@ -52,20 +52,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-                    repo.User = session.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Query));
-                    if (!AccountLogin.CheckAuthenticate(context, progId, FuncAction.Query))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Query));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -78,21 +66,7 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, "", ResxManage.GetDescription(FuncAction.Query));
-                    if (!AccountLogin.CheckAuthenticate(context, progId, FuncAction.Query))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Query));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
-
-
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
                     return repo.QueryList();
@@ -112,20 +86,9 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
+                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Create, keyVal)) return default;
                     TSet set = context.GetArgument<TSet>("set");
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, "", ResxManage.GetDescription(FuncAction.Create));
-                    if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Create))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Create));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
                     TSet result = repo.Create(set);
                     repo.CommitData(FuncAction.Create);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -139,20 +102,9 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JSON Web Token" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
+                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Update, keyVal)) return default;
                     TSet set = context.GetArgument<TSet>("set");
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(repo.GetPKVals(set)), ResxManage.GetDescription(FuncAction.Update));
-                    if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Update))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Update));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
                     TSet result = repo.Update(set);
                     repo.CommitData(FuncAction.Update);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -166,21 +118,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Delete));
-                    if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Delete))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Delete));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Delete, keyVal)) return default;
                     repo.Delete(new[] { keyVal });
                     repo.CommitData(FuncAction.Delete);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -194,21 +133,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "審核狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Approve));
-                    if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Approve))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Approve));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Approve, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Approve(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Approve);
@@ -223,20 +149,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "作廢狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    ISessionWapper session = ((ISessionWapper)context.UserContext);
-                    repo.User = session?.User;
-                    repo.Message = null;
-                    string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    Comm<TSet>.SetDebugUser(repo, context, progId);
-                    Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.Invalid));
-                    if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.Invalid))
-                    {
-                        repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.Invalid));
-                        context.Errors.AddRange(repo.Message.Errors);
-                        repo.Message.WriteLogTxt();
-                        return default;
-                    }
+                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Invalid, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Invalid(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Invalid);
@@ -251,20 +165,8 @@ namespace SKGPortalCore.Graph
               arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "結案狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
               resolve: context =>
               {
-                  ISessionWapper session = ((ISessionWapper)context.UserContext);
-                  repo.User = session?.User;
-                  repo.Message = null;
-                  string progId = repo.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
                   object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                  Comm<TSet>.SetDebugUser(repo, context, progId);
-                  Comm<TSet>.SetOperateLog(repo.User.KeyId, session.IP, session.Browser, progId, Comm<TSet>.GetPKValue(keyVal), ResxManage.GetDescription(FuncAction.EndCase));
-                  if (repo.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, FuncAction.EndCase))
-                  {
-                      repo.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repo), ResxManage.GetDescription(FuncAction.EndCase));
-                      context.Errors.AddRange(repo.Message.Errors);
-                      repo.Message.WriteLogTxt();
-                      return default;
-                  }
+                  if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.EndCase, keyVal)) return default;
                   bool status = context.GetArgument<bool>("status");
                   TSet result = repo.Invalid(new[] { keyVal }, status);
                   repo.CommitData(FuncAction.EndCase);
@@ -328,7 +230,6 @@ namespace SKGPortalCore.Graph
                     {
                         continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
                     }
-
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -340,8 +241,38 @@ namespace SKGPortalCore.Graph
     }
     #endregion
 
-    internal class Comm<TSet>
+    internal static class BaseOperateComm<TSet>
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="repository"></param>
+        /// <param name="action"></param>
+        /// <param name="keyVal"></param>
+        internal static bool CheckUser(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
+        {
+            ISessionWapper session = ((ISessionWapper)context.UserContext);
+            repository.User = session?.User;
+            repository.Message = null;
+            string progId = repository.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
+            SetDebugUser(repository, context, progId);
+            SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
+            if (repository.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, action))
+            {
+                repository.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repository), ResxManage.GetDescription(action));
+                context.Errors.AddRange(repository.Message.Errors);
+                repository.Message.WriteLogTxt();
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 設置Debug的User
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="context"></param>
+        /// <param name="progId"></param>
         internal static void SetDebugUser(BasicRepository<TSet> repo, ResolveFieldContext<object> context, string progId)
         {
 #if DEBUG
@@ -354,8 +285,16 @@ namespace SKGPortalCore.Graph
             //context.Arguments["jwt"] = permissions[progId];
 #endif
         }
-
-        internal static void SetOperateLog(string userId, string ip, string browser, string progId, string pk, string action)
+        /// <summary>
+        /// 紀錄操作日誌
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="ip"></param>
+        /// <param name="browser"></param>
+        /// <param name="progId"></param>
+        /// <param name="pk"></param>
+        /// <param name="action"></param>
+        private static void SetOperateLog(string userId, string ip, string browser, string progId, string pk, string action)
         {
             try
             {
@@ -377,8 +316,12 @@ namespace SKGPortalCore.Graph
                 Console.WriteLine(ex.ToString());
             }
         }
-
-        internal static string GetPKValue(object[] objs)
+        /// <summary>
+        /// 獲取主鍵值
+        /// </summary>
+        /// <param name="objs"></param>
+        /// <returns></returns>
+        private static string GetPKValueString(object[] objs)
         {
             return LibData.Merge(",", true, objs);
         }
