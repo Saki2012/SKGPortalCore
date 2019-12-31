@@ -1,4 +1,6 @@
-﻿using SKGPortalCore.Data;
+﻿using System.ComponentModel;
+using System.Runtime.InteropServices;
+using SKGPortalCore.Data;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
@@ -8,6 +10,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 通路帳款核銷單庫
     /// </summary>
+    [ProgId("ChannelWriteOfBill"), Description("通路帳款核銷單")]
     public class ChannelWriteOfBillRepository : BasicRepository<ChannelWriteOfBillSet>
     {
         #region Construct
@@ -19,7 +22,6 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterSetEntity(set, action);
             BizChannelWriteOfBill.CheckData(set);
         }
-
         protected override void AfterApprove(ChannelWriteOfBillSet set, bool status)
         {
             base.AfterApprove(set, status);
@@ -28,6 +30,5 @@ namespace SKGPortalCore.Repository.BillData
             }
         }
         #endregion
-
     }
 }

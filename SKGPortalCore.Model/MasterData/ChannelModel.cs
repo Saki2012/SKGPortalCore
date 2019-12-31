@@ -42,7 +42,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 通路類別
         /// </summary>
         [Description("通路類別")]
-        public CanalisType ChannelType { get; set; }
+        public ChannelGroupType ChannelGroupType { get; set; }
     }
     /// <summary>
     /// 交易代號與平台通路代號關聯表
@@ -67,7 +67,7 @@ namespace SKGPortalCore.Model.MasterData
     /// <summary>
     /// 平台通路代號
     /// </summary>
-    public class ChannelValue
+    public static class ChannelValue
     {
         /// <summary>
         /// 銀行臨櫃

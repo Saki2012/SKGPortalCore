@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Model.MasterData;
-using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
@@ -63,7 +62,7 @@ namespace SKGPortalCore.Model.BillData
         /// 預計匯款日
         /// </summary>
         [Description("預計匯款日")]
-        public DateTime RemitDate { get; set; }
+        public DateTime ExpectRemitDate { get; set; }
         /// <summary>
         /// 實繳金額
         /// </summary>
@@ -73,17 +72,7 @@ namespace SKGPortalCore.Model.BillData
         /// 銀行銷帳編號
         /// </summary>
         [Description("銀行銷帳編號")]
-        public string BankCode { get; set; }
-        /// <summary>
-        /// 銷帳條碼
-        /// </summary>
-        [Description("銷帳條碼")]
-        public string CompareCode { get; set; }
-        /// <summary>
-        /// 銷帳條碼(不含檢碼)
-        /// </summary>
-        [Description("銷帳條碼(不含檢碼)"), Index]
-        public string CompareCodeForCheck { get; set; }
+        public string BankBarCode { get; set; }
         /// <summary>
         /// 資訊流資料異常狀態
         /// </summary>
@@ -109,11 +98,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("介紹商手續費")]
         public decimal ThirdFee { get; set; }
-        /// <summary>
-        /// HiTrust手續費
-        /// </summary>
-        [Description("HiTrust手續費")]
-        public decimal HiTrustFee { get; set; }
         [ForeignKey("ToBillNo")]
         public BillModel Bill { get; set; }
         /// <summary>
@@ -135,9 +119,9 @@ namespace SKGPortalCore.Model.BillData
         [Description("被沖抵單號")]
         public string BeRushedBillNo { get; set; }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號")]
+        [Description("匯入批號")]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源

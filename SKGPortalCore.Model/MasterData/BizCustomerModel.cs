@@ -130,10 +130,10 @@ namespace SKGPortalCore.Model.MasterData
         /// 通路類別
         /// </summary>
         [Description("通路類別")]
-        public CanalisType ChannelType { get; set; }
+        public ChannelGroupType ChannelType { get; set; }
         /// <summary>
         /// 手續費類型
-        /// (只記錄1:清算手續費、4:每筆總手續費、5:HiTrust)
+        /// (只記錄1:清算手續費、4:每筆總手續費)
         /// </summary>
         [Description("手續費類型")]
         public FeeType FeeType { get; set; }

@@ -79,17 +79,12 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("單據編號"), Key]
         public string BillNo { get; set; }
-        /// <summary>
-        /// 序號
-        /// </summary>
-        [Description("序號"), Key]
-        public int RowId { get; set; }
         [ForeignKey("ReceiptBillNo")]
         public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號")]
+        [Description("收款單號"),Key]
         public string ReceiptBillNo { get; set; }
     }
 }

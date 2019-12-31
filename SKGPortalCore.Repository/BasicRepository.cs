@@ -355,6 +355,10 @@ namespace SKGPortalCore.Repository
                 }
             }
         }
+        /// <summary>
+        /// 處理修改動作
+        /// </summary>
+        /// <param name="set"></param>
         private void DoUpdate(TSet set)
         {
             object[] keys = null;
@@ -418,10 +422,6 @@ namespace SKGPortalCore.Repository
             model.ModifyStaff = User.KeyId;
             model.ModifyTime = now;
         }
-        /// <summary>
-        /// 處理修改動作
-        /// </summary>
-        /// <param name="set"></param>
         /// <summary>
         /// 設置修改時使用者資料
         /// </summary>
@@ -494,6 +494,7 @@ namespace SKGPortalCore.Repository
         /// <param name="fieldsProp"></param>
         private void SetRefModel(object model)
         {
+            //return;//todo:設置關聯欄位讀取
             if (!IsSetRefModel) return;
             if (null == model) return;
             IEnumerable<ReferenceEntry> refs = DataAccess.Entry(model).References;

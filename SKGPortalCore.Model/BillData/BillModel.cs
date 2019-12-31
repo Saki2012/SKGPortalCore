@@ -39,13 +39,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號"), Key, MaxLength(20)]
         public string BillNo { get; set; }
-        [ForeignKey("CustomerCode,BillTermId")]
-        public BillTermModel BillTerm { get; set; }
-        /// <summary>
-        /// 期別
-        /// </summary>
-        [Description("期別")]
-        public string BillTermId { get; set; }
         [ForeignKey("CustomerId")]
         public CustomerModel Customer { get; set; }
         /// <summary>
@@ -60,63 +53,20 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("企業編號")]
         public string CustomerCode { get; set; }
+        [ForeignKey("CustomerCode,BillTermId")]
+        public BillTermModel BillTerm { get; set; }
+        /// <summary>
+        /// 期別
+        /// </summary>
+        [Description("期別")]
+        public string BillTermId { get; set; }
         [ForeignKey("CustomerId,PayerId")]
         public PayerModel Payer { get; set; }
         /// <summary>
-        /// 會員
+        /// 繳款人
         /// </summary>
-        [Description("會員")]
+        [Description("繳款人")]
         public string PayerId { get; set; }
-        /// <summary>
-        /// 繳款人類別
-        /// </summary>
-        [Description("繳款人類別")]
-        public PayerType PayerType { get; set; }
-        /// <summary>
-        /// 匯入批號
-        /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15)]
-        public string ImportBatchNo { get; set; }
-        /// <summary>
-        /// 銀行銷帳編號(不含檢碼)
-        /// </summary>
-        [Description("銀行銷帳編號"), Required, Index]
-        public string CompareCodeForCheck { get; set; }
-        /// <summary>
-        /// 銀行條碼
-        /// </summary>
-        [Description("銀行條碼"), Required]
-        public string BankBarCode { get; set; }
-        /// <summary>
-        /// 超商條碼1
-        /// </summary>
-        [Description("超商條碼1"), Required]
-        public string MarketBarCode1 { get; set; }
-        /// <summary>
-        /// 超商條碼2
-        /// </summary>
-        [Description("超商條碼2"), Required]
-        public string MarketBarCode2 { get; set; }
-        /// <summary>
-        /// 超商條碼3
-        /// </summary>
-        [Description("超商條碼3"), Required]
-        public string MarketBarCode3 { get; set; }
-        /// <summary>
-        /// 郵局條碼1
-        /// </summary>
-        [Description("郵局條碼1"), Required]
-        public string PostBarCode1 { get; set; }
-        /// <summary>
-        /// 郵局條碼2
-        /// </summary>
-        [Description("郵局條碼2"), Required]
-        public string PostBarCode2 { get; set; }
-        /// <summary>
-        /// 郵局條碼3
-        /// </summary>
-        [Description("郵局條碼3"), Required]
-        public string PostBarCode3 { get; set; }
         /// <summary>
         /// 繳款截止日
         /// </summary>
@@ -131,22 +81,58 @@ namespace SKGPortalCore.Model.BillData
         /// 已繳金額
         /// </summary>
         [Description("已繳金額")]
-        public decimal HasPayAmount { get; set; }
+        public decimal HadPayAmount { get; set; }
         /// <summary>
         /// 繳款狀態
         /// </summary>
         [Description("繳款狀態")]
         public PayStatus PayStatus { get; set; }
         /// <summary>
-        /// 帳單備註1
+        /// 匯入批號
         /// </summary>
-        [Description("帳單備註1"), Required]
-        public string Memo1 { get; set; }
+        [Description("匯入批號"), Required, MaxLength(15)]
+        public string ImportBatchNo { get; set; }
         /// <summary>
-        /// 帳單備註2
+        /// 銀行條碼
         /// </summary>
-        [Description("帳單備註2"), Required]
-        public string Memo2 { get; set; }
+        [Description("銀行條碼"), Required, Index]
+        public string BankBarCode { get; set; }
+        /// <summary>
+        /// 超商條碼1-繳款截止日+代收項目
+        /// (民國年yymmdd)(6碼) + 代收項目 (3碼)
+        /// ex:105/11/22 --> 051122
+        /// </summary>
+        [Description("超商條碼1"), Required]
+        public string MarketBarCode1 { get; set; }
+        /// <summary>
+        /// 超商條碼2-銷帳編號
+        /// 銀行條碼(16碼，靠左補零)
+        /// </summary>
+        [Description("超商條碼2"), Required]
+        public string MarketBarCode2 { get; set; }
+        /// <summary>
+        /// 超商條碼3-繳款截止日 年月+檢碼+繳款金額
+        /// ex:105/11/22 --> 0511
+        /// </summary>
+        [Description("超商條碼3"), Required]
+        public string MarketBarCode3 { get; set; }
+        /// <summary>
+        /// 郵局條碼1-郵政劃撥帳號
+        /// 50084884
+        /// </summary>
+        [Description("郵局條碼1"), Required]
+        public string PostBarCode1 { get; set; }
+        /// <summary>
+        /// 郵局條碼2-銷帳編號
+        /// (繳款截止日(民國年月日(7)+銀行條碼(16碼，靠左補零))
+        /// </summary>
+        [Description("郵局條碼2"), Required]
+        public string PostBarCode2 { get; set; }
+        /// <summary>
+        /// 郵局條碼3-繳款金額
+        /// </summary>
+        [Description("郵局條碼3"), Required]
+        public string PostBarCode3 { get; set; }
     }
     /// <summary>
     /// 帳單明細
@@ -167,10 +153,10 @@ namespace SKGPortalCore.Model.BillData
         [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RowId { get; set; }
         /// <summary>
-        /// 期別行鍵
+        /// 費用
         /// </summary>
-        [Description("期別行鍵")]
-        public int BillTermRowId { get; set; }
+        [Description("費用")]
+        public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額
         /// </summary>
@@ -190,17 +176,12 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號"), Key]
         public string BillNo { get; set; }
-        /// <summary>
-        /// 序號
-        /// </summary>
-        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RowId { get; set; }
         [ForeignKey("ReceiptBillNo")]
         public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號"), Required]
+        [Description("收款單號"), Key]
         public string ReceiptBillNo { get; set; }
     }
 }

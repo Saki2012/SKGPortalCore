@@ -51,12 +51,11 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static string Merge(string mergeStr, bool hasEmpty, params object[] strs)
         {
-            int len = strs.Length;
-            if (null == strs || len == 0)
+            if (null == strs || strs.Length == 0)
             {
                 return string.Empty;
             }
-
+            int len = strs.Length;
             string result = strs[0].ToString(), s;
             for (int i = 1; i < len; i++)
             {

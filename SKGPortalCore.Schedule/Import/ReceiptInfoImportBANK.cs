@@ -150,7 +150,7 @@ namespace SKGPortalCore.Schedule.Import
             sw.Stop();
         }
         /// <summary>
-        /// 
+        /// 移動檔案至成功/失敗之資料夾
         /// </summary>
         /// <param name="isSuccess"></param>
         void IImportData.MoveToOverFolder(bool isSuccess)

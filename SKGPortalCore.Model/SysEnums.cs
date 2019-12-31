@@ -3,13 +3,6 @@
 namespace SKGPortalCore.Model
 {
     /// <summary>
-    /// 系統
-    /// </summary>
-    public enum SysEnums
-    {
-
-    }
-    /// <summary>
     /// 繳款狀態
     /// </summary>
     [Description("繳款狀態")]
@@ -435,7 +428,7 @@ namespace SKGPortalCore.Model
     /// 通路類別
     /// </summary>
     [Description("通路類別")]
-    public enum CanalisType : byte
+    public enum ChannelGroupType : byte
     {
         /// <summary>
         /// 銀行通路        
@@ -458,20 +451,10 @@ namespace SKGPortalCore.Model
         [Description("信用卡通路")]
         Credit = 3,
         /// <summary>
-        /// 農金通路
-        /// </summary>
-        [Description("農金通路")]
-        Farm = 4,
-        /// <summary>
-        /// HiTrust
-        /// </summary>
-        [Description("HiTrust")]
-        HiTrust = 5,
-        /// <summary>
         /// 自收款
         /// </summary>
         [Description("自收款")]
-        Self = 6,
+        Self = 255,
     }
     /// <summary>
     /// 商戶類型
@@ -492,9 +475,9 @@ namespace SKGPortalCore.Model
 
     }
     /// <summary>
-    /// 
+    /// 單據動作
     /// </summary>
-    [Description("")]
+    [Description("單據動作")]
     public enum SetOpportunity : int
     {
         [Description("新增")]
@@ -532,11 +515,6 @@ namespace SKGPortalCore.Model
         /// </summary>
         [Description("每筆總手續費")]
         TotalFee = 4,
-        /// <summary>
-        /// HiTrust
-        /// </summary>
-        [Description("HiTrust")]
-        HitrustFee = 5,
     }
     /// <summary>
     /// 資訊流資料異常狀態

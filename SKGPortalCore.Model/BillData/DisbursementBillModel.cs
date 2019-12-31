@@ -30,9 +30,4 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         public string ChannelWriteOfBillNo { get; set; }
     }
-
-    //public class DisbursementDetailModel : DetailRowState
-    //{
-
-    //}
 }
