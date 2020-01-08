@@ -76,9 +76,5 @@ namespace SKGPortalCore.Data
             builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
             return builder.Options;
         }
-        /// <summary>
-        /// 獲取主鍵流水碼
-        /// </summary>
-        //public static string GetFlowCode { get { lock (typeof(string)) { Thread.Sleep(100); return DateTime.Now.ToString("yyyyMMddHHmmss"); } } }
     }
 }

@@ -88,6 +88,11 @@ namespace SKGPortalCore.Model
         /// </summary>
         [Description("表單狀態")]
         public FormStatus FormStatus { get; set; }
+        /// <summary>
+        /// 內部唯一標識號
+        /// (主鍵可能變化，此欄位不允許被修改)
+        /// </summary>
+        public string InternalId { get; set; } = Guid.NewGuid().ToString();
     }
     /// <summary>
     /// 明細行狀態
