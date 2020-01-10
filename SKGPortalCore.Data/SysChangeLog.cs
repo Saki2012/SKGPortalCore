@@ -14,13 +14,13 @@ namespace SKGPortalCore.Data
     /// <summary>
     /// 變更日誌系統
     /// </summary>
-    public static class SysChangeLog<T> where T : class
+    public static class SysChangeLog<T>
     {
         #region Public
         /// <summary>
         /// 設置變更日誌
         /// </summary>
-        public static void SetDataChangeLog(DbSet<DataChangeLog> dataChangeLog, string progId, string internalId, string userId, T oldModel, T newModel)
+        public static void SetDataChangeLog(DbSet<DataChangeLog> dataChangeLog, string progId, string internalId, string userId, dynamic oldModel, dynamic newModel)
         {
             dataChangeLog.Add(new DataChangeLog() { ProgId = progId, InternalId = internalId, UserId = userId, ChangeData = GetChangeData(oldModel, newModel) });
         }
@@ -68,7 +68,7 @@ namespace SKGPortalCore.Data
         /// <param name="oldModel"></param>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        private static byte[] GetChangeData(T oldModel, T newModel)
+        private static byte[] GetChangeData(dynamic oldModel, dynamic newModel)
         {
             Dictionary<string, object[]> changeFieldsDic = GetChangeDataDic(oldModel, newModel);
             string json = JsonConvert.SerializeObject(changeFieldsDic);
@@ -80,9 +80,10 @@ namespace SKGPortalCore.Data
         /// <param name="oldModel"></param>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        private static Dictionary<string, object[]> GetChangeDataDic(T oldModel, T newModel)
+        private static Dictionary<string, object[]> GetChangeDataDic(dynamic oldModel, dynamic newModel)
         {
             Dictionary<string, object[]> result = new Dictionary<string, object[]>();
+            result.Add("testc", new object[] { DateTime.Now, Guid.NewGuid() });
             return result;
         }
         /// <summary>
