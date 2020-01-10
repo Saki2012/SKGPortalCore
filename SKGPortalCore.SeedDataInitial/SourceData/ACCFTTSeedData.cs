@@ -12,7 +12,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         /// <summary>
         /// 服務申請書
         /// </summary>
-        public static void ACCFTTData(MessageLog Message)
+        public static void ACCFTTData(SysMessageLog Message)
         {
             List<ACCFTT> accftts = new List<ACCFTT>() {
                 //每筆總手續費-有分潤

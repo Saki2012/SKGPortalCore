@@ -12,7 +12,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         /// <summary>
         /// 資訊流-農金
         /// </summary>
-        public static List<ReceiptInfoBillFarmModel> ReceiptInfoFarmData(MessageLog Message)
+        public static List<ReceiptInfoBillFarmModel> ReceiptInfoFarmData(SysMessageLog Message)
         {
             List<ReceiptInfoBillFarmModel> farms = new List<ReceiptInfoBillFarmModel>() {
                 new ReceiptInfoBillFarmModel() { Idx="2", CollectionType="6V1", Channel="05", Store="3", TransAccount="884212", TransType="1", PayStatus="1", AccountingDay="20190910", PayDate="20190910", Barcode1="85274", Barcode2="9639", Barcode3="789456",  Empty="" },

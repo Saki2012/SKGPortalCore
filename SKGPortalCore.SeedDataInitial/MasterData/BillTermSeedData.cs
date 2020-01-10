@@ -14,7 +14,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
         /// 新增「期別」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        public static void CreateBillTerm(MessageLog Message, ApplicationDbContext dataAccess)
+        public static void CreateBillTerm(SysMessageLog Message, ApplicationDbContext dataAccess)
         {
             try
             {

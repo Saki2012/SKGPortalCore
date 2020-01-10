@@ -14,7 +14,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
         /// 新增「角色權限」-初始資料
         /// </summary>
         /// <param name="dataAccess"></param>
-        public static void CreateRole(MessageLog Message, ApplicationDbContext DataAccess)
+        public static void CreateRole(SysMessageLog Message, ApplicationDbContext DataAccess)
         {
             try
             {

@@ -15,7 +15,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
         /// 新增「繳款人」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        public static void CreatePayer(MessageLog Message,ApplicationDbContext dataAccess)
+        public static void CreatePayer(SysMessageLog Message,ApplicationDbContext dataAccess)
         {
             try
             {

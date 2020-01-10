@@ -80,7 +80,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 全家
         /// </summary>
-        public const string MartFML = "02";
+        public const string MartFamily = "02";
         /// <summary>
         /// OK
         /// </summary>

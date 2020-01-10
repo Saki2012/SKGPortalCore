@@ -53,7 +53,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Query, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -66,7 +66,7 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Query, null)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
                     return repo.QueryList();
@@ -87,7 +87,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Create, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Create, keyVal)) return default;
                     TSet set = context.GetArgument<TSet>("set");
                     TSet result = repo.Create(set);
                     repo.CommitData(FuncAction.Create);
@@ -103,7 +103,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Update, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Update, keyVal)) return default;
                     TSet set = context.GetArgument<TSet>("set");
                     TSet result = repo.Update(set);
                     repo.CommitData(FuncAction.Update);
@@ -119,7 +119,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Delete, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Delete, keyVal)) return default;
                     repo.Delete(new[] { keyVal });
                     repo.CommitData(FuncAction.Delete);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -134,7 +134,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Approve, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Approve, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Approve(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Approve);
@@ -150,7 +150,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.Invalid, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Invalid, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Invalid(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Invalid);
@@ -166,7 +166,7 @@ namespace SKGPortalCore.Graph
               resolve: context =>
               {
                   object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                  if (!BaseOperateComm<TSet>.CheckUser(context, repo, FuncAction.EndCase, keyVal)) return default;
+                  if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.EndCase, keyVal)) return default;
                   bool status = context.GetArgument<bool>("status");
                   TSet result = repo.Invalid(new[] { keyVal }, status);
                   repo.CommitData(FuncAction.EndCase);
@@ -250,14 +250,14 @@ namespace SKGPortalCore.Graph
         /// <param name="repository"></param>
         /// <param name="action"></param>
         /// <param name="keyVal"></param>
-        internal static bool CheckUser(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
+        internal static bool CheckAuthority(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
         {
             ISessionWapper session = ((ISessionWapper)context.UserContext);
             repository.User = session?.User;
             repository.Message = null;
             string progId = repository.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
             SetDebugUser(repository, context, progId);
-            SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
+            SysOperateLog.SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
             if (repository.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, action))
             {
                 repository.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repository), ResxManage.GetDescription(action));
@@ -285,37 +285,7 @@ namespace SKGPortalCore.Graph
             //context.Arguments["jwt"] = permissions[progId];
 #endif
         }
-        /// <summary>
-        /// 紀錄操作日誌
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ip"></param>
-        /// <param name="browser"></param>
-        /// <param name="progId"></param>
-        /// <param name="pk"></param>
-        /// <param name="action"></param>
-        private static void SetOperateLog(string userId, string ip, string browser, string progId, string pk, string action)
-        {
-            try
-            {
-                using ApplicationDbContext dataAccess = LibDataAccess.CreateDataAccess();
-                dataAccess.OperateLog.Add(new OperateLog()
-                {
-                    UserId = userId,
-                    IP = ip,
-                    Browser = browser,
-                    ProgId = progId,
-                    PK = pk,
-                    OperateTime = DateTime.Now,
-                    Action = action,
-                });
-                dataAccess.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
+
         /// <summary>
         /// 獲取主鍵值
         /// </summary>

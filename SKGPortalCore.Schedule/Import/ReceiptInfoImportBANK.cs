@@ -31,7 +31,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        public MessageLog Message { get; }
+        public SysMessageLog Message { get; }
         /// <summary>
         /// 資訊流長度(byte)
         /// </summary>
@@ -67,10 +67,10 @@ namespace SKGPortalCore.Schedule.Import
 
         #endregion
         #region Construct
-        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess, MessageLog messageLog = null)
+        public ReceiptInfoImportBANK(ApplicationDbContext dataAccess, SysMessageLog messageLog = null)
         {
             DataAccess = dataAccess;
-            Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
+            Message = messageLog ?? new SysMessageLog(SystemOperator.SysOperator);
             Directory.CreateDirectory(SrcPath);
             Directory.CreateDirectory(SuccessPath);
             Directory.CreateDirectory(FailPath);

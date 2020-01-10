@@ -18,7 +18,7 @@ namespace SKGPortalCore.Schedule.Import
     {
         #region Property
         public ApplicationDbContext DataAccess { get; }
-        public MessageLog Message { get; }
+        public SysMessageLog Message { get; }
         /// <summary>
         /// 資訊流長度(byte)
         /// </summary>
@@ -53,10 +53,10 @@ namespace SKGPortalCore.Schedule.Import
         private string FailFile => $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         #endregion
         #region Construct
-        public RemitInfoImport(ApplicationDbContext dataAccess, MessageLog messageLog = null)
+        public RemitInfoImport(ApplicationDbContext dataAccess, SysMessageLog messageLog = null)
         {
             DataAccess = dataAccess;
-            Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
+            Message = messageLog ?? new SysMessageLog(SystemOperator.SysOperator);
             Directory.CreateDirectory(SrcPath);
             Directory.CreateDirectory(SuccessPath);
             Directory.CreateDirectory(FailPath);

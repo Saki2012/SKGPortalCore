@@ -15,7 +15,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        public MessageLog Message { get; }
+        public SysMessageLog Message { get; }
         /// <summary>
         /// 
         /// </summary>

@@ -14,7 +14,7 @@ namespace SKGPortalCore.SeedDataInitial.BillData
         /// 新增「帳單」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        public static void CreateBill(MessageLog Message, ApplicationDbContext DataAccess)
+        public static void CreateBill(SysMessageLog Message, ApplicationDbContext DataAccess)
         {
             try
             {

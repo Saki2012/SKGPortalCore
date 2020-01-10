@@ -92,7 +92,7 @@ namespace SKGPortalCore.Model
         /// 內部唯一標識號
         /// (主鍵可能變化，此欄位不允許被修改)
         /// </summary>
-        public string InternalId { get; set; } = Guid.NewGuid().ToString();
+        public string InternalId { get; private set; } = Guid.NewGuid().ToString();
     }
     /// <summary>
     /// 明細行狀態

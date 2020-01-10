@@ -33,7 +33,7 @@ namespace SKGPortalCore.Schedule.Import
         /// <summary>
         /// 
         /// </summary>
-        public MessageLog Message { get; }
+        public SysMessageLog Message { get; }
         /// <summary>
         /// 檔案名稱
         /// </summary>
@@ -64,10 +64,10 @@ namespace SKGPortalCore.Schedule.Import
         private string FailFile => $"{FailPath}{FileName}.{DateTime.Now.ToString("yyyyMMdd")}{LibData.GenRandomString(3)}";
         #endregion
         #region Construct
-        public ReceiptInfoImportFARM(ApplicationDbContext dataAccess,MessageLog messageLog=null)
+        public ReceiptInfoImportFARM(ApplicationDbContext dataAccess,SysMessageLog messageLog=null)
         {
             DataAccess = dataAccess;
-            Message = messageLog ?? new MessageLog(SystemOperator.SysOperator);
+            Message = messageLog ?? new SysMessageLog(SystemOperator.SysOperator);
             Directory.CreateDirectory(SrcPath);
             Directory.CreateDirectory(SuccessPath);
             Directory.CreateDirectory(FailPath);

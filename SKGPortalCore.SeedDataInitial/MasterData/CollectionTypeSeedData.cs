@@ -15,7 +15,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
         /// 新增「代收類別」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        public static void CreateCollectionType(MessageLog Message, ApplicationDbContext dataAccess)
+        public static void CreateCollectionType(SysMessageLog Message, ApplicationDbContext dataAccess)
         {
             try
             {

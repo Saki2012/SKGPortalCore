@@ -94,7 +94,6 @@ namespace SKGPortalCore.Business.Func
             {
                 return false;
             }
-
             return true;
         }
         #endregion

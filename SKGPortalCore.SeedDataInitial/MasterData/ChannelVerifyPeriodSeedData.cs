@@ -10,7 +10,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
 {
     public class ChannelVerifyPeriodSeedData
     {
-        public static void CreateChannelVerifyPeriod(MessageLog Message, ApplicationDbContext dataAccess)
+        public static void CreateChannelVerifyPeriod(SysMessageLog Message, ApplicationDbContext dataAccess)
         {
             try
             {

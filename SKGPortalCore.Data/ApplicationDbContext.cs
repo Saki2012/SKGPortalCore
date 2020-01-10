@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using Toolbelt.ComponentModel.DataAnnotations;
@@ -12,8 +13,18 @@ namespace SKGPortalCore.Data
     public class ApplicationDbContext : DbContext// IdentityDbContext
     {
         #region Property
+        /// <summary>
+        /// 操作日誌
+        /// </summary>
         public DbSet<OperateLog> OperateLog { get; set; }
+        /// <summary>
+        /// 流水號
+        /// </summary>
         public DbSet<DataFlowNo> DataFlowNo { get; set; }
+        /// <summary>
+        /// 變更日誌
+        /// </summary>
+        public DbSet<DataChangeLog> DataChangeLog { get; set; }
         #endregion
         #region Construct
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -58,23 +69,34 @@ namespace SKGPortalCore.Data
 
     public class LibDataAccess
     {
+        #region Property
+        /// <summary>
+        /// 
+        /// </summary>
+        private static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(ConstParameter.AppSettingsJsonPath).AddJsonFile(ConstParameter.AppSettingsJson).Build();
+        #endregion
+        #region Public
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public static ApplicationDbContext CreateDataAccess()
+        public static ApplicationDbContext CreateDataAccess(IConfiguration config = null)
         {
-            return new ApplicationDbContext(GetConnectionOption());
+            return new ApplicationDbContext(GetConnectionOption(config));
         }
+        #endregion
+        #region Private
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public static DbContextOptions<ApplicationDbContext> GetConnectionOption()
+        private static DbContextOptions<ApplicationDbContext> GetConnectionOption(IConfiguration config)
         {
+            if (null == config) config = Configuration;
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer("Server=.;Database=SKGPortalCore;Trusted_Connection=True;MultipleActiveResultSets=true");
+            builder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             return builder.Options;
         }
+        #endregion
     }
 }

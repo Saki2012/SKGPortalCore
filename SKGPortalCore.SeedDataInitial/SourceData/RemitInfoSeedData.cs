@@ -12,7 +12,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         /// <summary>
         /// 匯款檔
         /// </summary>
-        public static List<RemitInfoModel> RemitInfoData(MessageLog Message)
+        public static List<RemitInfoModel> RemitInfoData(SysMessageLog Message)
         {
             List<RemitInfoModel> rts = new List<RemitInfoModel>() {
                 new RemitInfoModel() { RemitDate="20190910", RemitTime="145833", Channel="03", CollectionType="6V1", Amount="90000", BatchNo="03030",  Empty=""  },

@@ -15,7 +15,7 @@ namespace SKGPortalCore.SeedDataInitial
     internal class Program
     {
         private static readonly ApplicationDbContext DataAccess = LibDataAccess.CreateDataAccess();
-        private static readonly MessageLog Message = new MessageLog(SystemOperator.SysOperator, logFileName: "SKGPortalCore.SeedDataInitial");
+        private static readonly SysMessageLog Message = new SysMessageLog(SystemOperator.SysOperator, logFileName: "SKGPortalCore.SeedDataInitial");
         private static IImportData ImportData { get; set; }
 
         public static void Main()

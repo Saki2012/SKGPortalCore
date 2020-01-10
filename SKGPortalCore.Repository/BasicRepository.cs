@@ -19,14 +19,14 @@ namespace SKGPortalCore.Repository
         protected readonly ApplicationDbContext DataAccess;
         public IUserModel User { get; set; }
         private readonly DynamicReflection<TSet> Reflect = new DynamicReflection<TSet>();
-        private MessageLog _message;
-        public MessageLog Message
+        private SysMessageLog _message;
+        public SysMessageLog Message
         {
             get
             {
                 if (null == _message)
                 {
-                    _message = new MessageLog(User);
+                    _message = new SysMessageLog(User);
                 }
 
                 return _message;
@@ -65,7 +65,6 @@ namespace SKGPortalCore.Repository
         /// 設置編碼規則
         /// </summary>
         protected Action<TSet> SetFlowNo { get; set; }
-        protected bool IsSetRefModel { get; set; } = true;
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -249,9 +248,9 @@ namespace SKGPortalCore.Repository
         /// <param name="action"></param>
         public virtual void CommitData(FuncAction action)
         {
-            if (Message.Errors.Count > 0) { ErrorRollbackEntities(); return; }
             try
             {
+                if (Message.Errors.Count > 0) { return; }
                 DataAccess.BulkSaveChanges();
                 AfterSaveChanges(action);
             }
@@ -259,7 +258,10 @@ namespace SKGPortalCore.Repository
             {
                 Message.AddExceptionError(ex);
             }
-            ErrorRollbackEntities();
+            finally
+            {
+                ErrorRollbackEntities();
+            }
         }
         /// <summary>
         /// 獲取表頭主鍵
@@ -366,7 +368,6 @@ namespace SKGPortalCore.Repository
             {
                 dynamic val = Reflect.GetValue(set, s.Name);
                 if (null == val) continue;
-
                 if (val is IEnumerable<DetailRowState>)
                 {
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
@@ -495,7 +496,7 @@ namespace SKGPortalCore.Repository
         private void SetRefModel(object model)
         {
             //return;//todo:設置關聯欄位讀取
-            if (!IsSetRefModel) return;
+            return;
             if (null == model) return;
             IEnumerable<ReferenceEntry> refs = DataAccess.Entry(model).References;
             foreach (ReferenceEntry refE in refs)
@@ -552,15 +553,10 @@ namespace SKGPortalCore.Repository
             {
                 EntityEntry[] entitys = DataAccess.ChangeTracker.Entries().ToArray();
                 foreach (EntityEntry entity in entitys)
-                {
                     entity.State = EntityState.Detached;
-                }
-
                 entitys = DataAccess.ChangeTracker.Entries().ToArray();
                 foreach (EntityEntry entity in entitys)
-                {
                     entity.State = EntityState.Unchanged;
-                }
             }
         }
         #endregion

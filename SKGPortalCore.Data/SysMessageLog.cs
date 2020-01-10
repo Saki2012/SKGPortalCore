@@ -11,9 +11,9 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 namespace SKGPortalCore.Data
 {
     /// <summary>
-    /// 訊息紀錄
+    /// 訊息紀錄系統
     /// </summary>
-    public class MessageLog
+    public class SysMessageLog
     {
         #region Property
         private static readonly Mutex mut = new Mutex();
@@ -44,7 +44,7 @@ namespace SKGPortalCore.Data
         public string Prefix { get; set; }
         #endregion
         #region Construct
-        public MessageLog(IUserModel user, string logPath = @"./Log/", string logFileName = "SKGPortalCore")
+        public SysMessageLog(IUserModel user, string logPath = @"./Log/", string logFileName = "SKGPortalCore")
         {
             Errors = new ExecutionErrors();
             LogPath = logPath;

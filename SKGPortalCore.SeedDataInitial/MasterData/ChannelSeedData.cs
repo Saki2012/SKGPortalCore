@@ -15,7 +15,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
         /// 新增「代收通路」-初始資料
         /// </summary>
         /// <param name="db"></param>
-        public static void CreateChannel(MessageLog Message, ApplicationDbContext dataAccess)
+        public static void CreateChannel(SysMessageLog Message, ApplicationDbContext dataAccess)
         {
             try
             {

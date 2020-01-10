@@ -12,7 +12,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         /// <summary>
         /// 資訊流-郵局
         /// </summary>
-        public static List<ReceiptInfoBillPostModel> ReceiptInfoPostData(MessageLog Message)
+        public static List<ReceiptInfoBillPostModel> ReceiptInfoPostData(SysMessageLog Message)
         {
             List<ReceiptInfoBillPostModel> posts = new List<ReceiptInfoBillPostModel>() {
                 new ReceiptInfoBillPostModel() { CollectionType="50084884", TradeDate="1080910", Branch="004596", Channel="050A", TradeSer="0000001", PN="+", Amount="6000", CompareCode="500848848879",  Empty="" },
