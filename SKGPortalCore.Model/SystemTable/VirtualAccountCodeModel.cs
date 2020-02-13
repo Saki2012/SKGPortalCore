@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace SKGPortalCore.Model.Table
+namespace SKGPortalCore.Model.SystemTable
 {
     /// <summary>
     /// 有效虛擬帳號表
