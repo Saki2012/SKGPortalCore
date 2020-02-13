@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.BillData;
 
@@ -43,16 +44,20 @@ namespace SKGPortalCore.Graph.BillData
     {
         public BillSetType()
         {
-            Field<BillType>("Bill");
-            Field<ListGraphType<BillDetailType>>("BillDetail");
-            Field<ListGraphType<BillReceiptDetailType>>("BillReceiptDetail");
+            Field<BillType>("Bill", ResxManage.GetDescription<BillModel>());
+            Field<ListGraphType<BillDetailType>>("BillDetail", ResxManage.GetDescription<BillDetailModel>());
+            Field<ListGraphType<BillReceiptDetailType>>("BillReceiptDetail", ResxManage.GetDescription<BillReceiptDetailModel>());
         }
     }
     public class BillType : BaseQueryFieldGraphType<BillModel>
     {
-        protected override bool SetType(string propertyName, string descript)
+        protected override bool SetType(string propertyName, ref string descript)
         {
-            return base.SetType(propertyName, descript);
+            return propertyName switch
+            {
+                "c" => true,
+                _ => base.SetType(propertyName, ref descript),
+            };
         }
     }
     public class BillDetailType : BaseQueryFieldGraphType<BillDetailModel> { }

@@ -28,6 +28,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 通路帳款核銷單號
         /// </summary>
+        [Description("通路帳款核銷單號")]
         public string ChannelWriteOfBillNo { get; set; }
     }
 }

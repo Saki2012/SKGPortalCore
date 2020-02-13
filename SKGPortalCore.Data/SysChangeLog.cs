@@ -9,45 +9,79 @@ using Newtonsoft.Json;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using System.Linq;
+using SKGPortalCore.Model;
+using System.Reflection;
+
 namespace SKGPortalCore.Data
 {
     /// <summary>
     /// 變更日誌系統
     /// </summary>
-    public static class SysChangeLog<T>
+    public class SysChangeLog
     {
+
+        #region Property
+        private readonly List<DynamicReflection> ModelReflects;
+        private readonly DataChangeLogSet ChangeLogSet = new DataChangeLogSet() { DataChangeLog = new DataChangeLog(), DataChangeLogDetail = new List<DataChangeLogDetail>() };
+        private readonly DbSet<DataChangeLog> DataChangeLog;
+        private readonly DbSet<DataChangeLogDetail> DataChangeLogDetail;
+        #endregion
+
+        #region Construct
+        public SysChangeLog(ApplicationDbContext dataAccess, List<DynamicReflection> modelReflects)
+        {
+            DataChangeLog = dataAccess.DataChangeLog;
+            DataChangeLogDetail = dataAccess.DataChangeLogDetail;
+            ModelReflects = modelReflects;
+        }
+        #endregion
+
         #region Public
         /// <summary>
-        /// 設置變更日誌
+        /// 設置變更日誌內容
         /// </summary>
-        public static void SetDataChangeLog(DbSet<DataChangeLog> dataChangeLog, string progId, string internalId, string userId, dynamic oldModel, dynamic newModel)
+        /// <param name="progId"></param>
+        /// <param name="internalId"></param>
+        /// <param name="userId"></param>
+        public void SetChangeLog(string progId, string internalId, string userId)
         {
-            dataChangeLog.Add(new DataChangeLog() { ProgId = progId, InternalId = internalId, UserId = userId, ChangeData = GetChangeData(oldModel, newModel) });
+            var datachangeLog = DataChangeLog.OrderByDescending(p => p.DataChangeId).FirstOrDefault();
+            long id = null == datachangeLog ? 0 : datachangeLog.DataChangeId;
+            ChangeLogSet.DataChangeLog.DataChangeId = ++id;
+            ChangeLogSet.DataChangeLog.InternalId = internalId;
+            ChangeLogSet.DataChangeLog.ProgId = progId;
+            ChangeLogSet.DataChangeLog.UserId = userId;
+            ChangeLogSet.DataChangeLog.DataChangeTime = DateTime.Now;
         }
         /// <summary>
-        /// 獲取變更日誌
+        /// 設置變更日誌內容
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static DataChangeLog GetChangeLog(DbSet<DataChangeLog> dataChangeLog, long id)
+        /// <param name="tbIdx"></param>
+        /// <param name="oldModel"></param>
+        /// <param name="newModel"></param>
+        public void SetChangeLogDetail(int tbIdx, dynamic oldModel, dynamic newModel, RowState rowState)
         {
-            return dataChangeLog.FirstOrDefault(p => p.Id == id);
+            DataChangeLogDetail.Add(new DataChangeLogDetail() { DataChangeId = ChangeLogSet.DataChangeLog.DataChangeId, TableIndex = tbIdx, RowStatus = rowState, ChangeData = GetChangeData(tbIdx, oldModel, newModel, rowState) });
         }
         /// <summary>
-        /// 獲取變更內容
+        /// 
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static string GetChangeLogData(DbSet<DataChangeLog> dataChangeLog, long id)
+        public Dictionary<int, string> GetGetChangeLogDetail(long Id)
         {
-            return DecompressJsonVal(dataChangeLog.FirstOrDefault(p => p.Id == id).ChangeData);
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            List<DataChangeLogDetail> lst = DataChangeLogDetail.Where(p => p.DataChangeId == Id) as List<DataChangeLogDetail>;
+            foreach (var data in lst)
+            {
+                result.Add(data.TableIndex, DecompressJsonVal(data.ChangeData));
+            }
+            return result;
         }
         /// <summary>
         /// 獲取變更日誌列表
         /// </summary>
         /// <param name="internalId"></param>
         /// <returns></returns>
-        public static List<DataChangeLog> GetChangeLogList(DbSet<DataChangeLog> dataChangeLog, string internalId)
+        public List<DataChangeLog> GetChangeLogList(DbSet<DataChangeLog> dataChangeLog, string internalId)
         {
             return dataChangeLog.Where(p => p.InternalId == internalId) as List<DataChangeLog>;
         }
@@ -55,9 +89,17 @@ namespace SKGPortalCore.Data
         /// 當表單刪除時，移除該表單變更日誌
         /// </summary>
         /// <param name="internalId"></param>
-        public static void RemoveChangeLog(DbSet<DataChangeLog> dataChangeLog, string internalId)
+        public void RemoveChangeLog(string internalId)
         {
-            dataChangeLog.RemoveRange(dataChangeLog.Where(p => p.InternalId == internalId));
+            DataChangeLog.RemoveRange(DataChangeLog.Where(p => p.InternalId == internalId));
+        }
+        /// <summary>
+        /// 新增變更日誌
+        /// </summary>
+        public void SaveChangeLog()
+        {
+            DataChangeLog.Add(ChangeLogSet.DataChangeLog);
+            DataChangeLogDetail.AddRange(ChangeLogSet.DataChangeLogDetail);
         }
         #endregion
 
@@ -68,9 +110,9 @@ namespace SKGPortalCore.Data
         /// <param name="oldModel"></param>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        private static byte[] GetChangeData(dynamic oldModel, dynamic newModel)
+        private byte[] GetChangeData(int tbIdx, dynamic oldModel, dynamic newModel, RowState rowState)
         {
-            Dictionary<string, object[]> changeFieldsDic = GetChangeDataDic(oldModel, newModel);
+            Dictionary<string, object[]> changeFieldsDic = GetChangeDataDic(tbIdx, oldModel, newModel, rowState);
             string json = JsonConvert.SerializeObject(changeFieldsDic);
             return CompressJsonVal(json);
         }
@@ -80,10 +122,26 @@ namespace SKGPortalCore.Data
         /// <param name="oldModel"></param>
         /// <param name="newModel"></param>
         /// <returns></returns>
-        private static Dictionary<string, object[]> GetChangeDataDic(dynamic oldModel, dynamic newModel)
+        private Dictionary<string, object[]> GetChangeDataDic(int tbIdx, dynamic oldModel, dynamic newModel, RowState rowState)
         {
             Dictionary<string, object[]> result = new Dictionary<string, object[]>();
-            result.Add("testc", new object[] { DateTime.Now, Guid.NewGuid() });
+            PropertyInfo[] infos = oldModel is null ? newModel.GetType().GetProperties() : oldModel.GetType().GetProperties();
+            foreach (PropertyInfo info in infos)
+            {
+                if (!info.PropertyType.IsSealed) continue;
+                switch (rowState)
+                {
+                    case RowState.Insert:
+                        result.Add(info.Name, new object[] { null, ModelReflects[tbIdx].GetValue(newModel, info.Name) });
+                        break;
+                    case RowState.Update:
+                        result.Add(info.Name, new object[] { ModelReflects[tbIdx].GetValue(oldModel, info.Name), ModelReflects[tbIdx].GetValue(newModel, info.Name) });
+                        break;
+                    case RowState.Delete:
+                        result.Add(info.Name, new object[] { ModelReflects[tbIdx].GetValue(oldModel, info.Name), null });
+                        break;
+                }
+            }
             return result;
         }
         /// <summary>
@@ -91,7 +149,7 @@ namespace SKGPortalCore.Data
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        private static byte[] CompressJsonVal(string json)
+        private byte[] CompressJsonVal(string json)
         {
             string compressString = LibCompress.GZipCompressString(json);
             byte[] bytes = LibCompress.ConvertStringToBytes(compressString);
@@ -102,7 +160,7 @@ namespace SKGPortalCore.Data
         /// </summary>
         /// <param name="compressJson"></param>
         /// <returns></returns>
-        private static string DecompressJsonVal(byte[] compressJson)
+        private string DecompressJsonVal(byte[] compressJson)
         {
             byte[] decompress = LibCompress.Decompress(compressJson);
             string str = LibCompress.ConvertBytesToString(decompress);

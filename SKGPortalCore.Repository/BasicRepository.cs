@@ -20,10 +20,6 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 
         /// </summary>
-        protected readonly ApplicationDbContext DataAccess;
-        /// <summary>
-        /// 
-        /// </summary>
         public IUserModel User { get; set; }
         /// <summary>
         /// 
@@ -33,6 +29,26 @@ namespace SKGPortalCore.Repository
         /// 
         /// </summary>
         private readonly List<DynamicReflection> ModelReflects = new List<DynamicReflection>();
+        /// <summary>
+        /// 
+        /// </summary>
+        protected bool IsSetRefModel { get; set; } = false;//true?
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ProgId
+        {
+            get
+            {
+                return ResxManage.GetProgId(this);
+            }
+        }
+        #endregion
+        #region SystemProperty
+        /// <summary>
+        /// 
+        /// </summary>
+        protected readonly ApplicationDbContext DataAccess;
         /// <summary>
         /// 
         /// </summary>
@@ -66,11 +82,10 @@ namespace SKGPortalCore.Repository
             {
                 if (null == dataFlowNo)
                 {
-                    string progId = ResxManage.GetProgId(this);
-                    dataFlowNo = DataAccess.Find<DataFlowNo>(progId);
+                    dataFlowNo = DataAccess.Find<DataFlowNo>(ProgId);
                     if (null == dataFlowNo)
                     {
-                        dataFlowNo = new DataFlowNo() { ProgId = progId, FlowDate = DateTime.Today, FlowNo = 0 };
+                        dataFlowNo = new DataFlowNo() { ProgId = ProgId, FlowDate = DateTime.Today, FlowNo = 0 };
                         DataAccess.Add(dataFlowNo);
                     }
                 }
@@ -92,9 +107,9 @@ namespace SKGPortalCore.Repository
         /// </summary>
         protected Action<TSet> SetFlowNo { get; set; }
         /// <summary>
-        /// 
+        /// 變更日誌系統
         /// </summary>
-        protected bool IsSetRefModel { get; set; } = false;//true?
+        private SysChangeLog SysChangeLog { get; }
         #endregion
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
@@ -108,6 +123,7 @@ namespace SKGPortalCore.Repository
                 else
                     ModelReflects.Add(new DynamicReflection(args[0]));
             }
+            SysChangeLog = new SysChangeLog(dataAccess, ModelReflects);
         }
         #endregion
         #region Public
@@ -123,6 +139,7 @@ namespace SKGPortalCore.Repository
                 SetFlowNo?.Invoke(set);
                 DoCreate(set);
                 AfterSetEntity(set, FuncAction.Create);
+                SysChangeLog.SaveChangeLog();
             }
             catch (Exception ex)
             {
@@ -143,6 +160,7 @@ namespace SKGPortalCore.Repository
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
                 DoUpdate(set);
                 AfterSetEntity(set, FuncAction.Update);
+                SysChangeLog.SaveChangeLog();
             }
             catch (Exception ex)
             {
@@ -160,7 +178,9 @@ namespace SKGPortalCore.Repository
             {
                 TSet set = QueryData(key);
                 BeforeRemoveEntity(set);
-                DataAccess.Remove(SetReflect.GetValue(set, typeof(TSet).GetProperties()[0].Name));
+                dynamic master = SetReflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
+                DataAccess.Remove(master);
+                SysChangeLog.RemoveChangeLog(master.InternalId);
                 AfterRemoveEntity(set);
             }
             catch (Exception ex)
@@ -364,17 +384,18 @@ namespace SKGPortalCore.Repository
         /// <param name="set"></param>
         private void DoCreate(TSet set)
         {
+            int tbIdx = 0;
             foreach (PropertyInfo props in set.GetType().GetProperties())
             {
                 dynamic entity = SetReflect.GetValue(set, props.Name);
-                if (null == entity) continue;
-
+                if (null == entity) { tbIdx++; continue; }
                 if (entity is IEnumerable)
                 {
                     foreach (dynamic ety in entity)
                     {
                         DataAccess.Add(ety);
                         SetRefModel(ety);
+                        SysChangeLog.SetChangeLogDetail(tbIdx, null, ety, RowState.Insert);
                     }
                 }
                 else
@@ -382,7 +403,10 @@ namespace SKGPortalCore.Repository
                     if (entity is BasicDataModel) SetCreateInfo(entity);
                     DataAccess.Add(entity);
                     SetRefModel(entity);
+                    SysChangeLog.SetChangeLog(ProgId, entity.InternalId, User.KeyId);
+                    SysChangeLog.SetChangeLogDetail(tbIdx, null, entity, RowState.Insert);
                 }
+                tbIdx++;
             }
         }
         /// <summary>
@@ -391,11 +415,12 @@ namespace SKGPortalCore.Repository
         /// <param name="set"></param>
         private void DoUpdate(TSet set)
         {
+            int tbIdx = 0;
             object[] keys = null;
-            foreach (dynamic s in set.GetType().GetProperties())
+            foreach (PropertyInfo props in set.GetType().GetProperties())
             {
-                dynamic val = SetReflect.GetValue(set, s.Name);
-                if (null == val) continue;
+                dynamic val = SetReflect.GetValue(set, props.Name);
+                if (null == val) { tbIdx++; continue; }
                 if (val is IEnumerable<DetailRowState>)
                 {
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
@@ -404,6 +429,7 @@ namespace SKGPortalCore.Repository
                     {
                         DataAccess.Add(entity);
                         SetRefModel(entity);
+                        SysChangeLog.SetChangeLogDetail(tbIdx, null, entity, RowState.Insert);
                     }
                     List<DetailRowState> updateList = detail.Where(p => p.RowState == RowState.Update).ToList();
                     foreach (dynamic entity in updateList)
@@ -413,12 +439,14 @@ namespace SKGPortalCore.Repository
                         if (DataAccess.Entry(entity).State != EntityState.Detached) DataAccess.Remove(entity);
                         DataAccess.Update(entity);
                         SetRefModel(entity);
+                        SysChangeLog.SetChangeLogDetail(tbIdx, oldEntity, entity, RowState.Update);
                     }
                     List<DetailRowState> deleteList = detail.Where(p => p.RowState == RowState.Delete).ToList();
                     foreach (dynamic entity in deleteList)
                     {
                         dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
                         if (null != oldEntity) DataAccess.Remove(oldEntity);
+                        SysChangeLog.SetChangeLogDetail(tbIdx, oldEntity, null, RowState.Delete);
                     }
                 }
                 else
@@ -427,11 +455,13 @@ namespace SKGPortalCore.Repository
                     dynamic oldEntity = DataAccess.Find(val.GetType(), keys);
                     if (null != oldEntity) DataAccess.Remove(oldEntity);
                     DataAccess.Update(val);
+                    SysChangeLog.SetChangeLog(ProgId, val.InternalId, User.KeyId);
+                    SysChangeLog.SetChangeLogDetail(tbIdx, null, val, RowState.Insert);
                     SetRefModel(val);
-                    SysChangeLog<TSet>.SetDataChangeLog(DataAccess.DataChangeLog, GetType().GetCustomAttribute<ProgIdAttribute>().Value,
-                        ModelReflects[0].GetValue(val, "InternalId").ToString(), User.KeyId, oldEntity, val);
                 }
+                tbIdx++;
             }
+
         }
         /// <summary>
         /// 設置新增時資料

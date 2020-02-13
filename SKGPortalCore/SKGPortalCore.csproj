@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 	<LangVersion>preview</LangVersion>
+	<UserSecretsId>a83c623b-02fb-4dc3-876a-965f47ede6f0</UserSecretsId>
+	<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+	<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,6 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis.Core" Version="1.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.6.0" />
   </ItemGroup>
@@ -29,14 +33,18 @@
     <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj">
       <Private>true</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SKGPortalCore.Graph\SKGPortalCore.Graph.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Graph\SKGPortalCore.Graph.csproj">
+      <Private>true</Private>
+    </ProjectReference>
     <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj">
       <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj">
       <Private>true</Private>
     </ProjectReference>
-    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj">
+      <Private>true</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

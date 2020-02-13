@@ -74,6 +74,11 @@ namespace SKGPortalCore.Model.MasterData
         /// 通路手續費
         /// </summary>
         [Description("通路手續費")]
-        public decimal Fee { get; set; }
+        public decimal ChannelFee { get; set; }
+        /// <summary>
+        /// 銀行手續費
+        /// </summary>
+        [Description("銀行手續費")]
+        public decimal BankFee { get; set; }
     }
 }

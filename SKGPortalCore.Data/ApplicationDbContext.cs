@@ -25,6 +25,10 @@ namespace SKGPortalCore.Data
         /// 變更日誌
         /// </summary>
         public DbSet<DataChangeLog> DataChangeLog { get; set; }
+        /// <summary>
+        /// 變更日誌明細
+        /// </summary>
+        public DbSet<DataChangeLogDetail> DataChangeLogDetail { get; set; }
         #endregion
         #region Construct
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -34,6 +38,7 @@ namespace SKGPortalCore.Data
         {
             base.OnModelCreating(builder);
             ModelDbSetting(builder);
+            builder.Entity<DataChangeLogDetail>().HasKey(p => new { p.DataChangeId, p.RowId });
             builder.BuildIndexesFromAnnotations();//設置Index套件
         }
         #endregion

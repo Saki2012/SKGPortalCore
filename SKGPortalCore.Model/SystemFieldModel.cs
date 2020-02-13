@@ -41,7 +41,7 @@ namespace SKGPortalCore.Model
         /// <summary>
         /// 創建時間
         /// </summary>
-        [Description("創建時間")/*, Column(TypeName = "datetime")*/]
+        [Description("創建時間")]
         public DateTime CreateTime { get; set; }
         /// <summary>
         /// 修改人員
@@ -92,6 +92,7 @@ namespace SKGPortalCore.Model
         /// 內部唯一標識號
         /// (主鍵可能變化，此欄位不允許被修改)
         /// </summary>
+        [Description("內部唯一標識號")]
         public string InternalId { get; set; }
     }
     /// <summary>

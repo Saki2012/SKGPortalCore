@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using GraphQL;
@@ -188,7 +190,9 @@ namespace SKGPortalCore.Graph
     {
         public BaseInputFieldGraphType()
         {
-            PropertyInfo[] properties = typeof(TModelType).GetProperties();
+            Type t = typeof(TModelType);
+            string[] baseProperty = t.BaseType.GetProperties().Select(p => p.Name).Where(p => p.CompareTo("RowState")!=0).ToArray();
+            PropertyInfo[] properties = t.GetProperties().Where(p => !baseProperty.Contains(p.Name)).ToArray();
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name, descript = ResxManage.GetDescription(property);
@@ -199,7 +203,6 @@ namespace SKGPortalCore.Graph
                     {
                         continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
                     }
-
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -223,7 +226,7 @@ namespace SKGPortalCore.Graph
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name, descript = ResxManage.GetDescription(property);
-                if (!SetType(propertyName, descript))
+                if (!SetType(propertyName,ref descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
                     if (property.PropertyType == changeType)
@@ -234,7 +237,13 @@ namespace SKGPortalCore.Graph
                 }
             }
         }
-        protected virtual bool SetType(string propertyName, string descript)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="descript"></param>
+        /// <returns>回傳True時，將不繼續往下添加欄位</returns>
+        protected virtual bool SetType(string propertyName,ref string descript)
         {
             return false;
         }
@@ -285,7 +294,6 @@ namespace SKGPortalCore.Graph
             //context.Arguments["jwt"] = permissions[progId];
 #endif
         }
-
         /// <summary>
         /// 獲取主鍵值
         /// </summary>

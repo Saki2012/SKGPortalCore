@@ -23,5 +23,6 @@ SKGPortalCore.CheckLog/bin
 SKGPortalCore.Repository/SKGPortalCore.Business
 TestSln/bin
 TestSln/obj
+obj
 .vs
 *.log
