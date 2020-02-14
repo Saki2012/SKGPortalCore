@@ -21,7 +21,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             };
             bool err = false;
             farms.ForEach(p => { if (p.Source != new ReceiptInfoBillFarmModel() { Source = p.Source }.Source) { err = true; return; } });
-            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "資訊流-農金Source拆分組合異常"); return null; }
+            if (err) { Message.AddCustErrorMessage(MessageCode.Code0000, "資訊流-農金Source拆分組合異常"); return null; }
             string path = $@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\"; Directory.CreateDirectory(path);
             using StreamWriter sw = new StreamWriter($@"{path}SKG_FARM.{DateTime.Now.ToString("yyyyMMdd")}", false, Encoding.GetEncoding(950));
             farms.ForEach(p => sw.WriteLine(p.Source));

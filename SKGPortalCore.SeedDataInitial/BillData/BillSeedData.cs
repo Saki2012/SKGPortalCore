@@ -22,9 +22,12 @@ namespace SKGPortalCore.SeedDataInitial.BillData
                 using BillRepository repo = new BillRepository(DataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<BillSet> bills = new List<BillSet>()
                 {
-                    new BillSet() { Bill = new BillModel() { BillTermId = "001", CustomerId = "33458902", CustomerCode = "912", PayerId = "000001", ImportBatchNo = string.Empty, PayEndDate = DateTime.Parse("2021-09-01"), PayStatus = PayStatus.Unpaid }, BillDetail = new List<BillDetailModel>() { new BillDetailModel() { PayAmount = 20 }, new BillDetailModel() {  PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
-                    new BillSet() { Bill = new BillModel() { BillTermId = "010", CustomerId = "80425514", CustomerCode = "1024", PayerId = "000010",  ImportBatchNo = string.Empty, PayEndDate = DateTime.Parse("2021-09-01"), PayStatus = PayStatus.Unpaid }, BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20 }, new BillDetailModel() { PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
-                    new BillSet() { Bill = new BillModel() { BillTermId = "100", CustomerId = "91009206", CustomerCode = "990128", PayerId = "000100",  ImportBatchNo = string.Empty, PayEndDate = DateTime.Parse("2021-09-01"), PayStatus = PayStatus.Unpaid }, BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20 }, new BillDetailModel() {PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() }
+                    new BillSet() { Bill = new BillModel() { BillTermId = "001",  CustomerCode = "912", PayerId = "000001", ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") }, 
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() { PayAmount = 20 }, new BillDetailModel() {  PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
+                    new BillSet() { Bill = new BillModel() { BillTermId = "010",  CustomerCode = "1024", PayerId = "000010",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") }, 
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 10000 }, new BillDetailModel() { PayAmount = 53 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
+                    new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "990128", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") }, 
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20000 }, new BillDetailModel() {PayAmount = 75 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() }
                 };
                 foreach (BillSet bill in bills)
                 {

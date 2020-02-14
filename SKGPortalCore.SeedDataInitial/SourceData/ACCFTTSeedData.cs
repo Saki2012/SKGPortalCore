@@ -28,7 +28,7 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             };
             bool err = false;
             accftts.ForEach(p => { if (p.Source != new ACCFTT() { Source = p.Source }.Source) { err = true; return; } });
-            if (err) { Message.AddErrorMessage(MessageCode.Code0000, "服務申請書Source拆分組合異常"); return; }
+            if (err) { Message.AddCustErrorMessage(MessageCode.Code0000, "服務申請書Source拆分組合異常"); return; }
             string path = $@"D:\ibankRoot\Ftp_SKGPortalCore\ACCFTT\"; Directory.CreateDirectory(path);
             using StreamWriter sw = new StreamWriter($@"{path}ACCFTT.{ DateTime.Now.ToString("yyyyMMdd")}", false, Encoding.GetEncoding(950));
             accftts.ForEach(p => sw.WriteLine(p.Source));

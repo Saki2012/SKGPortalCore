@@ -269,7 +269,7 @@ namespace SKGPortalCore.Graph
             SysOperateLog.SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
             if (repository.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, action))
             {
-                repository.Message.AddErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repository), ResxManage.GetDescription(action));
+                repository.Message.AddCustErrorMessage(MessageCode.Code0002, ResxManage.GetDescription(repository), ResxManage.GetDescription(action));
                 context.Errors.AddRange(repository.Message.Errors);
                 repository.Message.WriteLogTxt();
                 return false;

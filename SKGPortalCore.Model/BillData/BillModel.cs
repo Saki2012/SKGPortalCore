@@ -39,13 +39,9 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號"), Key, MaxLength(20)]
         public string BillNo { get; set; }
-        [ForeignKey("CustomerId")]
-        public CustomerModel Customer { get; set; }
         /// <summary>
-        /// 客戶統編
+        /// 企業編號
         /// </summary>
-        [Description("客戶統編")]
-        public string CustomerId { get; set; }
         [ForeignKey("CustomerCode")]
         public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
@@ -53,6 +49,9 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("企業編號")]
         public string CustomerCode { get; set; }
+        /// <summary>
+        /// 期別
+        /// </summary>
         [ForeignKey("CustomerCode,BillTermId")]
         public BillTermModel BillTerm { get; set; }
         /// <summary>
@@ -60,6 +59,9 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("期別")]
         public string BillTermId { get; set; }
+        /// <summary>
+        /// 繳款人
+        /// </summary>
         [ForeignKey("CustomerId,PayerId")]
         public PayerModel Payer { get; set; }
         /// <summary>
@@ -72,6 +74,16 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("繳款截止日"), Required]
         public DateTime PayEndDate { get; set; }
+        /// <summary>
+        /// 代收項目
+        /// </summary>
+        [ForeignKey("CollectionTypeId")]
+        public CollectionTypeModel CollectionType { get; set; }
+        /// <summary>
+        /// 代收項目
+        /// </summary>
+        [Description("代收項目"), Required]
+        public string CollectionTypeId { get; set; }
         /// <summary>
         /// 應繳金額
         /// </summary>
@@ -88,51 +100,15 @@ namespace SKGPortalCore.Model.BillData
         [Description("繳款狀態")]
         public PayStatus PayStatus { get; set; }
         /// <summary>
-        /// 匯入批號
-        /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15)]
-        public string ImportBatchNo { get; set; }
-        /// <summary>
         /// 銀行條碼
         /// </summary>
         [Description("銀行條碼"), Required, Index]
-        public string BankBarCode { get; set; }
+        public string VirtualAccountCode { get; set; }
         /// <summary>
-        /// 超商條碼1-繳款截止日+代收項目
-        /// (民國年yymmdd)(6碼) + 代收項目 (3碼)
-        /// ex:105/11/22 --> 051122
+        /// 匯入批號
         /// </summary>
-        [Description("超商條碼1"), Required]
-        public string MarketBarCode1 { get; set; }
-        /// <summary>
-        /// 超商條碼2-銷帳編號
-        /// 銀行條碼(16碼，靠左補零)
-        /// </summary>
-        [Description("超商條碼2"), Required]
-        public string MarketBarCode2 { get; set; }
-        /// <summary>
-        /// 超商條碼3-繳款截止日 年月+檢碼+繳款金額
-        /// ex:105/11/22 --> 0511
-        /// </summary>
-        [Description("超商條碼3"), Required]
-        public string MarketBarCode3 { get; set; }
-        /// <summary>
-        /// 郵局條碼1-郵政劃撥帳號
-        /// 50084884
-        /// </summary>
-        [Description("郵局條碼1"), Required]
-        public string PostBarCode1 { get; set; }
-        /// <summary>
-        /// 郵局條碼2-銷帳編號
-        /// (繳款截止日(民國年月日(7)+銀行條碼(16碼，靠左補零))
-        /// </summary>
-        [Description("郵局條碼2"), Required]
-        public string PostBarCode2 { get; set; }
-        /// <summary>
-        /// 郵局條碼3-繳款金額
-        /// </summary>
-        [Description("郵局條碼3"), Required]
-        public string PostBarCode3 { get; set; }
+        [Description("匯入批號"), Required, MaxLength(15), DefaultValue("")]
+        public string ImportBatchNo { get; set; }
     }
     /// <summary>
     /// 帳單明細

@@ -25,4 +25,8 @@
     <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SKGPortalCore.Business\Report\" />
+  </ItemGroup>
+
 </Project>

@@ -83,6 +83,16 @@ namespace SKGPortalCore.Model.MasterData
         [Description("啟用超商代收類別")]
         public string CollectionTypeIds { get; set; }
         /// <summary>
+        /// 啟用超商通路
+        /// </summary>
+        [Description("啟用超商通路")]
+        public bool MarketEnable { get; set; }
+        /// <summary>
+        /// 啟用郵局通路
+        /// </summary>
+        [Description("啟用郵局通路")]
+        public bool PostEnable { get; set; }
+        /// <summary>
         /// 網路平台申請
         /// </summary>
         [Description("網路平台申請")]

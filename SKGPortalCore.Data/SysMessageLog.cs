@@ -59,7 +59,7 @@ namespace SKGPortalCore.Data
         /// </summary>
         /// <param name="messageCode"></param>
         /// <param name="args"></param>
-        public void AddErrorMessage(MessageCode messageCode, params object[] args)
+        public void AddCustErrorMessage(MessageCode messageCode, params object[] args)
         {
             ExecutionError err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
@@ -115,7 +115,9 @@ namespace SKGPortalCore.Data
         }
         #endregion
     }
-
+    /// <summary>
+    /// 自定義錯誤訊息
+    /// </summary>
     public enum MessageCode
     {
         /// <summary>
@@ -193,5 +195,10 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("第{0}行：存提別不為±")]
         Code1012,
+        /// <summary>
+        /// 通路[{0}]收款區間已重疊，請確認！
+        /// </summary>
+        [Description("通路[{0}]收款區間已重疊，請確認！")]
+        Code1013,
     }
 }

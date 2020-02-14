@@ -87,7 +87,7 @@ namespace SKGPortalCore.Schedule.Import
                     continue;
                 }
 
-                if (StrLen != strRow.ByteLen()) { Message.AddErrorMessage(MessageCode.Code1003, line, StrLen); }
+                if (StrLen != strRow.ByteLen()) { Message.AddCustErrorMessage(MessageCode.Code1003, line, StrLen); }
                 result.Add(line++, strRow);
             }
             return result;

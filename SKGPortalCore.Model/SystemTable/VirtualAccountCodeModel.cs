@@ -22,6 +22,10 @@ namespace SKGPortalCore.Model.SystemTable
         /// </summary>
         [Description("來源ProgId")]
         public string SourceProgId { get; set; }
-
+        /// <summary>
+        /// 來源單號
+        /// </summary>
+        [Description("來源單號")]
+        public string SourceBillNo { get; set; }
     }
 }
