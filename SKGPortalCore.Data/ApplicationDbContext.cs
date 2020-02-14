@@ -99,7 +99,7 @@ namespace SKGPortalCore.Data
         {
             if (null == config) config = Configuration;
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            builder.UseSqlServer(config.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("SKGPortalCore"));
             return builder.Options;
         }
         #endregion

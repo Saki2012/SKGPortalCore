@@ -46,8 +46,8 @@ namespace SKGPortalCore.Lib
                 IDateTimeProvider provider = new UtcDateTimeProvider();
                 IJwtValidator validator = new JwtValidator(serializer, provider);
                 IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
-                IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
-
+                IJwtAlgorithm algorithm = null;
+                IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder, algorithm);
                 IDictionary<string, object> payload = decoder.DecodeToObject(token, secret, verify: true);
                 List<Claim> claims = new List<Claim>();
 

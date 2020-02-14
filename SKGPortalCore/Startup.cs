@@ -44,8 +44,8 @@ namespace SKGPortalCore
             services.AddMvc().
                 AddJsonOptions(p =>
                 {
-                    p.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                    p.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    //p.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                    //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 }).
             SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
@@ -71,7 +71,7 @@ namespace SKGPortalCore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+               // app.UseDatabaseErrorPage();
             }
             else
             {
