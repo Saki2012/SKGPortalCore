@@ -46,8 +46,7 @@ namespace SKGPortalCore
                 {
                     //p.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                     //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                }).
-            SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                });
             services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
             services.AddSession(options =>
              {
@@ -71,7 +70,7 @@ namespace SKGPortalCore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-               // app.UseDatabaseErrorPage();
+                // app.UseDatabaseErrorPage();
             }
             else
             {
@@ -87,11 +86,17 @@ namespace SKGPortalCore
 #if DEBUG
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
 #endif
-            app.UseMvc(routes =>
+            app.UseRouting();
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            //});
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
         #endregion

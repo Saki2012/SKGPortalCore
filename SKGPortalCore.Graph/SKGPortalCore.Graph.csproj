@@ -18,4 +18,8 @@
     <Folder Include="Func\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="GraphQL" Version="2.4.0" />
+  </ItemGroup>
+
 </Project>
