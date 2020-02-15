@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,6 +12,9 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository;
+using SKGPortalCore.Graph.BillData;
+using SKGPortalCore.Graph.MasterData;
+
 
 namespace SKGPortalCore.Graph
 {
@@ -180,8 +184,36 @@ namespace SKGPortalCore.Graph
     #endregion
 
     #region SetGraph
-    public class BaseQuerySetGraphType<TSet> : ObjectGraphType<TSet> { }
-    public class BaseInputSetGraphType<TSet> : InputObjectGraphType<TSet> { }
+    public class BaseQuerySetGraphType<TSet> : ObjectGraphType<TSet>
+    {
+        public BaseQuerySetGraphType()
+        {
+            foreach (var t in typeof(TSet).GetProperties())
+            {
+                string typeName = $"{GetType().Namespace}.{t.Name}Type";
+                string description = ResxManage.GetDescription(t);
+                if (typeof(IEnumerable).IsAssignableFrom(t.PropertyType))
+                    Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), t.Name, description);
+                else
+                    Field(Type.GetType(typeName), t.Name, description);
+            }
+        }
+    }
+    public class BaseInputSetGraphType<TSet> : InputObjectGraphType<TSet>
+    {
+        public BaseInputSetGraphType()
+        {
+            foreach (var t in typeof(TSet).GetProperties())
+            {
+                string typeName = $"{GetType().Namespace}.{t.Name}InputType";
+                string description = ResxManage.GetDescription(t);
+                if (typeof(IEnumerable).IsAssignableFrom(t.PropertyType))
+                    Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), t.Name, description);
+                else
+                    Field(Type.GetType(typeName), t.Name, description);
+            }
+        }
+    }
     #endregion
 
     #region Fields

@@ -24,14 +24,7 @@ namespace SKGPortalCore.Graph.MasterData
     public class RoleInputType : BaseInputFieldGraphType<RoleModel> { }
     public class RolePermissionInputType : BaseInputFieldGraphType<RolePermissionModel> { }
     //Query
-    public class RoleSetType : BaseQuerySetGraphType<RoleSet>
-    {
-        public RoleSetType()
-        {
-            Field<RoleType>("Role");
-            Field<ListGraphType<RolePermissionType>>("RolePermission");
-        }
-    }
+    public class RoleSetType : BaseQuerySetGraphType<RoleSet> { }
     public class RoleType : BaseQueryFieldGraphType<RoleModel> { }
     public class RolePermissionType : BaseQueryFieldGraphType<RolePermissionModel> { }
 }

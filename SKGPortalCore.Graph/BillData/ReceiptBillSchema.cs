@@ -28,7 +28,6 @@ namespace SKGPortalCore.Graph.BillData
     {
         public ReceiptBillSetType()
         {
-            Field<ReceiptBillType>("ReceiptBill");
         }
     }
     public class ReceiptBillType : BaseQueryFieldGraphType<ReceiptBillModel>

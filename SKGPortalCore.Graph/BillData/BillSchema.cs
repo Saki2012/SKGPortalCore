@@ -21,15 +21,7 @@ namespace SKGPortalCore.Graph.BillData
         public BillMutation(BillRepository repository) : base(repository) { }
     }
     //Input
-    public class BillSetInputType : BaseInputSetGraphType<BillSet>
-    {
-        public BillSetInputType()
-        {
-            Field<BillInputType>("Bill");
-            Field<ListGraphType<BillDetailInputType>>("BillDetail");
-            Field<ListGraphType<BillReceiptDetailInputType>>("BillReceiptDetail");
-        }
-    }
+    public class BillSetInputType : BaseInputSetGraphType<BillSet> { }
     public class BillInputType : BaseInputFieldGraphType<BillModel>
     {
         protected override bool SetType(string propertyName, string descript)
@@ -40,15 +32,7 @@ namespace SKGPortalCore.Graph.BillData
     public class BillDetailInputType : BaseInputFieldGraphType<BillDetailModel> { }
     public class BillReceiptDetailInputType : BaseInputFieldGraphType<BillReceiptDetailModel> { }
     //Query
-    public class BillSetType : BaseQuerySetGraphType<BillSet>
-    {
-        public BillSetType()
-        {
-            Field<BillType>("Bill", ResxManage.GetDescription<BillModel>());
-            Field<ListGraphType<BillDetailType>>("BillDetail", ResxManage.GetDescription<BillDetailModel>());
-            Field<ListGraphType<BillReceiptDetailType>>("BillReceiptDetail", ResxManage.GetDescription<BillReceiptDetailModel>());
-        }
-    }
+    public class BillSetType : BaseQuerySetGraphType<BillSet> { }
     public class BillType : BaseQueryFieldGraphType<BillModel>
     {
         protected override bool SetType(string propertyName, ref string descript)
