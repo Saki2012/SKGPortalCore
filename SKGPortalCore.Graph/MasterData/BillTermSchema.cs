@@ -25,8 +25,8 @@ namespace SKGPortalCore.Graph.MasterData
     {
         public BillTermSetInputType()
         {
-            Field<BillTermType>(" BillTerm");
-            Field<ListGraphType<BillTermDetailType>>(" BillTermDetail");
+            Field<BillTermType>("BillTerm");
+            Field<ListGraphType<BillTermDetailType>>("BillTermDetail");
         }
     }
     public class BillTermInputType : BaseInputFieldGraphType<BillTermModel> { }
@@ -36,8 +36,8 @@ namespace SKGPortalCore.Graph.MasterData
     {
         public BillTermSetType()
         {
-            Field<BillTermType>(" BillTerm");
-            Field<ListGraphType<BillTermDetailType>>(" BillTermDetail");
+            Field<BillTermType>("BillTerm");
+            Field<ListGraphType<BillTermDetailType>>("BillTermDetail");
         }
     }
     public class BillTermType : BaseQueryFieldGraphType<BillTermModel> { }

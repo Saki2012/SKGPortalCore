@@ -8,7 +8,7 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Controllers.BillData
 {
-    [Route("[Controller]")]
+    //[Route("[Controller]")]
     public class BillController : BaseController
     {
         private readonly IDistributedCache _cache;

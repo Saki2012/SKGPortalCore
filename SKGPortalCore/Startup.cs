@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using GraphQL;
 using GraphQL.Http;
+using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SKGPortalCore.Data;
+using SKGPortalCore.Graph.BillData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore
@@ -21,32 +24,35 @@ namespace SKGPortalCore
     public class Startup
     {
         #region Property
-        public IConfiguration Configuration { get; }
+        IConfiguration Configuration { get; }
+        IWebHostEnvironment Env { get; }
         #endregion
 
         #region Construct
-        public Startup(IConfiguration configuration) { Configuration = configuration; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env) { Configuration = configuration; Env = env; }
         #endregion
 
         #region Public
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Namespace))
+      );
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddDbContext<ApplicationDbContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Namespace))
-                  );
-            services.AddMvc().
-                AddJsonOptions(p =>
-                {
-                    //p.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                    //p.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                });
+
+            InjectionRepository(ref services);
+            InjectionGraphSchema(ref services);
+            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+
+
+
             services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
             services.AddSession(options =>
              {
@@ -59,45 +65,27 @@ namespace SKGPortalCore
 #else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
 #endif
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            InjectionRepository(ref services);
-            InjectionGraphSchema(ref services);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseWebSockets();
+
+            Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
+            Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
+
+            foreach (var type in schemaTypes)
             {
-                app.UseDeveloperExceptionPage();
-                // app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                typeof(GraphQLWebSocketsExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Replace("Schema", "")}" });
+                typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Replace("Schema", "")}" });
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
-#if DEBUG
-            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
-#endif
-            app.UseRouting();
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            //});
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            });
         }
         #endregion
 
@@ -112,7 +100,7 @@ namespace SKGPortalCore
             Type[] types = assembly.ExportedTypes.Where(p => !p.Namespace.Contains("SKGPortalCore.Business") && p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
             foreach (Type t in types)
             {
-                services.AddTransient(t);
+                services.AddScoped(t);
             }
         }
         /// <summary>
@@ -123,32 +111,27 @@ namespace SKGPortalCore
         {
             Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
             Type[] fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
-            foreach (Type t in fieldTypes)
-            {
-                services.AddTransient(t);
-            }
-
+            foreach (Type t in fieldTypes) services.AddScoped(t);
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
-            foreach (Type t in setTypes)
-            {
-                services.AddTransient(t);
-            }
-
+            foreach (Type t in setTypes) services.AddScoped(t);
             Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
-            foreach (Type t in operateTypes)
-            {
-                services.AddTransient(t);
-            }
-
-            ServiceProvider sp = services.BuildServiceProvider();
+            foreach (Type t in operateTypes) services.AddScoped(t);
             Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
-            foreach (Type t in schemaTypes)
-            {
-                services.AddSingleton(t, Activator.CreateInstance(t, new FuncDependencyResolver(type => sp.GetService(type))));
-            }
+            foreach (Type t in schemaTypes) services.AddScoped(t);
 
-            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
-            services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            services.AddGraphQL(options =>
+                {
+                    options.ExposeExceptions = Env.IsDevelopment(); // expose detailed exceptions in JSON response
+                })
+               .AddGraphTypes(ServiceLifetime.Scoped)
+               .AddUserContextBuilder(httpContext => httpContext.User)
+               .AddDataLoader()
+               .AddWebSockets();
+            services.AddCors();
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
         }
         #endregion
     }

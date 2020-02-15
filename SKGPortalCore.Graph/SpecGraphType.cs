@@ -42,8 +42,7 @@ namespace SKGPortalCore.Graph
     #endregion
 
     #region Operate
-    public class BaseQueryType<TSet, TSetType> : ObjectGraphType
-        where TSetType : BaseQuerySetGraphType<TSet>
+    public class BaseQueryType<TSet, TSetType> : ObjectGraphType where TSetType : BaseQuerySetGraphType<TSet>
     {
         public BaseQueryType(BasicRepository<TSet> repo)
         {
@@ -191,7 +190,7 @@ namespace SKGPortalCore.Graph
         public BaseInputFieldGraphType()
         {
             Type t = typeof(TModelType);
-            string[] baseProperty = t.BaseType.GetProperties().Select(p => p.Name).Where(p => p.CompareTo("RowState")!=0).ToArray();
+            string[] baseProperty = t.BaseType.GetProperties().Select(p => p.Name).Where(p => p.CompareTo("RowState") != 0).ToArray();
             PropertyInfo[] properties = t.GetProperties().Where(p => !baseProperty.Contains(p.Name)).ToArray();
             foreach (PropertyInfo property in properties)
             {
@@ -226,7 +225,7 @@ namespace SKGPortalCore.Graph
             foreach (PropertyInfo property in properties)
             {
                 string propertyName = property.Name, descript = ResxManage.GetDescription(property);
-                if (!SetType(propertyName,ref descript))
+                if (!SetType(propertyName, ref descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
                     if (property.PropertyType == changeType)
@@ -243,7 +242,7 @@ namespace SKGPortalCore.Graph
         /// <param name="propertyName"></param>
         /// <param name="descript"></param>
         /// <returns>回傳True時，將不繼續往下添加欄位</returns>
-        protected virtual bool SetType(string propertyName,ref string descript)
+        protected virtual bool SetType(string propertyName, ref string descript)
         {
             return false;
         }
