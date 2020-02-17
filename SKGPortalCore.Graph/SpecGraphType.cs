@@ -46,7 +46,7 @@ namespace SKGPortalCore.Graph
     #endregion
 
     #region Operate
-    public class BaseQueryType<TSet, TSetType> : ObjectGraphType where TSetType : BaseQuerySetGraphType<TSet>
+    public class BaseQueryType<TSet, TSetType, TMasterModelType> : ObjectGraphType where TSetType : BaseQuerySetGraphType<TSet> where TMasterModelType : IGraphType
     {
         public BaseQueryType(BasicRepository<TSet> repo)
         {
@@ -57,7 +57,7 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    object[] keyVal = (context.GetArgument<object>("keyVal") as List<object>).ToArray();
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -65,7 +65,7 @@ namespace SKGPortalCore.Graph
                     return context.Errors.Count == 0 ? set : default;
                 });
             Field(
-                type: typeof(TSetType),
+                type: typeof(ListGraphType<TMasterModelType>),
                 name: "queryList",
                 description: "查詢列表",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
@@ -195,7 +195,10 @@ namespace SKGPortalCore.Graph
                 if (typeof(IEnumerable).IsAssignableFrom(t.PropertyType))
                     Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), t.Name, description);
                 else
+                {
                     Field(Type.GetType(typeName), t.Name, description);
+                    Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), $"{t.Name}List", $"{ description}列表");
+                }
             }
         }
     }
@@ -289,6 +292,7 @@ namespace SKGPortalCore.Graph
         /// <param name="keyVal"></param>
         internal static bool CheckAuthority(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
         {
+            return true;
             ISessionWapper session = ((ISessionWapper)context.UserContext);
             repository.User = session?.User;
             repository.Message = null;

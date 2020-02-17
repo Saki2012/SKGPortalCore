@@ -10,7 +10,7 @@ namespace SKGPortalCore.Graph.MasterData
         public BizCustomerSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class BizCustomerQuery : BaseQueryType<BizCustomerSet, BizCustomerSetType>
+    public class BizCustomerQuery : BaseQueryType<BizCustomerSet, BizCustomerSetType, BizCustomerType>
     {
         public BizCustomerQuery(BizCustomerRepository repository) : base(repository) { }
     }

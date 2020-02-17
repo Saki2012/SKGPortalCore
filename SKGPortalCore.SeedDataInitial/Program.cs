@@ -28,7 +28,7 @@ namespace SKGPortalCore.SeedDataInitial
             CreateImportDataSources();
             ImportData = new ACCFTTImport(DataAccess); ImportData.ExecuteImport();//優先生成商戶資料
             CreateSeedData(DataAccess);
-            ImportReceiptData();
+            //ImportReceiptData();
         }
         /// <summary>
         /// 新增初始資料
@@ -41,10 +41,10 @@ namespace SKGPortalCore.SeedDataInitial
                 ChannelSeedData.CreateChannel(Message, dataAccess);//OK
                 CollectionTypeSeedData.CreateCollectionType(Message, dataAccess);//OK
                 //ChannelVerifyPeriodSeedData.CreateChannelVerifyPeriod(Message, dataAccess);
-                PayerSeedData.CreatePayer(Message, dataAccess);
-                BillTermSeedData.CreateBillTerm(Message, dataAccess);
+                //PayerSeedData.CreatePayer(Message, dataAccess);
+                //BillTermSeedData.CreateBillTerm(Message, dataAccess);
                 //單據
-                //BillSeedData.CreateBill(Message, dataAccess);
+                BillSeedData.CreateBill(Message, dataAccess);
                 dataAccess.BulkSaveChanges();
             }
             catch (Exception e)

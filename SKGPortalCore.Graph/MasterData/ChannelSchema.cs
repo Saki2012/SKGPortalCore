@@ -10,7 +10,7 @@ namespace SKGPortalCore.Graph.MasterData
         public ChannelSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class ChannelQuery : BaseQueryType<ChannelSet, ChannelSetType>
+    public class ChannelQuery : BaseQueryType<ChannelSet, ChannelSetType, ChannelType>
     {
         public ChannelQuery(ChannelRepository repository) : base(repository) { }
     }

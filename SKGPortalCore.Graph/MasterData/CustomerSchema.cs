@@ -10,7 +10,7 @@ namespace SKGPortalCore.Graph.MasterData
         public CustomerSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class CustomerQuery : BaseQueryType<CustomerSet, CustomerSetType>
+    public class CustomerQuery : BaseQueryType<CustomerSet, CustomerSetType, CustomerType>
     {
         public CustomerQuery(CustomerRepository repository) : base(repository) { }
     }

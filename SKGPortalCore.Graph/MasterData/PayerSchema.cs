@@ -10,7 +10,7 @@ namespace SKGPortalCore.Graph.MasterData
         public PayerSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class PayerQuery : BaseQueryType<PayerSet, PayerSetType>
+    public class PayerQuery : BaseQueryType<PayerSet, PayerSetType, PayerType>
     {
         public PayerQuery(PayerRepository repository) : base(repository) { }
     }

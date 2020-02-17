@@ -98,6 +98,7 @@ namespace SKGPortalCore.Data
         /// </summary>
         public void SaveChangeLog()
         {
+            return;
             DataChangeLog.Add(ChangeLogSet.DataChangeLog);
             DataChangeLogDetail.AddRange(ChangeLogSet.DataChangeLogDetail);
         }

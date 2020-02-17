@@ -11,7 +11,7 @@ namespace SKGPortalCore.Graph.MasterData
         public RoleSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class RoleQuery : BaseQueryType<RoleSet, RoleSetType>
+    public class RoleQuery : BaseQueryType<RoleSet, RoleSetType, RoleType>
     {
         public RoleQuery(RoleRepository repository) : base(repository) { }
     }

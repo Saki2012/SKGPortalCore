@@ -83,7 +83,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 代收項目
         /// </summary>
-        [Description("代收項目"), Required]
+        [Description("代收項目")]
         public string CollectionTypeId { get; set; }
         /// <summary>
         /// 應繳金額

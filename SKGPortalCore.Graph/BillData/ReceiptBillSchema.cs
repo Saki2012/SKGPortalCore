@@ -12,7 +12,7 @@ namespace SKGPortalCore.Graph.BillData
         }
     }
     //Operate
-    public class ReceiptBillQuery : BaseQueryType<ReceiptBillSet, ReceiptBillSetType>
+    public class ReceiptBillQuery : BaseQueryType<ReceiptBillSet, ReceiptBillSetType, ReceiptBillType>
     {
         public ReceiptBillQuery(ReceiptBillRepository repository) : base(repository) { }
     }

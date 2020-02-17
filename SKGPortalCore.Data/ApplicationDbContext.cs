@@ -49,7 +49,10 @@ namespace SKGPortalCore.Data
         /// <param name="builder"></param>
         private void ModelDbSetting(ModelBuilder builder)
         {
-            Type[] modelTypes = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => (p.BaseType == typeof(DetailRowState) || p.BaseType == typeof(MasterDataModel) || p.BaseType == typeof(BillDataModel))).ToArray();
+            Type[] modelTypes = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => (
+            (p.BaseType == typeof(DetailRowState) || p.BaseType == typeof(MasterDataModel) || p.BaseType == typeof(BillDataModel)) ||
+            (p.Namespace.Contains("SKGPortalCore.Model.SystemTable"))
+            )).ToArray();
             foreach (Type type in modelTypes)
             {
                 string tableName = type.Name;

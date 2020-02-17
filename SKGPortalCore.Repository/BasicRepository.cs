@@ -11,6 +11,7 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.Enum;
+using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Repository
@@ -228,11 +229,13 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
-        public virtual List<object> QueryList()
+        public virtual IList QueryList()
         {
-            return new List<object>();
+            Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
+            object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(masterType).Invoke(DataAccess, null);
+            return DataAccess.Set<CollectionTypeModel>().Where("1=1").ToList();
         }
-        /// <summary>
+        /// <summary>.
         /// 審核
         /// </summary>
         /// <param name="key"></param>

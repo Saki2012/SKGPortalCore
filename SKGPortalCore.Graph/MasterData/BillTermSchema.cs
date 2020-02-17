@@ -11,7 +11,7 @@ namespace SKGPortalCore.Graph.MasterData
         public BillTermSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class BillTermQuery : BaseQueryType<BillTermSet, BillTermSetType>
+    public class BillTermQuery : BaseQueryType<BillTermSet, BillTermSetType, BillTermType>
     {
         public BillTermQuery(BillTermRepository repository) : base(repository) { }
     }

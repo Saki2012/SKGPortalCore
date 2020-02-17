@@ -114,7 +114,7 @@ namespace SKGPortalCore
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
             foreach (Type t in setTypes) services.AddScoped(t);
             //Operate
-            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
+            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`3") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
             foreach (Type t in operateTypes) services.AddScoped(t);
             //Schema
             Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();

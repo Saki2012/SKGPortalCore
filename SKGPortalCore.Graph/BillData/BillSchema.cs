@@ -13,7 +13,7 @@ namespace SKGPortalCore.Graph.BillData
         public BillSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class BillQuery : BaseQueryType<BillSet, BillSetType>
+    public class BillQuery : BaseQueryType<BillSet, BillSetType, BillType>
     {
         public BillQuery(BillRepository repository) : base(repository) { }
     }

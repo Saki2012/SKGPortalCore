@@ -10,7 +10,7 @@ namespace SKGPortalCore.Graph.MasterData
         public CollectionTypeSchema(IDependencyResolver resolver) : base(resolver) { }
     }
     //Operate
-    public class CollectionTypeQuery : BaseQueryType<CollectionTypeSet, CollectionTypeSetType>
+    public class CollectionTypeQuery : BaseQueryType<CollectionTypeSet, CollectionTypeSetType, CollectionTypeType>
     {
         public CollectionTypeQuery(CollectionTypeRepository repository) : base(repository) { }
     }
