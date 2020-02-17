@@ -6,6 +6,7 @@ using GraphQL;
 using GraphQL.Http;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using SKGPortalCore.Data;
+using SKGPortalCore.Graph;
 using SKGPortalCore.Graph.BillData;
+using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore
@@ -83,6 +86,7 @@ namespace SKGPortalCore
                 typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Replace("Schema", "")}" });
             }
 
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
@@ -110,14 +114,22 @@ namespace SKGPortalCore
         private void InjectionGraphSchema(ref IServiceCollection services)
         {
             Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
+            //Field
             Type[] fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
             foreach (Type t in fieldTypes) services.AddScoped(t);
+            //Set
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
             foreach (Type t in setTypes) services.AddScoped(t);
+            //Operate
             Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`2") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
             foreach (Type t in operateTypes) services.AddScoped(t);
+            //Schema
             Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
             foreach (Type t in schemaTypes) services.AddScoped(t);
+            //添加Enum
+            Type[] enumType = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Model.Enum") == 0).ToArray();
+            foreach (Type t in enumType)
+                services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
 
             services.AddGraphQL(options =>
                 {

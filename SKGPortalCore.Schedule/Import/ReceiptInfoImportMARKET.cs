@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;

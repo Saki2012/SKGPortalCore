@@ -9,12 +9,12 @@ using GraphQL.Types;
 using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository;
 using SKGPortalCore.Graph.BillData;
 using SKGPortalCore.Graph.MasterData;
-
+using System.ComponentModel;
+using SKGPortalCore.Model.Enum;
 
 namespace SKGPortalCore.Graph
 {
@@ -232,7 +232,10 @@ namespace SKGPortalCore.Graph
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
                     if (property.PropertyType == changeType)
                     {
-                        continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                        if (changeType.IsEnum)
+                            changeType = typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { changeType });
+                        else
+                            continue;//暫時不處理特殊情況的Type(ex:ModelClass)
                     }
                     Field(changeType, propertyName, descript);
                 }
@@ -262,7 +265,10 @@ namespace SKGPortalCore.Graph
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
                     if (property.PropertyType == changeType)
                     {
-                        continue;//暫時不處理特殊情況的Type(ex:enum、ModelClass)
+                        if (changeType.IsEnum)
+                            changeType = typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { changeType });
+                        else
+                            continue;//暫時不處理特殊情況的Type(ex:ModelClass)
                     }
                     Field(changeType, propertyName, descript);
                 }
@@ -277,6 +283,17 @@ namespace SKGPortalCore.Graph
         protected virtual bool SetType(string propertyName, ref string descript)
         {
             return false;
+        }
+    }
+
+    public class BaseEnumerationGraphType<TEnum> : EnumerationGraphType where TEnum : Enum
+    {
+        public BaseEnumerationGraphType()
+        {
+            Name = typeof(TEnum).Name;
+            Description = ResxManage.GetDescription<TEnum>();
+            foreach (Enum val in Enum.GetValues(typeof(TEnum)))
+                AddValue(val.ToString(), ResxManage.GetDescription(val), val.GetValue());
         }
     }
     #endregion

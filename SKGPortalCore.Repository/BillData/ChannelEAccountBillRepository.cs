@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 using SKGPortalCore.Data;
-using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData

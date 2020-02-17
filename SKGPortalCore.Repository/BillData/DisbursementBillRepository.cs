@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using SKGPortalCore.Data;
-using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.Enum;
 
 namespace SKGPortalCore.Repository.BillData
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
 

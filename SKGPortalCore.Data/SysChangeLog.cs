@@ -9,8 +9,8 @@ using Newtonsoft.Json;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using System.Linq;
-using SKGPortalCore.Model;
 using System.Reflection;
+using SKGPortalCore.Model.Enum;
 
 namespace SKGPortalCore.Data
 {

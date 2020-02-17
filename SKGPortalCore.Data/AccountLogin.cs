@@ -4,7 +4,7 @@ using System.Security.Claims;
 using GraphQL.Types;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Business.Func

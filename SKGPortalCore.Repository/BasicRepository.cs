@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Repository

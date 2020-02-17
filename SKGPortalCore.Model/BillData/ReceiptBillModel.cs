@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
 
 namespace SKGPortalCore.Model.BillData

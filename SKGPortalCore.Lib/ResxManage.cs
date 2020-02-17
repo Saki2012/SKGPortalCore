@@ -27,8 +27,6 @@ namespace SKGPortalCore.Lib
             return null == attribute ? string.Empty : attribute.Value;
         }
 
-
-
         public static string GetDescription(Enum member)
         {
             DescriptionAttribute attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();

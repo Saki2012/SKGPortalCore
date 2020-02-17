@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SKGPortalCore.Model
+namespace SKGPortalCore.Model.Enum
 {
     /// <summary>
     /// 繳款狀態

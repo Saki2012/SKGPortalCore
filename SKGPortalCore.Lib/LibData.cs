@@ -341,28 +341,8 @@ namespace SKGPortalCore.Lib
                 case Type dateTimeType when dateTimeType == typeof(DateTime):
                     return typeof(DateTimeGraphType);
                 default:
-                    if (type.IsEnum)
-                    {
-                        return GetEnumerationGraphType(/*type*/);
-                    }
-
                     return type;
             }
-        }
-        private static Type GetEnumerationGraphType(/*Type type*/)
-        {
-            return typeof(IntGraphType);
-            /*
-            return type switch
-            {
-                Type SysEnums when SysEnums == typeof(SysEnums) => typeof(EnumerationGraphType<SysEnums>),
-                Type PayStatus when PayStatus == typeof(PayStatus) => typeof(EnumerationGraphType<PayStatus>),
-                Type PayerType when PayerType == typeof(PayerType) => typeof(EnumerationGraphType<PayerType>),
-                Type FuncAction when FuncAction == typeof(FuncAction) => typeof(StringGraphType),
-                Type EndType when EndType == typeof(EndType) => typeof(EnumerationGraphType<EndType>),
-                _ => type,
-            };
-            */
         }
     }
 }

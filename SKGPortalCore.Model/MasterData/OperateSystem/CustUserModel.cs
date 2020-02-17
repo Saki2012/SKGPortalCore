@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Model.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;

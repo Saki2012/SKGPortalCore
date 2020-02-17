@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using SKGPortalCore.Data;
-using SKGPortalCore.Model;
+using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.SeedDataInitial.MasterData
 {
-   public class PayerSeedData
+    public class PayerSeedData
     {
         /// <summary>
         /// 新增「繳款人」-初始資料

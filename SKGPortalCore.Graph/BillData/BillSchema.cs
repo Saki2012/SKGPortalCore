@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Types;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.BillData;
 
@@ -22,28 +23,12 @@ namespace SKGPortalCore.Graph.BillData
     }
     //Input
     public class BillSetInputType : BaseInputSetGraphType<BillSet> { }
-    public class BillInputType : BaseInputFieldGraphType<BillModel>
-    {
-        protected override bool SetType(string propertyName, string descript)
-        {
-            return base.SetType(propertyName, descript);
-        }
-    }
+    public class BillInputType : BaseInputFieldGraphType<BillModel> { }
     public class BillDetailInputType : BaseInputFieldGraphType<BillDetailModel> { }
     public class BillReceiptDetailInputType : BaseInputFieldGraphType<BillReceiptDetailModel> { }
     //Query
     public class BillSetType : BaseQuerySetGraphType<BillSet> { }
-    public class BillType : BaseQueryFieldGraphType<BillModel>
-    {
-        protected override bool SetType(string propertyName, ref string descript)
-        {
-            return propertyName switch
-            {
-                "c" => true,
-                _ => base.SetType(propertyName, ref descript),
-            };
-        }
-    }
+    public class BillType : BaseQueryFieldGraphType<BillModel> { }
     public class BillDetailType : BaseQueryFieldGraphType<BillDetailModel> { }
     public class BillReceiptDetailType : BaseQueryFieldGraphType<BillReceiptDetailModel> { }
 }

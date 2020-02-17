@@ -1,4 +1,6 @@
-﻿namespace SKGPortalCore.Model.MasterData.OperateSystem
+﻿using SKGPortalCore.Model.Enum;
+
+namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
     public interface IUserModel
     {
