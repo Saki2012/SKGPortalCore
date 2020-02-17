@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
+using GraphQL;
 using GraphQL.Types;
 
 namespace SKGPortalCore.Lib
@@ -341,8 +342,19 @@ namespace SKGPortalCore.Lib
                 case Type dateTimeType when dateTimeType == typeof(DateTime):
                     return typeof(DateTimeGraphType);
                 default:
+                    if(type.IsEnum) return typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { type });
                     return type;
             }
+        }
+    }
+    public class BaseEnumerationGraphType<TEnum> : EnumerationGraphType where TEnum : Enum
+    {
+        public BaseEnumerationGraphType()
+        {
+            Name = typeof(TEnum).Name;
+            Description = ResxManage.GetDescription<TEnum>();
+            foreach (Enum val in Enum.GetValues(typeof(TEnum)))
+                AddValue(val.ToString(), ResxManage.GetDescription(val), val.GetValue());
         }
     }
 }

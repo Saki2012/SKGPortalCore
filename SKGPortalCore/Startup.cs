@@ -1,26 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using GraphQL;
-using GraphQL.Http;
+﻿using GraphQL;
 using GraphQL.Server;
-using GraphQL.Server.Ui.Playground;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Serialization;
 using SKGPortalCore.Data;
-using SKGPortalCore.Graph;
-using SKGPortalCore.Graph.BillData;
-using SKGPortalCore.Model;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace SKGPortalCore
 {

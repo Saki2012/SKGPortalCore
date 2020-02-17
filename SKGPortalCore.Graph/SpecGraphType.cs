@@ -230,13 +230,8 @@ namespace SKGPortalCore.Graph
                 if (!SetType(propertyName, descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType)
-                    {
-                        if (changeType.IsEnum)
-                            changeType = typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { changeType });
-                        else
-                            continue;//暫時不處理特殊情況的Type(ex:ModelClass)
-                    }
+                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
+
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -263,13 +258,7 @@ namespace SKGPortalCore.Graph
                 if (!SetType(propertyName, ref descript))
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType)
-                    {
-                        if (changeType.IsEnum)
-                            changeType = typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { changeType });
-                        else
-                            continue;//暫時不處理特殊情況的Type(ex:ModelClass)
-                    }
+                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -286,16 +275,7 @@ namespace SKGPortalCore.Graph
         }
     }
 
-    public class BaseEnumerationGraphType<TEnum> : EnumerationGraphType where TEnum : Enum
-    {
-        public BaseEnumerationGraphType()
-        {
-            Name = typeof(TEnum).Name;
-            Description = ResxManage.GetDescription<TEnum>();
-            foreach (Enum val in Enum.GetValues(typeof(TEnum)))
-                AddValue(val.ToString(), ResxManage.GetDescription(val), val.GetValue());
-        }
-    }
+
     #endregion
 
     internal static class BaseOperateComm<TSet>
