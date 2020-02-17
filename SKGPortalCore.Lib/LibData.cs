@@ -61,7 +61,7 @@ namespace SKGPortalCore.Lib
             for (int i = 1; i < len; i++)
             {
                 //Q:Null Value And DbNull
-                s = strs[i].ToString();
+                s = strs[i] == null ? string.Empty : strs[i].ToString();
                 if (i == 1 && string.IsNullOrEmpty(result))
                 {
                     result = s;
@@ -342,7 +342,7 @@ namespace SKGPortalCore.Lib
                 case Type dateTimeType when dateTimeType == typeof(DateTime):
                     return typeof(DateTimeGraphType);
                 default:
-                    if(type.IsEnum) return typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { type });
+                    if (type.IsEnum) return typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { type });
                     return type;
             }
         }

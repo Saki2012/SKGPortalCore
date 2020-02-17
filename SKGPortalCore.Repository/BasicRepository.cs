@@ -229,11 +229,14 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
-        public virtual IList QueryList()
+        public virtual IList QueryList(string condition)
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
             object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(masterType).Invoke(DataAccess, null);
-            return DataAccess.Set<CollectionTypeModel>().Where("1=1").ToList();
+            var query = ((IQueryable)dbSet).Where(LibData.Merge(" And ", false, "1=1", condition));
+            var cast = typeof(Queryable).GetMethod("Cast").MakeGenericMethod(typeof(TSet).GetProperties()[0].PropertyType).Invoke(null, new object[] { query });
+            var result = typeof(Enumerable).GetMethod("ToList").MakeGenericMethod(typeof(TSet).GetProperties()[0].PropertyType).Invoke(null, new object[] { cast }) as IList;
+            return result;
         }
         /// <summary>.
         /// 審核

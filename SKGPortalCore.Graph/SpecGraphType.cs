@@ -68,13 +68,15 @@ namespace SKGPortalCore.Graph
                 type: typeof(ListGraphType<TMasterModelType>),
                 name: "queryList",
                 description: "查詢列表",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "condition", Description = "過濾條件" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
+                    string condition = context.GetArgument<string>("condition");
+
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
-                    return repo.QueryList();
+                    return repo.QueryList(condition);
                 });
         }
     }
@@ -281,6 +283,7 @@ namespace SKGPortalCore.Graph
 
     #endregion
 
+    #region Comm
     internal static class BaseOperateComm<TSet>
     {
         /// <summary>
@@ -336,4 +339,5 @@ namespace SKGPortalCore.Graph
             return LibData.Merge(",", true, objs);
         }
     }
+    #endregion
 }
