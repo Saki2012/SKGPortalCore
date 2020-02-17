@@ -20,25 +20,11 @@ namespace SKGPortalCore.Graph.MasterData
         public BillTermMutation(BillTermRepository repository) : base(repository) { }
     }
     //Input
-    public class BillTermSetInputType : BaseInputSetGraphType<BillTermSet>
-    {
-        public BillTermSetInputType()
-        {
-            Field<BillTermInputType>("BillTerm");
-            Field<ListGraphType<BillTermDetailInputType>>("BillTermDetail");
-        }
-    }
+    public class BillTermSetInputType : BaseInputSetGraphType<BillTermSet> { }
     public class BillTermInputType : BaseInputFieldGraphType<BillTermModel> { }
     public class BillTermDetailInputType : BaseInputFieldGraphType<BillTermDetailModel> { }
     //Query
-    public class BillTermSetType : BaseQuerySetGraphType<BillTermSet>
-    {
-        public BillTermSetType()
-        {
-            Field<BillTermType>("BillTerm");
-            Field<ListGraphType<BillTermDetailType>>("BillTermDetail");
-        }
-    }
+    public class BillTermSetType : BaseQuerySetGraphType<BillTermSet> { }
     public class BillTermType : BaseQueryFieldGraphType<BillTermModel> { }
     public class BillTermDetailType : BaseQueryFieldGraphType<BillTermDetailModel> { }
 }

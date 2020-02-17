@@ -22,12 +22,6 @@ namespace SKGPortalCore.Graph.MasterData
     public class PayerSetInputType : BaseInputSetGraphType<PayerSet> { }
     public class PayerInputType : BaseInputFieldGraphType<PayerModel> { }
     //Query
-    public class PayerSetType : BaseQuerySetGraphType<PayerSet>
-    {
-        public PayerSetType()
-        {
-            Field<PayerType>("Payer");
-        }
-    }
+    public class PayerSetType : BaseQuerySetGraphType<PayerSet>    {    }
     public class PayerType : BaseQueryFieldGraphType<PayerModel> { }
 }

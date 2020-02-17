@@ -21,7 +21,11 @@ namespace SKGPortalCore.Graph.MasterData
     //Input
     public class CollectionTypeSetInputType : BaseInputSetGraphType<CollectionTypeSet> { }
     public class CollectionTypeInputType : BaseInputFieldGraphType<CollectionTypeModel> { }
+    public class CollectionTypeDetailInputType : BaseInputFieldGraphType<CollectionTypeDetailModel> { }
     //Query
     public class CollectionTypeSetType : BaseQuerySetGraphType<CollectionTypeSet> { }
     public class CollectionTypeType : BaseQueryFieldGraphType<CollectionTypeModel> { }
+    public class CollectionTypeDetailType : BaseQueryFieldGraphType<CollectionTypeDetailModel> { }
+
+    
 }
