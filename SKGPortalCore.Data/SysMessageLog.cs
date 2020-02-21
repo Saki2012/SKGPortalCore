@@ -200,5 +200,10 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("通路[{0}]收款區間已重疊，請確認！")]
         Code1013,
+        /// <summary>
+        /// 通路[{0}]尚未填寫核銷規則，請確認！
+        /// </summary>
+        [Description("通路[{0}]尚未填寫核銷規則，請確認！")]
+        Code1014,
     }
 }

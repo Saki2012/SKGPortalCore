@@ -43,6 +43,11 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         [Description("使用者名稱")]
         public string UserName { get; set; }
         /// <summary>
+        /// 部門
+        /// </summary>
+        [ForeignKey("DeptId")]
+        public DeptModel Dept { get; set; }
+        /// <summary>
         /// 部門代號
         /// </summary>
         [Description("部門代號")]

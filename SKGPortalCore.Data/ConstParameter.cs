@@ -12,10 +12,14 @@ namespace SKGPortalCore.Data
         /// <summary>
         /// 組態路徑
         /// </summary>
-        public const string AppSettingsJsonPath = @"D:\Proj\SKGPortalCore\SKGPortalCore";
+        public static readonly string AppSettingsJsonPath = @"D:\Proj\SKGPortalCore\SKGPortalCore";
         /// <summary>
         /// 組態檔名
         /// </summary>
-        public const string AppSettingsJson = "appsettings.json";
+        public static readonly string AppSettingsJson = "appsettings.json";
+        /// <summary>
+        /// 系統操作
+        /// </summary>
+        public static readonly string SysOperator = "SysOperator";
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 using Toolbelt.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Data
@@ -56,26 +56,16 @@ namespace SKGPortalCore.Data
             foreach (Type type in modelTypes)
             {
                 string tableName = type.Name;
-                if (tableName.Substring(tableName.Length - 5, 5) == "Model")
-                {
-                    tableName = tableName.Substring(0, tableName.Length - 5);
-                }
-
+                if (tableName.Substring(tableName.Length - 5, 5) == "Model") tableName = tableName[0..^5];
                 string[] keyPropName = type.GetProperties().Where(p => p.CustomAttributes.Any(p => p.AttributeType == typeof(KeyAttribute))).Select(p => p.Name).ToArray();
-                if (keyPropName.Length != 0)
-                {
-                    builder.Entity(type).ToTable(tableName).HasKey(keyPropName);
-                }
-                else
-                {
-                    builder.Entity(type).ToTable(tableName);
-                }
+                if (keyPropName.Length != 0) builder.Entity(type).ToTable(tableName).HasKey(keyPropName);
+                else builder.Entity(type).ToTable(tableName);
             }
         }
         #endregion
     }
 
-    public class LibDataAccess
+    public static class LibDataAccess
     {
         #region Property
         /// <summary>

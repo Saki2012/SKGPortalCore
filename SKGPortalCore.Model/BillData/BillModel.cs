@@ -19,15 +19,15 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單主檔
         /// </summary>
-        public BillModel Bill { get; set; }
+        public BillModel Bill { get; set; } = new BillModel();
         /// <summary>
         /// 帳單明細
         /// </summary>
-        public List<BillDetailModel> BillDetail { get; set; }
+        public List<BillDetailModel> BillDetail { get; set; } = new List<BillDetailModel>();
         /// <summary>
         /// 帳單收款明細
         /// </summary>
-        public List<BillReceiptDetailModel> BillReceiptDetail { get; set; }
+        public List<BillReceiptDetailModel> BillReceiptDetail { get; set; } = new List<BillReceiptDetailModel>();
     }
     /// <summary>
     /// 帳單主檔

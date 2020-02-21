@@ -19,8 +19,8 @@ namespace SKGPortalCore.Schedule
             infoImport = new ReceiptInfoImportBANK(dataAccess); infoImport.ExecuteImport();
             infoImport = new ReceiptInfoImportPOST(dataAccess); infoImport.ExecuteImport();
             infoImport = new ReceiptInfoImportMARKET(dataAccess); infoImport.ExecuteImport();
-            infoImport = new ReceiptInfoImportMARKETSPI(dataAccess); infoImport.ExecuteImport();
-            infoImport = new ReceiptInfoImportFARM(dataAccess); infoImport.ExecuteImport();
+            //infoImport = new ReceiptInfoImportMARKETSPI(dataAccess); infoImport.ExecuteImport();
+            //infoImport = new ReceiptInfoImportFARM(dataAccess); infoImport.ExecuteImport();
             infoImport = new RemitInfoImport(dataAccess); infoImport.ExecuteImport();
         }
 

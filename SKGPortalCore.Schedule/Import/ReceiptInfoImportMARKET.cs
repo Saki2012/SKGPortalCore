@@ -23,7 +23,7 @@ namespace SKGPortalCore.Schedule.Import
         #region Property
         /// <summary>
         /// 資訊流長度(byte)
-        /// </summary>1
+        /// </summary>
         private const int StrLen = 120;
         /// <summary>
         /// 

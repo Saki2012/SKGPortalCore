@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.MasterData
 {
@@ -36,10 +37,5 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("是否分行")]
         public bool IsBranch { get; set; }
-        /// <summary>
-        /// 啟用狀態
-        /// </summary>
-        [Description("啟用狀態")]
-        public bool IsEnable { get; set; }
     }
 }

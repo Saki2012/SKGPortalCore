@@ -12,8 +12,9 @@ namespace SKGPortalCore.Model.MasterData
     [Description("代收類別")]
     public class CollectionTypeSet
     {
-        public CollectionTypeModel CollectionType { get; set; }
-        public List<CollectionTypeDetailModel> CollectionTypeDetail { get; set; }
+        public CollectionTypeModel CollectionType { get; set; } = new CollectionTypeModel();
+        public List<CollectionTypeDetailModel> CollectionTypeDetail { get; set; } = new List<CollectionTypeDetailModel>();
+        public List<CollectionTypeVerifyPeriodModel> CollectionTypeVerifyPeriod { get; set; } = new List<CollectionTypeVerifyPeriodModel>();
     }
     /// <summary>
     /// 代收類別資料
@@ -91,5 +92,37 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("通路總手續費")]
         public decimal ChannelTotalFee { get; set; }
+    }
+    /// <summary>
+    /// 通路核銷週期明細
+    /// </summary>
+    [Description("通路核銷週期明細")]
+    public class CollectionTypeVerifyPeriodModel : DetailRowState
+    {
+        /// <summary>
+        /// 代收類別
+        /// </summary>
+        [ForeignKey("CollectionTypeId")]
+        public CollectionTypeModel CollectionType { get; set; }
+        /// <summary>
+        /// 代收類別代號
+        /// </summary>
+        [Description("代收類別代號"), Key]
+        public string CollectionTypeId { get; set; }
+        /// <summary>
+        /// 代收通路
+        /// </summary>
+        [ForeignKey("ChannelId")]
+        public ChannelModel Channel { get; set; }
+        /// <summary>
+        /// 通路代號
+        /// </summary>
+        [Description("通路代號"), Key]
+        public string ChannelId { get; set; }
+        /// <summary>
+        /// 通路帳務核銷週期
+        /// </summary>
+        [Description("通路帳務核銷週期")]
+        public PayPeriodType PayPeriodType { get; set; }
     }
 }

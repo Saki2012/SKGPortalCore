@@ -27,7 +27,7 @@ namespace SKGPortalCore.SeedDataInitial.BillData
                     //new BillSet() { Bill = new BillModel() { BillTermId = "010",  CustomerCode = "1024", PayerId = "000010",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
                     //    BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 10000 }, new BillDetailModel() { PayAmount = 53 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
                     new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "990128", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
-                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20000 }, new BillDetailModel() {PayAmount = 75 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() }
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20000 }, new BillDetailModel() {PayAmount = 75 } } }
                 };
                 foreach (BillSet bill in bills)
                 {

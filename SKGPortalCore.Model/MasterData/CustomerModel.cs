@@ -61,25 +61,10 @@ namespace SKGPortalCore.Model.MasterData
         [Description("郵簡字號")]
         public string ZipNum { get; set; }
         /// <summary>
-        /// 期別編號長度
-        /// </summary>
-        [Description("期別編號長度")]
-        public byte BillTermLen { get; set; }
-        /// <summary>
-        /// 繳款人編號長度
-        /// </summary>
-        [Description("繳款人編號長度")]
-        public byte PayerNoLen { get; set; }
-        /// <summary>
         /// 所屬分行
         /// </summary>
         [Description("所屬分行")]
         public string DeptId { get; set; }
-        /// <summary>
-        /// 繳款人可查看帳單資料
-        /// </summary>
-        [Description("繳款人可查看帳單資料")]
-        public bool PayerAuthorize { get; set; }
         /// <summary>
         /// 是否系統商
         /// </summary>

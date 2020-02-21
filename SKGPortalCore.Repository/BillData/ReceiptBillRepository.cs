@@ -23,7 +23,6 @@ namespace SKGPortalCore.Repository.BillData
         #region Property
         public Dictionary<string, BizCustomerSet> BizCustSetDic { get; } = new Dictionary<string, BizCustomerSet>();
         public Dictionary<string, CollectionTypeSet> ColSetDic { get; } = new Dictionary<string, CollectionTypeSet>();
-        public Dictionary<string, ChannelVerifyPeriodModel> PeriodDic { get; } = new Dictionary<string, ChannelVerifyPeriodModel>();
         #endregion
 
         #region Construct
@@ -46,7 +45,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizReceiptBill.CheckData(set, Message);
-            BizReceiptBill.SetData(set, DataAccess, User, action, BizCustSetDic, ColSetDic, PeriodDic);
+            BizReceiptBill.SetData(set, DataAccess, User, action, BizCustSetDic, ColSetDic/*, PeriodDic*/);
         }
         #endregion
     }

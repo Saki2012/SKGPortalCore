@@ -137,6 +137,6 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 全國性e繳費
         /// </summary>
-        public const string EB = "EB";
+        public const string EB = "08";
     }
 }

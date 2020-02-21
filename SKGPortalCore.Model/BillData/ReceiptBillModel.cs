@@ -50,15 +50,15 @@ namespace SKGPortalCore.Model.BillData
         [Description("代收通路")]
         public string ChannelId { get; set; }
         /// <summary>
-        /// 傳輸日期
-        /// </summary>
-        [Description("傳輸日期")]
-        public DateTime TransDate { get; set; }
-        /// <summary>
         /// 交易日期
         /// </summary>
         [Description("交易日期")]
         public DateTime TradeDate { get; set; }
+        /// <summary>
+        /// 傳輸日期
+        /// </summary>
+        [Description("傳輸日期")]
+        public DateTime TransDate { get; set; }
         /// <summary>
         /// 預計匯款日
         /// </summary>
@@ -74,11 +74,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("銀行銷帳編號")]
         public string BankBarCode { get; set; }
-        /// <summary>
-        /// 資訊流資料異常狀態
-        /// </summary>
-        [Description("資訊流資料異常狀態")]
-        public TransDataUnusual TransDataUnusual { get; set; }
         /// <summary>
         /// 通路手續費清算方式
         /// </summary>
@@ -99,6 +94,9 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("介紹商手續費")]
         public decimal ThirdFee { get; set; }
+        /// <summary>
+        /// 帳單
+        /// </summary>
         [ForeignKey("ToBillNo")]
         public BillModel Bill { get; set; }
         /// <summary>
@@ -106,19 +104,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號")]
         public string ToBillNo { get; set; }
-        public ReceiptBillModel RushBill { get; set; }
-        /// <summary>
-        /// 沖抵單號
-        /// </summary>
-        [Description("沖抵單號")]
-        public string RushBillNo { get; set; }
-        [ForeignKey("BeRushedBillNo")]
-        public ReceiptBillModel BeRushedBill { get; set; }
-        /// <summary>
-        /// 被沖抵單號
-        /// </summary>
-        [Description("被沖抵單號")]
-        public string BeRushedBillNo { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
