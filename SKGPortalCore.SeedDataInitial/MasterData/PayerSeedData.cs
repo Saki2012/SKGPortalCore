@@ -23,17 +23,17 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                 using PayerRepository repo = new PayerRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<PayerSet> payers = new List<PayerSet>()
                 {
-                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="992091",PayerId="000001", PayerName="測試繳款人1", PayerType= PayerType.Normal, PayerNo="000001" } },
-                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="992099",PayerId="000010", PayerName="測試繳款人2", PayerType= PayerType.Normal, PayerNo="000010" } },
-                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="992079",PayerId="000100", PayerName="測試繳款人3", PayerType= PayerType.Normal, PayerNo="000100" } },
+                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="992086",PayerId="000001", PayerName="測試繳款人1", PayerType= PayerType.Normal, PayerNo="001" } },
+                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="2143",PayerId="000001", PayerName="測試繳款人2", PayerType= PayerType.Normal, PayerNo="010" } },
+                    new PayerSet(){ Payer=new PayerModel(){CustomerCode="805",PayerId="000001", PayerName="測試繳款人3", PayerType= PayerType.Normal, PayerNo="100" } },
                 };
-                foreach (PayerSet payer in payers)
+                payers.ForEach(payer =>
                 {
                     if (null == repo.QueryData(new[] { payer.Payer.CustomerCode, payer.Payer.PayerId }))
                     {
                         repo.Create(payer);
                     }
-                }
+                });
             }
             finally
             {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace SKGPortalCore.Model.Enum
 {
@@ -73,6 +74,29 @@ namespace SKGPortalCore.Model.Enum
         [Description("已撥款")]
         Disbursed = 2,
     }
+    /// <summary>
+    /// 銷帳編號長度
+    /// </summary>
+    [Description("銷帳編號長度")]
+    public enum VirtualAccountLen : byte
+    {
+        /// <summary>
+        /// 13碼
+        /// </summary>
+        [Description("13碼")]
+        Len13 = 13,
+        /// <summary>
+        /// 14碼
+        /// </summary>
+        [Description("14碼")]
+        Len14 = 14,
+        /// <summary>
+        /// 16碼
+        /// </summary>
+        [Description("16碼")]
+        Len16 = 16,
+    }
+
     /// <summary>
     /// 自組銷帳編號1
     /// </summary>
@@ -332,7 +356,7 @@ namespace SKGPortalCore.Model.Enum
     /// <summary>
     /// 功能權限動作
     /// </summary>
-    [Description("功能權限動作")]
+    [Description("功能權限動作"), Flags]
     public enum FuncAction : int
     {
         /// <summary>
@@ -477,7 +501,7 @@ namespace SKGPortalCore.Model.Enum
     /// <summary>
     /// 單據動作
     /// </summary>
-    [Description("單據動作")]
+    [Description("單據動作"), Flags]
     public enum SetOpportunity : int
     {
         [Description("新增")]
@@ -501,25 +525,20 @@ namespace SKGPortalCore.Model.Enum
         [Description("清算手續費")]
         ClearFee = 1,
         /// <summary>
-        /// 通路手續費
-        /// </summary>
-        [Description("通路手續費")]
-        ChannelFee = 2,
-        /// <summary>
-        /// 介紹商手續費
-        /// </summary>
-        [Description("介紹商手續費")]
-        IntroducerFee = 3,
-        /// <summary>
         /// 每筆總手續費
         /// </summary>
         [Description("每筆總手續費")]
-        TotalFee = 4,
+        TotalFee = 2,
+        /// <summary>
+        /// Hitrust手續費
+        /// </summary>
+        [Description("Hitrust手續費")]
+        HitrustFee = 3,
     }
     /// <summary>
     /// 資訊流資料異常狀態
     /// </summary>
-    [Description("資訊流資料異常狀態")]
+    [Description("資訊流資料異常狀態"), Flags]
     public enum TransDataUnusual : int
     {
         /// <summary>

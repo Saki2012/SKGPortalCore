@@ -8,7 +8,7 @@ using SKGPortalCore.Repository.BillData;
 
 namespace SKGPortalCore.SeedDataInitial.BillData
 {
-    public class BillSeedData
+    public static class BillSeedData
     {
         /// <summary>
         /// 新增「帳單」-初始資料
@@ -22,11 +22,7 @@ namespace SKGPortalCore.SeedDataInitial.BillData
                 using BillRepository repo = new BillRepository(DataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<BillSet> bills = new List<BillSet>()
                 {
-                    //new BillSet() { Bill = new BillModel() { BillTermId = "001",  CustomerCode = "912", PayerId = "000001", ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
-                    //    BillDetail = new List<BillDetailModel>() { new BillDetailModel() { PayAmount = 20 }, new BillDetailModel() {  PayAmount = 5 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
-                    //new BillSet() { Bill = new BillModel() { BillTermId = "010",  CustomerCode = "1024", PayerId = "000010",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
-                    //    BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 10000 }, new BillDetailModel() { PayAmount = 53 } }, BillReceiptDetail = new List<BillReceiptDetailModel>() },
-                    new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "990128", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
+                    new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "992086", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
                         BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20000 }, new BillDetailModel() {PayAmount = 75 } } }
                 };
                 foreach (BillSet bill in bills)

@@ -1,4 +1,5 @@
 ﻿using SKGPortalCore.Model.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -39,8 +40,13 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編")]
+        [Description("客戶統編"), Required]
         public string CustomerId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("AccountDeptId")]
+        public DeptModel AccountDept { get; set; }
         /// <summary>
         /// 帳務分行
         /// </summary>
@@ -55,7 +61,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 銷帳編號長度
         /// </summary>
         [Description("銷帳編號長度")]
-        public byte VirtualAccountLen { get; set; }
+        public VirtualAccountLen VirtualAccountLen { get; set; }
         /// <summary>
         /// 期別編號長度
         /// </summary>
@@ -104,10 +110,30 @@ namespace SKGPortalCore.Model.MasterData
         [Description("啟用郵局通路")]
         public bool PostEnable { get; set; }
         /// <summary>
+        /// 介紹商企業
+        /// </summary>
+        [ForeignKey("IntroCustomerCode")]
+        public BizCustomerModel IntroCustomer { get; set; }
+        /// <summary>
+        /// 介紹商企業代號
+        /// </summary>
+        [Description("介紹商企業代號")]
+        public string IntroCustomerCode { get; set; }
+        /// <summary>
+        /// 是否介紹商
+        /// </summary>
+        [Description("是否介紹商")]
+        public bool IsIntroCust { get; set; }
+        /// <summary>
         /// 帳戶狀態
         /// </summary>
         [Description("帳戶狀態")]
         public AccountStatus AccountStatus { get; set; }
+        /// <summary>
+        /// 導入時間
+        /// </summary>
+        [Description("導入時間")]
+        public DateTime SyncDateTime { get; set; }
         /// <summary>
         /// 導入批號
         /// </summary>
@@ -158,12 +184,11 @@ namespace SKGPortalCore.Model.MasterData
     /*
      View啟用通路費用表：(條件取自表頭：啟用通路、啟用代收類別)、
      商戶手續費管理檢查：1. 同通路類別的每筆總手續費不應小於最大的通路總手續費、
-                         2. 通路類別不允許重複
 
-     代收類別
-     清算方式
      代收通路
      通路類別
+      
+     通路清算方式(內扣外加)
      收款區間
      通路總手續費
      */

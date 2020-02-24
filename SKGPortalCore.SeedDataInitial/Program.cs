@@ -23,13 +23,8 @@ namespace SKGPortalCore.SeedDataInitial
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             if (DataAccess.Set<BackendUserModel>().Find(ConstParameter.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
             //資料
-            RoleSeeddData.CreateRole(Message, DataAccess);//OK
-            DataAccess.BulkSaveChanges();
-            CreateImportDataSources();
-            ImportData = new ACCFTTImport(DataAccess); ImportData.ExecuteImport();//優先生成商戶資料
-            //var t = DataAccess.Set<SKGPortalCore.Model.MasterData.BizCustomerModel>().Where(p => p.CustomerCode == "990128").FirstOrDefault();
+            //CreateImportDataSources();
             CreateSeedData(DataAccess);
-            //ImportReceiptData();
         }
         /// <summary>
         /// 新增初始資料
@@ -39,17 +34,22 @@ namespace SKGPortalCore.SeedDataInitial
         {
             try
             {
+                CustomerSeedData.CreateCustomer(Message, dataAccess);
+                DeptSeed.CreateDept(Message, dataAccess);
+                RoleSeeddData.CreateRole(Message, DataAccess);//OK
                 ChannelSeedData.CreateChannel(Message, dataAccess);//OK
                 CollectionTypeSeedData.CreateCollectionType(Message, dataAccess);//OK
                 PayerSeedData.CreatePayer(Message, dataAccess);
                 BillTermSeedData.CreateBillTerm(Message, dataAccess);
+
                 //單據
-                //BillSeedData.CreateBill(Message, dataAccess);
+                BillSeedData.CreateBill(Message, dataAccess);
                 dataAccess.BulkSaveChanges();
             }
             catch (Exception e)
             {
                 Message.AddExceptionError(e);
+                throw;
             }
             finally
             {
@@ -74,6 +74,7 @@ namespace SKGPortalCore.SeedDataInitial
             catch (Exception e)
             {
                 Message.AddExceptionError(e);
+                throw;
             }
             Message.WriteLogTxt();
         }

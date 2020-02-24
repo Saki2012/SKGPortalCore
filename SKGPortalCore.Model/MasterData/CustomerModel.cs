@@ -60,15 +60,5 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("郵簡字號")]
         public string ZipNum { get; set; }
-        /// <summary>
-        /// 所屬分行
-        /// </summary>
-        [Description("所屬分行")]
-        public string DeptId { get; set; }
-        /// <summary>
-        /// 是否系統商
-        /// </summary>
-        [Description("是否系統商")]
-        public bool IsSysCust { get; set; }
     }
 }
