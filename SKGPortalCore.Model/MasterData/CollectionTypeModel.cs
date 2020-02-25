@@ -78,15 +78,15 @@ namespace SKGPortalCore.Model.MasterData
         [Description("通路手續費")]
         public decimal ChannelFee { get; set; }
         /// <summary>
-        /// 銀行手續費
+        /// 通路回饋手續費
         /// </summary>
-        [Description("銀行手續費")]
-        public decimal BankFee { get; set; }
+        [Description("通路回饋手續費")]
+        public decimal ChannelFeedBackFee { get; set; }
         /// <summary>
-        /// 銀行回扣手續費
+        /// 通路回扣手續費
         /// </summary>
-        [Description("銀行回扣手續費")]
-        public decimal BankBackFee { get; set; }
+        [Description("通路回扣手續費")]
+        public decimal ChannelRebateFee { get; set; }
         /// <summary>
         /// 通路總手續費
         /// </summary>

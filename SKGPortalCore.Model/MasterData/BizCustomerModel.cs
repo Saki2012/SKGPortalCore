@@ -110,6 +110,11 @@ namespace SKGPortalCore.Model.MasterData
         [Description("啟用郵局通路")]
         public bool PostEnable { get; set; }
         /// <summary>
+        /// 商戶類型
+        /// </summary>
+        [Description("商戶類型")]
+        public BizCustType BizCustType { get; set; }
+        /// <summary>
         /// 介紹商企業
         /// </summary>
         [ForeignKey("IntroCustomerCode")]
@@ -119,11 +124,6 @@ namespace SKGPortalCore.Model.MasterData
         /// </summary>
         [Description("介紹商企業代號")]
         public string IntroCustomerCode { get; set; }
-        /// <summary>
-        /// 是否介紹商
-        /// </summary>
-        [Description("是否介紹商")]
-        public bool IsIntroCust { get; set; }
         /// <summary>
         /// 帳戶狀態
         /// </summary>
@@ -164,11 +164,10 @@ namespace SKGPortalCore.Model.MasterData
         [Description("通路類別"), Key]
         public ChannelGroupType ChannelType { get; set; }
         /// <summary>
-        /// 手續費類型
-        /// (只記錄1:清算手續費、4:每筆總手續費)
+        /// 銀行手續費類型
         /// </summary>
-        [Description("手續費類型")]
-        public FeeType FeeType { get; set; }
+        [Description("銀行手續費類型")]
+        public BankFeeType BankFeeType { get; set; }
         /// <summary>
         /// 手續費
         /// </summary>

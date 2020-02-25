@@ -140,8 +140,8 @@ namespace SKGPortalCore.Schedule.Import
             int i = 0;
             models.ForEach(model =>
             {
-                BizReceiptInfoBillBANK.CheckData(model,Message);
-                ReceiptBillSet set = BizReceiptInfoBillBANK.GetReceiptBillSet(model);
+                BizReceiptInfo.CheckData(model,Message);
+                ReceiptBillSet set = BizReceiptInfo.GetReceiptBillSet(model);
                 billRepo.Create(set);
             Console.WriteLine($"({++i})Create Time:{sw.Elapsed.TotalSeconds}");
             });

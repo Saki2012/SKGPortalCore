@@ -470,10 +470,10 @@ namespace SKGPortalCore.Model.Enum
         [Description("郵局通路")]
         Post = 2,
         /// <summary>
-        /// 信用卡通路
+        /// Hitrust
         /// </summary>
-        [Description("信用卡通路")]
-        Credit = 3,
+        [Description("Hitrust")]
+        Hitrust = 3,
         /// <summary>
         /// 自收款
         /// </summary>
@@ -496,7 +496,11 @@ namespace SKGPortalCore.Model.Enum
         /// </summary>
         [Description("介紹商")]
         Introducer = 1,
-
+        /// <summary>
+        /// Hitrust
+        /// </summary>
+        [Description("Hitrust")]
+        Hitrust = 2,
     }
     /// <summary>
     /// 單據動作
@@ -514,26 +518,26 @@ namespace SKGPortalCore.Model.Enum
         EndCase = 8
     }
     /// <summary>
-    /// 手續費類型
+    /// 銀行手續費類型
     /// </summary>
-    [Description("手續費類型")]
-    public enum FeeType : byte
+    [Description("銀行手續費類型")]
+    public enum BankFeeType : byte
     {
         /// <summary>
-        /// 清算手續費
+        /// 清算手續費(次月扣款)
         /// </summary>
-        [Description("清算手續費")]
-        ClearFee = 1,
+        [Description("清算手續費(次月扣款)")]
+        ClearFeeA = 1,
+        /// <summary>
+        /// 清算手續費(當月扣款)
+        /// </summary>
+        [Description("清算手續費(當月扣款)")]
+        ClearFeeB = 2,
         /// <summary>
         /// 每筆總手續費
         /// </summary>
         [Description("每筆總手續費")]
-        TotalFee = 2,
-        /// <summary>
-        /// Hitrust手續費
-        /// </summary>
-        [Description("Hitrust手續費")]
-        HitrustFee = 3,
+        TotalFee = 3,
     }
     /// <summary>
     /// 資訊流資料異常狀態
@@ -547,14 +551,14 @@ namespace SKGPortalCore.Model.Enum
         [Description("正常")]
         Normal = 0,
         /// <summary>
-        /// 無法解出企業代號
+        /// 無法解析企業代號
         /// </summary>
-        [Description("無法解出企業代號")]
+        [Description("無法解析企業代號")]
         NoCustomerCode = 1,
         /// <summary>
-        /// 無法解出代收類別代號
+        /// 無法解析代收類別代號
         /// </summary>
-        [Description("無法解出代收類別代號")]
+        [Description("無法解析代收類別代號")]
         NoCollectionTypeId = 2,
         /// <summary>
         /// 代收類別未開此通路
@@ -594,52 +598,89 @@ namespace SKGPortalCore.Model.Enum
     public enum PayPeriodType : byte
     {
         /// <summary>
-        /// 日結
+        /// 日結-提前入帳日
+        /// Ex:T+3為例 
+        /// -------------------------
+        /// |資料傳輸日|入帳，撥款日|
+        /// -------------------------
+        /// |星期一　　|星期四　　　|
+        /// -------------------------
+        /// |星期二　　|(本週)星期五|
+        /// -------------------------
+        /// |星期三　　|(本週)星期五|
+        /// -------------------------
+        /// |星期四　　|(本週)星期五|
+        /// -------------------------
+        /// |星期五　　|星期一　　　|
+        /// -------------------------
+        /// |星期六　　|星期二　　　|
+        /// -------------------------
+        /// |星期日　　|星期三　　　|
+        /// -------------------------
         /// </summary>
-        [Description("日結")]
-        NDay = 1,
+        [Description("日結-提前入帳日")]
+        NDay_A = 1,
+        /// <summary>
+        /// 日結-遇假日往後延
+        /// Ex:T+3為例
+        /// -------------------------
+        /// |資料傳輸日|入帳，撥款日|
+        /// -------------------------
+        /// |星期一　　|星期四　　　|
+        /// -------------------------
+        /// |星期二　　|星期五　　　|
+        /// -------------------------
+        /// |星期三　　|(下週)星期一|
+        /// -------------------------
+        /// |星期四　　|(下週)星期一|
+        /// -------------------------
+        /// |星期五　　|(下週)星期一|
+        /// -------------------------
+        /// |星期六　　|星期二　　　|
+        /// -------------------------
+        /// |星期日　　|星期三　　　|
+        /// -------------------------
+        /// </summary>
+        [Description("日結-遇假日往後延")]
+        NDay_B = 2,
+        /// <summary>
+        /// 日結-假日往後延
+        /// Ex:T+3為例
+        /// -------------------------
+        /// |資料傳輸日|入帳，撥款日|
+        /// -------------------------
+        /// |星期一　　|星期四　　　|
+        /// -------------------------
+        /// |星期二　　|星期五　　　|
+        /// -------------------------
+        /// |星期三　　|星期一　　　|
+        /// -------------------------
+        /// |星期四　　|星期二　　　|
+        /// -------------------------
+        /// |星期五　　|星期三　　　|
+        /// -------------------------
+        /// |星期六　　|(下週)星期一|
+        /// -------------------------
+        /// |星期日　　|(下週)星期一|
+        /// -------------------------
+        /// </summary>
+        [Description("日結-假日往後延")]
+        NDay_C = 3,
         /// <summary>
         /// 週結
         /// </summary>
         [Description("週結")]
-        Week = 2,
+        Week = 4,
         /// <summary>
         /// 旬結
         /// </summary>
         [Description("旬結")]
-        TenDay = 3,
+        TenDay = 5,
         /// <summary>
         /// 月結
         /// </summary>
         [Description("月結")]
-        Month = 4,
-    }
-    /// <summary>
-    /// 網路平台申請
-    /// </summary>
-    [Description("網路平台申請")]
-    public enum HiTrustFlag : byte
-    {
-        /// <summary>
-        /// 未申請
-        /// </summary>
-        [Description("未申請")]
-        NoApplication = 0,
-        /// <summary>
-        /// 單機版
-        /// </summary>
-        [Description("單機版")]
-        Single = 1,
-        /// <summary>
-        /// 網路版-分潤
-        /// </summary>
-        [Description("網路版-分潤")]
-        Net = 2,
-        /// <summary>
-        /// 網路版-長期
-        /// </summary>
-        [Description("網路版-長期")]
-        NetLong = 3,
+        Month = 6,
     }
     /// <summary>
     /// 行狀態

@@ -22,10 +22,13 @@ namespace SKGPortalCore.Graph.MasterData
     public class CollectionTypeSetInputType : BaseInputSetGraphType<CollectionTypeSet> { }
     public class CollectionTypeInputType : BaseInputFieldGraphType<CollectionTypeModel> { }
     public class CollectionTypeDetailInputType : BaseInputFieldGraphType<CollectionTypeDetailModel> { }
+    public class CollectionTypeVerifyPeriodInputType : BaseInputFieldGraphType<CollectionTypeVerifyPeriodModel> { }
+
     //Query
     public class CollectionTypeSetType : BaseQuerySetGraphType<CollectionTypeSet> { }
     public class CollectionTypeType : BaseQueryFieldGraphType<CollectionTypeModel> { }
     public class CollectionTypeDetailType : BaseQueryFieldGraphType<CollectionTypeDetailModel> { }
+    public class CollectionTypeVerifyPeriodType : BaseQueryFieldGraphType<CollectionTypeVerifyPeriodModel> { }
 
-    
+
 }

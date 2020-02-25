@@ -28,7 +28,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 
         /// </summary>
         [ForeignKey("CustomerCode")]
-        public BizCustomerModel Customer { get; set; }
+        public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業代號
         /// </summary>

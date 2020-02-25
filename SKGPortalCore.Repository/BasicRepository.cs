@@ -206,11 +206,15 @@ namespace SKGPortalCore.Repository
                 if (typeof(IEnumerable).IsAssignableFrom(setProperty.PropertyType))
                 {
                     Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
-                    object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
-                    IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
-                    foreach (object model in models) SetRefModel(model);
                     Type tp = typeof(List<>).MakeGenericType(new[] { modelType });
                     IList list = (IList)Activator.CreateInstance(tp);
+                    object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
+                    IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
+                    foreach (object model in models)
+                    {
+                        SetRefModel(model);
+                        list.Add(model);
+                    }
                     SetReflect.SetValue(instance, setProperty.Name, list);
                 }
                 else

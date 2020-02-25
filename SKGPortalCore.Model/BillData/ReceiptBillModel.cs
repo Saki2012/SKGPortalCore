@@ -36,12 +36,19 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("企業編號")]
         public string CustomerCode { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("CollectionTypeId")]
         public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
         /// 代收類別代號
         /// </summary>
         [Description("代收類別代號")]
         public string CollectionTypeId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         [ForeignKey("ChannelId")]
         public ChannelModel Channel { get; set; }
         /// <summary>
@@ -80,20 +87,45 @@ namespace SKGPortalCore.Model.BillData
         [Description("通路手續費清算方式")]
         public ChargePayType ChargePayType { get; set; }
         /// <summary>
-        /// 通路手續費
+        /// 手續費類型
         /// </summary>
-        [Description("通路手續費")]
-        public decimal ChannelFee { get; set; }
+        [Description("手續費類型")]
+        public BankFeeType FeeType { get; set; }
         /// <summary>
-        /// 清算手續費
+        /// 銀行手續費
         /// </summary>
-        [Description("清算手續費")]
+        [Description("銀行手續費")]
         public decimal BankFee { get; set; }
         /// <summary>
         /// 介紹商手續費(系統商手續費)
         /// </summary>
         [Description("介紹商手續費")]
         public decimal ThirdFee { get; set; }
+        /// <summary>
+        /// 通路回饋手續費
+        /// </summary>
+        [Description("通路回饋手續費")]
+        public decimal ChannelFeedBackFee { get; set; }
+        /// <summary>
+        /// 通路回扣手續費
+        /// </summary>
+        [Description("通路回扣手續費")]
+        public decimal ChannelRebateFee { get; set; }
+        /// <summary>
+        /// 通路手續費
+        /// </summary>
+        [Description("通路手續費")]
+        public decimal ChannelFee { get; set; }
+        /// <summary>
+        /// 通路總手續費
+        /// </summary>
+        [Description("通路總手續費")]
+        public decimal ChannelTotalFee { get; set; }
+        /// <summary>
+        /// 總手續費(供商戶查看用)
+        /// </summary>
+        [Description("總手續費")]
+        public decimal TotalFee { get; set; }
         /// <summary>
         /// 帳單
         /// </summary>
@@ -118,7 +150,7 @@ namespace SKGPortalCore.Model.BillData
         /// 異常資料
         /// </summary>
         [Description("異常資料")]
-        public bool ErrData { get; set; }
+        public bool IsErrData { get; set; }
         /// <summary>
         /// 異常訊息
         /// </summary>

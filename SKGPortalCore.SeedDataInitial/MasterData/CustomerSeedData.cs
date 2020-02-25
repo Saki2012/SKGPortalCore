@@ -57,25 +57,25 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="992086",CustomerId="30262944",AccountDeptId="0019",RealAccount="0514101002570",BillTermLen=3,PayerNoLen=3,VirtualAccount1= VirtualAccount1.Empty,VirtualAccount2= VirtualAccount2.Empty,VirtualAccount3= VirtualAccount3.NoverifyCode,AccountStatus= AccountStatus.Enable },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Bank, FeeType= FeeType.ClearFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Market, FeeType= FeeType.ClearFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Post, FeeType= FeeType.ClearFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFeeA, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFeeA, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFeeA, Fee=15, Percent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="2143",CustomerId="00146877",AccountDeptId="0019",RealAccount="0518425007840",BillTermLen=3,PayerNoLen=3,VirtualAccount1= VirtualAccount1.Empty,VirtualAccount2= VirtualAccount2.Empty,VirtualAccount3= VirtualAccount3.NoverifyCode,AccountStatus= AccountStatus.Enable },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Bank, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Market, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Post, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="805",CustomerId="01031142",AccountDeptId="0019",RealAccount="7714815486840",BillTermLen=3,PayerNoLen=3,VirtualAccount1= VirtualAccount1.Empty,VirtualAccount2= VirtualAccount2.Empty,VirtualAccount3= VirtualAccount3.NoverifyCode,AccountStatus= AccountStatus.Enable },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Bank, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Market, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Post, FeeType= FeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=15, Percent=0 } ,
                         }
                     },
                 };

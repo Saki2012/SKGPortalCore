@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -83,6 +84,10 @@ namespace SKGPortalCore
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
+#if DEBUG
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/", GraphQLEndPoint = "/Bill" });
+#endif
         }
         #endregion
 

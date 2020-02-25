@@ -133,9 +133,9 @@ namespace SKGPortalCore.Schedule.Import
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
             foreach (ReceiptInfoBillMarketModel model in models)
             {
-                BizReceiptInfoBillMARKET.CheckData(model);
+                BizReceiptInfo.CheckData(model);
                 BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(bizCustRepo, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                repo.Create(BizReceiptInfoBillMARKET.GetReceiptBillSet(model));
+                repo.Create(BizReceiptInfo.GetReceiptBillSet(model));
             }
             repo.CommitData(FuncAction.Create);
         }

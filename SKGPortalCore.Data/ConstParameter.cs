@@ -21,5 +21,14 @@ namespace SKGPortalCore.Data
         /// 系統操作
         /// </summary>
         public static readonly string SysOperator = "SysOperator";
+        /// <summary>
+        /// 銀行-代收類別代號
+        /// </summary>
+        public static readonly string BankCollectionTypeId = "Bank999";
+        /// <summary>
+        /// 郵局-代收類別代號
+        /// </summary>
+        public static readonly string PostCollectionTypeId = "50084884";
+
     }
 }
