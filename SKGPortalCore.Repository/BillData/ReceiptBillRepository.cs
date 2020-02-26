@@ -23,7 +23,7 @@ namespace SKGPortalCore.Repository.BillData
         #region Property
         public Dictionary<string, BizCustomerSet> BizCustSetDic { get; } = new Dictionary<string, BizCustomerSet>();
         public Dictionary<string, CollectionTypeSet> ColSetDic { get; } = new Dictionary<string, CollectionTypeSet>();
-        public Dictionary<DateTime, bool> WorkDic { get; private set; }
+        private Dictionary<DateTime, bool> WorkDic { get; set; }
         #endregion
 
         #region Construct
@@ -38,6 +38,7 @@ namespace SKGPortalCore.Repository.BillData
                 }
             });
             //IsSetRefModel = false;
+            InitWorkDic(DateTime.Now, 9);
         }
         #endregion
 
@@ -54,7 +55,7 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterSetEntity(set, action);
             BizReceiptBill.CheckData(set, Message);
             BizReceiptBill.SetData(set, DataAccess, BizCustSetDic, ColSetDic, WorkDic);
-            BizReceiptBill.PostingData(DataAccess, User, action, null, set);
+            //BizReceiptBill.PostingData(DataAccess, User, action, null, set);
         }
         #endregion
     }
