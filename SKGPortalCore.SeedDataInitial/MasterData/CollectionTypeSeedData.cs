@@ -410,8 +410,8 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                                 new CollectionTypeDetailModel() { RowId = 1, CollectionTypeId = "I0O", ChannelId = "01", SRange = 1, ERange = 50000, ChannelFee = 20 },
                                 new CollectionTypeDetailModel() { RowId = 2, CollectionTypeId = "I0O", ChannelId = "02", SRange = 1, ERange = 50000, ChannelFee = 20 },
                                 new CollectionTypeDetailModel() { RowId = 3, CollectionTypeId = "I0O", ChannelId = "03", SRange = 1, ERange = 50000, ChannelFee = 20 },
-                                new CollectionTypeDetailModel() { RowId = 4, CollectionTypeId = "I0O", ChannelId = "04", SRange = 1, ERange = 50000, ChannelFee = 20 }
-                                new CollectionTypeDetailModel() { RowId = 5, CollectionTypeId = "I0O", ChannelId = "05", SRange = 1, ERange = 50000, ChannelFee = 20 }
+                                new CollectionTypeDetailModel() { RowId = 4, CollectionTypeId = "I0O", ChannelId = "04", SRange = 1, ERange = 50000, ChannelFee = 20 },
+                                new CollectionTypeDetailModel() { RowId = 5, CollectionTypeId = "I0O", ChannelId = "05", SRange = 1, ERange = 50000, ChannelFee = 20 },
                             },
                             CollectionTypeVerifyPeriod=new List<CollectionTypeVerifyPeriodModel>(){
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="01", PayPeriodType= PayPeriodType.TenDay },
