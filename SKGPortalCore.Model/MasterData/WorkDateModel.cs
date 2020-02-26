@@ -34,10 +34,10 @@ namespace SKGPortalCore.Model.MasterData
         [Description("日期")]
         public DateTime Date { get; set; }
         /// <summary>
-        /// 是否假日
+        /// 是否營業日
         /// </summary>
-        [Description("是否假日")]
-        public bool IsHoliday { get; set; }
+        [Description("是否營業日")]
+        public bool IsWorkDate { get; set; }
         /// <summary>
         /// 假別名
         /// </summary>

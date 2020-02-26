@@ -68,7 +68,6 @@ namespace SKGPortalCore.SeedDataInitial
                 ReceiptInfoPostSeedData.ReceiptInfoPostData(Message);
                 ReceiptInfoMarketSeedData.ReceiptInfoMarketData(Message);
                 ReceiptInfoMarketSPISeedData.ReceiptInfoMarketSPIData(Message);
-                ReceiptInfoFarmSeedData.ReceiptInfoFarmData(Message);
                 RemitInfoSeedData.RemitInfoData(Message);
             }
             catch (Exception e)

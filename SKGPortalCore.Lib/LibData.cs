@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -171,6 +173,19 @@ namespace SKGPortalCore.Lib
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// 獲取營業日
+        /// </summary>
+        /// <param name="workDateDic"></param>
+        /// <param name="date"></param>
+        /// <param name="isNext"></param>
+        /// <returns></returns>
+        public static DateTime GetWorkDate(Dictionary<DateTime, bool> workDateDic, DateTime date, int nextDays)
+        {
+            return nextDays >= 0 ?
+                workDateDic.Where(p => p.Value == true && p.Key >= date.AddDays(nextDays)).OrderBy(p => p.Key).First().Key :
+                workDateDic.Where(p => p.Value == true && p.Key <= date.AddDays(nextDays)).OrderByDescending(p => p.Key).First().Key;
         }
         /// Convert
         public static short ToInt16(this object val)

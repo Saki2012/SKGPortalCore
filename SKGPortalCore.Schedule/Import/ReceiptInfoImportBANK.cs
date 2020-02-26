@@ -167,27 +167,4 @@ namespace SKGPortalCore.Schedule.Import
         }
         #endregion
     }
-
-    /// <summary>
-    /// 資訊流導入-共用方法
-    /// </summary>
-    public static class ReceiptInfoImportComm
-    {
-        internal static BizCustomerSet GetBizCustomerSet(BizCustomerRepository biz, string compareCode, out string compareCodeForCheck)
-        {
-            compareCodeForCheck = string.Empty;
-            BizCustomerSet bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 6) });
-            if (null == bizCust)
-                bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 4) });
-            if (null == bizCust)
-                bizCust = biz.QueryData(new object[] { compareCode.Substring(0, 3) });
-            if (null == bizCust)
-                return null;
-            if (bizCust.BizCustomer.AccountStatus == AccountStatus.Unable)
-                compareCodeForCheck = compareCode;
-            else
-                compareCodeForCheck = bizCust.BizCustomer.VirtualAccount3 == VirtualAccount3.NoverifyCode ? compareCode : compareCode[0..^1];
-            return bizCust;
-        }
-    }
 }

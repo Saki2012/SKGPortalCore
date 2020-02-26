@@ -112,14 +112,16 @@ namespace SKGPortalCore.Schedule.Import
         /// <returns></returns>
         IList IImportData.AnalyzeFile(Dictionary<int, string> sources)
         {
-            List<ReceiptInfoBillMarketModel> result = new List<ReceiptInfoBillMarketModel>();
+            List<dynamic> result = new List<dynamic>();
             DateTime now = DateTime.Now;
             string importBatchNo = $"MARKET{now.ToString("yyyyMMddhhmmss")}";
             foreach (int line in sources.Keys)
             {
+                //if(is產險)
+                //result.Add(new ReceiptInfoBillMarketSPIModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
+                //else
                 result.Add(new ReceiptInfoBillMarketModel() { Id = line, Source = sources[line], ImportBatchNo = importBatchNo });
             }
-
             return result;
         }
         /// <summary>
@@ -128,15 +130,22 @@ namespace SKGPortalCore.Schedule.Import
         /// <param name="modelSources"></param>
         void IImportData.CreateData(IList modelSources)
         {
-            List<ReceiptInfoBillMarketModel> models = modelSources as List<ReceiptInfoBillMarketModel>;
+            List<dynamic> models = modelSources as List<dynamic>;
             using BizCustomerRepository bizCustRepo = new BizCustomerRepository(DataAccess) { Message = Message };
             using ReceiptBillRepository repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
-            foreach (ReceiptInfoBillMarketModel model in models)
+            models.ForEach(model =>
             {
-                BizReceiptInfo.CheckData(model);
-                BizCustomerSet bizCust = ReceiptInfoImportComm.GetBizCustomerSet(bizCustRepo, model.Barcode2.TrimStart('0'), out string compareCodeForCheck);
-                repo.Create(BizReceiptInfo.GetReceiptBillSet(model));
-            }
+                if (model is ReceiptInfoBillMarketModel)
+                {
+                    BizReceiptInfo.CheckData(model);
+                    repo.Create(BizReceiptInfo.GetReceiptBillSet(model));
+                }
+                else if(model is ReceiptInfoBillMarketSPIModel)
+                {
+                    BizReceiptInfo.CheckData(model);
+                    repo.Create(BizReceiptInfo.GetReceiptBillSet(model));
+                }
+            });
             repo.CommitData(FuncAction.Create);
         }
         /// <summary>

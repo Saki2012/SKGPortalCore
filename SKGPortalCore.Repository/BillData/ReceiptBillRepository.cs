@@ -23,6 +23,7 @@ namespace SKGPortalCore.Repository.BillData
         #region Property
         public Dictionary<string, BizCustomerSet> BizCustSetDic { get; } = new Dictionary<string, BizCustomerSet>();
         public Dictionary<string, CollectionTypeSet> ColSetDic { get; } = new Dictionary<string, CollectionTypeSet>();
+        public Dictionary<DateTime, bool> WorkDic { get; private set; }
         #endregion
 
         #region Construct
@@ -40,12 +41,20 @@ namespace SKGPortalCore.Repository.BillData
         }
         #endregion
 
+        #region Public
+        public void InitWorkDic(DateTime date, int months)
+        {
+            WorkDic = DataAccess.Set<WorkDateModel>().Where(p => p.Date >= date.AddMonths(-Math.Abs(months)) && p.Date <= date.AddMonths(Math.Abs(months))).ToDictionary(key => key.Date, value => value.IsWorkDate);
+        }
+        #endregion
+
         #region Protected
         protected override void AfterSetEntity(ReceiptBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
             BizReceiptBill.CheckData(set, Message);
-            BizReceiptBill.SetData(set, DataAccess, User, action, BizCustSetDic, ColSetDic/*, PeriodDic*/);
+            BizReceiptBill.SetData(set, DataAccess, BizCustSetDic, ColSetDic, WorkDic);
+            BizReceiptBill.PostingData(DataAccess, User, action, null, set);
         }
         #endregion
     }
