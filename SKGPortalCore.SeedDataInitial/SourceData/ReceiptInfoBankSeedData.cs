@@ -20,29 +20,6 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
                 new ReceiptInfoBillBankModel() { RealAccount="770259918032",  TradeDate="20190910",  TradeTime="000000",  CompareCode="912001000001",  PN="+",  Amount="9000",  Summary="銀行通路",  Branch="0499",  TradeChannel="SA",  Channel="00",  ChangeDate="20190910",  BizDate="20190910",  Serial="000001",  CustomerCode="912",  Fee="000",  Empty=""  },
             };
 
-            for (int i = 0; i < 10000; i++)
-            {
-                banks.Add(new ReceiptInfoBillBankModel()
-                {
-                    RealAccount = "770259918032",
-                    TradeDate = "20190910",
-                    TradeTime = "000000",
-                    CompareCode = "912001000001",
-                    PN = "+",
-                    Amount = i.ToString(),
-                    Summary = "銀行通路",
-                    Branch = "0499",
-                    TradeChannel = "SA",
-                    Channel = "00",
-                    ChangeDate = "20190910",
-                    BizDate = "20190910",
-                    Serial = "000001",
-                    CustomerCode = "912",
-                    Fee = "000",
-                    Empty = ""
-                });
-            }
-
             bool err = false;
             banks.ForEach(p => { if (p.Source != new ReceiptInfoBillBankModel() { Source = p.Source }.Src) { err = true; return; } });
             if (err) { Message.AddCustErrorMessage(MessageCode.Code0000, "資訊流-銀行Source拆分組合異常"); return null; }

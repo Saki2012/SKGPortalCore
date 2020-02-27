@@ -1,4 +1,4 @@
-﻿using SKGPortalCore.Model.Enum;
+﻿using SKGPortalCore.Model.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

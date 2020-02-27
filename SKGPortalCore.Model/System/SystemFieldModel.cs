@@ -1,9 +1,8 @@
-﻿using SKGPortalCore.Model.Enum;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SKGPortalCore.Model
+namespace SKGPortalCore.Model.System
 {
     /// <summary>
     /// (單據)系統欄位

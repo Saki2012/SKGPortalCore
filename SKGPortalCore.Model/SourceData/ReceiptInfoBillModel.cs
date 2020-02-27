@@ -203,12 +203,23 @@ namespace SKGPortalCore.Model.SourceData
         [Description("交易金額"), MaxLength(11)]
         public string Amount { get => _Amount; set => _Amount = value.PadLeft(11, '0').ByteSubString(0, 11); }
         /// <summary>
-        /// 8. 用戶編號(24)
+        /// 8. 繳費截止日(7)
+        /// 民國年月日
         /// </summary>
-        [Description("用戶編號"), MaxLength(24)]
-        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(24, '0').ByteSubString(0, 24); }
+        [Description("繳費截止日"), MaxLength(7)]
+        public string PayEndDay { get => _PayEndDay; set => _PayEndDay = value.PadLeft(7, '0').ByteSubString(0, 7); }
         /// <summary>
-        /// 9. 保留(42)
+        /// 9. 用戶編號(16)
+        /// </summary>
+        [Description("用戶編號"), MaxLength(16)]
+        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        /// <summary>
+        /// 10. 檢碼(1)
+        /// </summary>
+        [Description("檢碼"), MaxLength(1)]
+        public string CheckCode { get => _CheckCode; set => _CheckCode = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        /// <summary>
+        /// 11. 保留(42)
         /// </summary>
         [Description("保留"), MaxLength(42)]
         public string Empty { get => _Empty; set => _Empty = value.PadLeft(42, '0').ByteSubString(0, 42); }
@@ -223,7 +234,7 @@ namespace SKGPortalCore.Model.SourceData
         [Description("Source")]
         public string Source
         {
-            get => $"{_CollectionType}{_TradeDate}{_Branch}{_Channel}{_TradeSer}{_PN}{_Amount}{_CompareCode}{_Empty}";
+            get => $"{_CollectionType}{_TradeDate}{_Branch}{_Channel}{_TradeSer}{_PN}{_Amount}{_PayEndDay}{_CompareCode}{_CheckCode}{_Empty}";
             set
             {
                 _CollectionType = value.ByteSubString(0, 8);
@@ -233,7 +244,9 @@ namespace SKGPortalCore.Model.SourceData
                 _TradeSer = value.ByteSubString(25, 7);
                 _PN = value.ByteSubString(32, 1);
                 _Amount = value.ByteSubString(33, 11);
-                _CompareCode = value.ByteSubString(44, 24);
+                _PayEndDay = value.ByteSubString(44, 7);
+                _CompareCode = value.ByteSubString(51, 16);
+                _CheckCode = value.ByteSubString(67, 1);
                 _Empty = value.ByteSubString(68, 42);
                 Src = value;
             }
@@ -246,15 +259,17 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _CollectionType;
+        private string _CollectionType = ConstParameter.PostCollectionTypeId;
         private string _TradeDate;
-        private string _Branch;
+        private string _Branch = string.Empty.PadLeft(6);
         private string _Channel;
-        private string _TradeSer;
-        private string _PN;
+        private string _TradeSer = string.Empty.PadLeft(7);
+        private string _PN = "+";
         private string _Amount;
+        private string _PayEndDay = string.Empty.PadLeft(7);
         private string _CompareCode;
-        private string _Empty;
+        private string _CheckCode = string.Empty.PadLeft(1);
+        private string _Empty = string.Empty.PadLeft(42);
         #endregion
     }
     /// <summary>
@@ -277,17 +292,17 @@ namespace SKGPortalCore.Model.SourceData
         /// 2. 公司代號(8)
         /// </summary>
         [Description("公司代號"), MaxLength(8)]
-        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 3. 代收機構代號(8)
         /// </summary>
         [Description("代收機構代號"), MaxLength(8)]
-        public string Channel { get => _Channel; set => _Channel = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 4. 代收門市店號(8)
         /// </summary>
         [Description("代收門市店號"), MaxLength(8)]
-        public string Store { get => _Store; set => _Store = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string Store { get => _Store; set => _Store = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 5. 轉帳代繳帳號(14)
         /// </summary>
@@ -371,19 +386,19 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _Idx;
+        private string _Idx = "2";
         private string _CollectionType;
         private string _Channel;
-        private string _Store;
-        private string _TransAccount;
-        private string _TransType;
-        private string _PayStatus;
+        private string _Store = string.Empty.PadLeft(8);
+        private string _TransAccount = string.Empty.PadLeft(14);
+        private string _TransType = string.Empty.PadLeft(3);
+        private string _PayStatus = string.Empty.PadLeft(2);
         private string _AccountingDay;
         private string _PayDate;
-        private string _Barcode1;
+        private string _Barcode1 = string.Empty.PadLeft(9);
         private string _Barcode2;
-        private string _Barcode3;
-        private string _Empty;
+        private string _Barcode3 = string.Empty.PadLeft(15);
+        private string _Empty = string.Empty.PadLeft(16);
         #endregion
     }
     /// <summary>
@@ -411,7 +426,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 收件單位(8)
         /// </summary>
         [Description("收件單位"), MaxLength(8)]
-        public string ISC { get => _ISC; set => _ISC = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 入/扣帳日期(8)
         /// </summary>
@@ -468,12 +483,12 @@ namespace SKGPortalCore.Model.SourceData
         [Description("Source")]
         public string Source
         {
-            get => $"{_Idx}{_Channel}{_ISC}{_TransDate}{_PayDate}{_Barcode2}{_Barcode3_Date}{_Barcode3_CompareCode}{_Barcode3_Amount}{_Empty1}{_Store}{_Empty2}";
+            get => $"{_Idx}{_Channel}{_CollectionType}{_TransDate}{_PayDate}{_Barcode2}{_Barcode3_Date}{_Barcode3_CompareCode}{_Barcode3_Amount}{_Empty1}{_Store}{_Empty2}";
             set
             {
                 _Idx = value.ByteSubString(0, 1);
                 _Channel = value.ByteSubString(1, 8);
-                _ISC = value.ByteSubString(9, 8);
+                _CollectionType = value.ByteSubString(9, 8);
                 _TransDate = value.ByteSubString(17, 8);
                 _PayDate = value.ByteSubString(25, 8);
                 _Barcode2 = value.ByteSubString(33, 16);
@@ -494,18 +509,18 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _Idx;
+        private string _Idx = "2";
         private string _Channel;
-        private string _ISC;
+        private string _CollectionType = "I0O";
         private string _TransDate;
         private string _PayDate;
         private string _Barcode2;
-        private string _Barcode3_Date;
+        private string _Barcode3_Date = string.Empty.PadLeft(4);
         private string _Barcode3_CompareCode;
         private string _Barcode3_Amount;
-        private string _Empty1;
-        private string _Store;
-        private string _Empty2;
+        private string _Empty1 = string.Empty.PadLeft(18);
+        private string _Store = string.Empty.PadLeft(6);
+        private string _Empty2 = string.Empty.PadLeft(32);
         #endregion
     }
 }

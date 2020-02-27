@@ -10,7 +10,7 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using System.Linq;
 using System.Reflection;
-using SKGPortalCore.Model.Enum;
+using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Data
 {

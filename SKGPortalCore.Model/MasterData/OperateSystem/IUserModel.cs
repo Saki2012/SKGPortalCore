@@ -1,4 +1,4 @@
-﻿using SKGPortalCore.Model.Enum;
+﻿using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Model.MasterData.OperateSystem
 {

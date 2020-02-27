@@ -3,7 +3,8 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using SKGPortalCore.Data;
-using SKGPortalCore.Schedule.Import;
+using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
 
 namespace SKGPortalCore.Schedule
 {

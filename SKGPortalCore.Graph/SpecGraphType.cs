@@ -14,7 +14,7 @@ using SKGPortalCore.Repository;
 using SKGPortalCore.Graph.BillData;
 using SKGPortalCore.Graph.MasterData;
 using System.ComponentModel;
-using SKGPortalCore.Model.Enum;
+using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Graph
 {

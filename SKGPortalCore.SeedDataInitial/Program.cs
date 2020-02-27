@@ -5,7 +5,8 @@ using System.Text;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Schedule.Import;
+using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
 using SKGPortalCore.SeedDataInitial.BillData;
 using SKGPortalCore.SeedDataInitial.MasterData;
 using SKGPortalCore.SeedDataInitial.SourceData;
@@ -67,7 +68,6 @@ namespace SKGPortalCore.SeedDataInitial
                 ReceiptInfoBankSeedData.ReceiptInfoBankData(Message);
                 ReceiptInfoPostSeedData.ReceiptInfoPostData(Message);
                 ReceiptInfoMarketSeedData.ReceiptInfoMarketData(Message);
-                ReceiptInfoMarketSPISeedData.ReceiptInfoMarketSPIData(Message);
                 RemitInfoSeedData.RemitInfoData(Message);
             }
             catch (Exception e)

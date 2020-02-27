@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.System;
 using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
@@ -63,7 +63,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 繳款人
         /// </summary>
-        [ForeignKey("CustomerId,PayerId")]
+        [ForeignKey("CustomerCode,PayerId")]
         public PayerModel Payer { get; set; }
         /// <summary>
         /// 繳款人

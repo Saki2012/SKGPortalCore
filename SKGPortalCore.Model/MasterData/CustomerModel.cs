@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SKGPortalCore.Model.System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Model.MasterData

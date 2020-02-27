@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Model.System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 

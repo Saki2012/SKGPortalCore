@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.Enum;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 

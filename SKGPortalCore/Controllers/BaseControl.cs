@@ -5,7 +5,7 @@ using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using SKGPortalCore.Data;
-using SKGPortalCore.Model;
+using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Controllers
 {

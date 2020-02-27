@@ -17,19 +17,30 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             List<dynamic> marts = new List<dynamic>();
 
             marts.AddRange(new List<ReceiptInfoBillMarketModel>() {
-                new ReceiptInfoBillMarketModel() { Idx = "2", CollectionType = "6V1", Channel = "01", Store = "02048888", TransAccount = "77855941", TransType = "336", PayStatus = "21", AccountingDay = "20190910", PayDate = "20190910", Barcode1 = "89858", Barcode2 = "78494", Barcode3 = "963852",  Empty="" },
-                //new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
-                //new ReceiptInfoBillMarketModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
+                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
+                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
+                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
+                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
             });
 
-            marts.AddRange(new List<ReceiptInfoBillMarketSPIModel>() {
-                //new ReceiptInfoBillMarketSPIModel() { Idx = "2", CollectionType = "6V1", Channel = "01", Store = "02048888", TransAccount = "77855941", TransType = "336", PayStatus = "21", AccountingDay = "20190910", PayDate = "20190910", Barcode1 = "89858", Barcode2 = "78494", Barcode3 = "963852",  Empty="" },
-                //new ReceiptInfoBillMarketSPIModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
-                //new ReceiptInfoBillMarketSPIModel() { Idx = "", CollectionType = "", Channel = "", Store = "", TransAccount = "", TransType = "", PayStatus = "", AccountingDay = "", PayDate = "", Barcode1 = "", Barcode2 = "", Barcode3 = "", Empty="" },
+            marts.AddRange(new List<ReceiptInfoBillMarketSPIModel>()
+            {
+                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
+                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
+                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
+                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
+                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
             });
-            
+
             bool err = false;
-            marts.ForEach(p => { if (p.Source != new ReceiptInfoBillMarketModel() { Source = p.Source }.Source) { err = true; return; } });
+            marts.ForEach(p =>
+            {
+                if (p is ReceiptInfoBillMarketModel)
+                { if (p.Source != new ReceiptInfoBillMarketModel() { Source = p.Source }.Source) { err = true; return; } }
+                else
+                { if (p.Source != new ReceiptInfoBillMarketSPIModel() { Source = p.Source }.Source) { err = true; return; } }
+            });
             if (err) { Message.AddCustErrorMessage(MessageCode.Code0000, "資訊流-超商Source拆分組合異常"); return null; }
             string path = $@"D:\ibankRoot\Ftp_SKGPortalCore\TransactionListDaily\"; Directory.CreateDirectory(path);
             using StreamWriter sw = new StreamWriter($@"{path}SKG_MART.{DateTime.Now.ToString("yyyyMMdd")}", false, Encoding.GetEncoding(950));

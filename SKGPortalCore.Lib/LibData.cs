@@ -181,11 +181,11 @@ namespace SKGPortalCore.Lib
         /// <param name="date"></param>
         /// <param name="isNext"></param>
         /// <returns></returns>
-        public static DateTime GetWorkDate(Dictionary<DateTime, bool> workDateDic, DateTime date, int nextDays)
+        public static DateTime GetWorkDate(Dictionary<DateTime, bool> workDateDic, DateTime date, int days = 0, bool isNext = true)
         {
-            return nextDays >= 0 ?
-                workDateDic.Where(p => p.Value == true && p.Key >= date.AddDays(nextDays)).OrderBy(p => p.Key).First().Key :
-                workDateDic.Where(p => p.Value == true && p.Key <= date.AddDays(nextDays)).OrderByDescending(p => p.Key).First().Key;
+            return isNext ?
+                workDateDic.Where(p => p.Value == true && p.Key >= date).OrderBy(p => p.Key).ElementAt(Math.Abs(days)).Key :
+                workDateDic.Where(p => p.Value == true && p.Key <= date).OrderByDescending(p => p.Key).ElementAt(Math.Abs(days)).Key;
         }
         /// Convert
         public static short ToInt16(this object val)

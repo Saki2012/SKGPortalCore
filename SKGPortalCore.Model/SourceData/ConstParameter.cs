@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SKGPortalCore.Data
+namespace SKGPortalCore.Model.SourceData
 {
     /// <summary>
     /// 固定參數

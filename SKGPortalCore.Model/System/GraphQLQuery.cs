@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace SKGPortalCore.Model
+namespace SKGPortalCore.Model.System
 {
     public class GraphQLQuery
     {

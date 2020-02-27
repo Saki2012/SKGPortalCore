@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace SKGPortalCore.Model.Enum
+namespace SKGPortalCore.Model.System
 {
     /// <summary>
     /// 繳款狀態
@@ -680,6 +680,16 @@ namespace SKGPortalCore.Model.Enum
         NDay_C = 3,
         /// <summary>
         /// 週結
+        /// Ex:週三結帳
+        /// -------------------------------------------
+        /// ｜               2020/02                  ｜          
+        /// -------------------------------------------
+        /// ｜日　｜一　｜二　｜三　｜四　｜五　｜六　｜
+        /// -------------------------------------------
+        /// ｜　　｜１７｜１８｜１９｜２０｜２１｜２２｜
+        /// -------------------------------------------
+        /// ｜２３｜　　｜　　｜匯款｜　　｜　　｜　　｜
+        /// -------------------------------------------
         /// </summary>
         [Description("週結")]
         Week = 4,

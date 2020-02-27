@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using SKGPortalCore.Model;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
