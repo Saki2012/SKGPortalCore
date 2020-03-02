@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Model.MasterData
 {
@@ -31,7 +32,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 日期
         /// </summary>
-        [Description("日期")]
+        [Description("日期"),Key]
         public DateTime Date { get; set; }
         /// <summary>
         /// 是否營業日

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
@@ -24,8 +26,9 @@ namespace SKGPortalCore.SeedDataInitial
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             if (DataAccess.Set<BackendUserModel>().Find(ConstParameter.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
             //資料
-            //CreateImportDataSources();
+            CreateImportDataSources();
             CreateSeedData(DataAccess);
+            ImportReceiptData();
         }
         /// <summary>
         /// 新增初始資料
@@ -45,6 +48,18 @@ namespace SKGPortalCore.SeedDataInitial
 
                 //單據
                 BillSeedData.CreateBill(Message, dataAccess);
+
+
+                //List<WorkDateModel> workDates = new List<WorkDateModel>();
+                //DateTime date = DateTime.Now.AddYears(-1).Date;
+                //DateTime date2 = DateTime.Now.AddYears(1).Date;
+                //while (date != date2)
+                //{
+                //    workDates.Add(new WorkDateModel() { Date = date, Description = "", HolidayCategory = "", IsWorkDate = !date.DayOfWeek.In(DayOfWeek.Sunday, DayOfWeek.Saturday), Name = "" });
+                //    date = date.AddDays(1);
+                //}
+                //dataAccess.WorkDate.AddRange(workDates);
+
                 dataAccess.BulkSaveChanges();
             }
             catch (Exception e)
@@ -64,11 +79,11 @@ namespace SKGPortalCore.SeedDataInitial
         {
             try
             {
-                ACCFTTSeedData.ACCFTTData(Message);
+                //ACCFTTSeedData.ACCFTTData(Message);
                 ReceiptInfoBankSeedData.ReceiptInfoBankData(Message);
                 ReceiptInfoPostSeedData.ReceiptInfoPostData(Message);
                 ReceiptInfoMarketSeedData.ReceiptInfoMarketData(Message);
-                RemitInfoSeedData.RemitInfoData(Message);
+                //RemitInfoSeedData.RemitInfoData(Message);
             }
             catch (Exception e)
             {
@@ -83,8 +98,8 @@ namespace SKGPortalCore.SeedDataInitial
         private static void ImportReceiptData()
         {
             ImportData = new ReceiptInfoImportBANK(DataAccess); ImportData.ExecuteImport();
-            //ImportData = new ReceiptInfoImportPOST(DataAccess); ImportData.ExecuteImport();
-            //ImportData = new ReceiptInfoImportMARKET(DataAccess); ImportData.ExecuteImport();
+            ImportData = new ReceiptInfoImportPOST(DataAccess); ImportData.ExecuteImport();
+            ImportData = new ReceiptInfoImportMARKET(DataAccess); ImportData.ExecuteImport();
             //ImportData = new ReceiptInfoImportMARKETSPI(DataAccess); ImportData.ExecuteImport();
             //ImportData = new ReceiptInfoImportFARM(DataAccess); ImportData.ExecuteImport();
             //ImportData = new RemitInfoImport(DataAccess); ImportData.ExecuteImport();

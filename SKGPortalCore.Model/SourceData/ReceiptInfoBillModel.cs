@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using SKGPortalCore.Lib;
 
@@ -34,7 +35,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 4. 全方位銷帳編號(16)
         /// </summary>
         [Description("全方位銷帳編號"), MaxLength(16)]
-        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadRight(16, ' ').ByteSubString(0, 16); }
+        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 5. 金額符號±(1)
         /// </summary>
@@ -138,22 +139,22 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _RealAccount;
-        private string _TradeDate;
-        private string _TradeTime;
+        private string _RealAccount = string.Empty.PadLeft(13);
+        private string _TradeDate = DateTime.Now.ToString("yyyyMMdd");
+        private string _TradeTime = DateTime.Now.ToString("HHmmss");
         private string _CompareCode;
         private string _PN;
         private string _Amount;
-        private string _Summary;
-        private string _Branch;
-        private string _TradeChannel;
+        private string _Summary = string.Empty.PadLeft(10);
+        private string _Branch = string.Empty.PadLeft(4);
+        private string _TradeChannel = string.Empty.PadLeft(2);
         private string _Channel;
-        private string _ChangeDate;
-        private string _BizDate;
-        private string _Serial;
-        private string _CustomerCode;
-        private string _Fee;
-        private string _Empty;
+        private string _ChangeDate = string.Empty.PadLeft(8);
+        private string _BizDate = string.Empty.PadLeft(8);
+        private string _Serial = string.Empty.PadLeft(6);
+        private string _CustomerCode = string.Empty.PadLeft(6);
+        private string _Fee = string.Empty.PadLeft(3);
+        private string _Empty = string.Empty.PadLeft(25);
         #endregion
     }
     /// <summary>
@@ -260,13 +261,13 @@ namespace SKGPortalCore.Model.SourceData
         #endregion
         #region Private
         private string _CollectionType = ConstParameter.PostCollectionTypeId;
-        private string _TradeDate;
+        private string _TradeDate = DateTime.Now.ToROCDate();
         private string _Branch = string.Empty.PadLeft(6);
         private string _Channel;
         private string _TradeSer = string.Empty.PadLeft(7);
         private string _PN = "+";
         private string _Amount;
-        private string _PayEndDay = string.Empty.PadLeft(7);
+        private string _PayEndDay = DateTime.Now.AddDays(-1).ToROCDate();
         private string _CompareCode;
         private string _CheckCode = string.Empty.PadLeft(1);
         private string _Empty = string.Empty.PadLeft(42);
@@ -334,20 +335,27 @@ namespace SKGPortalCore.Model.SourceData
         [Description("Barcode1"), MaxLength(9)]
         public string Barcode1 { get => _Barcode1; set => _Barcode1 = value.PadLeft(9, '0').ByteSubString(0, 9); }
         /// <summary>
-        /// 11. Barcode2(20)
+        /// 11. Barcode2(16)
+        /// 銷帳資料
         /// </summary>
-        [Description("Barcode2"), MaxLength(20)]
-        public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(20, '0').ByteSubString(0, 20); }
+        [Description("Barcode2"), MaxLength(16)]
+        public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
-        /// 12. Barcode3(15)
+        /// 12. 保留1(4)
+        /// </summary>
+        [Description("保留1(4)"), MaxLength(4)]
+        public string Empty1 { get => _Empty1; set => _Empty1 = value.PadLeft(4, ' ').ByteSubString(0, 4); }
+        /// <summary>
+        /// 13. Barcode3(15)
+        /// 金額
         /// </summary>
         [Description("Barcode3"), MaxLength(15)]
         public string Barcode3 { get => _Barcode3; set => _Barcode3 = value.PadLeft(15, '0').ByteSubString(0, 15); }
         /// <summary>
-        /// 13. 保留(16)
+        /// 14. 保留(16)
         /// </summary>
-        [Description("保留"), MaxLength(16)]
-        public string Empty { get => _Empty; set => _Empty = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("保留2(16)"), MaxLength(16)]
+        public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 導入批號
         /// </summary>
@@ -359,7 +367,7 @@ namespace SKGPortalCore.Model.SourceData
         [Description("Source")]
         public string Source
         {
-            get => $"{_Idx}{_CollectionType}{_Channel}{_Store}{_TransAccount}{_TransType}{_PayStatus}{_AccountingDay}{_PayDate}{_Barcode1}{_Barcode2}{_Barcode3}{_Empty}";
+            get => $"{_Idx}{_CollectionType}{_Channel}{_Store}{_TransAccount}{_TransType}{_PayStatus}{_AccountingDay}{_PayDate}{_Barcode1}{_Barcode2}{_Empty1}{_Barcode3}{_Empty2}";
             set
             {
                 _Idx = value.ByteSubString(0, 1);
@@ -372,9 +380,10 @@ namespace SKGPortalCore.Model.SourceData
                 _AccountingDay = value.ByteSubString(44, 8);
                 _PayDate = value.ByteSubString(52, 8);
                 _Barcode1 = value.ByteSubString(60, 9);
-                _Barcode2 = value.ByteSubString(69, 20);
+                _Barcode2 = value.ByteSubString(69, 16);
+                _Empty1 = value.ByteSubString(85, 4);
                 _Barcode3 = value.ByteSubString(89, 15);
-                _Empty = value.ByteSubString(104, 16);
+                _Empty2 = value.ByteSubString(104, 16);
                 Src = value;
             }
         }
@@ -393,12 +402,13 @@ namespace SKGPortalCore.Model.SourceData
         private string _TransAccount = string.Empty.PadLeft(14);
         private string _TransType = string.Empty.PadLeft(3);
         private string _PayStatus = string.Empty.PadLeft(2);
-        private string _AccountingDay;
-        private string _PayDate;
+        private string _AccountingDay = DateTime.Now.ToString("yyyyMMdd");
+        private string _PayDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
         private string _Barcode1 = string.Empty.PadLeft(9);
         private string _Barcode2;
-        private string _Barcode3 = string.Empty.PadLeft(15);
-        private string _Empty = string.Empty.PadLeft(16);
+        private string _Empty1 = string.Empty.PadLeft(4);
+        private string _Barcode3;
+        private string _Empty2 = string.Empty.PadLeft(16);
         #endregion
     }
     /// <summary>
@@ -421,7 +431,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 代收機構代號(8)
         /// </summary>
         [Description("代收機構代號"), MaxLength(8)]
-        public string Channel { get => _Channel; set => _Channel = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 收件單位(8)
         /// </summary>
@@ -438,9 +448,9 @@ namespace SKGPortalCore.Model.SourceData
         [Description("繳費日期"), MaxLength(8)]
         public string PayDate { get => _PayDate; set => _PayDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
-        /// 交易序號(16)
+        /// 銷帳編號(16)
         /// </summary>
-        [Description("交易序號"), MaxLength(16)]
+        [Description("銷帳編號"), MaxLength(16)]
         public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 應繳日期[Barcode3:1-4](4)
@@ -451,7 +461,7 @@ namespace SKGPortalCore.Model.SourceData
         /// 校對碼[Barcode3:5-6](2)
         /// </summary>
         [Description("校對碼"), MaxLength(2)]
-        public string Barcode3_CompareCode { get => _Barcode3_CompareCode; set => _Barcode3_CompareCode = value.PadLeft(2, '0').ByteSubString(0, 2); }
+        public string Barcode3_CheckCode { get => _Barcode3_CheckCode; set => _Barcode3_CheckCode = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 代收金額[Barcode3:5-6](9)
         /// </summary>
@@ -483,7 +493,7 @@ namespace SKGPortalCore.Model.SourceData
         [Description("Source")]
         public string Source
         {
-            get => $"{_Idx}{_Channel}{_CollectionType}{_TransDate}{_PayDate}{_Barcode2}{_Barcode3_Date}{_Barcode3_CompareCode}{_Barcode3_Amount}{_Empty1}{_Store}{_Empty2}";
+            get => $"{_Idx}{_Channel}{_CollectionType}{_TransDate}{_PayDate}{_Barcode2}{_Barcode3_Date}{_Barcode3_CheckCode}{_Barcode3_Amount}{_Empty1}{_Store}{_Empty2}";
             set
             {
                 _Idx = value.ByteSubString(0, 1);
@@ -493,7 +503,7 @@ namespace SKGPortalCore.Model.SourceData
                 _PayDate = value.ByteSubString(25, 8);
                 _Barcode2 = value.ByteSubString(33, 16);
                 _Barcode3_Date = value.ByteSubString(49, 4);
-                _Barcode3_CompareCode = value.ByteSubString(53, 2);
+                _Barcode3_CheckCode = value.ByteSubString(53, 2);
                 _Barcode3_Amount = value.ByteSubString(55, 9);
                 _Empty1 = value.ByteSubString(64, 18);
                 _Store = value.ByteSubString(82, 6);
@@ -511,12 +521,12 @@ namespace SKGPortalCore.Model.SourceData
         #region Private
         private string _Idx = "2";
         private string _Channel;
-        private string _CollectionType = "I0O";
-        private string _TransDate;
-        private string _PayDate;
+        private string _CollectionType = "I0O".PadRight(8,' ');
+        private string _TransDate = DateTime.Now.ToString("yyyyMMdd");
+        private string _PayDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
         private string _Barcode2;
         private string _Barcode3_Date = string.Empty.PadLeft(4);
-        private string _Barcode3_CompareCode;
+        private string _Barcode3_CheckCode = string.Empty.PadLeft(2);
         private string _Barcode3_Amount;
         private string _Empty1 = string.Empty.PadLeft(18);
         private string _Store = string.Empty.PadLeft(6);

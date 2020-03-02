@@ -17,20 +17,24 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
             List<dynamic> marts = new List<dynamic>();
 
             marts.AddRange(new List<ReceiptInfoBillMarketModel>() {
-                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
-                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
-                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
-                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
-                new ReceiptInfoBillMarketModel() { CollectionType ="",Channel="",AccountingDay="",PayDate="",Barcode2=""},
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="7111111", Barcode2="0000992086100001", Barcode3="15" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="TFM", Barcode2="0000992086100001", Barcode3="20" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="OKM", Barcode2="0000992086100001", Barcode3="25" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="HILIFE", Barcode2="0000992086100001", Barcode3="30" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="AGRI", Barcode2="0000992086100001", Barcode3="35" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="GT", Barcode2="0000992086100001", Barcode3="40" },
+                new ReceiptInfoBillMarketModel() { CollectionType ="6V1",Channel="SIM", Barcode2="0000992086100001", Barcode3="45" },
             });
 
             marts.AddRange(new List<ReceiptInfoBillMarketSPIModel>()
             {
-                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
-                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
-                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
-                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
-                new ReceiptInfoBillMarketSPIModel(){ Channel ="", TransDate="",PayDate="",Barcode2="",Barcode3_CompareCode="",Barcode3_Amount=""},
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "7111111", Barcode2="0000992086100001", Barcode3_Amount="15" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "TFM", Barcode2="0000992086100001", Barcode3_Amount="20" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "OKM", Barcode2="0000992086100001", Barcode3_Amount="25" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "HILIFE", Barcode2="0000992086100001", Barcode3_Amount="30" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "AGRI", Barcode2="0000992086100001", Barcode3_Amount="35" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "GT", Barcode2="0000992086100001", Barcode3_Amount="40" },
+                new ReceiptInfoBillMarketSPIModel(){ Channel = "SIM", Barcode2="0000992086100001", Barcode3_Amount="45" },
             });
 
             bool err = false;

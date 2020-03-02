@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
@@ -30,6 +31,10 @@ namespace SKGPortalCore.Data
         /// 變更日誌明細
         /// </summary>
         public DbSet<DataChangeLogDetail> DataChangeLogDetail { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DbSet<WorkDateModel> WorkDate { get; set; }
         #endregion
         #region Construct
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

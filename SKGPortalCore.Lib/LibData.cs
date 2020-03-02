@@ -222,6 +222,7 @@ namespace SKGPortalCore.Lib
         }
         public static DateTime ToDateTime(this string val)
         {
+            if (val.Length == 8) val = $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}";
             return Convert.ToDateTime(val);
         }
         /// <summary>

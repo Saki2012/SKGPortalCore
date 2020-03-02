@@ -7,7 +7,7 @@ using SKGPortalCore.Model.SourceData;
 
 namespace SKGPortalCore.SeedDataInitial.SourceData
 {
-    public class ReceiptInfoBankSeedData
+    public static class ReceiptInfoBankSeedData
     {
         /// <summary>
         /// 資訊流-銀行
@@ -15,9 +15,12 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         public static List<ReceiptInfoBillBankModel> ReceiptInfoBankData(SysMessageLog Message)
         {
             List<ReceiptInfoBillBankModel> banks = new List<ReceiptInfoBillBankModel>() {
-                new ReceiptInfoBillBankModel() { RealAccount="770259918032",  TradeDate="20190910",  TradeTime="000000",  CompareCode="990128100000100",  PN="+",  Amount="5000",  Summary="銀行通路",  Branch="0499",  TradeChannel="SA",  Channel="00",  ChangeDate="20190910",  BizDate="20190910",  Serial="000001",  CustomerCode="990128",  Fee="000",  Empty=""  },
-                new ReceiptInfoBillBankModel() { RealAccount="770259918032",  TradeDate="20190910",  TradeTime="000000",  CompareCode="1024010000010",  PN="+",  Amount="7000",  Summary="銀行通路",  Branch="0499",  TradeChannel="SA",  Channel="00",  ChangeDate="20190910",  BizDate="20190910",  Serial="000001",  CustomerCode="1024",  Fee="000",  Empty=""  },
-                new ReceiptInfoBillBankModel() { RealAccount="770259918032",  TradeDate="20190910",  TradeTime="000000",  CompareCode="912001000001",  PN="+",  Amount="9000",  Summary="銀行通路",  Branch="0499",  TradeChannel="SA",  Channel="00",  ChangeDate="20190910",  BizDate="20190910",  Serial="000001",  CustomerCode="912",  Fee="000",  Empty=""  },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
             };
 
             bool err = false;

@@ -55,7 +55,7 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterSetEntity(set, action);
             BizReceiptBill.CheckData(set, Message);
             BizReceiptBill.SetData(set, DataAccess, BizCustSetDic, ColSetDic, WorkDic);
-            //BizReceiptBill.PostingData(DataAccess, User, action, null, set);
+            BizReceiptBill.PostingData(DataAccess, User, action, null, set);
         }
         #endregion
     }

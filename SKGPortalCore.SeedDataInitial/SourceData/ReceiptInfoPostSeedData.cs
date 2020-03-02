@@ -15,13 +15,13 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         public static List<ReceiptInfoBillPostModel> ReceiptInfoPostData(SysMessageLog Message)
         {
             List<ReceiptInfoBillPostModel> posts = new List<ReceiptInfoBillPostModel>() {
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
-                new ReceiptInfoBillPostModel() {TradeDate="" ,Channel="",Amount="",CompareCode=""},
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="11",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="22",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="33",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="44",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="55",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="66",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="77",CompareCode="0000992086100001" },
             };
             bool err = false;
             posts.ForEach(p => { if (p.Source != new ReceiptInfoBillPostModel() { Source = p.Source }.Source) { err = true; return; } });

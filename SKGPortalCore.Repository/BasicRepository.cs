@@ -97,7 +97,8 @@ namespace SKGPortalCore.Repository
                         dataFlowNo.FlowDate = DateTime.Today;
                         dataFlowNo.FlowNo = 0;
                     }
-                    DataAccess.Update(dataFlowNo);
+                    if (DataAccess.Entry(dataFlowNo).State != EntityState.Added)
+                        DataAccess.Update(dataFlowNo);
                 }
                 return dataFlowNo;
             }
