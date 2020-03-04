@@ -77,10 +77,10 @@ namespace SKGPortalCore.Model.BillData
         [Description("實繳金額")]
         public decimal PayAmount { get; set; }
         /// <summary>
-        /// 銀行銷帳編號
+        /// 虛擬帳號
         /// </summary>
-        [Description("銀行銷帳編號")]
-        public string BankBarCode { get; set; }
+        [Description("虛擬帳號")]
+        public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 通路手續費清算方式
         /// </summary>
@@ -127,14 +127,15 @@ namespace SKGPortalCore.Model.BillData
         [Description("總手續費")]
         public decimal TotalFee { get; set; }
         /// <summary>
-        /// 帳單
+        /// 帳單ProgId
+        /// 為分辨【帳單】【入金機】【約定扣款】等使用
         /// </summary>
-        [ForeignKey("ToBillNo")]
-        public BillModel Bill { get; set; }
+        [Description("帳單ProgId"), Required]
+        public string BillProgId { get; set; }
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號")]
+        [Description("帳單編號"), Required]
         public string ToBillNo { get; set; }
         /// <summary>
         /// 通路帳簿
@@ -149,7 +150,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號")]
+        [Description("匯入批號"), Required]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源

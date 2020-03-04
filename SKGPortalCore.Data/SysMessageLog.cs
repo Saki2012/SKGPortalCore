@@ -205,5 +205,15 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("通路[{0}]尚未填寫核銷規則，請確認！")]
         Code1014,
+        /// <summary>
+        /// 未啟用代收類別「{0}」，請確認！"
+        /// </summary>
+        [Description("未啟用代收類別「{0}」，請確認！")]
+        Code1015,
+        /// <summary>
+        /// 應繳金額不在代收類別「{0}」收費區間內，請確認！
+        /// </summary>
+        [Description("應繳金額不在代收類別「{0}」收費區間內，請確認！")]
+        Code1016,
     }
 }

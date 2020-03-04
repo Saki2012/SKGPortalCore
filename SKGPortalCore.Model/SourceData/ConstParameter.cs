@@ -29,6 +29,5 @@ namespace SKGPortalCore.Model.SourceData
         /// 郵局-代收類別代號
         /// </summary>
         public static readonly string PostCollectionTypeId = "50084884";
-
     }
 }

@@ -24,43 +24,31 @@ namespace SKGPortalCore.SeedDataInitial
         public static void Main()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            if (DataAccess.Set<BackendUserModel>().Find(ConstParameter.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
             //資料
             CreateImportDataSources();
-            CreateSeedData(DataAccess);
+            CreateSeedData();
             ImportReceiptData();
         }
         /// <summary>
         /// 新增初始資料
         /// </summary>
-        /// <param name="dataAccess"></param>
-        private static void CreateSeedData(ApplicationDbContext dataAccess)
+        /// <param name="DataAccess"></param>
+        private static void CreateSeedData()
         {
             try
             {
-                CustomerSeedData.CreateCustomer(Message, dataAccess);
-                DeptSeed.CreateDept(Message, dataAccess);
+                if (DataAccess.Set<BackendUserModel>().Find(ConstParameter.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
+                WorkDatesSeedData.CreateWorkDates(DataAccess);//OK
+                DeptSeed.CreateDept(Message, DataAccess);//OK
                 RoleSeeddData.CreateRole(Message, DataAccess);//OK
-                ChannelSeedData.CreateChannel(Message, dataAccess);//OK
-                CollectionTypeSeedData.CreateCollectionType(Message, dataAccess);//OK
-                PayerSeedData.CreatePayer(Message, dataAccess);
-                BillTermSeedData.CreateBillTerm(Message, dataAccess);
-
+                ChannelSeedData.CreateChannel(Message, DataAccess);//OK
+                CollectionTypeSeedData.CreateCollectionType(Message, DataAccess);//OK
+                CustomerSeedData.CreateCustomer(Message, DataAccess);
+                PayerSeedData.CreatePayer(Message, DataAccess);
+                BillTermSeedData.CreateBillTerm(Message, DataAccess);
                 //單據
-                BillSeedData.CreateBill(Message, dataAccess);
-
-
-                //List<WorkDateModel> workDates = new List<WorkDateModel>();
-                //DateTime date = DateTime.Now.AddYears(-1).Date;
-                //DateTime date2 = DateTime.Now.AddYears(1).Date;
-                //while (date != date2)
-                //{
-                //    workDates.Add(new WorkDateModel() { Date = date, Description = "", HolidayCategory = "", IsWorkDate = !date.DayOfWeek.In(DayOfWeek.Sunday, DayOfWeek.Saturday), Name = "" });
-                //    date = date.AddDays(1);
-                //}
-                //dataAccess.WorkDate.AddRange(workDates);
-
-                dataAccess.BulkSaveChanges();
+                BillSeedData.CreateBill(Message, DataAccess);
+                DataAccess.BulkSaveChanges();
             }
             catch (Exception e)
             {
@@ -100,9 +88,6 @@ namespace SKGPortalCore.SeedDataInitial
             ImportData = new ReceiptInfoImportBANK(DataAccess); ImportData.ExecuteImport();
             ImportData = new ReceiptInfoImportPOST(DataAccess); ImportData.ExecuteImport();
             ImportData = new ReceiptInfoImportMARKET(DataAccess); ImportData.ExecuteImport();
-            //ImportData = new ReceiptInfoImportMARKETSPI(DataAccess); ImportData.ExecuteImport();
-            //ImportData = new ReceiptInfoImportFARM(DataAccess); ImportData.ExecuteImport();
-            //ImportData = new RemitInfoImport(DataAccess); ImportData.ExecuteImport();
         }
     }
 }

@@ -32,24 +32,25 @@ namespace SKGPortalCore.Model.BillData
         [ForeignKey("ChannelId")]
         public ChannelModel Channel { get; set; }
         /// <summary>
-        /// 通路代號
-        /// </summary>
-        [Description("通路代號"), Index]
-        public string ChannelId { get; set; }
-        /// <summary>
         /// 
         /// </summary>
         [ForeignKey("CollectionTypeId")]
         public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
+        /// 通路代號
+        /// </summary>
+        [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
+        public string ChannelId { get; set; }
+
+        /// <summary>
         /// 代收類別代號
         /// </summary>
-        [Description("代收類別代號"), Index]
+        [Description("代收類別代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
         public string CollectionTypeId { get; set; }
         /// <summary>
         /// 預計匯款日期
         /// </summary>
-        [Description("預計匯款日期"), Index]
+        [Description("預計匯款日期"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
         public DateTime ExpectRemitDate { get; set; }
         /// <summary>
         /// 遞延天數

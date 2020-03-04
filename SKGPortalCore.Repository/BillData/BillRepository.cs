@@ -6,6 +6,7 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -43,7 +44,8 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizBill.CheckData(set, Message, DataAccess);
-            BizBill.SetData(set, DataAccess);
+            BizBill.SetData(set);
+            BizVirtualAccountCode.AddVirtualAccountCode(DataAccess, ProgId, set.Bill.BillNo, set.Bill.VirtualAccountCode);
         }
         #endregion
     }

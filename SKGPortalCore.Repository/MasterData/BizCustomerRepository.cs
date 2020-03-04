@@ -16,6 +16,7 @@ namespace SKGPortalCore.Repository.MasterData
         {
             base.AfterSetEntity(set, action);
             BizBizCustomer.CheckData(Message, set);
+            BizBizCustomer.SetData(set);
         }
     }
 }

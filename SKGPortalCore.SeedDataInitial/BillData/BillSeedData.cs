@@ -22,8 +22,15 @@ namespace SKGPortalCore.SeedDataInitial.BillData
                 using BillRepository repo = new BillRepository(DataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<BillSet> bills = new List<BillSet>()
                 {
-                    new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "992086", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Parse("2021-09-01") ,CollectionTypeId="I0O"},
-                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  PayAmount = 20000 }, new BillDetailModel() {PayAmount = 75 } } }
+                    new BillSet() { Bill = new BillModel() { BillTermId = "100",  CustomerCode = "992086", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Now},
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  FeeName= "停車費",  PayAmount = 20000 }, new BillDetailModel() { FeeName = "管理費", PayAmount = 75 } } },
+                    new BillSet() { Bill = new BillModel() { BillTermId = "101",  CustomerCode = "2143", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Now},
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  FeeName= "停車費",  PayAmount = 20000 }, new BillDetailModel() { FeeName = "管理費", PayAmount = 75 } } },
+                    new BillSet() { Bill = new BillModel() { BillTermId = "102",  CustomerCode = "805", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Now },
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  FeeName= "停車費",  PayAmount = 20000 }, new BillDetailModel() { FeeName = "管理費", PayAmount = 75 } } },
+                    new BillSet() { Bill = new BillModel() { BillTermId = "103",  CustomerCode = "993586", PayerId = "000100",  ImportBatchNo = "BeginData", PayEndDate = DateTime.Now },
+                        BillDetail = new List<BillDetailModel>() { new BillDetailModel() {  FeeName= "停車費",  PayAmount = 20000 }, new BillDetailModel() { FeeName = "管理費", PayAmount = 75 } } },
+
                 };
                 foreach (BillSet bill in bills)
                 {

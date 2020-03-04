@@ -222,7 +222,7 @@ namespace SKGPortalCore.Lib
         }
         public static DateTime ToDateTime(this string val)
         {
-            if (val.Length == 8) val = $"{val.Substring(0, 4)}/{val.Substring(4, 2)}/{val.Substring(6, 2)}";
+            val = val.ToADDateFormat();
             return Convert.ToDateTime(val);
         }
         /// <summary>
@@ -253,7 +253,6 @@ namespace SKGPortalCore.Lib
         {
             return val.Length == 7 ? $"{val.Substring(0, 3).ToInt32() + 1911}/{val.Substring(3, 2)}/{val.Substring(5, 2)}".ToDateTime() : DateTime.MinValue;
         }
-
         /// <summary>
         /// 檢查列表是否有值
         /// </summary>

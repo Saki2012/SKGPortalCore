@@ -53,7 +53,6 @@ namespace SKGPortalCore.Repository.BillData
         protected override void AfterSetEntity(ReceiptBillSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            BizReceiptBill.CheckData(set, Message);
             BizReceiptBill.SetData(set, DataAccess, BizCustSetDic, ColSetDic, WorkDic);
             BizReceiptBill.PostingData(DataAccess, User, action, null, set);
         }

@@ -48,7 +48,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號")]
+        [Description("企業編號"), Required]
         public string CustomerCode { get; set; }
         /// <summary>
         /// 期別
@@ -101,9 +101,9 @@ namespace SKGPortalCore.Model.BillData
         [Description("繳款狀態")]
         public PayStatus PayStatus { get; set; }
         /// <summary>
-        /// 銀行條碼
+        /// 虛擬帳號
         /// </summary>
-        [Description("銀行條碼"), Required, Index]
+        [Description("虛擬帳號"), Required, Index]
         public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
@@ -125,14 +125,9 @@ namespace SKGPortalCore.Model.BillData
         [Description("帳單編號"), Key]
         public string BillNo { get; set; }
         /// <summary>
-        /// 序號
-        /// </summary>
-        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RowId { get; set; }
-        /// <summary>
         /// 費用
         /// </summary>
-        [Description("費用")]
+        [Description("費用"), Required]
         public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額
