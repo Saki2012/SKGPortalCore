@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,6 +18,11 @@ namespace SKGPortalCore.Model.BillData
         /// 收款單主檔
         /// </summary>
         public ReceiptBillModel ReceiptBill { get; set; }
+        /// <summary>
+        /// 收款單異動說明表
+        /// </summary>
+        public List<ReceiptBillChange> BillReceiptDetail { get; set; } = new List<ReceiptBillChange>();
+
     }
     /// <summary>
     /// 收款單主檔
@@ -157,5 +163,37 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("異常訊息")]
         public string ErrMessage { get; set; }
+    }
+    /// <summary>
+    /// 收款單異動說明表
+    /// </summary>
+    [Description("收款單異動說明表")]
+    public class ReceiptBillChange : DetailRowState
+    {
+        /// <summary>
+        /// 單據編號
+        /// </summary>
+        [Description("單據編號"), Key]
+        public string BillNo { get; set; }
+        /// <summary>
+        /// 序號
+        /// </summary>
+        [Description("序號"), Key]
+        public int RowId { get; set; }
+        /// <summary>
+        /// 異動時間
+        /// </summary>
+        [Description("異動時間")]
+        public DateTime ChangeTime { get; set; }
+        /// <summary>
+        /// 狀態
+        /// </summary>
+        [Description("狀態")]
+        public FormStatus FormStatus { get; set; }
+        /// <summary>
+        /// 異動原因
+        /// </summary>
+        [Description("異動原因")]
+        public string Reason { get; set; }
     }
 }

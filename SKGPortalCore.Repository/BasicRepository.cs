@@ -640,6 +640,15 @@ namespace SKGPortalCore.Repository
                     entity.State = EntityState.Unchanged;
             }
         }
+
+        private void SetRowId(IList entityList)
+        {
+            if (!entityList.HasData() || (null == entityList[0].GetType().GetProperty("RowId"))) return;
+
+            //int RowId = entityList.Cast<DetailRowState>().OrderByDescending(p => "RowId").FirstOrDefault(p => p.RowState != RowState.Insert).RowId;
+            //foreach (dynamic entity in entityList is insert)
+            //    entity.RowId = RowId++;
+        }
         #endregion
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫

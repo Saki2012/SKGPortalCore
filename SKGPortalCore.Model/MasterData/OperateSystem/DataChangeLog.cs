@@ -72,7 +72,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// </summary>
         [Description("ID"), Key]
         public long DataChangeId { get; set; }
-        [Description("RowID"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Description("RowID"), Key]
         public long RowId { get; set; }
         /// <summary>
         /// 表單索引

@@ -127,7 +127,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Description("序號"), Key]
         public int RowId { get; set; }
         /// <summary>
         /// 費用
