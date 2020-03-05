@@ -15,13 +15,13 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         public static List<ReceiptInfoBillPostModel> ReceiptInfoPostData(SysMessageLog Message)
         {
             List<ReceiptInfoBillPostModel> posts = new List<ReceiptInfoBillPostModel>() {
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="11",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="22",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="33",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="44",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="55",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="66",CompareCode="0000992086100001" },
-                new ReceiptInfoBillPostModel() { Channel="0587",Amount="77",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="1331",CompareCode="0009920868538462" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="2222",CompareCode="0009935862576194" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="3313",CompareCode="0080587749729183" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="4124",CompareCode="2143751953183729" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="5565",CompareCode="0000992086100001" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="6236",CompareCode="0009935862576194" },
+                new ReceiptInfoBillPostModel() { Channel="0587",Amount="767",CompareCode="2143751953183729" },
             };
             bool err = false;
             posts.ForEach(p => { if (p.Source != new ReceiptInfoBillPostModel() { Source = p.Source }.Source) { err = true; return; } });

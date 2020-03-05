@@ -15,12 +15,12 @@ namespace SKGPortalCore.SeedDataInitial.SourceData
         public static List<ReceiptInfoBillBankModel> ReceiptInfoBankData(SysMessageLog Message)
         {
             List<ReceiptInfoBillBankModel> banks = new List<ReceiptInfoBillBankModel>() {
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
-                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "10",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0009920868538462", PN = "+", Amount = "350",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0009920868538462", PN = "+", Amount = "370",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0009935862576194", PN = "+", Amount = "390",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0080587749729183", PN = "+", Amount = "410",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "2143751953183729", PN = "+", Amount = "730",Channel = "00" },
+                new ReceiptInfoBillBankModel() { CompareCode = "0000992086100001", PN = "+", Amount = "430",Channel = "00" },
             };
 
             bool err = false;

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Data
 {
@@ -81,7 +77,7 @@ namespace SKGPortalCore.Data
         /// </summary>
         /// <param name="internalId"></param>
         /// <returns></returns>
-        public List<DataChangeLog> GetChangeLogList(DbSet<DataChangeLog> dataChangeLog, string internalId)
+        public static List<DataChangeLog> GetChangeLogList(DbSet<DataChangeLog> dataChangeLog, string internalId)
         {
             return dataChangeLog.Where(p => p.InternalId == internalId) as List<DataChangeLog>;
         }

@@ -8,7 +8,7 @@ using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.SeedDataInitial.MasterData
 {
-    public class RoleSeeddData
+    public static class RoleSeeddData
     {
         /// <summary>
         /// 新增「角色權限」-初始資料
@@ -24,13 +24,14 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                     new RoleSet() { Role = new RoleModel() { RoleId = "BackEndAdmin",  RoleName = "後台管理員", EndType = EndType.Frontend, IsAdmin = true } },
                     new RoleSet() { Role = new RoleModel() { RoleId = "FrontEndAdmin", RoleName = "前台管理員", EndType = EndType.Backend,  IsAdmin = true } },
                  };
-                foreach (RoleSet role in roles)
-                {
-                    if (null == repo.QueryData(new object[] { role.Role.RoleId }))
-                    {
-                        repo.Create(role);
-                    }
-                }
+                roles.ForEach(role =>
+                 {
+                     if (null == repo.QueryData(new object[] { role.Role.RoleId }))
+                     {
+                         repo.Create(role);
+                     }
+                 });
+                repo.CommitData(FuncAction.Create);
             }
             finally
             {

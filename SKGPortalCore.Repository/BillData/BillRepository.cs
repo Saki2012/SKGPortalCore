@@ -19,7 +19,6 @@ namespace SKGPortalCore.Repository.BillData
         #region Construct
         public BillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
-            DataFlowNo = null;
             SetFlowNo = new Action<BillSet>(p =>
             {
                 if (p.Bill.BillNo.IsNullOrEmpty())

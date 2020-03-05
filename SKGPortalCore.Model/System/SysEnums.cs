@@ -213,98 +213,6 @@ namespace SKGPortalCore.Model.System
         ACH = 3,
     }
     /// <summary>
-    /// 帳單基本資料
-    /// </summary>
-    [Description("帳單基本資料")]
-    public enum BillInfo : byte
-    {
-        /// <summary>
-        /// 空
-        /// </summary>
-        [Description]
-        Empty = 0,
-        /// <summary>
-        /// 繳款人編號
-        /// </summary>
-        [Description("繳款人編號")]
-        PayerId = 1,
-        /// <summary>
-        /// 繳款人名稱
-        /// </summary>
-        [Description("繳款人名稱")]
-        PayerName = 2,
-        /// <summary>
-        /// 繳款人類別
-        /// </summary>
-        [Description("繳款人類別")]
-        PyaerType = 3,
-        /// <summary>
-        /// 身份證字號
-        /// </summary>
-        [Description("身份證字號")]
-        IDCard = 4,
-        /// <summary>
-        /// 郵遞區號
-        /// </summary>
-        [Description("郵遞區號")]
-        ZipCode = 5,
-        /// <summary>
-        /// 地址
-        /// </summary>
-        [Description("地址")]
-        Address = 6,
-        /// <summary>
-        /// 電話
-        /// </summary>
-        [Description("電話")]
-        Tel = 7,
-        /// <summary>
-        /// 銀行銷帳編號
-        /// </summary>
-        [Description("銀行銷帳編號")]
-        BankBarCode = 8,
-        /// <summary>
-        /// 期別代號
-        /// </summary>
-        [Description("期別代號")]
-        BillTermId = 9,
-        /// <summary>
-        /// 繳款截止日
-        /// </summary>
-        [Description("繳款截止日")]
-        PayEndDate = 10,
-        /// <summary>
-        /// 帳單備註1
-        /// </summary>
-        [Description("帳單備註1")]
-        BillMemo1 = 11,
-        /// <summary>
-        /// 帳單備註2
-        /// </summary>
-        [Description("帳單備註2")]
-        BillMemo2 = 12,
-        /// <summary>
-        /// 備註01
-        /// </summary>
-        [Description("備註01")]
-        PayerMemo1 = 13,
-        /// <summary>
-        /// 備註02
-        /// </summary>
-        [Description("備註02")]
-        PayerMemo2 = 14,
-        /// <summary>
-        /// 備註03
-        /// </summary>
-        [Description("備註03")]
-        PayerMemo3 = 15,
-        /// <summary>
-        /// 備註04
-        /// </summary>
-        [Description("備註04")]
-        PayerMemo4 = 16,
-    }
-    /// <summary>
     /// 帳戶狀態
     /// </summary>
     [Description("帳戶狀態")]
@@ -527,69 +435,17 @@ namespace SKGPortalCore.Model.System
         /// 清算手續費(次月扣款)
         /// </summary>
         [Description("清算手續費(次月扣款)")]
-        ClearFeeA = 1,
+        ClearFee_NextMonth = 1,
         /// <summary>
         /// 清算手續費(當月扣款)
         /// </summary>
         [Description("清算手續費(當月扣款)")]
-        ClearFeeB = 2,
+        ClearFee_CurMonth = 2,
         /// <summary>
         /// 每筆總手續費
         /// </summary>
         [Description("每筆總手續費")]
         TotalFee = 3,
-    }
-    /// <summary>
-    /// 資訊流資料異常狀態
-    /// </summary>
-    [Description("資訊流資料異常狀態"), Flags]
-    public enum TransDataUnusual : int
-    {
-        /// <summary>
-        /// 正常
-        /// </summary>
-        [Description("正常")]
-        Normal = 0,
-        /// <summary>
-        /// 無法解析企業代號
-        /// </summary>
-        [Description("無法解析企業代號")]
-        NoCustomerCode = 1,
-        /// <summary>
-        /// 無法解析代收類別代號
-        /// </summary>
-        [Description("無法解析代收類別代號")]
-        NoCollectionTypeId = 2,
-        /// <summary>
-        /// 代收類別未開此通路
-        /// </summary>
-        [Description("代收類別未開此通路")]
-        NoChannel = 4,
-        /// <summary>
-        /// 未開通該代收類別
-        /// </summary>
-        [Description("未開通該代收類別")]
-        NoSetCollectionTyp = 8,
-        /// <summary>
-        /// 未開通該通路
-        /// </summary>
-        [Description("未開通該通路")]
-        NoSetChannel = 16,
-        /// <summary>
-        /// 帳單金額與通路手續費設定級距不符
-        /// </summary>
-        [Description("帳單金額與通路手續費設定級距不符")]
-        NotInRange = 32,
-        /// <summary>
-        /// 無手續費設定
-        /// </summary>
-        [Description("無手續費設定")]
-        NoChargeFeeSet = 64,
-        /// <summary>
-        /// 服務申請書尚未設定完畢
-        /// </summary>
-        [Description("服務申請書尚未設定完畢")]
-        ApplyFormSetError = 128,
     }
     /// <summary>
     /// 通路帳務核銷週期

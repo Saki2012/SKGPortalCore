@@ -90,7 +90,7 @@ namespace SKGPortalCore.Model.BillData
         /// 銀行手續費類型
         /// </summary>
         [Description("銀行手續費類型")]
-        public BankFeeType FeeType { get; set; }
+        public BankFeeType BankFeeType { get; set; }
         /// <summary>
         /// 銀行手續費
         /// </summary>
@@ -137,16 +137,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("帳單編號"), Required]
         public string ToBillNo { get; set; }
-        /// <summary>
-        /// 通路帳簿
-        /// </summary>
-        [ForeignKey("ChannelEAccountBillNo")]
-        public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
-        /// <summary>
-        /// 通路帳簿編號
-        /// </summary>
-        [Description("通路帳簿編號")]
-        public string ChannelEAccountBillNo { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>

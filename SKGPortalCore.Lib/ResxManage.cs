@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace SKGPortalCore.Lib
 {
-    public class ResxManage
+    public static class ResxManage
     {
         public static string GetProgId(object member)
         {
@@ -32,19 +34,19 @@ namespace SKGPortalCore.Lib
             DescriptionAttribute attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
-        public static string GetDescription(object member)
+        public static string GetDescription<T>()
         {
-            DescriptionAttribute attribute = member.GetType().GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute attribute = typeof(T).GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
+        }
+        public static string GetDescription<T>(Expression<Func<T, object>> propertyExpression)
+        {
+            var propertyInfo = (PropertyInfo)((MemberExpression)propertyExpression.Body).Member;
+            return GetDescription(propertyInfo);
         }
         public static string GetDescription(PropertyInfo property)
         {
             DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
-            return GetDescription(attribute);
-        }
-        public static string GetDescription<T>()
-        {
-            DescriptionAttribute attribute = typeof(T).GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
         private static string GetDescription(DescriptionAttribute attribute)

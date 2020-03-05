@@ -1,6 +1,7 @@
 ﻿using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                 {
                     if (null == repo.QueryData(new[] { dept.Dept.DeptId })) repo.Create(dept);
                 });
+                repo.CommitData(FuncAction.Create);
             }
             finally
             {

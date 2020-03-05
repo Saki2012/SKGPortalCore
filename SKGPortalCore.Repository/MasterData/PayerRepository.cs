@@ -12,14 +12,14 @@ namespace SKGPortalCore.Repository.MasterData
     /// </summary>
     public class PayerRepository : BasicRepository<PayerSet>
     {
-        public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess) 
+        public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
             DataFlowNo = null;
             SetFlowNo = new Action<PayerSet>(p =>
             {
                 if (p.Payer.PayerId.IsNullOrEmpty())
                 {
-                    string billNo = $"Payer{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billNo = $"Payer{p.Payer.CustomerCode}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.Payer.PayerId = billNo;
                 }
             });
@@ -28,7 +28,7 @@ namespace SKGPortalCore.Repository.MasterData
         protected override void AfterSetEntity(PayerSet set, FuncAction action)
         {
             base.AfterSetEntity(set, action);
-            BizPayer.CheckData( Message, set);
+            BizPayer.CheckData(Message, DataAccess, set);
         }
     }
 }

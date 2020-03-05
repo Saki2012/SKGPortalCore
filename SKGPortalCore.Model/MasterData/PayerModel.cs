@@ -1,4 +1,5 @@
 ﻿using SKGPortalCore.Model.System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -48,7 +49,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 繳款人編碼
         /// </summary>
         [Description("繳款人編碼")]
-        public string PayerNo { get; set; }
+        public String PayerNo { get; set; }
         /// <summary>
         /// 繳款人類別
         /// </summary>

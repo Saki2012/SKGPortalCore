@@ -146,6 +146,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             return set;
         }
@@ -167,6 +168,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             return set;
         }
@@ -188,6 +190,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
         }
         /// <summary>
@@ -208,19 +211,29 @@ namespace SKGPortalCore.Repository
                     Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
                     Type tp = typeof(List<>).MakeGenericType(new[] { modelType });
                     IList list = (IList)Activator.CreateInstance(tp);
-                    object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
+                    dynamic dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
                     IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
-                    foreach (object model in models)
+                    dynamic local = DynamicQueryable.Where(Queryable.AsQueryable(dbSet.Local), pkCondition, key);
+                    foreach (dynamic model in models)
                     {
                         SetRefModel(model);
                         list.Add(model);
                     }
+                    foreach (dynamic model in local)
+                    {
+                        if (!list.Contains(model))
+                        {
+                            SetRefModel(model);
+                            list.Add(model);
+                        }
+                    }
+
                     SetReflect.SetValue(instance, setProperty.Name, list);
                 }
                 else
                 {
                     pkCondition = GetPKCondition(GetKeyPropertiesByModelType(setProperty.PropertyType));
-                    object model = DataAccess.Find(setProperty.PropertyType, key);
+                    dynamic model = DataAccess.Find(setProperty.PropertyType, key);
                     if (null == model) return default;
                     SetRefModel(model);
                     SetReflect.SetValue(instance, setProperty.Name, model);
@@ -264,6 +277,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             return set;
         }
@@ -286,6 +300,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             return set;
         }
@@ -308,6 +323,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             return set;
         }
@@ -326,6 +342,7 @@ namespace SKGPortalCore.Repository
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
+                throw ex;
             }
             finally
             {
@@ -464,15 +481,17 @@ namespace SKGPortalCore.Repository
                 {
                     keys = GetKeyVals(val);
                     dynamic oldEntity = DataAccess.Find(val.GetType(), keys);
-                    if (null != oldEntity) DataAccess.Remove(oldEntity);
-                    DataAccess.Update(val);
+                    if (DataAccess.Entry(val).State != EntityState.Added)
+                    {
+                        if (null != oldEntity) DataAccess.Remove(oldEntity);
+                        DataAccess.Update(val);
+                    }
                     SysChangeLog.SetChangeLog(ProgId, val.InternalId, User.KeyId);
                     SysChangeLog.SetChangeLogDetail(tbIdx, null, val, RowState.Insert);
                     SetRefModel(val);
                 }
                 tbIdx++;
             }
-
         }
         /// <summary>
         /// 設置新增時資料
@@ -647,7 +666,7 @@ namespace SKGPortalCore.Repository
         // }
 
         // 加入這個程式碼的目的在正確實作可處置的模式。
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             // 請勿變更這個程式碼。請將清除程式碼放入上方的 Dispose(bool disposing) 中。
             Dispose(true);

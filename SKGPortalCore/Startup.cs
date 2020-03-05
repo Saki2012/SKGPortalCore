@@ -125,7 +125,7 @@ namespace SKGPortalCore
             Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
             foreach (Type t in schemaTypes) services.AddScoped(t);
             //添加Enum
-            Type[] enumType = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Model.Enum") == 0).ToArray();
+            Type[] enumType = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Model.System") == 0 && p.IsEnum).ToArray();
             foreach (Type t in enumType)
                 services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
 

@@ -41,7 +41,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
         public string ChannelId { get; set; }
-
         /// <summary>
         /// 代收類別代號
         /// </summary>
@@ -84,6 +83,7 @@ namespace SKGPortalCore.Model.BillData
     [Description("通路收款明細帳簿")]
     public class ChannelEAccountBillDetailModel : DetailRowState
     {
+        [ForeignKey("BillNo")]
         public ChannelEAccountBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號

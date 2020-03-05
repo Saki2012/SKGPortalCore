@@ -10,7 +10,7 @@ using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.SeedDataInitial.MasterData
 {
-    public class CollectionTypeSeedData
+    public static class CollectionTypeSeedData
     {
         /// <summary>
         /// 新增「代收類別」-初始資料
@@ -35,6 +35,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                             CollectionTypeVerifyPeriod=new List<CollectionTypeVerifyPeriodModel>(){
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=ConstParameter.PostCollectionTypeId, ChannelId="05", PayPeriodType= PayPeriodType.TenDay },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=ConstParameter.PostCollectionTypeId, ChannelId="A1", PayPeriodType= PayPeriodType.NDay_A },
+                                //new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=ConstParameter.PostCollectionTypeId, ChannelId="01", PayPeriodType= PayPeriodType.NDay_A },
                             },
                          },
                         new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="62H",CollectionTypeName="一般代收(2萬、內扣、日結)", ChargePayType= ChargePayType.Deduction },
@@ -481,6 +482,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="01", PayPeriodType= PayPeriodType.TenDay },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="02", PayPeriodType= PayPeriodType.Week },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="03", PayPeriodType= PayPeriodType.Week },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="04", PayPeriodType= PayPeriodType.Week },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="05", PayPeriodType= PayPeriodType.TenDay },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="12", PayPeriodType= PayPeriodType.TenDay },
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="I0O", ChannelId="13", PayPeriodType= PayPeriodType.TenDay },
@@ -648,13 +650,13 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                             },
                         },
                     };
-                foreach (CollectionTypeSet collectionType in collectionTypes)
+                collectionTypes.ForEach(collectionType =>
                 {
                     int i = 0;
                     collectionType.CollectionTypeDetail.ForEach(p => { p.RowId = ++i; });
-                    if (null == repo.QueryData(new[] { collectionType.CollectionType.CollectionTypeId }))
-                        repo.Create(collectionType);
-                }
+                    if (null == repo.QueryData(new[] { collectionType.CollectionType.CollectionTypeId })) repo.Create(collectionType);
+                });
+                repo.CommitData(FuncAction.Create);
             }
             finally
             {

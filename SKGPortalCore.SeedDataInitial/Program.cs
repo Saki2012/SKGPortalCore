@@ -26,14 +26,25 @@ namespace SKGPortalCore.SeedDataInitial
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             //資料
             CreateImportDataSources();
-            CreateSeedData();
-            ImportReceiptData();
+            DataAccess.Database.BeginTransaction();
+            try
+            {
+                CreateSeedData_MasterData();
+                CreateSeedData_BillData();
+                ImportReceiptData();
+                DataAccess.Database.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                DataAccess.Database.RollbackTransaction();
+                throw ex;
+            }
         }
         /// <summary>
         /// 新增初始資料
         /// </summary>
         /// <param name="DataAccess"></param>
-        private static void CreateSeedData()
+        private static void CreateSeedData_MasterData()
         {
             try
             {
@@ -43,12 +54,9 @@ namespace SKGPortalCore.SeedDataInitial
                 RoleSeeddData.CreateRole(Message, DataAccess);//OK
                 ChannelSeedData.CreateChannel(Message, DataAccess);//OK
                 CollectionTypeSeedData.CreateCollectionType(Message, DataAccess);//OK
-                CustomerSeedData.CreateCustomer(Message, DataAccess);
-                PayerSeedData.CreatePayer(Message, DataAccess);
-                BillTermSeedData.CreateBillTerm(Message, DataAccess);
-                //單據
-                BillSeedData.CreateBill(Message, DataAccess);
-                DataAccess.BulkSaveChanges();
+                CustomerSeedData.CreateCustomer(Message, DataAccess);//OK
+                PayerSeedData.CreatePayer(Message, DataAccess);//OK
+                BillTermSeedData.CreateBillTerm(Message, DataAccess);//OK
             }
             catch (Exception e)
             {
@@ -60,6 +68,26 @@ namespace SKGPortalCore.SeedDataInitial
                 Message.WriteLogTxt();
             }
         }
+
+        private static void CreateSeedData_BillData()
+        {
+            try
+            {
+                BillSeedData.CreateBill(Message, DataAccess);
+                if (Message.Errors.Count == 0)
+                    DataAccess.BulkSaveChanges();
+            }
+            catch (Exception e)
+            {
+                Message.AddExceptionError(e);
+                throw;
+            }
+            finally
+            {
+                Message.WriteLogTxt();
+            }
+        }
+
         /// <summary>
         /// 新增資訊流源(txt檔案)
         /// </summary>

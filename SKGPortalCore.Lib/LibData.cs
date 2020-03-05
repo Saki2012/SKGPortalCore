@@ -101,6 +101,7 @@ namespace SKGPortalCore.Lib
                 Type type when type == typeof(decimal) => val.ToDecimal() == decimal.Zero,
                 Type type when type == typeof(float) => val.ToFloat() == 0f,
                 Type type when type == typeof(double) => val.ToDouble() == 0f,
+                Type type when type == typeof(DateTime) => (DateTime)val == DateTime.MinValue,
                 _ => null == val || DBNull.Value == val,
             };
         }

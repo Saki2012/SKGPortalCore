@@ -9,7 +9,7 @@ using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.SeedDataInitial.MasterData
 {
-    public class ChannelSeedData
+    public static class ChannelSeedData
     {
         /// <summary>
         /// 新增「代收通路」-初始資料
@@ -39,13 +39,11 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                                                     new ChannelSet() { Channel = new ChannelModel(){ ChannelId="A1", ChannelName="郵局網路平台", ChannelGroupType= ChannelGroupType.Post}, ChannelMap = new List<ChannelMapModel>(){ new ChannelMapModel() { ChannelId = "A1", TransCode = "A421" },new ChannelMapModel() { ChannelId = "A1", TransCode = "057W" } } },
                                                     new ChannelSet() { Channel = new ChannelModel(){ ChannelId="A2", ChannelName="自動化交易(匯款)", ChannelGroupType= ChannelGroupType.Bank}},
                                                     };
-                foreach (ChannelSet channel in channels)
+                channels.ForEach(channel =>
                 {
-                    if (null == repo.QueryData(new[] { channel.Channel.ChannelId }))
-                    {
-                        repo.Create(channel);
-                    }
-                }
+                    if (null == repo.QueryData(new[] { channel.Channel.ChannelId })) repo.Create(channel);
+                });
+                repo.CommitData(FuncAction.Create);
             }
             finally
             {
