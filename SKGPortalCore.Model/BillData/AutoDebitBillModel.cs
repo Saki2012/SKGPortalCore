@@ -10,29 +10,27 @@ using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
-
     /// <summary>
-    /// 入金機
+    /// 約定扣款單
     /// </summary>
-    [Description("入金機")]
-    public class DepositBillSet
+    [Description("約定扣款單")]
+    public class AutoDebitBillSet
     {
         /// <summary>
-        /// 入金機
+        /// 約定扣款單
         /// </summary>
-        public DepositBillModel DepositBill { get; set; } = new DepositBillModel();
+        public AutoDebitBillModel AutoDebitBill { get; set; } = new AutoDebitBillModel();
         /// <summary>
-        /// 入金機收款明細
+        /// 約定扣款單收款明細
         /// </summary>
-        public List<DepositBillReceiptDetailModel> DepositBillReceiptDetail { get; set; } = new List<DepositBillReceiptDetailModel>();
+        public List<AutoDebitBillReceiptDetailModel> AutoDebitBillReceiptDetail { get; set; } = new List<AutoDebitBillReceiptDetailModel>();
     }
 
-
     /// <summary>
-    /// 入金機
+    /// 約定扣款單
     /// </summary>
-    [Description("入金機")]
-    public class DepositBillModel
+    [Description("約定扣款單")]
+    public class AutoDebitBillModel
     {
         /// <summary>
         /// 帳單編號
@@ -50,10 +48,20 @@ namespace SKGPortalCore.Model.BillData
         [Description("企業編號"), Required]
         public string CustomerCode { get; set; }
         /// <summary>
-        /// 櫃位名稱
+        /// 繳款人
         /// </summary>
-        [Description("櫃位名稱")]
-        public string StoreName { get; set; }
+        [ForeignKey("CustomerCode,PayerId")]
+        public PayerModel Payer { get; set; }
+        /// <summary>
+        /// 繳款人
+        /// </summary>
+        [Description("繳款人")]
+        public string PayerId { get; set; }
+        /// <summary>
+        /// 應繳金額
+        /// </summary>
+        [Description("應繳金額")]
+        public decimal PayAmount { get; set; }
         /// <summary>
         /// 虛擬帳號
         /// </summary>
@@ -66,13 +74,13 @@ namespace SKGPortalCore.Model.BillData
         public string ImportBatchNo { get; set; }
     }
     /// <summary>
-    /// 入金機收款明細
+    /// 約定扣款單收款明細
     /// </summary>
-    [Description("入金機收款明細")]
-    public class DepositBillReceiptDetailModel : DetailRowState
+    [Description("約定扣款單收款明細")]
+    public class AutoDebitBillReceiptDetailModel : DetailRowState
     {
         [ForeignKey("BillNo")]
-        public DepositBillModel Bill { get; set; }
+        public AutoDebitBillModel Bill { get; set; }
         /// <summary>
         /// 帳單編號
         /// </summary>

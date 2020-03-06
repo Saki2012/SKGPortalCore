@@ -215,5 +215,10 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("應繳金額不在代收類別「{0}」收費區間內，請確認！")]
         Code1016,
+        /// <summary>
+        /// 繳款人「{0}」不為「{1}」類型，請確認！
+        /// </summary>
+        [Description("繳款人「{0}」不為「{1}」類型，請確認！")]
+        Code1017,
     }
 }

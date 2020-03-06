@@ -417,8 +417,10 @@ namespace SKGPortalCore.Repository
             {
                 dynamic entity = SetReflect.GetValue(set, props.Name);
                 if (null == entity) { tbIdx++; continue; }
-                if (entity is IEnumerable)
+                if (entity is IEnumerable<DetailRowState>)
                 {
+                    SetCreateRowState(entity);
+                    SetInsertRowId(entity);
                     foreach (dynamic ety in entity)
                     {
                         DataAccess.Add(ety);
@@ -452,6 +454,7 @@ namespace SKGPortalCore.Repository
                 if (val is IEnumerable<DetailRowState>)
                 {
                     List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
+                    SetInsertRowId(val);
                     List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
                     foreach (dynamic entity in insertList)
                     {
@@ -640,14 +643,27 @@ namespace SKGPortalCore.Repository
                     entity.State = EntityState.Unchanged;
             }
         }
-
-        private void SetRowId(IList entityList)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityList"></param>
+        private void SetCreateRowState(dynamic entityList)
+        {
+            foreach (var entity in entityList) entity.RowState = RowState.Insert;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityList"></param>
+        private void SetInsertRowId(IList entityList)
         {
             if (!entityList.HasData() || (null == entityList[0].GetType().GetProperty("RowId"))) return;
-
-            //int RowId = entityList.Cast<DetailRowState>().OrderByDescending(p => "RowId").FirstOrDefault(p => p.RowState != RowState.Insert).RowId;
-            //foreach (dynamic entity in entityList is insert)
-            //    entity.RowId = RowId++;
+            int rowId = 0;
+            List<int> c = entityList.AsQueryable().Where("RowState!=@0", RowState.Insert).OrderBy("RowId Desc").Select("RowId").Take(1).Cast<int>().ToList();
+            if (c.HasData()) rowId = c[0];
+            dynamic etyList = entityList.AsQueryable().Where("RowState=@0", RowState.Insert);
+            foreach (dynamic entity in etyList)
+                entity.RowId = ++rowId;
         }
         #endregion
         #region IDisposable Support
