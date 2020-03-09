@@ -37,7 +37,6 @@ namespace SKGPortalCore.Repository.BillData
                     p.ReceiptBill.BillNo = billNo;
                 }
             });
-            //IsSetRefModel = false;
             InitWorkDic(DateTime.Now, 9);
         }
         #endregion

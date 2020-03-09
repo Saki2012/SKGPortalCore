@@ -27,8 +27,7 @@ namespace SKGPortalCore.Repository.BillData
                 {
                     string billNo = $"Deposit{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.DepositBill.BillNo = billNo;
-                    if (null != p.DepositBillReceiptDetail)
-                        p.DepositBillReceiptDetail.ForEach(p => p.BillNo = billNo);
+                    p.DepositBillReceiptDetail?.ForEach(p => p.BillNo = billNo);
                 }
             });
         }

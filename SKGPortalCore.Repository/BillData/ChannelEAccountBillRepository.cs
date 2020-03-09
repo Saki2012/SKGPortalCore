@@ -25,8 +25,7 @@ namespace SKGPortalCore.Repository.BillData
                 {
                     string billNo = $"EAcct{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.ChannelEAccountBill.BillNo = billNo;
-                    if (null != p.ChannelEAccountBill)
-                        p.ChannelEAccountBillDetail.ForEach(p => p.BillNo = billNo);
+                    p.ChannelEAccountBillDetail?.ForEach(p => p.BillNo = billNo);
                 }
             });
         }

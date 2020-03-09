@@ -28,10 +28,7 @@ namespace SKGPortalCore.Repository.BillData
                 {
                     string billNo = $"Auto{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.AutoDebitBill.BillNo = billNo;
-                    if (null != p.AutoDebitBillReceiptDetail)
-                    {
-                        p.AutoDebitBillReceiptDetail.ForEach(p => p.BillNo = billNo);
-                    }
+                    p.AutoDebitBillReceiptDetail?.ForEach(p => p.BillNo = billNo);
                 }
             });
         }
@@ -41,7 +38,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizAutoDebitBill.CheckData(set, Message, DataAccess);
-            BizAutoDebitBill.SetData(set); 
+            BizAutoDebitBill.SetData(set);
             BizVirtualAccountCode.AddVirtualAccountCode(DataAccess, ProgId, set.AutoDebitBill.BillNo, set.AutoDebitBill.VirtualAccountCode);
         }
         #endregion

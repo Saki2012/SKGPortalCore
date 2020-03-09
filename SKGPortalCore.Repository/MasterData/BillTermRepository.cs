@@ -23,12 +23,9 @@ namespace SKGPortalCore.Repository.MasterData
             {
                 if (p.BillTerm.BillTermId.IsNullOrEmpty())
                 {
-                    string billNo = $"Term{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
-                    p.BillTerm.BillTermId = billNo;
-                    if (null != p.BillTermDetail)
-                    {
-                        p.BillTermDetail.ForEach(p => p.BillTermId = billNo);
-                    }
+                    string billTermId = $"Term{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    p.BillTerm.BillTermId = billTermId;
+                    p.BillTermDetail?.ForEach(p => p.BillTermId = billTermId);
                 }
             });
         }
