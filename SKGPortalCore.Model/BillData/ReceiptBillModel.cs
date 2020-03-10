@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Model.BillData
@@ -21,8 +22,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 收款單異動說明表
         /// </summary>
-        public List<ReceiptBillChange> BillReceiptDetail { get; set; } = new List<ReceiptBillChange>();
-
+        public List<ReceiptBillChangeModel> ReceiptBillChange { get; set; } = new List<ReceiptBillChangeModel>();
     }
     /// <summary>
     /// 收款單主檔
@@ -33,7 +33,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key]
+        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
         public string BillNo { get; set; }
         [ForeignKey("CustomerCode")]
         public BizCustomerModel Customer { get; set; }
@@ -141,7 +141,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Required]
+        [Description("帳單編號"), Required, MaxLength(ConstParameter.BillNoLen)]
         public string ToBillNo { get; set; }
         /// <summary>
         /// 匯入批號
@@ -168,7 +168,7 @@ namespace SKGPortalCore.Model.BillData
     /// 收款單異動說明表
     /// </summary>
     [Description("收款單異動說明表")]
-    public class ReceiptBillChange : DetailRowState
+    public class ReceiptBillChangeModel : DetailRowState
     {
         /// <summary>
         /// 單據編號

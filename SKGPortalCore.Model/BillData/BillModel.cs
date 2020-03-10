@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
@@ -38,7 +39,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key, MaxLength(20)]
+        [Description("帳單編號"), Key, MaxLength(ConstParameter.BillNoLen)]
         public string BillNo { get; set; }
         /// <summary>
         /// 企業編號
@@ -108,8 +109,8 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15), DefaultValue("")]
-        public string ImportBatchNo { get; set; }
+        [Description("匯入批號"), Required, MaxLength(15)]
+        public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
     /// 帳單明細

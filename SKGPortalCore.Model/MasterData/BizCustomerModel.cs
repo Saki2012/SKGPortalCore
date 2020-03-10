@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,7 +34,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Key]
+        [Description("企業編號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string CustomerCode { get; set; }
         [ForeignKey("CustomerId")]
         public CustomerModel Customer { get; set; }

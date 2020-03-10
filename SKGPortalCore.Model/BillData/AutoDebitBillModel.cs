@@ -1,4 +1,5 @@
 ﻿using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key, MaxLength(20)]
+        [Description("帳單編號"), Key, MaxLength(ConstParameter.BillNoLen)]
         public string BillNo { get; set; }
         /// <summary>
         /// 企業編號

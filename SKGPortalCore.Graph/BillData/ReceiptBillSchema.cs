@@ -23,7 +23,9 @@ namespace SKGPortalCore.Graph.BillData
     //Input
     public class ReceiptBillSetInputType : BaseInputSetGraphType<ReceiptBillSet> { }
     public class ReceiptBillInputType : BaseInputFieldGraphType<ReceiptBillModel> { }
+    public class ReceiptBillChangeInputType : BaseInputFieldGraphType<ReceiptBillChangeModel> { }
     //Query
     public class ReceiptBillSetType : BaseQuerySetGraphType<ReceiptBillSet> { }
     public class ReceiptBillType : BaseQueryFieldGraphType<ReceiptBillModel> { }
+    public class ReceiptBillChangeType : BaseQueryFieldGraphType<ReceiptBillChangeModel> { }
 }

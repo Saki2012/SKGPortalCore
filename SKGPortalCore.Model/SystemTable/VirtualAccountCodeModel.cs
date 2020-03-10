@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Model.SourceData;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -20,12 +21,12 @@ namespace SKGPortalCore.Model.SystemTable
         /// <summary>
         /// 來源ProgId
         /// </summary>
-        [Description("來源ProgId")]
+        [Description("來源ProgId"), Required, MaxLength(20)]
         public string SourceProgId { get; set; }
         /// <summary>
         /// 來源單號
         /// </summary>
-        [Description("來源單號")]
+        [Description("來源單號"), Required, MaxLength(ConstParameter.BillNoLen)]
         public string SourceBillNo { get; set; }
     }
 }

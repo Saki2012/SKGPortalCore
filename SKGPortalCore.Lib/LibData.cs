@@ -188,6 +188,19 @@ namespace SKGPortalCore.Lib
                 workDateDic.Where(p => p.Value == true && p.Key >= date).OrderBy(p => p.Key).ElementAt(Math.Abs(days)).Key :
                 workDateDic.Where(p => p.Value == true && p.Key <= date).OrderByDescending(p => p.Key).ElementAt(Math.Abs(days)).Key;
         }
+        /// <summary>
+        /// 轉換駝峰式文字
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string ToCamelCase(this string s)
+        {
+            var x = s.Replace("_", "");
+            if (x.Length == 0) return s;
+            x = Regex.Replace(x, "([A-Z])([A-Z]+)($|[A-Z])",
+                m => m.Groups[1].Value + m.Groups[2].Value.ToLower() + m.Groups[3].Value);
+            return char.ToLower(x[0]) + x.Substring(1);
+        }
         /// Convert
         public static short ToInt16(this object val)
         {

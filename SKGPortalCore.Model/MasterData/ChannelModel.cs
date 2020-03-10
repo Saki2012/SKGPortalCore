@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -32,7 +33,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收通路代號
         /// </summary>
-        [Description("代收通路代號"), Key]
+        [Description("代收通路代號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string ChannelId { get; set; }
         /// <summary>
         /// 代收通路名稱
@@ -61,7 +62,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 交易代號
         /// </summary>
-        [Description("交易代號"), Key]
+        [Description("交易代號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string TransCode { get; set; }
     }
 }

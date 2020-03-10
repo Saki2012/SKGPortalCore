@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +26,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收類別代號
         /// </summary>
-        [Description("代收類別代號"), Key]
+        [Description("代收類別代號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string CollectionTypeId { get; set; }
         /// <summary>
         /// 代收類別名稱

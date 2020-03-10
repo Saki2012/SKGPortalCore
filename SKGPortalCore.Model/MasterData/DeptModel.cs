@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,7 +27,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門代號
         /// </summary>
-        [Description("部門代號"), Key]
+        [Description("部門代號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string DeptId { get; set; }
         /// <summary>
         /// 部門名稱

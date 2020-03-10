@@ -93,8 +93,8 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Create, keyVal)) return default;
+                    //object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Create, null)) return default;
                     TSet set = context.GetArgument<TSet>("set");
                     TSet result = repo.Create(set);
                     repo.CommitData(FuncAction.Create);
@@ -106,7 +106,7 @@ namespace SKGPortalCore.Graph
                 type: typeof(TSetType),
                 name: "update",
                 description: ResxManage.GetDescription(FuncAction.Update),
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JSON Web Token" }),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JSON Web Token" }),
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
@@ -190,6 +190,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseQuerySetGraphType()
         {
+            Name = typeof(TSet).Name.Replace("Set", "");
             foreach (var t in typeof(TSet).GetProperties())
             {
                 string typeName = $"{GetType().Namespace}.{t.Name}Type";
@@ -199,7 +200,6 @@ namespace SKGPortalCore.Graph
                 else
                 {
                     Field(Type.GetType(typeName), t.Name, description);
-                    Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), $"{t.Name}List", $"{ description}列表");
                 }
             }
         }
@@ -256,6 +256,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseQueryFieldGraphType()
         {
+            Name = typeof(TModelType).Name.Replace("Model", "");
             PropertyInfo[] properties = typeof(TModelType).GetProperties();
             foreach (PropertyInfo property in properties)
             {
@@ -264,6 +265,7 @@ namespace SKGPortalCore.Graph
                 {
                     Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
                     if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
+                    if (propertyName == "RowState") continue;
                     Field(changeType, propertyName, descript);
                 }
             }
@@ -295,12 +297,12 @@ namespace SKGPortalCore.Graph
         /// <param name="keyVal"></param>
         internal static bool CheckAuthority(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
         {
+            SetDebugUser(repository, context/*, progId*/);
             return true;
             ISessionWapper session = ((ISessionWapper)context.UserContext);
             repository.User = session?.User;
             repository.Message = null;
             string progId = repository.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
-            SetDebugUser(repository, context, progId);
             SysOperateLog.SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
             if (repository.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, action))
             {
@@ -317,7 +319,7 @@ namespace SKGPortalCore.Graph
         /// <param name="repo"></param>
         /// <param name="context"></param>
         /// <param name="progId"></param>
-        internal static void SetDebugUser(BasicRepository<TSet> repo, ResolveFieldContext<object> context, string progId)
+        internal static void SetDebugUser(BasicRepository<TSet> repo, ResolveFieldContext<object> context/*, string progId*/)
         {
 #if DEBUG
             repo.User = SystemOperator.SysOperator;

@@ -21,7 +21,11 @@ namespace SKGPortalCore.Graph.MasterData
     //Input
     public class ChannelSetInputType : BaseInputSetGraphType<ChannelSet> { }
     public class ChannelInputType : BaseInputFieldGraphType<ChannelModel> { }
+    public class ChannelMapInputType : BaseInputFieldGraphType<ChannelMapModel> { }
+
     //Query
     public class ChannelSetType : BaseQuerySetGraphType<ChannelSet> { }
     public class ChannelType : BaseQueryFieldGraphType<ChannelModel> { }
+    public class ChannelMapType : BaseQueryFieldGraphType<ChannelMapModel> { }
+
 }

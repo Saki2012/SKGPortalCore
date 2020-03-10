@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -38,7 +39,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 繳款人代號
         /// </summary>
-        [Description("繳款人代號"), Key]
+        [Description("繳款人代號"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string PayerId { get; set; }
         /// <summary>
         /// 繳款人名稱

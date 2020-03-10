@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Model.System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,7 +25,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編"), Key]
+        [Description("客戶統編"), Key, MaxLength(ConstParameter.DataIdLen)]
         public string CustomerId { get; set; }
         /// <summary>
         /// 客戶名稱

@@ -21,7 +21,11 @@ namespace SKGPortalCore.Graph.MasterData
     //Input
     public class BizCustomerSetInputType : BaseInputSetGraphType<BizCustomerSet> { }
     public class BizCustomerInputType : BaseInputFieldGraphType<BizCustomerModel> { }
+    public class BizCustomerFeeDetailInputType : BaseInputFieldGraphType<BizCustomerFeeDetailModel> { }
+
     //Query
     public class BizCustomerSetType : BaseQuerySetGraphType<BizCustomerSet> { }
     public class BizCustomerType : BaseQueryFieldGraphType<BizCustomerModel> { }
+    public class BizCustomerFeeDetailType : BaseQueryFieldGraphType<BizCustomerFeeDetailModel> { }
+
 }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using SKGPortalCore.Model.MasterData;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +25,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key]
+        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
         public string BillNo { get; set; }
         /// <summary>
         /// 

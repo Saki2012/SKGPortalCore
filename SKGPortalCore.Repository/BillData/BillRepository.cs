@@ -29,6 +29,7 @@ namespace SKGPortalCore.Repository.BillData
                     p.BillReceiptDetail?.ForEach(p => p.BillNo = billNo);
                 }
             });
+            IsSetRefModel = true;
         }
         #endregion
 
