@@ -4,6 +4,9 @@ using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Repository.BillData;
+using System;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SKGPortalCore.Graph.BillData
 {
@@ -23,7 +26,13 @@ namespace SKGPortalCore.Graph.BillData
     }
     //Input
     public class BillSetInputType : BaseInputSetGraphType<BillSet> { }
-    public class BillInputType : BaseInputFieldGraphType<BillModel> { }
+    public class BillInputType : BaseInputFieldGraphType<BillModel>
+    {
+        protected override PropertyInfo[] SetExpectProperties(Expression<Func<BillModel, dynamic>> propertyExpression)
+        {
+            return base.SetExpectProperties(p => new dynamic[] { p.PayAmount, p.HadPayAmount, p.VirtualAccountCode, p.ImportBatchNo, p.PayStatus });
+        }
+    }
     public class BillDetailInputType : BaseInputFieldGraphType<BillDetailModel> { }
     public class BillReceiptDetailInputType : BaseInputFieldGraphType<BillReceiptDetailModel> { }
     //Query

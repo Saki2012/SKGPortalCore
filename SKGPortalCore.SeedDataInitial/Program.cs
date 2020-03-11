@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.MasterData;
+﻿using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
 using SKGPortalCore.SeedDataInitial.BillData;
 using SKGPortalCore.SeedDataInitial.MasterData;
 using SKGPortalCore.SeedDataInitial.SourceData;
+using System;
+using System.Text;
 
 namespace SKGPortalCore.SeedDataInitial
 {

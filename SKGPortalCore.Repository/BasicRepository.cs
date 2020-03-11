@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
+using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Repository
 {
@@ -348,21 +346,6 @@ namespace SKGPortalCore.Repository
             {
                 ErrorRollbackEntities();
             }
-        }
-        /// <summary>
-        /// 獲取表頭主鍵
-        /// </summary>
-        /// <param name="set"></param>
-        /// <returns></returns>
-        public object[] GetPKVals(TSet set)
-        {
-            foreach (dynamic s in set.GetType().GetProperties())
-            {
-                dynamic val = SetReflect.GetValue(set, s.Name);
-                if (null == val) continue;
-                if (val is BasicDataModel) return GetKeyVals(val);
-            }
-            return null;
         }
         #endregion
         #region Protected

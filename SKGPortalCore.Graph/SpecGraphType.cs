@@ -15,6 +15,8 @@ using SKGPortalCore.Graph.BillData;
 using SKGPortalCore.Graph.MasterData;
 using System.ComponentModel;
 using SKGPortalCore.Model.System;
+using System.Linq.Expressions;
+using SKGPortalCore.Model.BillData;
 
 namespace SKGPortalCore.Graph
 {
@@ -190,7 +192,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseQuerySetGraphType()
         {
-            Name = typeof(TSet).Name.Replace("Set", "");
+            Name = typeof(TSet).Name;
             foreach (var t in typeof(TSet).GetProperties())
             {
                 string typeName = $"{GetType().Namespace}.{t.Name}Type";
@@ -227,29 +229,37 @@ namespace SKGPortalCore.Graph
         public BaseInputFieldGraphType()
         {
             Type t = typeof(TModelType);
-            string[] baseProperty = t.BaseType.GetProperties().Select(p => p.Name).Where(p => p.CompareTo("RowState") != 0).ToArray();
-            PropertyInfo[] properties = t.GetProperties().Where(p => !baseProperty.Contains(p.Name)).ToArray();
+            PropertyInfo[] properties = t.GetProperties();
+            PropertyInfo[] expectProperties = SetExpectProperties(null);
+            if (null != expectProperties) properties = properties.Except(expectProperties).ToArray();
             foreach (PropertyInfo property in properties)
             {
-                string propertyName = property.Name, descript = ResxManage.GetDescription(property);
-                if (!SetType(propertyName, descript))
-                {
-                    Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
-
-                    Field(changeType, propertyName, descript);
-                }
+                Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
+                if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
+                Field(changeType, property.Name, ResxManage.GetDescription(property));
             }
         }
         /// <summary>
-        /// 設置Field控制
+        /// 
         /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="descript"></param>
-        /// <returns>有更動時Return true,反之false</returns>
-        protected virtual bool SetType(string propertyName, string descript)
+        /// <param name="propertyExpression"></param>
+        /// <returns></returns>
+        protected virtual PropertyInfo[] SetExpectProperties(Expression<Func<TModelType, dynamic>> propertyExpression)
         {
-            return false;
+            List<PropertyInfo> props = new List<PropertyInfo>();
+            List<string> propsName = new List<string>();
+            propsName.AddRange(typeof(BasicDataModel).GetProperties().Select(p => p.Name).ToArray());
+            props.AddRange(typeof(TModelType).GetProperties().Where(p => propsName.Contains(p.Name)).ToArray());
+            if (null != propertyExpression)
+            {
+                var fields = ((NewArrayExpression)(propertyExpression.Body)).Expressions;
+                foreach (Expression field in fields)
+                    if (field.NodeType == ExpressionType.Convert)
+                        props.Add((PropertyInfo)((MemberExpression)((UnaryExpression)field).Operand).Member);
+                    else
+                        props.Add((PropertyInfo)((MemberExpression)field).Member);
+            }
+            return props.ToArray();
         }
     }
     public class BaseQueryFieldGraphType<TModelType> : ObjectGraphType<TModelType>
@@ -258,27 +268,36 @@ namespace SKGPortalCore.Graph
         {
             Name = typeof(TModelType).Name.Replace("Model", "");
             PropertyInfo[] properties = typeof(TModelType).GetProperties();
+            PropertyInfo[] expectProperties = SetExpectProperties(null);
+            if (null != expectProperties) properties = properties.Except(expectProperties).ToArray();
             foreach (PropertyInfo property in properties)
             {
-                string propertyName = property.Name, descript = ResxManage.GetDescription(property);
-                if (!SetType(propertyName, ref descript))
-                {
-                    Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
-                    if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
-                    if (propertyName == "RowState") continue;
-                    Field(changeType, propertyName, descript);
-                }
+                Type changeType = GraphQLChangeType.ChangeGrcaphQLType(property.PropertyType);
+                if (property.PropertyType == changeType) continue;//暫時不處理特殊情況的Type(ex:ModelClass)
+                Field(changeType, property.Name, ResxManage.GetDescription(property));
             }
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="descript"></param>
-        /// <returns>回傳True時，將不繼續往下添加欄位</returns>
-        protected virtual bool SetType(string propertyName, ref string descript)
+        /// <param name="propertyExpression"></param>
+        /// <returns></returns>
+        protected virtual PropertyInfo[] SetExpectProperties(Expression<Func<TModelType, object>> propertyExpression)
         {
-            return false;
+            List<PropertyInfo> props = new List<PropertyInfo>();
+            List<string> propsName = new List<string>();
+            propsName.AddRange(typeof(DetailRowState).GetProperties().Select(p => p.Name).ToArray());
+            props.AddRange(typeof(TModelType).GetProperties().Where(p => propsName.Contains(p.Name)).ToArray());
+            if (null != propertyExpression)
+            {
+                var fields = ((NewArrayExpression)(propertyExpression.Body)).Expressions;
+                foreach (Expression field in fields)
+                    if (field.NodeType == ExpressionType.Convert)
+                        props.Add((PropertyInfo)((MemberExpression)((UnaryExpression)field).Operand).Member);
+                    else
+                        props.Add((PropertyInfo)((MemberExpression)field).Member);
+            }
+            return props.ToArray();
         }
     }
 
@@ -341,5 +360,7 @@ namespace SKGPortalCore.Graph
             return LibData.Merge(",", true, objs);
         }
     }
+
+
     #endregion
 }

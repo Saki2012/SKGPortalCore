@@ -1,5 +1,4 @@
 ﻿using GraphQL.Types;
-using SKGPortalCore.Graph.BillData;
 using SKGPortalCore.Lib;
 using System;
 using System.IO;
@@ -11,7 +10,7 @@ namespace SKGPortalCore.GraphJsCreator
 {
     class Program
     {
-        private static string OutputPath = @".\output";
+        private const string OutputPath = @".\output";
 
         static void Main()
         {
@@ -19,11 +18,13 @@ namespace SKGPortalCore.GraphJsCreator
             Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
             //Set
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0).ToArray();
+
+            if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath,true);
+            Directory.CreateDirectory(OutputPath);
             foreach (Type t in setTypes)
             {
                 dynamic set = Activator.CreateInstance(t);
                 string v = Template(set);
-                Directory.CreateDirectory(OutputPath);
                 using StreamWriter file = new StreamWriter($@"{OutputPath}\{LibData.ToCamelCase(set.Name)}.fragment.js", true);
                 file.Write(v);
             }
