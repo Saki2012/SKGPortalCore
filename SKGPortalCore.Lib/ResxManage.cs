@@ -41,7 +41,9 @@ namespace SKGPortalCore.Lib
         }
         public static string GetDescription<T>(Expression<Func<T, object>> propertyExpression)
         {
-            var propertyInfo = (PropertyInfo)((MemberExpression)propertyExpression.Body).Member;
+            var propertyInfo = (propertyExpression.Body.NodeType == ExpressionType.Convert) ?
+                               (PropertyInfo)((MemberExpression)((UnaryExpression)propertyExpression.Body).Operand).Member
+                              : (PropertyInfo)((MemberExpression)propertyExpression.Body).Member;
             return GetDescription(propertyInfo);
         }
         public static string GetDescription(PropertyInfo property)

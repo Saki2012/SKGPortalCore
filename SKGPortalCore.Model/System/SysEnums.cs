@@ -75,9 +75,9 @@ namespace SKGPortalCore.Model.System
         Disbursed = 2,
     }
     /// <summary>
-    /// 銷帳編號長度
+    /// 虛擬帳號長度
     /// </summary>
-    [Description("銷帳編號長度")]
+    [Description("虛擬帳號長度")]
     public enum VirtualAccountLen : byte
     {
         /// <summary>

@@ -31,7 +31,7 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 
         /// </summary>
-        protected bool IsSetRefModel { get; set; } = false;//true?
+        protected bool IsSetRefModel { get; set; } = true;
         /// <summary>
         /// 
         /// </summary>

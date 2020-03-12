@@ -61,7 +61,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 銷帳編號長度
         /// </summary>
-        [Description("銷帳編號長度")]
+        [Description("虛擬帳號長度")]
         public VirtualAccountLen VirtualAccountLen { get; set; }
         /// <summary>
         /// 期別編號長度
@@ -139,7 +139,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 導入批號
         /// </summary>
         [Description("導入批號"), Required]
-        public string ImportBatchNo { get; set; }
+        public string ImportBatchNo { get; set; } = string.Empty;
         /// <summary>
         /// 來源
         /// </summary>

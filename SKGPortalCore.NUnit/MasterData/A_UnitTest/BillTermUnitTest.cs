@@ -6,9 +6,8 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository.MasterData;
 using System.Collections.Generic;
 
-namespace SKGPortalCore.NUnit.MasterData
+namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {
-    //[SetUpFixture]
     public class BillTermUnitTest
     {
         #region Property
@@ -26,31 +25,34 @@ namespace SKGPortalCore.NUnit.MasterData
         }
         #endregion
 
-        #region Public
+        #region Test
 
         #region Create
-        public class Create : BillTermUnitTest
+        private class Create : BillTermUnitTest
         {
             /// <summary>
             /// 
             /// </summary>
             [Test]
-            public void CorrectData_A()
+            public void C_CorrectData_A()
             {
-                AssertCorrectData(new BillTermSet(), new BillTermSet());
+                BillTermSet expectData = new BillTermSet() { },
+                            actualData = Repo.Create(new BillTermSet() { });
+                AssertCorrectData(expectData, actualData);
             }
             [Test]
-            public void CheckTermNo_A()
+            public void E_CheckTermNo_A()
             {
+                Repo.Create(new BillTermSet() { });
                 CheckTermNo();
             }
             [Test]
-            public void CheckTermNoLen_A()
+            public void E_CheckTermNoLen_A()
             {
                 CheckTermNoLen();
             }
             [Test]
-            public void CheckTermNoExist_A()
+            public void E_CheckTermNoExist_A()
             {
                 CheckTermNoExist();
             }
@@ -58,28 +60,28 @@ namespace SKGPortalCore.NUnit.MasterData
         #endregion
 
         #region Update
-        public class Update : BillTermUnitTest
+        private class Update : BillTermUnitTest
         {
 
         }
         #endregion
 
         #region Delete
-        public class Delete : BillTermUnitTest
+        private class Delete : BillTermUnitTest
         {
 
         }
         #endregion
 
         #region Invalid
-        public class Invalid : BillTermUnitTest
+        private class Invalid : BillTermUnitTest
         {
 
         }
         #endregion
 
         #region EndCase
-        public class EndCase : BillTermUnitTest
+        private class EndCase : BillTermUnitTest
         {
 
         }
@@ -104,12 +106,12 @@ namespace SKGPortalCore.NUnit.MasterData
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="testData"></param>
-        /// <param name="result"></param>
-        private void AssertSet(BillTermSet testData, BillTermSet result)
+        /// <param name="expectData"></param>
+        /// <param name="actualData"></param>
+        private void AssertSet(BillTermSet expectData, BillTermSet actualData)
         {
             //Assert.AreEqual(testData.BillTerm.BillTermId, result.BillTerm.BillTermId, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTerm)} 結果不一致");
-            Assert.AreEqual(testData.BillTermDetail, result.BillTermDetail, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTermDetail)} 結果不一致");
+            Assert.AreEqual(expectData.BillTermDetail, actualData.BillTermDetail, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTermDetail)} 結果不一致");
         }
         /// <summary>
         /// 

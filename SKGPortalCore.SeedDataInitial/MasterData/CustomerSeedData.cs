@@ -31,6 +31,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                 using CustomerRepository repo = new CustomerRepository(DataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<CustomerSet> custs = new List<CustomerSet>()
                 {
+                    new CustomerSet() { Customer = new CustomerModel() {  CustomerId="64487252", CustomerName="單元測試用客戶",         Address="台北市",Tel="02-23659193",Fax="02-23659193",ZipCode="740",ZipUnit="294",ZipNum="852"} } ,
                     new CustomerSet() { Customer = new CustomerModel() {  CustomerId="30262944", CustomerName="新榮天然氣股份有限公司", Address="台北市",Tel="02-23659193",Fax="02-23659193",ZipCode="740",ZipUnit="294",ZipNum="852"} } ,
                     new CustomerSet() { Customer = new CustomerModel() {  CustomerId="00146877", CustomerName="人壽保險",               Address="台中市",Tel="05-88422913",Fax="05-88422913",ZipCode="310",ZipUnit="848",ZipNum="145"} } ,
                     new CustomerSet() { Customer = new CustomerModel() {  CustomerId="01031142", CustomerName="台北市女子第一高級中學", Address="台北市",Tel="02-77428894",Fax="02-77428894",ZipCode="361",ZipUnit="221",ZipNum="543"} } ,
