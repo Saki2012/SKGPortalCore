@@ -14,8 +14,6 @@ namespace SKGPortalCore.NUnit.MasterData
         #region Property
         ApplicationDbContext DataAccess;
         BillTermRepository Repo;
-        #endregion
-        #region Public
         [OneTimeSetUp]
         public void CreateDataAccess()
         {
@@ -24,77 +22,122 @@ namespace SKGPortalCore.NUnit.MasterData
         [SetUp]
         public void Setup()
         {
-            //DataAccess = LibDataAccess.CreateDataAccess();
             Repo = new BillTermRepository(DataAccess) { User = SystemOperator.SysOperator };
         }
+        #endregion
 
-        [Test]
-        public void Create()
+        #region Public
+
+        #region Create
+        public class Create : BillTermUnitTest
         {
-            BillTermSet testData = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            BillTermSet testData2 = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            //BillTermSet result = repo.Create(new BillTermSet());
-
-            //Assert.Contains(repo.Message.AddCustErrorMessage)
-            //Assert.AreEqual()
-            AssertTable(testData, testData2);
-        }
-        [Test]
-        public void Update()
-        {
-            BillTermSet testData = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            BillTermSet testData2 = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            //BillTermSet result = repo.Create(new BillTermSet());
-
-            //Assert.Contains(repo.Message.AddCustErrorMessage)
-            //Assert.AreEqual()
-            AssertTable(testData, testData2);
-        }
-        [Test]
-        public void Delete()
-        {
-            BillTermSet testData = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            BillTermSet testData2 = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            //BillTermSet result = repo.Create(new BillTermSet());
-
-            //Assert.Contains(repo.Message.AddCustErrorMessage)
-            //Assert.AreEqual()
-            AssertTable(testData, testData2);
-        }
-        [Test]
-        public void Invalid()
-        {
-            BillTermSet testData = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            BillTermSet testData2 = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            //BillTermSet result = repo.Create(new BillTermSet());
-
-            //Assert.Contains(repo.Message.AddCustErrorMessage)
-            //Assert.AreEqual()
-            AssertTable(testData, testData2);
-        }
-        [Test]
-        public void EndCase()
-        {
-            BillTermSet testData = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            BillTermSet testData2 = new BillTermSet() { BillTerm = new BillTermModel() { }, BillTermDetail = new List<BillTermDetailModel>() { new BillTermDetailModel() { } } };
-            //BillTermSet result = repo.Create(new BillTermSet());
-
-            //Assert.Contains(repo.Message.AddCustErrorMessage)
-            //Assert.AreEqual()
-            AssertTable(testData, testData2);
+            /// <summary>
+            /// 
+            /// </summary>
+            [Test]
+            public void CorrectData_A()
+            {
+                AssertCorrectData(new BillTermSet(), new BillTermSet());
+            }
+            [Test]
+            public void CheckTermNo_A()
+            {
+                CheckTermNo();
+            }
+            [Test]
+            public void CheckTermNoLen_A()
+            {
+                CheckTermNoLen();
+            }
+            [Test]
+            public void CheckTermNoExist_A()
+            {
+                CheckTermNoExist();
+            }
         }
         #endregion
+
+        #region Update
+        public class Update : BillTermUnitTest
+        {
+
+        }
+        #endregion
+
+        #region Delete
+        public class Delete : BillTermUnitTest
+        {
+
+        }
+        #endregion
+
+        #region Invalid
+        public class Invalid : BillTermUnitTest
+        {
+
+        }
+        #endregion
+
+        #region EndCase
+        public class EndCase : BillTermUnitTest
+        {
+
+        }
+        #endregion
+
+        #endregion
+
         #region Private
+
+        #region CorrectData
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expectData"></param>
+        /// <param name="actualData"></param>
+        /// <param name="messageLog"></param>
+        private void AssertCorrectData(BillTermSet expectData, BillTermSet actualData)
+        {
+            AssertSet(expectData, actualData);
+            AssertMessage();
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="testData"></param>
         /// <param name="result"></param>
-        private void AssertTable(BillTermSet testData, BillTermSet result)
+        private void AssertSet(BillTermSet testData, BillTermSet result)
         {
-            //Assert.AreEqual(testData.BillTerm, result.BillTerm, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTerm)} 結果不一致");
-            //Assert.AreEqual(testData.BillTermDetail, result.BillTermDetail, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTermDetail)} 結果不一致");
+            //Assert.AreEqual(testData.BillTerm.BillTermId, result.BillTerm.BillTermId, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTerm)} 結果不一致");
+            Assert.AreEqual(testData.BillTermDetail, result.BillTermDetail, $"{ResxManage.GetDescription<BillTermSet>(p => p.BillTermDetail)} 結果不一致");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageLog"></param>
+        private void AssertMessage()
+        {
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1005, false);
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1008, false);
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1006, false);
+        }
+        #endregion
+
+        #region ErrorData
+        private void CheckTermNo()
+        {
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1006, true);
+        }
+        private void CheckTermNoLen()
+        {
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1005, true);
+        }
+        private void CheckTermNoExist()
+        {
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1008, true);
+        }
+        #endregion
+
         #endregion
     }
 }

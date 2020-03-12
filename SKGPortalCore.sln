@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.Schedule", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.NUnit", "SKGPortalCore.NUnit\SKGPortalCore.NUnit.csproj", "{EB7E6459-E4F4-48C4-AF0E-715E28376D44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKGPortalCore.GraphJsCreator", "SKGPortalCore.GraphJsCreator\SKGPortalCore.GraphJsCreator.csproj", "{24228A05-378E-42B7-91FB-88E2D610F12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.GraphJsCreator", "SKGPortalCore.GraphJsCreator\SKGPortalCore.GraphJsCreator.csproj", "{24228A05-378E-42B7-91FB-88E2D610F12E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

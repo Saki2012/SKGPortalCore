@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -42,6 +43,7 @@ namespace SKGPortalCore.Data
         /// 錯誤訊息前綴
         /// </summary>
         public string Prefix { get; set; }
+        public List<MessageCode> MsgCodeList { get; set; } = new List<MessageCode>();
         #endregion
         #region Construct
         public SysMessageLog(IUserModel user, string logPath = @"./Log/", string logFileName = "SKGPortalCore")
@@ -63,6 +65,7 @@ namespace SKGPortalCore.Data
         {
             ExecutionError err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
             Errors.Add(err);
+            MsgCodeList.Add(messageCode);
         }
         /// <summary>
         /// 添加異常狀況
