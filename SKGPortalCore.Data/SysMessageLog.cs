@@ -223,5 +223,15 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("繳款人「{0}」不為「{1}」類型，請確認！")]
         Code1017,
+        /// <summary>
+        /// 系統商/Hitrust用戶只能擇一，請確認「商戶手續費管理明細」設置。
+        /// </summary>
+        [Description("系統商/Hitrust用戶只能擇一，請確認「商戶手續費管理明細」設置。")]
+        Code1018,
+        /// <summary>
+        /// 介紹商企業代號請選擇商戶類行是「{0}」的企業代號
+        /// </summary>
+        [Description("介紹商企業代號請選擇商戶類行是「{0}」的企業代號")]
+        Code1019,
     }
 }

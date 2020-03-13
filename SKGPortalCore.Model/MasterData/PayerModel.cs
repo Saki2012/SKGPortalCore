@@ -50,7 +50,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 繳款人編碼
         /// </summary>
         [Description("繳款人編碼")]
-        public String PayerNo { get; set; }
+        public string PayerNo { get; set; }
         /// <summary>
         /// 繳款人類別
         /// </summary>

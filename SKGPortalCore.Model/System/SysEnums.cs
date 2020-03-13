@@ -378,11 +378,6 @@ namespace SKGPortalCore.Model.System
         [Description("郵局通路")]
         Post = 2,
         /// <summary>
-        /// Hitrust
-        /// </summary>
-        [Description("Hitrust")]
-        Hitrust = 3,
-        /// <summary>
         /// 自收款
         /// </summary>
         [Description("自收款")]
@@ -446,6 +441,17 @@ namespace SKGPortalCore.Model.System
         /// </summary>
         [Description("每筆總手續費")]
         TotalFee = 3,
+        /// <summary>
+        /// Hitrust+清算手續費(次月扣款)
+        /// </summary>
+        [Description("Hitrust+清算手續費(次月扣款)")]
+        Hitrust_ClearFee_NextMonth = 4,
+        /// <summary>
+        /// Hitrust+清算手續費(當月扣款)
+        /// </summary>
+        [Description("Hitrust+清算手續費(當月扣款)")]
+        Hitrust_ClearFee_CurMonth = 5,
+
     }
     /// <summary>
     /// 通路帳務核銷週期

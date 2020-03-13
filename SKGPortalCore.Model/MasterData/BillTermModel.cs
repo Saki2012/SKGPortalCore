@@ -46,13 +46,19 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 期別名稱
         /// </summary>
-        [Description("期別名稱")]
+        [Description("期別名稱"), Required]
         public string BillTermName { get; set; }
         /// <summary>
         /// 期別編號
         /// </summary>
-        [Description("期別編號")]
+        [Description("期別編號"), Required]
         public string BillTermNo { get; set; }
+        /// <summary>
+        /// 繳款截止日
+        /// 註：對帳單的繳款截止日進行CheckField
+        /// </summary>
+        [Description("繳款截止日"), Required]
+        public DateTime PayEndDate { get; set; }
     }
     /// <summary>
     /// 期別費用明細
@@ -79,13 +85,15 @@ namespace SKGPortalCore.Model.MasterData
         public int RowId { get; set; }
         /// <summary>
         /// 費用名稱
+        /// 註：對帳單明細的費用名稱進行CheckField
         /// </summary>
         [Description("費用名稱")]
         public string FeeName { get; set; }
         /// <summary>
-        /// 減項
+        /// 應繳金額
+        /// 註：對帳單明細的應繳金額進行CheckField
         /// </summary>
-        [Description("減項")]
-        public bool IsDeduction { get; set; }
+        [Description("應繳金額")]
+        public decimal PayAmount { get; set; }
     }
 }

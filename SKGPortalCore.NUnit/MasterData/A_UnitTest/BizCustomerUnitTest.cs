@@ -202,7 +202,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                     });
                 AssertCorrectData(expectData, actualData);
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
             [Test]
             public void E_CheckVirtualAccountLength_A()
             {
@@ -232,6 +234,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 });
                 CheckVirtualAccountLength();
             }
+            /// <summary>
+            /// 
+            /// </summary>
             [Test]
             public void E_CheckBizCustType_A()
             {
@@ -255,14 +260,44 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
                             new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Hitrust, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=8, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
                         }
                 });
                 CheckBizCustType();
             }
-
+            /// <summary>
+            /// 
+            /// </summary>
+            [Test]
+            public void E_CheckIntroduceType_A()
+            {
+                string key = "99608";
+                Repo.Create(new BizCustomerSet()
+                {
+                    BizCustomer = new BizCustomerModel()
+                    {
+                        CustomerId = "64487252",
+                        CustomerCode = key,
+                        VirtualAccountLen = VirtualAccountLen.Len14,
+                        BillTermLen = 5,
+                        PayerNoLen = 6,
+                        BizCustType = BizCustType.Cust,
+                        VirtualAccount1 = VirtualAccount1.BillTerm,
+                        VirtualAccount2 = VirtualAccount2.PayerNo,
+                        VirtualAccount3 = VirtualAccount3.NoverifyCode,
+                        ChannelIds = "00,01,02,03,04,05",
+                        CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                        AccountStatus = AccountStatus.Enable,
+                    },
+                    BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee,Fee=10, Percent=0 },
+                        }
+                });
+                CheckIntroduceType();
+            }
         }
         #endregion
 
@@ -342,7 +377,11 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
         }
         private void CheckBizCustType()
         {
-            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code0001, true);
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1019, true);
+        }
+        private void CheckIntroduceType()
+        {
+            Comm.SpecAssertMessage(Repo.Message.MsgCodeList, MessageCode.Code1018, true);
         }
         #endregion
 

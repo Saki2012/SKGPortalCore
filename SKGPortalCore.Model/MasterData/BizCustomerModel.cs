@@ -175,9 +175,9 @@ namespace SKGPortalCore.Model.MasterData
         [Description("手續費")]
         public decimal Fee { get; set; }
         /// <summary>
-        /// 分潤%
+        /// 介紹商手續費/分潤%
         /// </summary>
-        [Description("分潤%")]
+        [Description("介紹商手續費/分潤%")]
         public decimal Percent { get; set; }
     }
 
