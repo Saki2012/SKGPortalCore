@@ -8,16 +8,10 @@ using System.Collections.Generic;
 
 namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {
-    public class BillTermUnitTest
+    public class BillTermUnitTest : BaseUnitTest
     {
         #region Property
-        ApplicationDbContext DataAccess;
         BillTermRepository Repo;
-        [OneTimeSetUp]
-        public void CreateDataAccess()
-        {
-            DataAccess = LibDataAccess.CreateDataAccess();
-        }
         [SetUp]
         public void Setup()
         {
@@ -89,7 +83,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                                         PayAmount=5000,
                                     },
                                 }
-                }); 
+                });
                 CheckTermNo();
             }
             [Test]

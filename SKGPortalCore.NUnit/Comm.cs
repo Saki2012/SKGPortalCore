@@ -6,6 +6,15 @@ using System.Text;
 
 namespace SKGPortalCore.NUnit
 {
+    public class BaseUnitTest
+    {
+        public ApplicationDbContext DataAccess;
+        [OneTimeSetUp]
+        public void CreateDataAccess()
+        {
+            DataAccess = LibDataAccess.CreateDataAccess();
+        }
+    }
     internal static class Comm
     {
         internal static void SpecAssertMessage(List<MessageCode> msgCodeList, MessageCode code, bool isTrue)

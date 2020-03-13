@@ -10,16 +10,10 @@ using System.Text;
 
 namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {
-    public class PayerUnitTest
+    public class PayerUnitTest : BaseUnitTest
     {
         #region Property
-        ApplicationDbContext DataAccess;
         PayerRepository Repo;
-        [OneTimeSetUp]
-        public void CreateDataAccess()
-        {
-            DataAccess = LibDataAccess.CreateDataAccess();
-        }
         [SetUp]
         public void Setup()
         {

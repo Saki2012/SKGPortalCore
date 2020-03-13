@@ -12,16 +12,10 @@ using System.Text;
 
 namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {
-    public class BizCustomerUnitTest
+    public class BizCustomerUnitTest : BaseUnitTest
     {
         #region Property
-        ApplicationDbContext DataAccess;
         BizCustomerRepository Repo;
-        [OneTimeSetUp]
-        public void CreateDataAccess()
-        {
-            DataAccess = LibDataAccess.CreateDataAccess();
-        }
         [SetUp]
         public void Setup()
         {

@@ -12,16 +12,10 @@ using System.Text;
 
 namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {
-    public class CollectionTypeUnitTest
+    public class CollectionTypeUnitTest : BaseUnitTest
     {
         #region Property
-        ApplicationDbContext DataAccess;
         CollectionTypeRepository Repo;
-        [OneTimeSetUp]
-        public void CreateDataAccess()
-        {
-            DataAccess = LibDataAccess.CreateDataAccess();
-        }
         [SetUp]
         public void Setup()
         {
@@ -238,7 +232,58 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
         #region Update
         private class Update : CollectionTypeUnitTest
         {
-
+            /// <summary>
+            /// 超商代收類別-正常資料
+            /// </summary>
+            [Test]
+            public void C_CorrectData_MartA()
+            {
+                CollectionTypeSet expectData = new CollectionTypeSet()
+                {
+                    CollectionType = new CollectionTypeModel(),
+                    CollectionTypeDetail = new List<CollectionTypeDetailModel>() {
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                        new CollectionTypeDetailModel() { ChannelTotalFee=10 },
+                    },
+                    CollectionTypeVerifyPeriod = new List<CollectionTypeVerifyPeriodModel>() {
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="01" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="02" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="03" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="04" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="12" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="13" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="14" },
+                    },
+                },
+                                  actualData = Repo.Update(new CollectionTypeSet()
+                                  {
+                                      CollectionType = new CollectionTypeModel() { CollectionTypeId = "6P1", CollectionTypeName = "超商內扣", ChargePayType = ChargePayType.Deduction, },
+                                      CollectionTypeDetail = new List<CollectionTypeDetailModel>() {
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "01", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "02", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "03", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "04", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "12", SRange = 1, ERange = 20000, ChannelFee = 6, ChannelFeedBackFee = 4, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "13", SRange = 1, ERange = 20000, ChannelFee = 8, ChannelFeedBackFee = 2, ChannelRebateFee = 0, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "14", SRange = 1, ERange = 20000, ChannelFee = 0, ChannelFeedBackFee = 0, ChannelRebateFee = 10, },
+                                      },
+                                      CollectionTypeVerifyPeriod = new List<CollectionTypeVerifyPeriodModel>() {
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="01", PayPeriodType= PayPeriodType.NDay_A },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="02", PayPeriodType= PayPeriodType.NDay_B },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="03", PayPeriodType= PayPeriodType.NDay_C },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="04", PayPeriodType= PayPeriodType.TenDay },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="12", PayPeriodType= PayPeriodType.Week },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="13", PayPeriodType= PayPeriodType.NDay_A },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="14", PayPeriodType= PayPeriodType.NDay_B },
+                                      },
+                                  });
+                AssertCorrectData(expectData, actualData);
+            }
         }
         #endregion
 
