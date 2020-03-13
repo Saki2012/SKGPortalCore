@@ -99,7 +99,7 @@ namespace SKGPortalCore.Model.System
     /// </summary>
     public class DetailRowState
     {
-        [Description("行狀態"), NotMapped]
+        [Description("行狀態"), NotMapped, InputField]
         public RowState RowState { get; set; }
     }
 }

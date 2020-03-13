@@ -38,12 +38,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收通路名稱
         /// </summary>
-        [Description("代收通路名稱")]
+        [Description("代收通路名稱"), InputField]
         public string ChannelName { get; set; }
         /// <summary>
         /// 通路類別
         /// </summary>
-        [Description("通路類別")]
+        [Description("通路類別"), InputField]
         public ChannelGroupType ChannelGroupType { get; set; }
     }
     /// <summary>

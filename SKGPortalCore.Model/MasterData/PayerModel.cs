@@ -44,17 +44,17 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 繳款人名稱
         /// </summary>
-        [Description("繳款人名稱")]
+        [Description("繳款人名稱"),Required, InputField]
         public string PayerName { get; set; }
         /// <summary>
         /// 繳款人編碼
         /// </summary>
-        [Description("繳款人編碼")]
+        [Description("繳款人編碼"),Required, InputField]
         public string PayerNo { get; set; }
         /// <summary>
         /// 繳款人類別
         /// </summary>
-        [Description("繳款人類別")]
+        [Description("繳款人類別"), InputField]
         public PayerType PayerType { get; set; }
     }
 }

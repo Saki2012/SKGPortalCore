@@ -49,7 +49,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Required]
+        [Description("企業編號"), Required, InputField]
         public string CustomerCode { get; set; }
         /// <summary>
         /// 期別
@@ -59,7 +59,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 期別
         /// </summary>
-        [Description("期別")]
+        [Description("期別"), InputField]
         public string BillTermId { get; set; }
         /// <summary>
         /// 繳款人
@@ -69,12 +69,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 繳款人
         /// </summary>
-        [Description("繳款人")]
+        [Description("繳款人"), InputField]
         public string PayerId { get; set; }
         /// <summary>
         /// 繳款截止日
         /// </summary>
-        [Description("繳款截止日"), Required]
+        [Description("繳款截止日"), Required, InputField]
         public DateTime PayEndDate { get; set; }
         /// <summary>
         /// 代收項目
@@ -84,7 +84,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 代收項目
         /// </summary>
-        [Description("代收項目")]
+        [Description("代收項目"), InputField]
         public string CollectionTypeId { get; set; }
         /// <summary>
         /// 應繳金額
@@ -133,12 +133,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 費用
         /// </summary>
-        [Description("費用"), Required]
+        [Description("費用"), Required, InputField]
         public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額
         /// </summary>
-        [Description("應繳金額")]
+        [Description("應繳金額"), InputField]
         public decimal PayAmount { get; set; }
     }
     /// <summary>

@@ -17,6 +17,7 @@ using System.ComponentModel;
 using SKGPortalCore.Model.System;
 using System.Linq.Expressions;
 using SKGPortalCore.Model.BillData;
+using System.ComponentModel.DataAnnotations;
 
 namespace SKGPortalCore.Graph
 {
@@ -229,7 +230,7 @@ namespace SKGPortalCore.Graph
         public BaseInputFieldGraphType()
         {
             Type t = typeof(TModelType);
-            PropertyInfo[] properties = t.GetProperties();
+            PropertyInfo[] properties = t.GetProperties().Where(p => null != p.GetCustomAttribute<InputFieldAttribute>() || null != p.GetCustomAttribute<KeyAttribute>()).ToArray();
             PropertyInfo[] expectProperties = SetExpectProperties(null);
             if (null != expectProperties) properties = properties.Except(expectProperties).ToArray();
             foreach (PropertyInfo property in properties)

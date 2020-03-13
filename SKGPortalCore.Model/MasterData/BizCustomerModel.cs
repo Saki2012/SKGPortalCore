@@ -51,54 +51,54 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 帳務分行
         /// </summary>
-        [Description("帳務分行")]
+        [Description("帳務分行"), InputField]
         public string AccountDeptId { get; set; }
         /// <summary>
         /// 實體帳號
         /// </summary>
-        [Description("實體帳號"), Required]
+        [Description("實體帳號"), Required, InputField]
         public string RealAccount { get; set; }
         /// <summary>
         /// 銷帳編號長度
         /// </summary>
-        [Description("虛擬帳號長度")]
+        [Description("虛擬帳號長度"), InputField]
         public VirtualAccountLen VirtualAccountLen { get; set; }
         /// <summary>
         /// 期別編號長度
         /// </summary>
-        [Description("期別編號長度")]
+        [Description("期別編號長度"), InputField]
         public byte BillTermLen { get; set; }
         /// <summary>
         /// 繳款人編號長度
         /// </summary>
-        [Description("繳款人編號長度")]
+        [Description("繳款人編號長度"), InputField]
         public byte PayerNoLen { get; set; }
         /// <summary>
         /// 自組銷帳編號1
         /// </summary>
-        [Description("自組銷帳編號1")]
+        [Description("自組銷帳編號1"), InputField]
         public VirtualAccount1 VirtualAccount1 { get; set; }
         /// <summary>
         /// 自組銷帳編號2
         /// </summary>
-        [Description("自組銷帳編號2")]
+        [Description("自組銷帳編號2"), InputField]
         public VirtualAccount2 VirtualAccount2 { get; set; }
         /// <summary>
         /// 自組銷帳編號3
         /// </summary>
-        [Description("自組銷帳編號3")]
+        [Description("自組銷帳編號3"), InputField]
         public VirtualAccount3 VirtualAccount3 { get; set; }
         /// <summary>
         /// 啟用通路
         /// (逗號分割)
         /// </summary>
-        [Description("啟用通路"), Required]
+        [Description("啟用通路"), Required, InputField]
         public string ChannelIds { get; set; }
         /// <summary>
         /// 啟用代收類別
         /// (逗號分割)
         /// </summary>
-        [Description("啟用代收類別"), Required]
+        [Description("啟用代收類別"), Required, InputField]
         public string CollectionTypeIds { get; set; }
         /// <summary>
         /// 啟用超商通路
@@ -113,7 +113,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 商戶類型
         /// </summary>
-        [Description("商戶類型")]
+        [Description("商戶類型"), InputField]
         public BizCustType BizCustType { get; set; }
         /// <summary>
         /// 介紹商企業
@@ -123,12 +123,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 介紹商企業代號
         /// </summary>
-        [Description("介紹商企業代號")]
+        [Description("介紹商企業代號"), InputField]
         public string IntroCustomerCode { get; set; }
         /// <summary>
         /// 帳戶狀態
         /// </summary>
-        [Description("帳戶狀態")]
+        [Description("帳戶狀態"), InputField]
         public AccountStatus AccountStatus { get; set; }
         /// <summary>
         /// 導入時間
@@ -167,17 +167,17 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 銀行手續費類型
         /// </summary>
-        [Description("銀行手續費類型")]
+        [Description("銀行手續費類型"), InputField]
         public BankFeeType BankFeeType { get; set; }
         /// <summary>
         /// 手續費
         /// </summary>
-        [Description("手續費")]
+        [Description("手續費"), InputField]
         public decimal Fee { get; set; }
         /// <summary>
         /// 介紹商手續費/分潤%
         /// </summary>
-        [Description("介紹商手續費/分潤%")]
+        [Description("介紹商手續費/分潤%"), InputField]
         public decimal Percent { get; set; }
     }
 

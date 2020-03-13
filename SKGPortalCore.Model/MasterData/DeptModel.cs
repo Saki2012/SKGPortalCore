@@ -32,12 +32,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門名稱
         /// </summary>
-        [Description("部門名稱")]
+        [Description("部門名稱"),Required, InputField]
         public string DeptName { get; set; }
         /// <summary>
         /// 是否分行
         /// </summary>
-        [Description("是否分行")]
+        [Description("是否分行"), InputField]
         public bool IsBranch { get; set; }
     }
 }

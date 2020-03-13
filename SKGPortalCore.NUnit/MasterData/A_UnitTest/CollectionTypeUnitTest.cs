@@ -255,6 +255,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         new CollectionTypeVerifyPeriodModel() { ChannelId="02" },
                         new CollectionTypeVerifyPeriodModel() { ChannelId="03" },
                         new CollectionTypeVerifyPeriodModel() { ChannelId="04" },
+                        new CollectionTypeVerifyPeriodModel() { ChannelId="05" },
                         new CollectionTypeVerifyPeriodModel() { ChannelId="12" },
                         new CollectionTypeVerifyPeriodModel() { ChannelId="13" },
                         new CollectionTypeVerifyPeriodModel() { ChannelId="14" },
@@ -262,24 +263,21 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 },
                                   actualData = Repo.Update(new CollectionTypeSet()
                                   {
-                                      CollectionType = new CollectionTypeModel() { CollectionTypeId = "6P1", CollectionTypeName = "超商內扣", ChargePayType = ChargePayType.Deduction, },
+                                      CollectionType = new CollectionTypeModel() { CollectionTypeId = "6V1", CollectionTypeName = "超商內扣", ChargePayType = ChargePayType.Deduction, },
                                       CollectionTypeDetail = new List<CollectionTypeDetailModel>() {
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "01", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "02", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "03", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "04", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "12", SRange = 1, ERange = 20000, ChannelFee = 6, ChannelFeedBackFee = 4, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "13", SRange = 1, ERange = 20000, ChannelFee = 8, ChannelFeedBackFee = 2, ChannelRebateFee = 0, },
-                                          new CollectionTypeDetailModel() { CollectionTypeId = "6P1", ChannelId = "14", SRange = 1, ERange = 20000, ChannelFee = 0, ChannelFeedBackFee = 0, ChannelRebateFee = 10, },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6V1", ChannelId = "05", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, RowState= RowState.Insert },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6V1", ChannelId = "02", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, RowId=2,RowState= RowState.Update },
+                                          new CollectionTypeDetailModel() { CollectionTypeId = "6V1", ChannelId = "03", SRange = 1, ERange = 20000, ChannelFee = 10, ChannelFeedBackFee = 0, ChannelRebateFee = 0, RowId=3,RowState= RowState.Delete },
                                       },
                                       CollectionTypeVerifyPeriod = new List<CollectionTypeVerifyPeriodModel>() {
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="01", PayPeriodType= PayPeriodType.NDay_A },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="02", PayPeriodType= PayPeriodType.NDay_B },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="03", PayPeriodType= PayPeriodType.NDay_C },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="04", PayPeriodType= PayPeriodType.TenDay },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="12", PayPeriodType= PayPeriodType.Week },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="13", PayPeriodType= PayPeriodType.NDay_A },
-                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6P1", ChannelId="14", PayPeriodType= PayPeriodType.NDay_B },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="05", PayPeriodType= PayPeriodType.NDay_A, RowState= RowState.Insert },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="01", PayPeriodType= PayPeriodType.NDay_A },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="02", PayPeriodType= PayPeriodType.NDay_B },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="03", PayPeriodType= PayPeriodType.NDay_C },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="04", PayPeriodType= PayPeriodType.TenDay },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="12", PayPeriodType= PayPeriodType.Week },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="13", PayPeriodType= PayPeriodType.NDay_A },
+                                      new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V1", ChannelId="14", PayPeriodType= PayPeriodType.NDay_B },
                                       },
                                   });
                 AssertCorrectData(expectData, actualData);
@@ -311,7 +309,6 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
         #endregion
 
         #region Private
-
         #region CorrectData
         /// <summary>
         /// 
@@ -319,8 +316,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
         /// <param name="expectData"></param>
         /// <param name="actualData"></param>
         /// <param name="messageLog"></param>
-        private void AssertCorrectData(CollectionTypeSet expectData, CollectionTypeSet actualData)
+        private void AssertCorrectData(CollectionTypeSet expectData, CollectionTypeSet actualData, bool isCheckInput = true)
         {
+            Comm.CheckInputValueIsNull(actualData);
             AssertSet(expectData, actualData);
             AssertMessage();
         }

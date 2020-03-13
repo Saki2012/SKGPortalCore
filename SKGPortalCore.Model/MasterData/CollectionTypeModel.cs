@@ -31,12 +31,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收類別名稱
         /// </summary>
-        [Description("代收類別名稱")]
+        [Description("代收類別名稱"), Required, InputField]
         public string CollectionTypeName { get; set; }
         /// <summary>
         /// 通路手續費清算方式
         /// </summary>
-        [Description("通路手續費清算方式")]
+        [Description("通路手續費清算方式"), InputField]
         public ChargePayType ChargePayType { get; set; }
     }
     /// <summary>
@@ -61,32 +61,32 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號")]
+        [Description("通路代號"), Required, InputField]
         public string ChannelId { get; set; }
         /// <summary>
         /// 收款區間(起)
         /// </summary>
-        [Description("收款區間(起)")]
+        [Description("收款區間(起)"), InputField]
         public decimal SRange { get; set; }
         /// <summary>
         /// 收款區間(迄)
         /// </summary>
-        [Description("收款區間(迄)")]
+        [Description("收款區間(迄)"), InputField]
         public decimal ERange { get; set; }
         /// <summary>
         /// 通路手續費
         /// </summary>
-        [Description("通路手續費")]
+        [Description("通路手續費"), InputField]
         public decimal ChannelFee { get; set; }
         /// <summary>
         /// 通路回饋手續費
         /// </summary>
-        [Description("通路回饋手續費")]
+        [Description("通路回饋手續費"), InputField]
         public decimal ChannelFeedBackFee { get; set; }
         /// <summary>
         /// 通路回扣手續費
         /// </summary>
-        [Description("通路回扣手續費")]
+        [Description("通路回扣手續費"), InputField]
         public decimal ChannelRebateFee { get; set; }
         /// <summary>
         /// 通路總手續費
@@ -123,7 +123,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 通路帳務核銷週期
         /// </summary>
-        [Description("通路帳務核銷週期")]
+        [Description("通路帳務核銷週期"), InputField]
         public PayPeriodType PayPeriodType { get; set; }
     }
 }

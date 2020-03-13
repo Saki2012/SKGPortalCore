@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
 using System;
@@ -151,24 +152,25 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 修改
         /// </summary>
-        /// <param name="set"></param>
+        /// <param name="inputSet"></param>
         /// <returns></returns>
-        public virtual TSet Update(TSet set)
+        public virtual TSet Update(TSet inputSet)
         {
             try
             {
-                dynamic masterData = SetReflect.GetValue(set, typeof(TSet).GetProperties()[0].Name);
+                dynamic masterData = SetReflect.GetValue(inputSet, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
-                DoUpdate(set);
-                AfterSetEntity(set, FuncAction.Update);
+                TSet oldSet = QueryData(GetKeyVals(masterData, ModelReflects[0]));
+                DoUpdate(oldSet, inputSet);
+                AfterSetEntity(oldSet, FuncAction.Update);
                 SysChangeLog.SaveChangeLog();
+                return oldSet;
             }
             catch (Exception ex)
             {
                 Message.AddExceptionError(ex);
                 throw ex;
             }
-            return set;
         }
         /// <summary>
         /// 刪除
@@ -396,7 +398,7 @@ namespace SKGPortalCore.Repository
         private void DoCreate(TSet set)
         {
             int tbIdx = 0;
-            foreach (PropertyInfo props in set.GetType().GetProperties())
+            foreach (PropertyInfo props in typeof(TSet).GetProperties())
             {
                 dynamic entity = SetReflect.GetValue(set, props.Name);
                 if (null == entity) { tbIdx++; continue; }
@@ -425,58 +427,65 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 處理修改動作
         /// </summary>
-        /// <param name="set"></param>
-        private void DoUpdate(TSet set)
+        /// <param name="inputSet"></param>
+        private void DoUpdate(TSet oldSet, TSet inputSet)
         {
-            int tbIdx = 0;
-            object[] keys = null;
-            foreach (PropertyInfo props in set.GetType().GetProperties())
+            for (int tbIdx = 0; tbIdx < typeof(TSet).GetProperties().Length; tbIdx++)
             {
-                dynamic val = SetReflect.GetValue(set, props.Name);
-                if (null == val) { tbIdx++; continue; }
-                if (val is IEnumerable<DetailRowState>)
+                PropertyInfo prop = typeof(TSet).GetProperties()[tbIdx];
+                if (!typeof(IEnumerable).IsAssignableFrom(prop.PropertyType))
                 {
-                    List<DetailRowState> detail = Enumerable.ToList((IEnumerable<DetailRowState>)val);
-                    SetInsertRowId(val);
-                    List<DetailRowState> insertList = detail.Where(p => p.RowState == RowState.Insert).ToList();
-                    foreach (dynamic entity in insertList)
-                    {
-                        DataAccess.Add(entity);
-                        SetRefModel(entity);
-                        SysChangeLog.SetChangeLogDetail(tbIdx, null, entity, RowState.Insert);
-                    }
-                    List<DetailRowState> updateList = detail.Where(p => p.RowState == RowState.Update).ToList();
-                    foreach (dynamic entity in updateList)
-                    {
-                        dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
-                        if (null != oldEntity) DataAccess.Remove(oldEntity);
-                        if (DataAccess.Entry(entity).State != EntityState.Detached) DataAccess.Remove(entity);
-                        DataAccess.Update(entity);
-                        SetRefModel(entity);
-                        SysChangeLog.SetChangeLogDetail(tbIdx, oldEntity, entity, RowState.Update);
-                    }
-                    List<DetailRowState> deleteList = detail.Where(p => p.RowState == RowState.Delete).ToList();
-                    foreach (dynamic entity in deleteList)
-                    {
-                        dynamic oldEntity = DataAccess.Find(entity.GetType(), GetKeyVals(entity));
-                        if (null != oldEntity) DataAccess.Remove(oldEntity);
-                        SysChangeLog.SetChangeLogDetail(tbIdx, oldEntity, null, RowState.Delete);
-                    }
+                    dynamic oldVal = SetReflect.GetValue(oldSet, prop.Name);
+                    dynamic inputVal = SetReflect.GetValue(inputSet, prop.Name);
+                    UpdateInputField(oldVal, inputVal, ModelReflects[tbIdx]);
                 }
                 else
                 {
-                    keys = GetKeyVals(val);
-                    dynamic oldEntity = DataAccess.Find(val.GetType(), keys);
-                    if (DataAccess.Entry(val).State != EntityState.Added)
+                    //dynamic oldVal = SetReflect.GetValue(oldSet, prop.Name);
+                    dynamic oldVal = SetReflect.GetValue(oldSet, prop.Name);
+                    dynamic inputVal = SetReflect.GetValue(inputSet, prop.Name);
+                    Type modelType = prop.PropertyType.GetGenericArguments()[0];
+                    string[] keyFields = GetKeyPropertiesByModelType(modelType).Select(p => p.Name).ToArray();
+
+                    foreach (dynamic inputRow in inputVal)
                     {
-                        if (null != oldEntity) DataAccess.Remove(oldEntity);
-                        DataAccess.Update(val);
+                        if (inputRow.RowState == RowState.Insert)
+                        {
+                            DataAccess.Add(inputRow);
+                            SetRefModel(inputRow);
+                            oldVal.Add(inputRow);
+                            SysChangeLog.SetChangeLogDetail(tbIdx, null, inputRow, RowState.Insert);
+                        }
                     }
-                    SysChangeLog.SetChangeLog(ProgId, val.InternalId, User.KeyId);
-                    SysChangeLog.SetChangeLogDetail(tbIdx, null, val, RowState.Insert);
-                    SetRefModel(val);
+
+
+                    RecComparison rc = new RecComparison(inputVal, oldVal, ModelReflects[tbIdx], ModelReflects[tbIdx], keyFields, keyFields);
+                    if (rc.Enable)
+                        while (!rc.IsEof)
+                        {
+                            rc.BackToBookMark();
+                            while (rc.Compare())
+                            {
+                                rc.SetBookMark();
+                                switch ((RowState)rc.CurrentRow.RowState)
+                                {
+                                    case RowState.Update:
+                                        {
+                                            UpdateInputField(rc.DetailRow, rc.CurrentRow, ModelReflects[tbIdx]);
+                                        }
+                                        break;
+                                    case RowState.Delete:
+                                        {
+                                            DataAccess.Remove(rc.DetailRow);
+                                            oldVal.Remove(rc.DetailRow);
+                                        }
+                                        break;
+                                }
+                                rc.DetailMoveNext();
+                            }
+                            rc.MoveNext();
+                        }
                 }
-                tbIdx++;
             }
         }
         /// <summary>
@@ -583,9 +592,7 @@ namespace SKGPortalCore.Repository
             string result = string.Empty;
             int len = keysInfo.Length;
             for (int i = 0; i < len; i++)
-            {
                 result = LibData.Merge(" And ", false, result, $"{keysInfo[i].Name}=@{i}");
-            }
 
             return result;
         }
@@ -594,12 +601,12 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private object[] GetKeyVals(object model)
+        private object[] GetKeyVals(object model, DynamicReflection modelReflects)
         {
             PropertyInfo[] props = GetKeyPropertiesByModelType(model.GetType());
             List<object> result = new List<object>();
             foreach (PropertyInfo prop in props)
-                result.Add(ModelReflects[0].GetValue(model, prop.Name));
+                result.Add(modelReflects.GetValue(model, prop.Name));
             return result.ToArray();
         }
         /// <summary>
@@ -647,6 +654,19 @@ namespace SKGPortalCore.Repository
             dynamic etyList = entityList.AsQueryable().Where("RowState=@0", RowState.Insert);
             foreach (dynamic entity in etyList)
                 entity.RowId = ++rowId;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldRow"></param>
+        /// <param name="newRow"></param>
+        private void UpdateInputField(dynamic oldRow, dynamic newRow, DynamicReflection modelRef)
+        {
+            PropertyInfo[] props = newRow.GetType().GetProperties();
+
+            var inputProps = props.Where(p => null != p.GetCustomAttribute<InputFieldAttribute>()).ToArray();
+            foreach (var inputProp in inputProps)
+                modelRef.SetValue(oldRow, inputProp.Name, modelRef.GetValue(newRow, inputProp.Name));
         }
         #endregion
         #region IDisposable Support

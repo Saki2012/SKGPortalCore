@@ -24,5 +24,15 @@ namespace SKGPortalCore.NUnit
             else
                 Assert.IsFalse(msgCodeList.Contains(code), code.ToString());
         }
+
+        internal static void CheckInputValueIsNull<TSet>(TSet set)
+        {
+            foreach (var property in typeof(TSet).GetProperties())
+            { 
+            
+            }
+            //Assert.IsNotNull(null);
+        }
+
     }
 }
