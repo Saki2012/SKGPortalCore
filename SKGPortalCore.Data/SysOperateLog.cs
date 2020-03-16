@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SKGPortalCore.Model.MasterData.OperateSystem;
+﻿using SKGPortalCore.Model.MasterData.OperateSystem;
+using System;
 
 namespace SKGPortalCore.Data
 {
     /// <summary>
     /// 操作日誌系統
     /// </summary>
-    public class SysOperateLog
+    public static class SysOperateLog
     {
         /// <summary>
         /// 紀錄操作日誌
@@ -39,6 +37,7 @@ namespace SKGPortalCore.Data
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                throw ex;
             }
         }
     }

@@ -104,12 +104,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Required, Index]
+        [Description("虛擬帳號"), Required, Index, MaxLength(ConstParameter.NormalLen)]
         public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15)]
+        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
         public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
@@ -133,7 +133,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 費用
         /// </summary>
-        [Description("費用"), Required, InputField]
+        [Description("費用"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額

@@ -33,15 +33,15 @@ namespace SKGPortalCore.Model.BillData
         [ForeignKey("ChannelId")]
         public ChannelModel Channel { get; set; }
         /// <summary>
-        /// 
-        /// </summary>
-        [ForeignKey("CollectionTypeId")]
-        public CollectionTypeModel CollectionType { get; set; }
-        /// <summary>
         /// 通路代號
         /// </summary>
         [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
         public string ChannelId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("CollectionTypeId")]
+        public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
         /// 代收類別代號
         /// </summary>

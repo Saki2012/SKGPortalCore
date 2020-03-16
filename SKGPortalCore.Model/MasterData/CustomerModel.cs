@@ -30,37 +30,37 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶名稱
         /// </summary>
-        [Description("客戶名稱"), Required, InputField]
+        [Description("客戶名稱"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string CustomerName { get; set; }
         /// <summary>
         /// 地址
         /// </summary>
-        [Description("地址"), Required, InputField]
+        [Description("地址"), Required, InputField, MaxLength(ConstParameter.LongLen)]
         public string Address { get; set; }
         /// <summary>
         /// 電話
         /// </summary>
-        [Description("電話"), Required, InputField]
+        [Description("電話"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string Tel { get; set; }
         /// <summary>
         /// 傳真
         /// </summary>
-        [Description("傳真"), Required, InputField]
+        [Description("傳真"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string Fax { get; set; }
         /// <summary>
         /// 郵遞區號
         /// </summary>
-        [Description("郵遞區號"), Required, InputField]
+        [Description("郵遞區號"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string ZipCode { get; set; }
         /// <summary>
         /// 郵簡許可單位
         /// </summary>
-        [Description("郵簡許可單位"), Required, InputField]
+        [Description("郵簡許可單位"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string ZipUnit { get; set; }
         /// <summary>
         /// 郵簡字號
         /// </summary>
-        [Description("郵簡字號"), Required, InputField]
+        [Description("郵簡字號"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string ZipNum { get; set; }
     }
 }

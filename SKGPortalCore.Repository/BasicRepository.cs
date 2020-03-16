@@ -664,7 +664,7 @@ namespace SKGPortalCore.Repository
         {
             PropertyInfo[] props = newRow.GetType().GetProperties();
 
-            var inputProps = props.Where(p => null != p.GetCustomAttribute<InputFieldAttribute>()).ToArray();
+            var inputProps = props.Where(p => p.IsDefined(typeof(InputFieldAttribute))).ToArray();
             foreach (var inputProp in inputProps)
                 modelRef.SetValue(oldRow, inputProp.Name, modelRef.GetValue(newRow, inputProp.Name));
         }

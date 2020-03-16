@@ -37,5 +37,13 @@ namespace SKGPortalCore.Model.SourceData
         /// 資料主鍵長度
         /// </summary>
         public const int DataIdLen = 15;
+        /// <summary>
+        /// 一般資料長度
+        /// </summary>
+        public const int NormalLen = 20;
+        /// <summary>
+        /// 大筆資料長度
+        /// </summary>
+        public const int LongLen = 100;
     }
 }

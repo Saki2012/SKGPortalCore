@@ -45,12 +45,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號")]
+        [Description("導入批號"), Required, MaxLength(ConstParameter.NormalLen)]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源
         /// </summary>
-        [Description("來源")]
+        [Description("來源"), MaxLength(200)]
         public string Source { get; set; }
     }
 }

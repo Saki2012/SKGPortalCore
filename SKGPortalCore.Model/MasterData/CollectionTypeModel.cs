@@ -31,7 +31,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收類別名稱
         /// </summary>
-        [Description("代收類別名稱"), Required, InputField]
+        [Description("代收類別名稱"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string CollectionTypeName { get; set; }
         /// <summary>
         /// 通路手續費清算方式

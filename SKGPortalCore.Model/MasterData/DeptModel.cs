@@ -32,7 +32,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門名稱
         /// </summary>
-        [Description("部門名稱"),Required, InputField]
+        [Description("部門名稱"),Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string DeptName { get; set; }
         /// <summary>
         /// 是否分行

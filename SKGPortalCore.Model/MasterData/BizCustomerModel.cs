@@ -56,7 +56,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 實體帳號
         /// </summary>
-        [Description("實體帳號"), Required, InputField]
+        [Description("實體帳號"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string RealAccount { get; set; }
         /// <summary>
         /// 銷帳編號長度
@@ -92,13 +92,13 @@ namespace SKGPortalCore.Model.MasterData
         /// 啟用通路
         /// (逗號分割)
         /// </summary>
-        [Description("啟用通路"), Required, InputField]
+        [Description("啟用通路"), Required, InputField, MaxLength(ConstParameter.LongLen)]
         public string ChannelIds { get; set; }
         /// <summary>
         /// 啟用代收類別
         /// (逗號分割)
         /// </summary>
-        [Description("啟用代收類別"), Required, InputField]
+        [Description("啟用代收類別"), Required, InputField, MaxLength(100)]
         public string CollectionTypeIds { get; set; }
         /// <summary>
         /// 啟用超商通路
@@ -138,12 +138,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號"), Required]
+        [Description("導入批號"), Required, MaxLength(ConstParameter.NormalLen)]
         public string ImportBatchNo { get; set; } = string.Empty;
         /// <summary>
         /// 來源
         /// </summary>
-        [Description("來源")]
+        [Description("來源"), MaxLength(200)]
         public string Source { get; set; }
     }
     /// <summary>

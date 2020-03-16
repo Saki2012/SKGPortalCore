@@ -66,13 +66,13 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Required, Index]
+        [Description("虛擬帳號"), Required, Index, MaxLength(ConstParameter.NormalLen)]
         public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15), DefaultValue("")]
-        public string ImportBatchNo { get; set; }
+        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
+        public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
     /// 約定扣款單收款明細

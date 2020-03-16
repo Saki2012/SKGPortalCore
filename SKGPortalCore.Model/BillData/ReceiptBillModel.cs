@@ -85,7 +85,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號")]
+        [Description("虛擬帳號"), MaxLength(ConstParameter.NormalLen)]
         public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 通路手續費清算方式
@@ -136,7 +136,7 @@ namespace SKGPortalCore.Model.BillData
         /// 帳單ProgId
         /// 為分辨【帳單】【入金機】【約定扣款】等使用
         /// </summary>
-        [Description("帳單ProgId"), Required]
+        [Description("帳單ProgId"), Required, MaxLength(ConstParameter.NormalLen)]
         public string BillProgId { get; set; }
         /// <summary>
         /// 帳單編號
@@ -146,12 +146,12 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required]
+        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
         public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源
         /// </summary>
-        [Description("來源")]
+        [Description("來源"), MaxLength(200)]
         public string Source { get; set; }
         /// <summary>
         /// 異常資料
@@ -170,6 +170,11 @@ namespace SKGPortalCore.Model.BillData
     [Description("收款單異動說明表")]
     public class ReceiptBillChangeModel : DetailRowState
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("BillNo")]
+        public ReceiptBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
         /// </summary>
@@ -193,7 +198,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 異動原因
         /// </summary>
-        [Description("異動原因")]
+        [Description("異動原因"), MaxLength(ConstParameter.LongLen)]
         public string Reason { get; set; }
     }
 }

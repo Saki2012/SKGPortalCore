@@ -11,7 +11,6 @@ using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
-
     /// <summary>
     /// 入金機
     /// </summary>
@@ -27,7 +26,6 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         public List<DepositBillReceiptDetailModel> DepositBillReceiptDetail { get; set; } = new List<DepositBillReceiptDetailModel>();
     }
-
     /// <summary>
     /// 入金機
     /// </summary>
@@ -52,18 +50,18 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 櫃位名稱
         /// </summary>
-        [Description("櫃位名稱")]
+        [Description("櫃位名稱"), MaxLength(ConstParameter.NormalLen)]
         public string StoreName { get; set; }
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Required, Index]
+        [Description("虛擬帳號"), Required, Index, MaxLength(ConstParameter.NormalLen)]
         public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(15), DefaultValue("")]
-        public string ImportBatchNo { get; set; }
+        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
+        public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
     /// 入金機收款明細

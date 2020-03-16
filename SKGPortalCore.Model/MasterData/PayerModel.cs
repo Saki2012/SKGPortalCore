@@ -44,12 +44,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 繳款人名稱
         /// </summary>
-        [Description("繳款人名稱"),Required, InputField]
+        [Description("繳款人名稱"),Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string PayerName { get; set; }
         /// <summary>
         /// 繳款人編碼
         /// </summary>
-        [Description("繳款人編碼"),Required, InputField]
+        [Description("繳款人編碼"),Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string PayerNo { get; set; }
         /// <summary>
         /// 繳款人類別

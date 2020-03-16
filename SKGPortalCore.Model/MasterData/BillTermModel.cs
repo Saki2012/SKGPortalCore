@@ -46,12 +46,12 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 期別名稱
         /// </summary>
-        [Description("期別名稱"), Required, InputField]
+        [Description("期別名稱"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string BillTermName { get; set; }
         /// <summary>
         /// 期別編號
         /// </summary>
-        [Description("期別編號"), Required, InputField]
+        [Description("期別編號"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string BillTermNo { get; set; }
         /// <summary>
         /// 繳款截止日
@@ -87,7 +87,7 @@ namespace SKGPortalCore.Model.MasterData
         /// 費用名稱
         /// 註：對帳單明細的費用名稱進行CheckField
         /// </summary>
-        [Description("費用名稱"), Required, InputField]
+        [Description("費用名稱"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
         public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額

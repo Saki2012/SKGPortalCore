@@ -38,7 +38,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收通路名稱
         /// </summary>
-        [Description("代收通路名稱"), InputField]
+        [Description("代收通路名稱"), InputField, MaxLength(ConstParameter.NormalLen)]
         public string ChannelName { get; set; }
         /// <summary>
         /// 通路類別
