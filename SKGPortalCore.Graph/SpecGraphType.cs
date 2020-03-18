@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using GraphQL;
+﻿using GraphQL;
 using GraphQL.Types;
-using SKGPortalCore.Business.Func;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Repository;
-using SKGPortalCore.Graph.BillData;
-using SKGPortalCore.Graph.MasterData;
-using System.ComponentModel;
 using SKGPortalCore.Model.System;
-using System.Linq.Expressions;
-using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Repository;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Graph
 {
@@ -51,7 +47,7 @@ namespace SKGPortalCore.Graph
     #region Operate
     public class BaseQueryType<TSet, TSetType, TMasterModelType> : ObjectGraphType where TSetType : BaseQuerySetGraphType<TSet> where TMasterModelType : IGraphType
     {
-        public BaseQueryType(BasicRepository<TSet> repo)
+        public BaseQueryType(BasicRepository<TSet> repo, ISessionWrapper session)
         {
             Field(
                 type: typeof(TSetType),
@@ -61,7 +57,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = (context.GetArgument<object>("keyVal") as List<object>).ToArray();
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, keyVal)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -76,7 +72,7 @@ namespace SKGPortalCore.Graph
                 {
                     string condition = context.GetArgument<string>("condition");
 
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Query, null)) return default;
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
                     return repo.QueryList(condition);
@@ -97,7 +93,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     //object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Create, null)) return default;
+                    //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Create, null)) return default;
                     TSet set = context.GetArgument<TSet>("set");
                     TSet result = repo.Create(set);
                     repo.CommitData(FuncAction.Create);
@@ -113,9 +109,9 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Update, keyVal)) return default;
+                    //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Update, keyVal)) return default;
                     TSet set = context.GetArgument<TSet>("set");
-                    TSet result = repo.Update(set);
+                    TSet result = repo.Update(keyVal, set);
                     repo.CommitData(FuncAction.Update);
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -129,7 +125,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Delete, keyVal)) return default;
+                    //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Delete, keyVal)) return default;
                     repo.Delete(new[] { keyVal });
                     repo.CommitData(FuncAction.Delete);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -144,7 +140,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Approve, keyVal)) return default;
+                    //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Approve, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Approve(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Approve);
@@ -160,7 +156,7 @@ namespace SKGPortalCore.Graph
                 resolve: context =>
                 {
                     object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Invalid, keyVal)) return default;
+                    //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.Invalid, keyVal)) return default;
                     bool status = context.GetArgument<bool>("status");
                     TSet result = repo.Invalid(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Invalid);
@@ -176,7 +172,7 @@ namespace SKGPortalCore.Graph
               resolve: context =>
               {
                   object[] keyVal = context.GetArgument<object>("keyVal") as object[];
-                  if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.EndCase, keyVal)) return default;
+                  //if (!BaseOperateComm<TSet>.CheckAuthority(context, repo, FuncAction.EndCase, keyVal)) return default;
                   bool status = context.GetArgument<bool>("status");
                   TSet result = repo.Invalid(new[] { keyVal }, status);
                   repo.CommitData(FuncAction.EndCase);
@@ -230,7 +226,7 @@ namespace SKGPortalCore.Graph
         public BaseInputFieldGraphType()
         {
             Type t = typeof(TModelType);
-            PropertyInfo[] properties = t.GetProperties().Where(p => null != p.GetCustomAttribute<InputFieldAttribute>() || null != p.GetCustomAttribute<KeyAttribute>()).ToArray();
+            PropertyInfo[] properties = t.GetProperties().Where(p => p.IsDefined(typeof(InputFieldAttribute)) || p.IsDefined(typeof(KeyAttribute))).ToArray();
             PropertyInfo[] expectProperties = SetExpectProperties(null);
             if (null != expectProperties) properties = properties.Except(expectProperties).ToArray();
             foreach (PropertyInfo property in properties)
@@ -315,16 +311,16 @@ namespace SKGPortalCore.Graph
         /// <param name="repository"></param>
         /// <param name="action"></param>
         /// <param name="keyVal"></param>
-        internal static bool CheckAuthority(ResolveFieldContext<object> context, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
+        internal static bool CheckAuthority(ResolveFieldContext<object> context, ISessionWrapper session, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
         {
-            SetDebugUser(repository, context/*, progId*/);
-            return true;
-            ISessionWapper session = ((ISessionWapper)context.UserContext);
+            SetDebugUser(repository/*, progId*/);
+            //return true;
+            //ISessionWapper session = ((ISessionWapper)context.UserContext);
             repository.User = session?.User;
             repository.Message = null;
             string progId = repository.GetType().GetCustomAttribute<ProgIdAttribute>()?.Value ?? string.Empty;
             SysOperateLog.SetOperateLog(repository.User.KeyId, session.IP, session.Browser, progId, GetPKValueString(keyVal), ResxManage.GetDescription(action));
-            if (repository.User != SystemOperator.SysOperator && !AccountLogin.CheckAuthenticate(context, progId, action))
+            if (repository.User != SystemOperator.SysOperator && !BizAccountLogin.CheckAuthenticate(context, progId, action))
             {
                 repository.Message.AddCustErrorMessage(MessageCode.Code0002, ResxManage.GetDescription<TSet>(), ResxManage.GetDescription(action));
                 context.Errors.AddRange(repository.Message.Errors);
@@ -339,7 +335,7 @@ namespace SKGPortalCore.Graph
         /// <param name="repo"></param>
         /// <param name="context"></param>
         /// <param name="progId"></param>
-        internal static void SetDebugUser(BasicRepository<TSet> repo, ResolveFieldContext<object> context/*, string progId*/)
+        internal static void SetDebugUser(BasicRepository<TSet> repo)
         {
 #if DEBUG
             repo.User = SystemOperator.SysOperator;

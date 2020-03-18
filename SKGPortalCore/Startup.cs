@@ -48,8 +48,6 @@ namespace SKGPortalCore
             InjectionGraphSchema(ref services);
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
-
-
             services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
             services.AddSession(options =>
              {
@@ -58,10 +56,11 @@ namespace SKGPortalCore
                  options.IdleTimeout = TimeSpan.FromMinutes(20);
              });
 #if BackEnd
-            services.AddSingleton<ISessionWapper, SessionWapper<BackendUserModel>>();
+            services.AddSingleton<ISessionWrapper, SessionWapper<BackendUserModel>>();
 #else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
 #endif
+            services.AddControllersWithViews();
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
@@ -85,6 +84,13 @@ namespace SKGPortalCore
             app.UseCookiePolicy();
             app.UseSession();
 
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Account}/{action=Index}/");
+            });
 #if DEBUG
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/", GraphQLEndPoint = "/Bill" });
 #endif

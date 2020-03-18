@@ -15,7 +15,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// <summary>
     /// 系統操作
     /// </summary>
-    public class SystemOperator
+    public static class SystemOperator
     {
         public static BackendUserModel SysOperator = new BackendUserModel() { KeyId = "SysOperator", UserId = "SysOperator", UserName = "系統操作", AccountStatus = AccountStatus.Enable, DeptId = null, Email = string.Empty };
     }

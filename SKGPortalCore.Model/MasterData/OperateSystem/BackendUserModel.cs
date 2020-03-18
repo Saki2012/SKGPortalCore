@@ -22,12 +22,12 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// 後臺使用者角色權限清單
         /// </summary>
         [Description("後臺使用者角色權限清單")]
-        public List<BackendUserRoleModel> UserRoles { get; set; }
+        public List<IRoleModel> UserRoles { get; set; }
     }
     /// <summary>
     /// 後臺使用者資料
     /// </summary>
-    [Description("後臺使用者資料"), Serializable]
+    [Description("後臺使用者資料")]
     public class BackendUserModel : MasterDataModel, IUserModel
     {
         [Key]

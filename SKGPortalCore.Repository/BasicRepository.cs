@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
@@ -9,6 +10,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -154,13 +157,13 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="inputSet"></param>
         /// <returns></returns>
-        public virtual TSet Update(TSet inputSet)
+        public virtual TSet Update(object[] key, TSet inputSet)
         {
             try
             {
                 dynamic masterData = SetReflect.GetValue(inputSet, typeof(TSet).GetProperties()[0].Name);
                 if (masterData is BasicDataModel) SetModifyInfo(masterData);
-                TSet oldSet = QueryData(GetKeyVals(masterData, ModelReflects[0]));
+                TSet oldSet = QueryData(key);
                 DoUpdate(oldSet, inputSet);
                 AfterSetEntity(oldSet, FuncAction.Update);
                 SysChangeLog.SaveChangeLog();
@@ -202,17 +205,16 @@ namespace SKGPortalCore.Repository
         {
             PropertyInfo[] setProperties = typeof(TSet).GetProperties();
             TSet instance = Activator.CreateInstance<TSet>();
-            int setLen = 0;
             string pkCondition = string.Empty;
             foreach (PropertyInfo setProperty in setProperties)
             {
                 if (typeof(IEnumerable).IsAssignableFrom(setProperty.PropertyType))
                 {
                     Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
-                    Type tp = typeof(List<>).MakeGenericType(new[] { modelType });
-                    IList list = (IList)Activator.CreateInstance(tp);
+                    IList list = SetReflect.GetValue(instance, setProperty.Name) as IList;
                     dynamic dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
                     IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
+                    models = EagerLoading(models, modelType);
                     dynamic local = DynamicQueryable.Where(Queryable.AsQueryable(dbSet.Local), pkCondition, key);
                     foreach (dynamic model in models)
                     {
@@ -227,18 +229,20 @@ namespace SKGPortalCore.Repository
                             list.Add(model);
                         }
                     }
-
-                    SetReflect.SetValue(instance, setProperty.Name, list);
                 }
                 else
                 {
                     pkCondition = GetPKCondition(GetKeyPropertiesByModelType(setProperty.PropertyType));
-                    dynamic model = DataAccess.Find(setProperty.PropertyType, key);
-                    if (null == model) return default;
-                    SetRefModel(model);
-                    SetReflect.SetValue(instance, setProperty.Name, model);
+                    dynamic dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(setProperty.PropertyType).Invoke(DataAccess, null);
+                    IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
+                    models = EagerLoading(models, setProperty.PropertyType);
+                    if (!models.Any()) return default;
+                    foreach (dynamic model in models)
+                    {
+                        SetRefModel(model);
+                        SetReflect.SetValue(instance, setProperty.Name, model);
+                    }
                 }
-                setLen++;
             }
             return instance;
         }
@@ -441,7 +445,6 @@ namespace SKGPortalCore.Repository
                 }
                 else
                 {
-                    //dynamic oldVal = SetReflect.GetValue(oldSet, prop.Name);
                     dynamic oldVal = SetReflect.GetValue(oldSet, prop.Name);
                     dynamic inputVal = SetReflect.GetValue(inputSet, prop.Name);
                     Type modelType = prop.PropertyType.GetGenericArguments()[0];
@@ -457,8 +460,6 @@ namespace SKGPortalCore.Repository
                             SysChangeLog.SetChangeLogDetail(tbIdx, null, inputRow, RowState.Insert);
                         }
                     }
-
-
                     RecComparison rc = new RecComparison(inputVal, oldVal, ModelReflects[tbIdx], ModelReflects[tbIdx], keyFields, keyFields);
                     if (rc.Enable)
                         while (!rc.IsEof)
@@ -472,12 +473,14 @@ namespace SKGPortalCore.Repository
                                     case RowState.Update:
                                         {
                                             UpdateInputField(rc.DetailRow, rc.CurrentRow, ModelReflects[tbIdx]);
+                                            SysChangeLog.SetChangeLogDetail(tbIdx, rc.DetailRow, rc.CurrentRow, RowState.Update);
                                         }
                                         break;
                                     case RowState.Delete:
                                         {
                                             DataAccess.Remove(rc.DetailRow);
                                             oldVal.Remove(rc.DetailRow);
+                                            SysChangeLog.SetChangeLogDetail(tbIdx, rc.DetailRow, null, RowState.Delete);
                                         }
                                         break;
                                 }
@@ -616,7 +619,7 @@ namespace SKGPortalCore.Repository
         /// <returns></returns>
         private PropertyInfo[] GetKeyPropertiesByModelType(Type modelType)
         {
-            return modelType.GetProperties().Where(prop => prop.GetCustomAttributes<KeyAttribute>(true).Count() > 0).ToArray();
+            return modelType.GetProperties().Where(prop => prop.IsDefined(typeof(KeyAttribute))).ToArray();
         }
         /// <summary>
         /// 異常時回滾變更的Entities
@@ -663,10 +666,23 @@ namespace SKGPortalCore.Repository
         private void UpdateInputField(dynamic oldRow, dynamic newRow, DynamicReflection modelRef)
         {
             PropertyInfo[] props = newRow.GetType().GetProperties();
-
             var inputProps = props.Where(p => p.IsDefined(typeof(InputFieldAttribute))).ToArray();
             foreach (var inputProp in inputProps)
                 modelRef.SetValue(oldRow, inputProp.Name, modelRef.GetValue(newRow, inputProp.Name));
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbSet"></param>
+        /// <param name="modelType"></param>
+        private IQueryable EagerLoading(dynamic dbSet, Type modelType)
+        {
+            PropertyInfo[] props = modelType.GetProperties().Where(p => p.IsDefined(typeof(ForeignKeyAttribute))).ToArray();
+            foreach (PropertyInfo prop in props)
+            {
+                dbSet = EntityFrameworkQueryableExtensions.Include(dbSet, prop.Name);
+            }
+            return dbSet;
         }
         #endregion
         #region IDisposable Support

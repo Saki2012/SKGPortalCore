@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository.MasterData;
 
@@ -13,7 +14,7 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class RoleQuery : BaseQueryType<RoleSet, RoleSetType, RoleType>
     {
-        public RoleQuery(RoleRepository repository) : base(repository) { }
+        public RoleQuery(RoleRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class RoleMutation : BaseMutationType<RoleSet, RoleSetType, RoleSetInputType>
     {

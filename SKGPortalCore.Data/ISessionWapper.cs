@@ -5,7 +5,7 @@ using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Data
 {
-    public interface ISessionWapper
+    public interface ISessionWrapper
     {
         public string SessionId { get; }
         IUserModel User { get; set; }
@@ -13,9 +13,9 @@ namespace SKGPortalCore.Data
         public string Browser { get; }
         void Clear();
     }
-    public interface ISessionWapper<T> : ISessionWapper where T : IUserModel { }
+    public interface ISessionWapper<T> : ISessionWrapper where T : IUserModel { }
     [Serializable]
-    public class SessionWapper<T> : ISessionWapper<T>, ISessionWapper where T : IUserModel
+    public class SessionWapper<T> : ISessionWapper<T>, ISessionWrapper where T : IUserModel
     {
         private static readonly string _userKey = "session.user";
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -39,11 +39,11 @@ namespace SKGPortalCore.Data
     }
     public static class SessionExtensions
     {
-        public static void SetObject<T>(this ISession session, string key, T value)
+        public static void SetObject<T>(this ISession session, string key, T value) where T : IUserModel
         {
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
-        public static T GetObject<T>(this ISession session, string key)
+        public static T GetObject<T>(this ISession session, string key) where T : IUserModel
         {
             string value = session.GetString(key);
             return value == null ? default : JsonConvert.DeserializeObject<T>(value);

@@ -38,7 +38,7 @@ namespace SKGPortalCore.Model.BillData
     {
         /// <summary>
         /// 帳單編號
-        /// </summary>
+        /// </summary>  
         [Description("帳單編號"), Key, MaxLength(ConstParameter.BillNoLen)]
         public string BillNo { get; set; }
         /// <summary>

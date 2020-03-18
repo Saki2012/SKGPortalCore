@@ -63,7 +63,7 @@ namespace SKGPortalCore.Data
             {
                 string tableName = type.Name;
                 if (tableName.Substring(tableName.Length - 5, 5) == "Model") tableName = tableName[0..^5];
-                string[] keyPropName = type.GetProperties().Where(p => p.CustomAttributes.Any(p => p.AttributeType == typeof(KeyAttribute))).Select(p => p.Name).ToArray();
+                string[] keyPropName = type.GetProperties().Where(p => p.IsDefined(typeof(KeyAttribute))).Select(p => p.Name).ToArray();
                 if (keyPropName.Length != 0) builder.Entity(type).ToTable(tableName).HasKey(keyPropName);
                 else builder.Entity(type).ToTable(tableName);
             }

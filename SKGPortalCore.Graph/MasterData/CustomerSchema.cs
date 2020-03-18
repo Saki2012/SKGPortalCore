@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.MasterData;
 
@@ -12,7 +13,7 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class CustomerQuery : BaseQueryType<CustomerSet, CustomerSetType, CustomerType>
     {
-        public CustomerQuery(CustomerRepository repository) : base(repository) { }
+        public CustomerQuery(CustomerRepository repository, ISessionWrapper session) : base(repository,  session) { }
     }
     public class CustomerMutation : BaseMutationType<CustomerSet, CustomerSetType, CustomerSetInputType>
     {

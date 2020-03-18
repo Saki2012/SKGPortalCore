@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Model.SourceData;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,8 +36,8 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 創建人員
         /// </summary>
-        [Description("創建人員"), Column(Order = int.MaxValue - 11)]
-        public string CreateStaff { get; set; }
+        [Description("創建人員"), Column(Order = int.MaxValue - 11), Required, MaxLength(ConstParameter.DataIdLen)]
+        public string CreateStaff { get; set; } = string.Empty;
         /// <summary>
         /// 創建時間
         /// </summary>
@@ -45,8 +46,8 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 修改人員
         /// </summary>
-        [Description("修改人員"), Column(Order = int.MaxValue - 9)]
-        public string ModifyStaff { get; set; }
+        [Description("修改人員"), Column(Order = int.MaxValue - 9), Required, MaxLength(ConstParameter.DataIdLen)]
+        public string ModifyStaff { get; set; } = string.Empty;
         /// <summary>
         /// 修改時間
         /// </summary>
@@ -55,8 +56,8 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 審核人員
         /// </summary>
-        [Description("審核人員"), Column(Order = int.MaxValue - 7)]
-        public string ApproveStaff { get; set; }
+        [Description("審核人員"), Column(Order = int.MaxValue - 7), Required, MaxLength(ConstParameter.DataIdLen)]
+        public string ApproveStaff { get; set; } = string.Empty;
         /// <summary>
         /// 審核時間
         /// </summary>
@@ -65,8 +66,8 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 結案人員
         /// </summary>
-        [Description("結案人員"), Column(Order = int.MaxValue - 5)]
-        public string EndCaseStaff { get; set; }
+        [Description("結案人員"), Column(Order = int.MaxValue - 5), Required, MaxLength(ConstParameter.DataIdLen)]
+        public string EndCaseStaff { get; set; } = string.Empty;
         /// <summary>
         /// 結案時間
         /// </summary>
@@ -75,8 +76,8 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 作廢人員
         /// </summary>
-        [Description("作廢人員"), Column(Order = int.MaxValue - 3)]
-        public string InvalidStaff { get; set; }
+        [Description("作廢人員"), Column(Order = int.MaxValue - 3), Required, MaxLength(ConstParameter.DataIdLen)]
+        public string InvalidStaff { get; set; } = string.Empty;
         /// <summary>
         /// 作廢時間
         /// </summary>

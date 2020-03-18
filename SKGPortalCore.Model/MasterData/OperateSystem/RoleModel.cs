@@ -68,11 +68,6 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
         /// <summary>
-        /// 前/後台
-        /// </summary>
-        [Description("前/後台")]
-        public EndType EndType { get; set; }
-        /// <summary>
         /// 序號
         /// </summary>
         [Description("序號"), Key]

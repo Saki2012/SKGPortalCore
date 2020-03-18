@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.MasterData;
 
@@ -12,7 +13,7 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class ChannelQuery : BaseQueryType<ChannelSet, ChannelSetType, ChannelType>
     {
-        public ChannelQuery(ChannelRepository repository) : base(repository) { }
+        public ChannelQuery(ChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class ChannelMutation : BaseMutationType<ChannelSet, ChannelSetType, ChannelSetInputType>
     {

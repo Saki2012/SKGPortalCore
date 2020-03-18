@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
@@ -18,7 +19,7 @@ namespace SKGPortalCore.Graph.BillData
     //Operate
     public class BillQuery : BaseQueryType<BillSet, BillSetType, BillType>
     {
-        public BillQuery(BillRepository repository) : base(repository) { }
+        public BillQuery(BillRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class BillMutation : BaseMutationType<BillSet, BillSetType, BillSetInputType>
     {

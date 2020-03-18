@@ -41,6 +41,7 @@ namespace SKGPortalCore.Data
         /// <param name="userId"></param>
         public void SetChangeLog(string progId, string internalId, string userId)
         {
+            return;
             var datachangeLog = DataChangeLog.OrderByDescending(p => p.DataChangeId).FirstOrDefault();
             long id = null == datachangeLog ? 0 : datachangeLog.DataChangeId;
             ChangeLogSet.DataChangeLog.DataChangeId = ++id;

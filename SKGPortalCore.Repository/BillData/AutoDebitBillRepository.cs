@@ -38,8 +38,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizAutoDebitBill.CheckData(set, Message, DataAccess);
-            BizAutoDebitBill.SetData(set);
-            BizVirtualAccountCode.AddVirtualAccountCode(DataAccess, ProgId, set.AutoDebitBill.BillNo, set.AutoDebitBill.VirtualAccountCode);
+            BizAutoDebitBill.SetData(set, ProgId, DataAccess);
         }
         #endregion
 

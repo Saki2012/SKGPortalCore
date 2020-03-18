@@ -1,5 +1,6 @@
 ﻿using GraphQL;
 using GraphQL.Types;
+using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Repository.MasterData;
 
@@ -13,7 +14,7 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class BillTermQuery : BaseQueryType<BillTermSet, BillTermSetType, BillTermType>
     {
-        public BillTermQuery(BillTermRepository repository) : base(repository) { }
+        public BillTermQuery(BillTermRepository repository, ISessionWrapper session) : base(repository,session) { }
     }
     public class BillTermMutation : BaseMutationType<BillTermSet, BillTermSetType, BillTermSetInputType>
     {
