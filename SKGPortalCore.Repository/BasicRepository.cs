@@ -685,6 +685,8 @@ namespace SKGPortalCore.Repository
             return dbSet;
         }
         #endregion
+
+
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫
         protected virtual void Dispose(bool disposing)

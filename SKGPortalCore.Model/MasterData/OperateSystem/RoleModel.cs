@@ -21,7 +21,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// 權限設置
         /// </summary>
         [Description("權限設置")]
-        public List<RolePermissionModel> RolePermission { get; set; }
+        public List<RolePermissionModel> RolePermission { get; set; } = new List<RolePermissionModel>();
     }
     /// <summary>
     /// 角色權限資料

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 using System;
 using System.Collections.Generic;
@@ -16,23 +17,17 @@ namespace SKGPortalCore.Repository.MasterData.User
     {
         public BackendUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
 
-        public BackendUserSet Login()
+        public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado)
         {
-            string customerId = string.Empty; string userId = string.Empty; string pasuwado = string.Empty;
-
-            string sessionId = string.Empty;
-            string key = $"{customerId},{userId}";
-            Func<BackendUserModel, bool> where1 = new Func<BackendUserModel, bool>(p => p.KeyId == key);
-            Func<BackendUserRoleModel, bool> where2 = new Func<BackendUserRoleModel, bool>(p => p.KeyId == key);
-            List<IRoleModel> UserRoles = DataAccess.Set<BackendUserRoleModel>().Include(p => p.Role).ThenInclude(role => role.Permissions).Where(where2).Cast<IRoleModel>().ToList();
-            BackendUserSet user = new BackendUserSet() { User = DataAccess.Set<BackendUserModel>().Find(key), UserRoles = UserRoles };
-            if (!BizAccountLogin.CheckAccountPasuwado(new CustUserSet() /*user*/, pasuwado))
-            {
-                return null;
-            }
-            Dictionary<string, string> permissions = BizAccountLogin.GetRolePermissionsToken(sessionId, UserRoles);
-
-            return user;
+            BackendUserSet set = QueryData(new object[] { account });
+            if (null == set) return null;
+            if (!BizAccountLogin.CheckADAccountPasuwado(set, pasuwado)) return null;
+            using RoleRepository rep = new RoleRepository(DataAccess);
+            foreach (var backendUserRole in set.BackendUserRole) backendUserRole.Permissions = rep.QueryData(new object[] { backendUserRole.RoleId }).RolePermission;
+            List<IRoleModel> UserRoles = set.BackendUserRole.Cast<IRoleModel>().ToList();
+            session.User = set.BackendUser;
+            List<PermissionToken> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
+            return permissions;
         }
     }
 }

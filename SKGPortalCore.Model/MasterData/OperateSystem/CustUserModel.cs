@@ -16,8 +16,8 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 前台用戶資料
         /// </summary>
-        public CustUserModel User { get; set; }
-        public List<CustUserRoleModel> UserRoles { get; set; }
+        public CustUserModel CustUser { get; set; }
+        public List<CustUserRoleModel> CustUserRole { get; set; }
     }
     /// <summary>
     /// 前台用戶資料
@@ -84,5 +84,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// </summary>
         [Description("角色權限代號"), Key]
         public string RoleId { get; set; }
+        [NotMapped]
+        public List<RolePermissionModel> Permissions { get; set; }
     }
 }

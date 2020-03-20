@@ -103,4 +103,13 @@ namespace SKGPortalCore.Model.System
         [Description("行狀態"), NotMapped, InputField]
         public RowState RowState { get; set; }
     }
+
+    /// <summary>
+    /// 權限Token
+    /// </summary>
+    public class PermissionToken
+    {
+        public string FuncName { get; set; }
+        public string Token { get; set; }
+    }
 }

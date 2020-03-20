@@ -1,5 +1,4 @@
 ﻿using SKGPortalCore.Model.System;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -17,12 +16,12 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// 後臺使用者資料
         /// </summary>
         [Description("後臺使用者資料")]
-        public BackendUserModel User { get; set; }
+        public BackendUserModel BackendUser { get; set; }
         /// <summary>
         /// 後臺使用者角色權限清單
         /// </summary>
         [Description("後臺使用者角色權限清單")]
-        public List<IRoleModel> UserRoles { get; set; }
+        public List<BackendUserRoleModel> BackendUserRole { get; set; } = new List<BackendUserRoleModel>();
     }
     /// <summary>
     /// 後臺使用者資料
@@ -30,13 +29,11 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     [Description("後臺使用者資料")]
     public class BackendUserModel : MasterDataModel, IUserModel
     {
-        [Key]
-        public string KeyId { get; set; }
         /// <summary>
-        /// 使用者代號
+        /// 員工編號
         /// </summary>
-        [Description("使用者代號")]
-        public string UserId { get; set; }
+        [Description("員工編號"), Key]
+        public string KeyId { get; set; }
         /// <summary>
         /// 使用者名稱
         /// </summary>
@@ -69,8 +66,12 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     [Description("後臺使用者角色權限清單")]
     public class BackendUserRoleModel : DetailRowState, IRoleModel
     {
+        [ForeignKey("KeyId")]
         public BackendUserModel Key { get; set; }
-        [Key]
+        /// <summary>
+        /// 員工編號
+        /// </summary>
+        [Description("員工編號"), Key]
         public string KeyId { get; set; }
         [ForeignKey("RoleId")]
         public RoleModel Role { get; set; }

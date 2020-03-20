@@ -233,5 +233,10 @@ namespace SKGPortalCore.Data
         /// </summary>
         [Description("介紹商企業代號請選擇商戶類行是「{0}」的企業代號")]
         Code1019,
+        /// <summary>
+        /// 您尚未登入帳號，請重新登入。
+        /// </summary>
+        [Description("您尚未登入帳號，請重新登入。")]
+        Code1020,
     }
 }

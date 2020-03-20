@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SKGPortalCore.Data;
+using SKGPortalCore.Graph;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.System;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -60,13 +63,13 @@ namespace SKGPortalCore
 #else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
 #endif
-            services.AddControllersWithViews();
-
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
+            app.UseCookiePolicy();
+            app.UseSession();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseWebSockets();
 
@@ -81,16 +84,6 @@ namespace SKGPortalCore
 
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseSession();
-
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Account}/{action=Index}/");
-            });
 #if DEBUG
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/", GraphQLEndPoint = "/Bill" });
 #endif
@@ -105,11 +98,8 @@ namespace SKGPortalCore
         private void InjectionRepository(ref IServiceCollection services)
         {
             Assembly assembly = Assembly.Load("SKGPortalCore.Repository");
-            Type[] types = assembly.ExportedTypes.Where(p => !p.Namespace.Contains("SKGPortalCore.Business") && p.Namespace.CompareTo("SKGPortalCore.Repository") != 0).ToArray();
-            foreach (Type t in types)
-            {
-                services.AddScoped(t);
-            }
+            Type[] types = assembly.ExportedTypes.Where(p => !p.Namespace.Contains("SKGPortalCore.Business") && p.Namespace.Contains("SKGPortalCore.Repository")).ToArray();
+            foreach (Type t in types) services.AddScoped(t);
         }
         /// <summary>
         /// 注入GraphSchema
@@ -125,15 +115,16 @@ namespace SKGPortalCore
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
             foreach (Type t in setTypes) services.AddScoped(t);
             //Operate
-            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`3") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0).ToArray();
+            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`3") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0 || t.Name.Contains("Subscription")).ToArray();
             foreach (Type t in operateTypes) services.AddScoped(t);
             //Schema
             Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
             foreach (Type t in schemaTypes) services.AddScoped(t);
             //添加Enum
             Type[] enumType = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Model.System") == 0 && p.IsEnum).ToArray();
-            foreach (Type t in enumType)
-                services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
+            foreach (Type t in enumType) services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
+
+            services.AddScoped<Permission>();
 
             services.AddGraphQL(options =>
                 {

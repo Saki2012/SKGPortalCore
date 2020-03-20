@@ -17,7 +17,7 @@ namespace SKGPortalCore.Data
         /// <param name="progId"></param>
         /// <param name="pk"></param>
         /// <param name="action"></param>
-        public static void SetOperateLog(string userId, string ip, string browser, string progId, string pk, string action)
+        public static void SetOperateLog(string userId, string ip, string browser, string progId, string pk, string action, string memo)
         {
             try
             {
@@ -31,6 +31,7 @@ namespace SKGPortalCore.Data
                     PK = pk,
                     OperateTime = DateTime.Now,
                     Action = action,
+                    Memo = memo,
                 });
                 dataAccess.SaveChanges();
             }

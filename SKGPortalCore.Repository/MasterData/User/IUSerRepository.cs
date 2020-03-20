@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SKGPortalCore.Data;
+using SKGPortalCore.Model.System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +8,6 @@ namespace SKGPortalCore.Repository.MasterData.User
 {
     interface IUSerRepository<TSet>
     {
-        public TSet Login();
+        public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado);
     }
 }

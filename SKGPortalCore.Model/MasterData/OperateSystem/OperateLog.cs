@@ -19,38 +19,43 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 使用者ID
         /// </summary>
-        [Description("使用者ID")]
+        [Description("使用者ID"), Required]
         public string UserId { get; set; }
         /// <summary>
         /// 登入IP位置
         /// </summary>
-        [Description("登入IP位置")]
+        [Description("登入IP位置"), Required]
         public string IP { get; set; }
         /// <summary>
         /// 瀏覽器資訊
         /// </summary>
-        [Description("瀏覽器資訊")]
+        [Description("瀏覽器資訊"), Required]
         public string Browser { get; set; }
         /// <summary>
         /// ProgId
         /// </summary>
-        [Description("ProgId")]
+        [Description("ProgId"), Required]
         public string ProgId { get; set; }
         /// <summary>
         /// 資料主鍵
         /// </summary>
-        [Description("資料主鍵")]
+        [Description("資料主鍵"), Required]
         public string PK { get; set; }
         /// <summary>
         /// 操作時間
         /// </summary>
-        [Description("操作時間")]
+        [Description("操作時間"), Required]
         public DateTime OperateTime { get; set; } = DateTime.Now;
         /// <summary>
         /// 動作
         /// </summary>
-        [Description("動作")]
+        [Description("動作"), Required]
         public string Action { get; set; }
-
+        /// <summary>
+        /// 備註
+        /// (SysOperator處理時，該欄位不允許為空)
+        /// </summary>
+        [Description("備註"), Required]
+        public string Memo { get; set; }
     }
 }
