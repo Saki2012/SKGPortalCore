@@ -18,7 +18,7 @@ namespace SKGPortalCore.Graph.MasterData
     }
     public class RoleMutation : BaseMutationType<RoleSet, RoleSetType, RoleSetInputType>
     {
-        public RoleMutation(RoleRepository repository) : base(repository) { }
+        public RoleMutation(RoleRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class RoleSetInputType : BaseInputSetGraphType<RoleSet> { }

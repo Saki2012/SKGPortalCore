@@ -16,9 +16,16 @@ namespace SKGPortalCore.Repository.MasterData.User
     public class BackendUserRepository : BasicRepository<BackendUserSet>, IUSerRepository<BackendUserSet>
     {
         public BackendUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="account"></param>
+        /// <param name="pasuwado"></param>
+        /// <returns></returns>
         public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado)
         {
+            if (null != session.User) return null;
             BackendUserSet set = QueryData(new object[] { account });
             if (null == set) return null;
             if (!BizAccountLogin.CheckADAccountPasuwado(set, pasuwado)) return null;
@@ -28,6 +35,14 @@ namespace SKGPortalCore.Repository.MasterData.User
             session.User = set.BackendUser;
             List<PermissionToken> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
             return permissions;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        public void Logout(ISessionWrapper session)
+        {
+            session.Clear();
         }
     }
 }

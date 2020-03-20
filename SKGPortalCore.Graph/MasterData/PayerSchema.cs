@@ -13,16 +13,16 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class PayerQuery : BaseQueryType<PayerSet, PayerSetType, PayerType>
     {
-        public PayerQuery(PayerRepository repository, ISessionWrapper session) : base(repository,session) { }
+        public PayerQuery(PayerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class PayerMutation : BaseMutationType<PayerSet, PayerSetType, PayerSetInputType>
     {
-        public PayerMutation(PayerRepository repository) : base(repository) { }
+        public PayerMutation(PayerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class PayerSetInputType : BaseInputSetGraphType<PayerSet> { }
     public class PayerInputType : BaseInputFieldGraphType<PayerModel> { }
     //Query
-    public class PayerSetType : BaseQuerySetGraphType<PayerSet>    {    }
+    public class PayerSetType : BaseQuerySetGraphType<PayerSet> { }
     public class PayerType : BaseQueryFieldGraphType<PayerModel> { }
 }

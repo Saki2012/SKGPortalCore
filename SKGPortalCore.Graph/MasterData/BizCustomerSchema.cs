@@ -17,7 +17,7 @@ namespace SKGPortalCore.Graph.MasterData
     }
     public class BizCustomerMutation : BaseMutationType<BizCustomerSet, BizCustomerSetType, BizCustomerSetInputType>
     {
-        public BizCustomerMutation(BizCustomerRepository repository) : base(repository) { }
+        public BizCustomerMutation(BizCustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BizCustomerSetInputType : BaseInputSetGraphType<BizCustomerSet> { }

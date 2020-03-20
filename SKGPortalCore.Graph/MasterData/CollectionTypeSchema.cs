@@ -17,7 +17,7 @@ namespace SKGPortalCore.Graph.MasterData
     }
     public class CollectionTypeMutation : BaseMutationType<CollectionTypeSet, CollectionTypeSetType, CollectionTypeSetInputType>
     {
-        public CollectionTypeMutation(CollectionTypeRepository repository) : base(repository) { }
+        public CollectionTypeMutation(CollectionTypeRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class CollectionTypeSetInputType : BaseInputSetGraphType<CollectionTypeSet> { }

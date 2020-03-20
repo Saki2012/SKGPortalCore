@@ -14,11 +14,11 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class BillTermQuery : BaseQueryType<BillTermSet, BillTermSetType, BillTermType>
     {
-        public BillTermQuery(BillTermRepository repository, ISessionWrapper session) : base(repository,session) { }
+        public BillTermQuery(BillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class BillTermMutation : BaseMutationType<BillTermSet, BillTermSetType, BillTermSetInputType>
     {
-        public BillTermMutation(BillTermRepository repository) : base(repository) { }
+        public BillTermMutation(BillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BillTermSetInputType : BaseInputSetGraphType<BillTermSet> { }

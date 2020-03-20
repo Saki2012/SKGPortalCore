@@ -24,7 +24,7 @@ namespace SKGPortalCore.Graph.MasterData.User
             Field(
                     type: typeof(ListGraphType<Permission>),
                     name: "Login",
-                    description: "登錄帳號",
+                    description: "登入帳號",
                     arguments: new QueryArguments(
                         new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "account", Description = "帳號" },
                         new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "pasuwado", Description = "密碼" }
@@ -33,11 +33,21 @@ namespace SKGPortalCore.Graph.MasterData.User
                     {
                         return repository.Login(session, context.GetArgument<string>("account"), context.GetArgument<string>("pasuwado"));
                     });
+            Field(
+                    type: typeof(ListGraphType<Permission>),
+                    name: "Logout",
+                    description: "登出帳號",
+                    resolve: context =>
+                    {
+                        repository.Logout(session);
+                        return null;
+                    });
+
         }
     }
     public class BackendUserMutation : BaseMutationType<BackendUserSet, BackendUserSetType, BackendUserSetInputType>
     {
-        public BackendUserMutation(BackendUserRepository repository) : base(repository) { }
+        public BackendUserMutation(BackendUserRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BackendUserSetInputType : BaseInputSetGraphType<BackendUserSet> { }

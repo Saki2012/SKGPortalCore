@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 

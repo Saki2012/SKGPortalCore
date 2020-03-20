@@ -27,5 +27,10 @@ namespace SKGPortalCore.Repository.MasterData.User
             List<PermissionToken> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
             return permissions;
         }
+
+        public void Logout(ISessionWrapper session)
+        {
+            session.Clear();
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace SKGPortalCore.Graph.BillData
     }
     public class ReceiptBillMutation : BaseMutationType<ReceiptBillSet, ReceiptBillSetType, ReceiptBillSetInputType>
     {
-        public ReceiptBillMutation(ReceiptBillRepository repository) : base(repository) { }
+        public ReceiptBillMutation(ReceiptBillRepository repository, ISessionWrapper session) : base(repository,  session) { }
     }
     //Input
     public class ReceiptBillSetInputType : BaseInputSetGraphType<ReceiptBillSet> { }

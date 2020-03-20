@@ -9,5 +9,6 @@ namespace SKGPortalCore.Repository.MasterData.User
     interface IUSerRepository<TSet>
     {
         public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado);
+        public void Logout(ISessionWrapper session);
     }
 }

@@ -29,11 +29,20 @@ namespace SKGPortalCore.Graph.MasterData.User
                     {
                         return repository.Login(session, context.GetArgument<string>("account"), context.GetArgument<string>("pasuwado"));
                     });
+            Field(
+                    type: typeof(ListGraphType<Permission>),
+                    name: "Logout",
+                    description: "登出帳號",
+                    resolve: context =>
+                    {
+                        repository.Logout(session);
+                        return null;
+                    });
         }
     }
     public class CustUserMutation : BaseMutationType<CustUserSet, CustUserSetType, CustUserSetInputType>
     {
-        public CustUserMutation(CustUserRepository repository) : base(repository) { }
+        public CustUserMutation(CustUserRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class CustUserSetInputType : BaseInputSetGraphType<CustUserSet> { }

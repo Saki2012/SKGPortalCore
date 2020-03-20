@@ -13,11 +13,11 @@ namespace SKGPortalCore.Graph.MasterData
     //Operate
     public class CustomerQuery : BaseQueryType<CustomerSet, CustomerSetType, CustomerType>
     {
-        public CustomerQuery(CustomerRepository repository, ISessionWrapper session) : base(repository,  session) { }
+        public CustomerQuery(CustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class CustomerMutation : BaseMutationType<CustomerSet, CustomerSetType, CustomerSetInputType>
     {
-        public CustomerMutation(CustomerRepository repository) : base(repository) { }
+        public CustomerMutation(CustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class CustomerSetInputType : BaseInputSetGraphType<CustomerSet> { }

@@ -51,13 +51,21 @@ namespace SKGPortalCore
             InjectionGraphSchema(ref services);
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
-            services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
+
+            //services.AddDistributedRedisCache(p => p.Configuration = "localhost:6379");
+            services.AddDistributedMemoryCache();
             services.AddSession(options =>
              {
                  options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                  options.Cookie.Name = "YouKnowDaWaeOfDevil";
                  options.IdleTimeout = TimeSpan.FromMinutes(20);
              });
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 #if BackEnd
             services.AddSingleton<ISessionWrapper, SessionWapper<BackendUserModel>>();
 #else

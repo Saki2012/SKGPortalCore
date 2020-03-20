@@ -17,7 +17,7 @@ namespace SKGPortalCore.Graph.MasterData
     }
     public class ChannelMutation : BaseMutationType<ChannelSet, ChannelSetType, ChannelSetInputType>
     {
-        public ChannelMutation(ChannelRepository repository) : base(repository) { }
+        public ChannelMutation(ChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class ChannelSetInputType : BaseInputSetGraphType<ChannelSet> { }
