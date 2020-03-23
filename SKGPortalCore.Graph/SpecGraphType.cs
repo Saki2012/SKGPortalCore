@@ -357,6 +357,7 @@ namespace SKGPortalCore.Graph
         }
     }
 
-    public class Permission : BaseQueryFieldGraphType<PermissionToken> { }
+    public class Permission : BaseQueryFieldGraphType<PermissionTokenModel> { }
+    public class FileInfo : BaseInputFieldGraphType<FileInfoModel> { }
     #endregion
 }

@@ -133,6 +133,7 @@ namespace SKGPortalCore
             foreach (Type t in enumType) services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
 
             services.AddScoped<Permission>();
+            services.AddScoped<FileInfo>();
 
             services.AddGraphQL(options =>
                 {

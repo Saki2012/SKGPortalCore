@@ -4,6 +4,7 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.BillData;
 using System;
 using System.Linq.Expressions;
@@ -23,7 +24,21 @@ namespace SKGPortalCore.Graph.BillData
     }
     public class BillMutation : BaseMutationType<BillSet, BillSetType, BillSetInputType>
     {
-        public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository,  session) { }
+        public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session)
+        {
+            Field(
+            type: typeof(BooleanGraphType),
+            name: "UploadFile",
+            description: "登入帳號",
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<FileInfo>> { Name = "file", Description = "檔案資訊" }
+            ),
+            resolve: context =>
+            {
+                FileInfo file = context.GetArgument<FileInfo>("file");
+                return true;
+            });
+        }
     }
     //Input
     public class BillSetInputType : BaseInputSetGraphType<BillSet> { }

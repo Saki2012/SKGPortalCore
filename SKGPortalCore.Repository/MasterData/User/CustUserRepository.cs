@@ -15,7 +15,7 @@ namespace SKGPortalCore.Repository.MasterData.User
     {
         public CustUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
 
-        public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado)
+        public List<PermissionTokenModel> Login(ISessionWrapper session, string account, string pasuwado)
         {
             CustUserSet set = QueryData(new object[] { account });
             if (null == set) return null;
@@ -24,7 +24,7 @@ namespace SKGPortalCore.Repository.MasterData.User
             foreach (var custUserRole in set.CustUserRole) custUserRole.Permissions = rep.QueryData(new object[] { custUserRole.RoleId }).RolePermission;
             List<IRoleModel> UserRoles = set.CustUserRole.Cast<IRoleModel>().ToList();
             session.User = set.CustUser;
-            List<PermissionToken> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
+            List<PermissionTokenModel> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
             return permissions;
         }
 

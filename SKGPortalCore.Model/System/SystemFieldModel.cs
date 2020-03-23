@@ -107,9 +107,35 @@ namespace SKGPortalCore.Model.System
     /// <summary>
     /// 權限Token
     /// </summary>
-    public class PermissionToken
+    public class PermissionTokenModel
     {
         public string FuncName { get; set; }
         public string Token { get; set; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FileInfoModel
+    {
+        /// <summary>
+        /// 檔案名稱
+        /// </summary>
+        [Description("檔案名稱"),InputField]
+        public string FileName { get; set; }
+        /// <summary>
+        /// 網際網路媒體型式
+        /// </summary>
+        [Description("網際網路媒體型式"),InputField]
+        public string MimeType { get; set; }
+        /// <summary>
+        /// 編碼
+        /// </summary>
+        [Description("編碼"),InputField]
+        public string Encoding { get; set; }
+        /// <summary>
+        /// 路徑
+        /// </summary>
+        [Description("路徑好ㄨㄛ"),InputField]
+        public string Path { get; set; }
     }
 }

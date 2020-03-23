@@ -1,13 +1,8 @@
 ﻿using GraphQL;
-using GraphQL.Resolvers;
-using GraphQL.Subscription;
 using GraphQL.Types;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData.User;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
-using System;
 
 namespace SKGPortalCore.Graph.MasterData.User
 {

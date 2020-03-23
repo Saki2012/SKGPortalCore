@@ -23,7 +23,7 @@ namespace SKGPortalCore.Repository.MasterData.User
         /// <param name="account"></param>
         /// <param name="pasuwado"></param>
         /// <returns></returns>
-        public List<PermissionToken> Login(ISessionWrapper session, string account, string pasuwado)
+        public List<PermissionTokenModel> Login(ISessionWrapper session, string account, string pasuwado)
         {
             if (null != session.User) return null;
             BackendUserSet set = QueryData(new object[] { account });
@@ -33,7 +33,7 @@ namespace SKGPortalCore.Repository.MasterData.User
             foreach (var backendUserRole in set.BackendUserRole) backendUserRole.Permissions = rep.QueryData(new object[] { backendUserRole.RoleId }).RolePermission;
             List<IRoleModel> UserRoles = set.BackendUserRole.Cast<IRoleModel>().ToList();
             session.User = set.BackendUser;
-            List<PermissionToken> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
+            List<PermissionTokenModel> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
             return permissions;
         }
         /// <summary>
