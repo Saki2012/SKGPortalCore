@@ -5,6 +5,7 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -144,10 +145,17 @@ namespace SKGPortalCore
                .AddDataLoader()
                .AddWebSockets();
             services.AddCors();
-            services.Configure<IISServerOptions>(options =>
+
+            services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
+            /*
+                        services.Configure<IISServerOptions>(options =>
+                        {
+                            options.AllowSynchronousIO = true;
+                        });
+             */
         }
         #endregion
     }
