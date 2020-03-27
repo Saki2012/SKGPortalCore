@@ -7,8 +7,10 @@ using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.BillData;
 using System;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Linq;
 
 namespace SKGPortalCore.Graph.BillData
 {
@@ -29,13 +31,16 @@ namespace SKGPortalCore.Graph.BillData
             Field(
             type: typeof(BooleanGraphType),
             name: "UploadFile",
-            description: "登入帳號",
+            description: "上傳檔案",
             arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<FileInfo>> { Name = "file", Description = "檔案資訊" }
             ),
             resolve: context =>
             {
-                FileInfo file = context.GetArgument<FileInfo>("file");
+                FileInfoModel file = context.GetArgument<FileInfoModel>("file");
+                byte[] bytes = file.Content.Select(x => LibData.ToByte(x)).ToArray();
+                File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
+
                 return true;
             });
         }

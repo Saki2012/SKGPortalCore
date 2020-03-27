@@ -299,7 +299,6 @@ namespace SKGPortalCore.Graph
         }
     }
 
-
     #endregion
 
     #region Comm
@@ -358,6 +357,12 @@ namespace SKGPortalCore.Graph
     }
 
     public class Permission : BaseQueryFieldGraphType<PermissionTokenModel> { }
-    public class FileInfo : BaseInputFieldGraphType<FileInfoModel> { }
+    public class FileInfo : BaseInputFieldGraphType<FileInfoModel>
+    {
+        public FileInfo() : base()
+        {
+            Field(typeof(ListGraphType<IntGraphType>), "Content", "內容");
+        }
+    }
     #endregion
 }

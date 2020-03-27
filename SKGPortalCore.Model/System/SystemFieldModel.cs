@@ -120,22 +120,27 @@ namespace SKGPortalCore.Model.System
         /// <summary>
         /// 檔案名稱
         /// </summary>
-        [Description("檔案名稱"),InputField]
+        [Description("檔案名稱"), InputField]
         public string FileName { get; set; }
         /// <summary>
         /// 網際網路媒體型式
         /// </summary>
-        [Description("網際網路媒體型式"),InputField]
+        [Description("網際網路媒體型式"), InputField]
         public string MimeType { get; set; }
         /// <summary>
         /// 編碼
         /// </summary>
-        [Description("編碼"),InputField]
+        [Description("編碼"), InputField]
         public string Encoding { get; set; }
         /// <summary>
         /// 路徑
         /// </summary>
-        [Description("路徑好ㄨㄛ"),InputField]
+        [Description("路徑"), InputField]
         public string Path { get; set; }
+        /// <summary>
+        /// 內容
+        /// </summary>
+        [Description("內容")]
+        public int[] Content { get; set; }
     }
 }
