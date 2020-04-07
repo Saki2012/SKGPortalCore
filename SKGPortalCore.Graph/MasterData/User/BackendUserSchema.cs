@@ -3,6 +3,7 @@ using GraphQL.Types;
 using SKGPortalCore.Data;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository.MasterData.User;
+using System;
 
 namespace SKGPortalCore.Graph.MasterData.User
 {
@@ -27,7 +28,8 @@ namespace SKGPortalCore.Graph.MasterData.User
                     resolve: context =>
                     {
                         return repository.Login(session, context.GetArgument<string>("account"), context.GetArgument<string>("pasuwado"));
-                    });
+                    }
+                    );
             Field(
                     type: typeof(ListGraphType<Permission>),
                     name: "Logout",

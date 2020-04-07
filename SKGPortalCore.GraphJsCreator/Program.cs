@@ -14,12 +14,11 @@ namespace SKGPortalCore.GraphJsCreator
 
         static void Main()
         {
-            Console.WriteLine("Hello World!");
             Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
             //Set
             Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0).ToArray();
 
-            if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath,true);
+            if (Directory.Exists(OutputPath)) Directory.Delete(OutputPath, true);
             Directory.CreateDirectory(OutputPath);
             foreach (Type t in setTypes)
             {
@@ -28,6 +27,8 @@ namespace SKGPortalCore.GraphJsCreator
                 using StreamWriter file = new StreamWriter($@"{OutputPath}\{LibData.ToCamelCase(set.Name)}.fragment.js", true);
                 file.Write(v);
             }
+
+            System.Diagnostics.Process.Start("explorer.exe", OutputPath);
         }
 
         private static string Template(dynamic set)
@@ -53,7 +54,7 @@ export default {set.Name}Fragment;
         {
             string fields = GetFieldsTemplate(c);
             return $@"  {LibData.ToCamelCase(c.Name)}: gql`
-    fragment {LibData.ToCamelCase(c.Name)} on {c.GetType().Name} {{
+    fragment {LibData.ToCamelCase(c.Name)} on {c.Name} {{
 {fields}    }}`,
 ";
         }

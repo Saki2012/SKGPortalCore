@@ -53,8 +53,7 @@ namespace SKGPortalCore
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
 
 
-            //services.AddDistributedRedisCache(p => p.Configuration = "localhost:6379");
-            services.AddDistributedMemoryCache();
+
             services.AddSession(options =>
              {
                  options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -72,6 +71,8 @@ namespace SKGPortalCore
 #else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
 #endif
+            services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
+            //services.AddDistributedMemoryCache();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
