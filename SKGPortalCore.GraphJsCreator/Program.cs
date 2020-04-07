@@ -36,9 +36,9 @@ namespace SKGPortalCore.GraphJsCreator
             string tableTemplate = string.Empty;
             foreach (var table in set.Fields)
             {
-                dynamic g = Activator.CreateInstance(table.Type);
-                if (g is ListGraphType) g = Activator.CreateInstance(g.Type);
-                tableTemplate += GetTableTemplate(g);
+                dynamic tableInst = Activator.CreateInstance(table.Type);
+                if (tableInst is ListGraphType) tableInst = Activator.CreateInstance(tableInst.Type);
+                tableTemplate += GetTableTemplate(tableInst);
             }
             return $@"import {{ gql }} from ""apollo-boost"";
 
@@ -50,11 +50,11 @@ export default {set.Name}Fragment;
 ";
         }
 
-        private static string GetTableTemplate(dynamic c)
+        private static string GetTableTemplate(dynamic tableInst)
         {
-            string fields = GetFieldsTemplate(c);
-            return $@"  {LibData.ToCamelCase(c.Name)}: gql`
-    fragment {LibData.ToCamelCase(c.Name)} on {c.Name} {{
+            string fields = GetFieldsTemplate(tableInst);
+            return $@"  {LibData.ToCamelCase(tableInst.Name)}: gql`
+    fragment {LibData.ToCamelCase(tableInst.Name)} on {tableInst.Name} {{
 {fields}    }}`,
 ";
         }
