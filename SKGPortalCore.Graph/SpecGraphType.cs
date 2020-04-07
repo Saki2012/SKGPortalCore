@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using GraphQL.Language.AST;
 using GraphQL.Types;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
@@ -10,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -72,12 +74,12 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "condition", Description = "過濾條件" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
                 resolve: context =>
                 {
+                    string selectFields =$"new ({LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).ToArray())})";
                     string condition = context.GetArgument<string>("condition");
-
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
-                    return repo.QueryList(condition);
+                    return repo.QueryList(selectFields, condition);
                 });
         }
     }
@@ -313,7 +315,7 @@ namespace SKGPortalCore.Graph
         /// <param name="keyVal"></param>
         internal static bool CheckAuthority(ResolveFieldContext<object> context, ISessionWrapper session, BasicRepository<TSet> repository, FuncAction action, object[] keyVal)
         {
-            SetDebugUser(repository);
+            SetDebugUser(session);
             repository.Message = null;
             repository.User = session.User;
             if (CheckIsLogout(context, session, repository)) return false;
@@ -327,10 +329,10 @@ namespace SKGPortalCore.Graph
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="context"></param>
-        internal static void SetDebugUser(BasicRepository<TSet> repo)
+        internal static void SetDebugUser(ISessionWrapper session)
         {
 #if DEBUG
-            repo.User = SystemOperator.SysOperator;
+            session.User = SystemOperator.SysOperator;
 #endif
         }
         /// <summary>

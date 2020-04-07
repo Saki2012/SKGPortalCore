@@ -250,14 +250,13 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
-        public virtual IList QueryList(string condition)
+        public virtual IList QueryList(string selectFields, string condition)
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
             object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(masterType).Invoke(DataAccess, null);
             var query = ((IQueryable)dbSet).Where(LibData.Merge(" And ", false, "1=1", condition));
-            var cast = typeof(Queryable).GetMethod("Cast").MakeGenericMethod(typeof(TSet).GetProperties()[0].PropertyType).Invoke(null, new object[] { query });
-            var result = typeof(Enumerable).GetMethod("ToList").MakeGenericMethod(typeof(TSet).GetProperties()[0].PropertyType).Invoke(null, new object[] { cast }) as IList;
-            return result;
+            query = DynamicQueryable.Select(query, selectFields);
+            return query.Cast<dynamic>().ToList();
         }
         /// <summary>.
         /// 審核
