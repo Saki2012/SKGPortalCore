@@ -211,6 +211,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseInputSetGraphType()
         {
+            Name = typeof(TSet).Name;
             foreach (var t in typeof(TSet).GetProperties())
             {
                 string typeName = $"{GetType().Namespace}.{t.Name}InputType";
@@ -229,6 +230,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseInputFieldGraphType()
         {
+            Name = typeof(TModelType).Name.Replace("Model", "");
             Type t = typeof(TModelType);
             PropertyInfo[] properties = t.GetProperties().Where(p => p.IsDefined(typeof(InputFieldAttribute)) || p.IsDefined(typeof(KeyAttribute))).ToArray();
             PropertyInfo[] expectProperties = SetExpectProperties(null);
