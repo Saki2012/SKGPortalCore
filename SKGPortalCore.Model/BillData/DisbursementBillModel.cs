@@ -23,14 +23,11 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
-        [ForeignKey("ChannelWriteOfBillNo")]
-        public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
+        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
+        [ForeignKey("ChannelWriteOfBillNo")] public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
         /// <summary>
         /// 通路帳款核銷單號
         /// </summary>
-        [Description("通路帳款核銷單號")]
-        public string ChannelWriteOfBillNo { get; set; }
+        [Description("通路帳款核銷單號")] public string ChannelWriteOfBillNo { get; set; }
     }
 }

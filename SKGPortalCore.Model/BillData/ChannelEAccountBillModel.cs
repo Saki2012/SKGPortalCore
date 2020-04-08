@@ -25,58 +25,47 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
+        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        [ForeignKey("ChannelId")]
-        public ChannelModel Channel { get; set; }
+        [ForeignKey("ChannelId")] public ChannelModel Channel { get; set; }
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
-        public string ChannelId { get; set; }
+        [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public string ChannelId { get; set; }
         /// <summary>
         /// 
         /// </summary>
-        [ForeignKey("CollectionTypeId")]
-        public CollectionTypeModel CollectionType { get; set; }
+        [ForeignKey("CollectionTypeId")] public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
         /// 代收類別代號
         /// </summary>
-        [Description("代收類別代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
-        public string CollectionTypeId { get; set; }
+        [Description("代收類別代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public string CollectionTypeId { get; set; }
         /// <summary>
         /// 預計匯款日期
         /// </summary>
-        [Description("預計匯款日期"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")]
-        public DateTime ExpectRemitDate { get; set; }
+        [Description("預計匯款日期"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public DateTime ExpectRemitDate { get; set; }
         /// <summary>
         /// 遞延天數
         /// </summary>
-        [Description("遞延天數")]
-        public int PostponeDays { get; set; }
+        [Description("遞延天數")] public int PostponeDays { get; set; }
         /// <summary>
         /// 資訊流金額
         /// </summary>
-        [Description("資訊流金額")]
-        public decimal Amount { get; set; }
+        [Description("資訊流金額")] public decimal Amount { get; set; }
         /// <summary>
         /// 通路手續費
         /// </summary>
-        [Description("通路手續費")]
-        public decimal Fee { get; set; }
+        [Description("通路手續費")] public decimal Fee { get; set; }
         /// <summary>
         /// 預計匯款金額
         /// </summary>
-        [Description("預計匯款金額")]
-        public decimal ExpectRemitAmount { get; set; }
+        [Description("預計匯款金額")] public decimal ExpectRemitAmount { get; set; }
         /// <summary>
         /// 筆數
         /// </summary>
-        [Description("筆數")]
-        public int PayCount { get; set; }
+        [Description("筆數")] public int PayCount { get; set; }
     }
     /// <summary>
     /// 通路收款明細帳簿
@@ -84,19 +73,15 @@ namespace SKGPortalCore.Model.BillData
     [Description("通路收款明細帳簿")]
     public class ChannelEAccountBillDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public ChannelEAccountBillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public ChannelEAccountBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key]
-        public string BillNo { get; set; }
-        [ForeignKey("ReceiptBillNo")]
-        public ReceiptBillModel ReceiptBill { get; set; }
+        [Description("單據編號"), Key] public string BillNo { get; set; }
+        [ForeignKey("ReceiptBillNo")] public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號"), Key]
-        public string ReceiptBillNo { get; set; }
+        [Description("收款單號"), Key] public string ReceiptBillNo { get; set; }
     }
 }

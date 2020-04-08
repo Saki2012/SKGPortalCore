@@ -15,8 +15,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門資料
         /// </summary>
-        [Description("部門資料")]
-        public DeptModel Dept { get; set; }
+        [Description("部門資料")] public DeptModel Dept { get; set; }
     }
     /// <summary>
     /// 部門資料
@@ -27,17 +26,14 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 部門代號
         /// </summary>
-        [Description("部門代號"), Key, MaxLength(ConstParameter.DataIdLen)]
-        public string DeptId { get; set; }
+        [Description("部門代號"), Key, MaxLength(CP.DataIdLen)] public string DeptId { get; set; }
         /// <summary>
         /// 部門名稱
         /// </summary>
-        [Description("部門名稱"),Required, InputField, MaxLength(ConstParameter.NormalLen)]
-        public string DeptName { get; set; }
+        [Description("部門名稱"), Required, InputField, MaxLength(CP.NormalLen)] public string DeptName { get; set; }
         /// <summary>
         /// 是否分行
         /// </summary>
-        [Description("是否分行"), InputField]
-        public bool IsBranch { get; set; }
+        [Description("是否分行"), InputField] public bool IsBranch { get; set; }
     }
 }

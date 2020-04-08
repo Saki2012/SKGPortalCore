@@ -60,7 +60,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -102,7 +102,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,05",
-                        CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId}",
+                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId}",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -143,7 +143,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -185,7 +185,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -217,7 +217,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -249,7 +249,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
@@ -281,7 +281,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{ConstParameter.BankCollectionTypeId},{ConstParameter.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){

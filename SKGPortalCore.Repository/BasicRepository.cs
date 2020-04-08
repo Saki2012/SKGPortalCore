@@ -254,8 +254,9 @@ namespace SKGPortalCore.Repository
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
             object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(masterType).Invoke(DataAccess, null);
-            var query = ((IQueryable)dbSet).Where(LibData.Merge(" And ", false, "1=1", condition));
-            query = DynamicQueryable.Select(query, selectFields);
+            IQueryable query = ((IQueryable)dbSet);
+            if(!condition.IsNullOrEmpty()) query.Where(condition);
+            if (!selectFields.IsNullOrEmpty()) query = DynamicQueryable.Select(query, selectFields);
             return query.Cast<dynamic>().ToList();
         }
         /// <summary>.

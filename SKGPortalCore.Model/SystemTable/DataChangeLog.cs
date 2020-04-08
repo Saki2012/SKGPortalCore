@@ -18,13 +18,11 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 後臺使用者資料
         /// </summary>
-        [Description("變更日誌")]
-        public DataChangeLog DataChangeLog { get; set; }
+        [Description("變更日誌")] public DataChangeLog DataChangeLog { get; set; }
         /// <summary>
         /// 後臺使用者角色權限清單
         /// </summary>
-        [Description("變更日誌明細")]
-        public List<DataChangeLogDetail> DataChangeLogDetail { get; set; }
+        [Description("變更日誌明細")] public List<DataChangeLogDetail> DataChangeLogDetail { get; set; }
     }
 
     /// <summary>
@@ -36,28 +34,23 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// ID
         /// </summary>
-        [Description("ID"), Key]
-        public long DataChangeId { get; set; }
+        [Description("ID"), Key] public long DataChangeId { get; set; }
         /// <summary>
         /// 使用者ID
         /// </summary>
-        [Description("使用者ID")]
-        public string UserId { get; set; }
+        [Description("使用者ID")] public string UserId { get; set; }
         /// <summary>
         /// ProgId
         /// </summary>
-        [Description("ProgId")]
-        public string ProgId { get; set; }
+        [Description("ProgId")] public string ProgId { get; set; }
         /// <summary>
         /// 表單內部標識號
         /// </summary>
-        [Description("表單內部標識號")]
-        public string InternalId { get; set; }
+        [Description("表單內部標識號")] public string InternalId { get; set; }
         /// <summary>
         /// 變更時間
         /// </summary>
-        [Description("變更時間")]
-        public DateTime DataChangeTime { get; set; }
+        [Description("變更時間")] public DateTime DataChangeTime { get; set; }
     }
     /// <summary>
     /// 變更日誌明細
@@ -65,30 +58,24 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     [Description("變更日誌明細")]
     public class DataChangeLogDetail
     {
-        [ForeignKey("Id")]
-        public DataChangeLog DataChangeLog { get; set; }
+        [ForeignKey("Id")] public DataChangeLog DataChangeLog { get; set; }
         /// <summary>
         /// ID
         /// </summary>
-        [Description("ID"), Key]
-        public long DataChangeId { get; set; }
-        [Description("RowID"), Key]
-        public long RowId { get; set; }
+        [Description("ID"), Key] public long DataChangeId { get; set; }
+        [Description("RowID"), Key] public long RowId { get; set; }
         /// <summary>
         /// 表單索引
         /// </summary>
-        [Description("表單索引")]
-        public int TableIndex { get; set; }
+        [Description("表單索引")] public int TableIndex { get; set; }
         /// <summary>
         /// 變更前後資料
         /// </summary>
-        [Description("變更前後資料")]
-        public byte[] ChangeData { get; set; }
+        [Description("變更前後資料")] public byte[] ChangeData { get; set; }
         /// <summary>
         /// 行狀態
         /// </summary>
-        [Description("行狀態")]
-        public RowState RowStatus { get; set; }
+        [Description("行狀態")] public RowState RowStatus { get; set; }
     }
 
 }

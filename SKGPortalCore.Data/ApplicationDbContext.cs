@@ -77,7 +77,7 @@ namespace SKGPortalCore.Data
         /// <summary>
         /// 
         /// </summary>
-        private static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(ConstParameter.AppSettingsJsonPath).AddJsonFile(ConstParameter.AppSettingsJson).Build();
+        private static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(CP.AppSettingsJsonPath).AddJsonFile(CP.AppSettingsJson).Build();
         #endregion
         #region Public
         /// <summary>

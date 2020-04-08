@@ -32,27 +32,22 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 日期
         /// </summary>
-        [Description("日期"),Key]
-        public DateTime Date { get; set; }
+        [Description("日期"), Key] public DateTime Date { get; set; }
         /// <summary>
         /// 是否營業日
         /// </summary>
-        [Description("是否營業日")]
-        public bool IsWorkDate { get; set; }
+        [Description("是否營業日")] public bool IsWorkDate { get; set; }
         /// <summary>
         /// 假別名
         /// </summary>
-        [Description("假別名")]
-        public string Name { get; set; }
+        [Description("假別名")] public string Name { get; set; }
         /// <summary>
         /// 假類別
         /// </summary>
-        [Description("假類別")]
-        public string HolidayCategory { get; set; }
+        [Description("假類別")] public string HolidayCategory { get; set; }
         /// <summary>
         /// 說明
         /// </summary>
-        [Description("說明")]
-        public string Description { get; set; }
+        [Description("說明")] public string Description { get; set; }
     }
 }

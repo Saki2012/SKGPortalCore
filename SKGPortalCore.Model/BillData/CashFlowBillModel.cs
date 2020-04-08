@@ -20,37 +20,30 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
+        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
         /// 匯款日期
         /// </summary>
-        [Description("匯款日期")]
-        public DateTime RemitTime { get; set; }
+        [Description("匯款日期")] public DateTime RemitTime { get; set; }
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號")]
-        public string ChannelId { get; set; }
+        [Description("通路代號")] public string ChannelId { get; set; }
         /// <summary>
         /// 代收類別代號
         /// </summary>
-        [Description("代收類別代號")]
-        public string CollectionTypeId { get; set; }
+        [Description("代收類別代號")] public string CollectionTypeId { get; set; }
         /// <summary>
         /// 交易金額
         /// </summary>
-        [Description("交易金額")]
-        public decimal Amount { get; set; }
+        [Description("交易金額")] public decimal Amount { get; set; }
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號"), Required, MaxLength(ConstParameter.NormalLen)]
-        public string ImportBatchNo { get; set; }
+        [Description("導入批號"), Required, MaxLength(CP.NormalLen)] public string ImportBatchNo { get; set; }
         /// <summary>
         /// 來源
         /// </summary>
-        [Description("來源"), MaxLength(200)]
-        public string Source { get; set; }
+        [Description("來源"), MaxLength(200)] public string Source { get; set; }
     }
 }

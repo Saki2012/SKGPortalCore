@@ -10,7 +10,7 @@ namespace SKGPortalCore.Schedule
 {
     internal class Program
     {
-        private static readonly IConfiguration Config= new ConfigurationBuilder().SetBasePath(ConstParameter.AppSettingsJsonPath).AddJsonFile(ConstParameter.AppSettingsJson).Build();
+        private static readonly IConfiguration Config= new ConfigurationBuilder().SetBasePath(CP.AppSettingsJsonPath).AddJsonFile(CP.AppSettingsJson).Build();
         private static void Main()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

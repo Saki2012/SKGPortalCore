@@ -16,17 +16,14 @@ namespace SKGPortalCore.Model.SystemTable
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Key, MaxLength(ConstParameter.NormalLen)]
-        public string VirtualAccountCode { get; set; }
+        [Description("虛擬帳號"), Key, MaxLength(CP.NormalLen)] public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 來源ProgId
         /// </summary>
-        [Description("來源ProgId"), Required, MaxLength(ConstParameter.NormalLen)]
-        public string SourceProgId { get; set; }
+        [Description("來源ProgId"), Required, MaxLength(CP.NormalLen)] public string SourceProgId { get; set; }
         /// <summary>
         /// 來源單號
         /// </summary>
-        [Description("來源單號"), Required, MaxLength(ConstParameter.BillNoLen)]
-        public string SourceBillNo { get; set; }
+        [Description("來源單號"), Required, MaxLength(CP.BillNoLen)] public string SourceBillNo { get; set; }
     }
 }

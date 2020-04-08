@@ -35,33 +35,27 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
+        [Description("帳單編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
-        [ForeignKey("CustomerCode")]
-        public BizCustomerModel BizCustomer { get; set; }
+        [ForeignKey("CustomerCode")] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Required]
-        public string CustomerCode { get; set; }
+        [Description("企業編號"), Required] public string CustomerCode { get; set; }
         /// <summary>
         /// 櫃位名稱
         /// </summary>
-        [Description("櫃位名稱"), MaxLength(ConstParameter.NormalLen)]
-        public string StoreName { get; set; }
+        [Description("櫃位名稱"), MaxLength(CP.NormalLen)] public string StoreName { get; set; }
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Required, Index, MaxLength(ConstParameter.NormalLen)]
-        public string VirtualAccountCode { get; set; }
+        [Description("虛擬帳號"), Required, Index, MaxLength(CP.NormalLen)] public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
-        public string ImportBatchNo { get; set; } = string.Empty;
+        [Description("匯入批號"), Required, MaxLength(CP.NormalLen)] public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
     /// 入金機收款明細
@@ -69,19 +63,15 @@ namespace SKGPortalCore.Model.BillData
     [Description("入金機收款明細")]
     public class DepositBillReceiptDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public DepositBillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public DepositBillModel Bill { get; set; }
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key]
-        public string BillNo { get; set; }
-        [ForeignKey("ReceiptBillNo")]
-        public ReceiptBillModel ReceiptBill { get; set; }
+        [Description("帳單編號"), Key] public string BillNo { get; set; }
+        [ForeignKey("ReceiptBillNo")] public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號"), Key]
-        public string ReceiptBillNo { get; set; }
+        [Description("收款單號"), Key] public string ReceiptBillNo { get; set; }
     }
 }

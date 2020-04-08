@@ -39,78 +39,63 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>  
-        [Description("帳單編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
+        [Description("帳單編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
-        [ForeignKey("CustomerCode")]
-        public BizCustomerModel BizCustomer { get; set; }
+        [ForeignKey("CustomerCode")] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Required, InputField]
-        public string CustomerCode { get; set; }
+        [Description("企業編號"), Required, InputField] public string CustomerCode { get; set; }
         /// <summary>
         /// 期別
         /// </summary>
-        [ForeignKey("CustomerCode,BillTermId")]
-        public BillTermModel BillTerm { get; set; }
+        [ForeignKey("CustomerCode,BillTermId")] public BillTermModel BillTerm { get; set; }
         /// <summary>
         /// 期別
         /// </summary>
-        [Description("期別"), InputField]
-        public string BillTermId { get; set; }
+        [Description("期別"), InputField] public string BillTermId { get; set; }
         /// <summary>
         /// 繳款人
         /// </summary>
-        [ForeignKey("CustomerCode,PayerId")]
-        public PayerModel Payer { get; set; }
+        [ForeignKey("CustomerCode,PayerId")] public PayerModel Payer { get; set; }
         /// <summary>
         /// 繳款人
         /// </summary>
-        [Description("繳款人"), InputField]
-        public string PayerId { get; set; }
+        [Description("繳款人"), InputField] public string PayerId { get; set; }
         /// <summary>
         /// 繳款截止日
         /// </summary>
-        [Description("繳款截止日"), Required, InputField]
-        public DateTime PayEndDate { get; set; }
+        [Description("繳款截止日"), Required, InputField] public DateTime PayEndDate { get; set; }
         /// <summary>
         /// 代收項目
         /// </summary>
-        [ForeignKey("CollectionTypeId")]
-        public CollectionTypeModel CollectionType { get; set; }
+        [ForeignKey("CollectionTypeId")] public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
         /// 代收項目
         /// </summary>
-        [Description("代收項目"), InputField]
-        public string CollectionTypeId { get; set; }
+        [Description("代收項目"), InputField] public string CollectionTypeId { get; set; }
         /// <summary>
         /// 應繳金額
         /// </summary>
-        [Description("應繳金額")]
-        public decimal PayAmount { get; set; }
+        [Description("應繳金額")] public decimal PayAmount { get; set; }
         /// <summary>
         /// 已繳金額
         /// </summary>
-        [Description("已繳金額")]
-        public decimal HadPayAmount { get; set; }
+        [Description("已繳金額")] public decimal HadPayAmount { get; set; }
         /// <summary>
         /// 繳款狀態
         /// </summary>
-        [Description("繳款狀態")]
-        public PayStatus PayStatus { get; set; }
+        [Description("繳款狀態")] public PayStatus PayStatus { get; set; }
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Required, Index, MaxLength(ConstParameter.NormalLen)]
-        public string VirtualAccountCode { get; set; }
+        [Description("虛擬帳號"), Required, Index, MaxLength(CP.NormalLen)] public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 匯入批號
         /// </summary>
-        [Description("匯入批號"), Required, MaxLength(ConstParameter.NormalLen)]
-        public string ImportBatchNo { get; set; } = string.Empty;
+        [Description("匯入批號"), Required, MaxLength(CP.NormalLen)] public string ImportBatchNo { get; set; } = string.Empty;
     }
     /// <summary>
     /// 帳單明細
@@ -118,28 +103,23 @@ namespace SKGPortalCore.Model.BillData
     [Description("帳單明細")]
     public class BillDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public BillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public BillModel Bill { get; set; }
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key]
-        public string BillNo { get; set; }
+        [Description("帳單編號"), Key] public string BillNo { get; set; }
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key]
-        public int RowId { get; set; }
+        [Description("序號"), Key] public int RowId { get; set; }
         /// <summary>
         /// 費用
         /// </summary>
-        [Description("費用"), Required, InputField, MaxLength(ConstParameter.NormalLen)]
-        public string FeeName { get; set; }
+        [Description("費用"), Required, InputField, MaxLength(CP.NormalLen)] public string FeeName { get; set; }
         /// <summary>
         /// 應繳金額
         /// </summary>
-        [Description("應繳金額"), InputField]
-        public decimal PayAmount { get; set; }
+        [Description("應繳金額"), InputField] public decimal PayAmount { get; set; }
     }
     /// <summary>
     /// 帳單收款明細
@@ -147,19 +127,15 @@ namespace SKGPortalCore.Model.BillData
     [Description("帳單收款明細")]
     public class BillReceiptDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public BillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public BillModel Bill { get; set; }
         /// <summary>
         /// 帳單編號
         /// </summary>
-        [Description("帳單編號"), Key]
-        public string BillNo { get; set; }
-        [ForeignKey("ReceiptBillNo")]
-        public ReceiptBillModel ReceiptBill { get; set; }
+        [Description("帳單編號"), Key] public string BillNo { get; set; }
+        [ForeignKey("ReceiptBillNo")] public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號"), Key]
-        public string ReceiptBillNo { get; set; }
+        [Description("收款單號"), Key] public string ReceiptBillNo { get; set; }
     }
 }

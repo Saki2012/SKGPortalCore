@@ -43,7 +43,7 @@ namespace SKGPortalCore.SeedDataInitial
         {
             try
             {
-                if (DataAccess.Set<BackendUserModel>().Find(ConstParameter.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
+                if (DataAccess.Set<BackendUserModel>().Find(CP.SysOperator) == null) DataAccess.Add(SystemOperator.SysOperator);
                 WorkDatesSeedData.CreateWorkDates(DataAccess);//OK
                 DeptSeed.CreateDept(Message, DataAccess);//OK
                 RoleSeeddData.CreateRole(Message, DataAccess);//OK

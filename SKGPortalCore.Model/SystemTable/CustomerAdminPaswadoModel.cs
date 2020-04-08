@@ -11,8 +11,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編")]
-        public string CustomerId { get; set; }
+        [Description("客戶統編")] public string CustomerId { get; set; }
         /// <summary>
         /// 密碼
         /// </summary>

@@ -4,6 +4,7 @@ using GraphQL.Types;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
@@ -55,12 +56,12 @@ namespace SKGPortalCore.Graph
         {
             Field(
                 type: typeof(TSetType),
-                name: "queryData",
-                description: ResxManage.GetDescription(FuncAction.Query),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_QueryData,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_QueryData)),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    object[] keyVal = (context.GetArgument<object>("keyVal") as List<object>).ToArray();
+                    object[] keyVal = (context.GetArgument<object>(CP.GQL_KeyVal) as List<object>).ToArray();
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -69,13 +70,13 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(ListGraphType<TMasterModelType>),
-                name: "queryList",
-                description: "查詢列表",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "condition", Description = "過濾條件" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_QueryList,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_QueryList)),
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = CP.GQL_Condition, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Condition)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    string selectFields =$"new ({LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p=>p!= "__typename").ToArray())})";
-                    string condition = context.GetArgument<string>("condition");
+                    string selectFields = $"new ({LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p => p != "__typename").ToArray())})";
+                    string condition = context.GetArgument<string>(CP.GQL_Condition);
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -91,13 +92,13 @@ namespace SKGPortalCore.Graph
         {
             Field(
                 type: typeof(TSetType),
-                name: "create",
-                description: ResxManage.GetDescription(FuncAction.Create),
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_Create,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Create)),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Create, null)) return default;
-                    TSet set = context.GetArgument<TSet>("set");
+                    TSet set = context.GetArgument<TSet>(CP.GQL_Set);
                     TSet result = repo.Create(set);
                     repo.CommitData(FuncAction.Create);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -106,14 +107,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
-                name: "update",
-                description: ResxManage.GetDescription(FuncAction.Update),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = "set", Description = "表單" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JSON Web Token" }),
+                name: CP.GQL_Update,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Update)),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Update, keyVal)) return default;
-                    TSet set = context.GetArgument<TSet>("set");
+                    TSet set = context.GetArgument<TSet>(CP.GQL_Set);
                     TSet result = repo.Update(keyVal, set);
                     repo.CommitData(FuncAction.Update);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -122,12 +123,12 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(BooleanGraphType),
-                name: "delete",
-                description: ResxManage.GetDescription(FuncAction.Delete),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_Delete,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Delete)),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Delete, keyVal)) return default;
                     repo.Delete(new[] { keyVal });
                     repo.CommitData(FuncAction.Delete);
@@ -137,14 +138,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
-                name: "approve",
-                description: ResxManage.GetDescription(FuncAction.Approve),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "審核狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_Approve,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Approve)),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = CP.GQL_Status, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_QueryData)) }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Approve, keyVal)) return default;
-                    bool status = context.GetArgument<bool>("status");
+                    bool status = context.GetArgument<bool>(CP.GQL_Status);
                     TSet result = repo.Approve(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Approve);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -153,14 +154,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
-                name: "invalid",
-                description: ResxManage.GetDescription(FuncAction.Invalid),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "作廢狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+                name: CP.GQL_Invalid,
+                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Invalid)),
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = CP.GQL_Status, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                    object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Invalid, keyVal)) return default;
-                    bool status = context.GetArgument<bool>("status");
+                    bool status = context.GetArgument<bool>(CP.GQL_Status);
                     TSet result = repo.Invalid(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Invalid);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -169,14 +170,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
               type: typeof(TSetType),
-              name: "endCase",
-              description: ResxManage.GetDescription(FuncAction.EndCase),
-              arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = "keyVal", Description = "主鍵" }, new QueryArgument<BooleanGraphType> { Name = "status", Description = "結案狀態" }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "jwt", Description = "JWT" }),
+              name: CP.GQL_EndCase,
+              description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_EndCase)),
+              arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = CP.GQL_Status, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
               resolve: context =>
               {
-                  object[] keyVal = context.GetArgument<object>("keyVal") as object[];
+                  object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
                   if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.EndCase, keyVal)) return default;
-                  bool status = context.GetArgument<bool>("status");
+                  bool status = context.GetArgument<bool>(CP.GQL_Status);
                   TSet result = repo.Invalid(new[] { keyVal }, status);
                   repo.CommitData(FuncAction.EndCase);
                   context.Errors.AddRange(repo.Message.Errors);

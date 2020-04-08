@@ -22,25 +22,20 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(ConstParameter.BillNoLen)]
-        public string BillNo { get; set; }
+        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
         /// 核銷狀態
         /// </summary>
-        [Description("核銷狀態")]
-        public WriteOfStatus WriteOfStatus { get; set; }
+        [Description("核銷狀態")] public WriteOfStatus WriteOfStatus { get; set; }
         /// <summary>
         /// 預計撥款金額
         /// </summary>
-        [Description("預計撥款金額")]
-        public decimal PrePayAmount { get; set; }
-        [ForeignKey("DisBillNo")]
-        public DisbursementBillModel DisBill { get; set; }
+        [Description("預計撥款金額")] public decimal PrePayAmount { get; set; }
+        [ForeignKey("DisBillNo")] public DisbursementBillModel DisBill { get; set; }
         /// <summary>
         /// 撥款單號
         /// </summary>
-        [Description("撥款單號")]
-        public string DisBillNo { get; set; }
+        [Description("撥款單號")] public string DisBillNo { get; set; }
     }
     /// <summary>
     /// 通路帳目明細
@@ -48,25 +43,20 @@ namespace SKGPortalCore.Model.BillData
     [Description("通路帳目明細")]
     public class ChannelWriteOfDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public ChannelWriteOfBillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public ChannelWriteOfBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key]
-        public string BillNo { get; set; }
+        [Description("單據編號"), Key] public string BillNo { get; set; }
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key]
-        public int RowId { get; set; }
-        [ForeignKey("ChannelEAccountBillNo")]
-        public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
+        [Description("序號"), Key] public int RowId { get; set; }
+        [ForeignKey("ChannelEAccountBillNo")] public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
         /// <summary>
         /// 通路帳簿單號
         /// </summary>
-        [Description("通路帳簿單號")]
-        public string ChannelEAccountBillNo { get; set; }
+        [Description("通路帳簿單號")] public string ChannelEAccountBillNo { get; set; }
     }
     /// <summary>
     /// 金流帳目明細
@@ -74,24 +64,19 @@ namespace SKGPortalCore.Model.BillData
     [Description("金流帳目明細")]
     public class CashFlowWriteOfDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")]
-        public ChannelWriteOfBillModel Bill { get; set; }
+        [ForeignKey("BillNo")] public ChannelWriteOfBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key]
-        public string BillNo { get; set; }
+        [Description("單據編號"), Key] public string BillNo { get; set; }
         /// <summary>
         /// 序號
         /// </summary>
-        [Description("序號"), Key]
-        public int RowId { get; set; }
-        [ForeignKey("CashFlowBillNo")]
-        public CashFlowBillModel CashFlowBill { get; set; }
+        [Description("序號"), Key] public int RowId { get; set; }
+        [ForeignKey("CashFlowBillNo")] public CashFlowBillModel CashFlowBill { get; set; }
         /// <summary>
         /// 金流帳簿單號
         /// </summary>
-        [Description("金流帳簿單號")]
-        public string CashFlowBillNo { get; set; }
+        [Description("金流帳簿單號")] public string CashFlowBillNo { get; set; }
     }
 }

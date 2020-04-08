@@ -19,90 +19,73 @@ namespace SKGPortalCore.Model.SourceData
         /// <summary>
         /// 1. 實體帳號(13)
         /// </summary>
-        [Description("實體帳號"), MaxLength(13)]
-        public string RealAccount { get => _RealAccount; set => _RealAccount = value.PadLeft(13, '0').ByteSubString(0, 13); }
+        [Description("實體帳號"), MaxLength(13)] public string RealAccount { get => _RealAccount; set => _RealAccount = value.PadLeft(13, '0').ByteSubString(0, 13); }
         /// <summary>
         /// 2. 交易日期(8)
         /// </summary>
-        [Description("交易日期"), MaxLength(8)]
-        public string TradeDate { get => _TradeDate; set => _TradeDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("交易日期"), MaxLength(8)] public string TradeDate { get => _TradeDate; set => _TradeDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 3. 交易時間(6)
         /// </summary>
-        [Description("交易時間"), MaxLength(6)]
-        public string TradeTime { get => _TradeTime; set => _TradeTime = value.PadLeft(6, '0').ByteSubString(0, 6); }
+        [Description("交易時間"), MaxLength(6)] public string TradeTime { get => _TradeTime; set => _TradeTime = value.PadLeft(6, '0').ByteSubString(0, 6); }
         /// <summary>
         /// 4. 全方位銷帳編號(16)
         /// </summary>
-        [Description("全方位銷帳編號"), MaxLength(16)]
-        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("全方位銷帳編號"), MaxLength(16)] public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 5. 金額符號±(1)
         /// </summary>
-        [Description("金額符號±"), MaxLength(1)]
-        public string PN { get => _PN; set => _PN = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        [Description("金額符號±"), MaxLength(1)] public string PN { get => _PN; set => _PN = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 6. 交易金額(10)
         /// </summary>
-        [Description("交易金額"), MaxLength(10)]
-        public string Amount { get => _Amount; set => _Amount = value.PadLeft(10, '0').ByteSubString(0, 10); }
+        [Description("交易金額"), MaxLength(10)] public string Amount { get => _Amount; set => _Amount = value.PadLeft(10, '0').ByteSubString(0, 10); }
         /// <summary>
         /// 7. 摘要(10)
         /// </summary>
-        [Description("摘要"), MaxLength(10)]
-        public string Summary { get => _Summary; set => _Summary = value.PadRight(10, ' ').ByteSubString(0, 10); }
+        [Description("摘要"), MaxLength(10)] public string Summary { get => _Summary; set => _Summary = value.PadRight(10, ' ').ByteSubString(0, 10); }
         /// <summary>
         /// 8. 代理行(4)
         /// </summary>
-        [Description("代理行"), MaxLength(4)]
-        public string Branch { get => _Branch; set => _Branch = value.PadLeft(4, '0').ByteSubString(0, 4); }
+        [Description("代理行"), MaxLength(4)] public string Branch { get => _Branch; set => _Branch = value.PadLeft(4, '0').ByteSubString(0, 4); }
         /// <summary>
         /// 9. 交易通路(2)
         /// SA 存款; QA 支存; AG 約定扣繳;
         /// </summary>
-        [Description("交易通路"), MaxLength(2)]
-        public string TradeChannel { get => _TradeChannel; set => _TradeChannel = value.PadLeft(2, '0').ByteSubString(0, 2); }
+        [Description("交易通路"), MaxLength(2)] public string TradeChannel { get => _TradeChannel; set => _TradeChannel = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 10. 超商代號(2)
         /// 00 臨櫃; 06 自動化交易; 07 約定扣繳;
         /// </summary>
-        [Description("超商代號"), MaxLength(2)]
-        public string Channel { get => _Channel; set => _Channel = value.PadLeft(2, '0').ByteSubString(0, 2); }
+        [Description("超商代號"), MaxLength(2)] public string Channel { get => _Channel; set => _Channel = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 11. 異動日期(8)
         /// </summary>
-        [Description("異動日期"), MaxLength(8)]
-        public string ChangeDate { get => _ChangeDate; set => _ChangeDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("異動日期"), MaxLength(8)] public string ChangeDate { get => _ChangeDate; set => _ChangeDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 12. 營業日(8)
         /// </summary>
-        [Description("營業日"), MaxLength(8)]
-        public string BizDate { get => _BizDate; set => _BizDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("營業日"), MaxLength(8)] public string BizDate { get => _BizDate; set => _BizDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 13. 往來序號(6)
         /// </summary>
-        [Description("往來序號"), MaxLength(6)]
-        public string Serial { get => _Serial; set => _Serial = value.PadLeft(6, '0').ByteSubString(0, 6); }
+        [Description("往來序號"), MaxLength(6)] public string Serial { get => _Serial; set => _Serial = value.PadLeft(6, '0').ByteSubString(0, 6); }
         /// <summary>
         /// 14. 全方位帳號(6)
         /// </summary>
-        [Description("全方位帳號"), MaxLength(6)]
-        public string CustomerCode { get => _CustomerCode; set => _CustomerCode = value.PadLeft(6, '0').ByteSubString(0, 6); }
+        [Description("全方位帳號"), MaxLength(6)] public string CustomerCode { get => _CustomerCode; set => _CustomerCode = value.PadLeft(6, '0').ByteSubString(0, 6); }
         /// <summary>
         /// 15. 手續費(3)
         /// </summary>
-        [Description("手續費"), MaxLength(3)]
-        public string Fee { get => _Fee; set => _Fee = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        [Description("手續費"), MaxLength(3)] public string Fee { get => _Fee; set => _Fee = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 16. 保留(25)
         /// </summary>
-        [Description("保留"), MaxLength(25)]
-        public string Empty { get => _Empty; set => _Empty = value.PadLeft(25, '0').ByteSubString(0, 25); }
+        [Description("保留"), MaxLength(25)] public string Empty { get => _Empty; set => _Empty = value.PadLeft(25, '0').ByteSubString(0, 25); }
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號")]
-        public string ImportBatchNo { get; set; }
+        [Description("導入批號")] public string ImportBatchNo { get; set; }
         /// <summary>
         /// Source
         /// </summary>
@@ -171,64 +154,52 @@ namespace SKGPortalCore.Model.SourceData
         /// <summary>
         /// 1. 劃撥帳號(8)
         /// </summary>
-        [Description("劃撥帳號"), MaxLength(8)]
-        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("劃撥帳號"), MaxLength(8)] public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 2. 交易日期(7)
         /// </summary>
-        [Description("交易日期"), MaxLength(7)]
-        public string TradeDate { get => _TradeDate; set => _TradeDate = value.PadLeft(7, '0').ByteSubString(0, 7); }
+        [Description("交易日期"), MaxLength(7)] public string TradeDate { get => _TradeDate; set => _TradeDate = value.PadLeft(7, '0').ByteSubString(0, 7); }
         /// <summary>
         /// 3. 經辦局號(6)
         /// </summary>
-        [Description("經辦局號"), MaxLength(6)]
-        public string Branch { get => _Branch; set => _Branch = value.PadLeft(6, '0').ByteSubString(0, 6); }
+        [Description("經辦局號"), MaxLength(6)] public string Branch { get => _Branch; set => _Branch = value.PadLeft(6, '0').ByteSubString(0, 6); }
         /// <summary>
         /// 4. 交易代號(4)
         /// </summary>
-        [Description("交易代號"), MaxLength(4)]
-        public string Channel { get => _Channel; set => _Channel = value.PadLeft(4, '0').ByteSubString(0, 4); }
+        [Description("交易代號"), MaxLength(4)] public string Channel { get => _Channel; set => _Channel = value.PadLeft(4, '0').ByteSubString(0, 4); }
         /// <summary>
         /// 5. 交易序號(7) 
         /// </summary>
-        [Description("交易序號"), MaxLength(7)]
-        public string TradeSer { get => _TradeSer; set => _TradeSer = value.PadLeft(7, '0').ByteSubString(0, 7); }
+        [Description("交易序號"), MaxLength(7)] public string TradeSer { get => _TradeSer; set => _TradeSer = value.PadLeft(7, '0').ByteSubString(0, 7); }
         /// <summary>
         /// 6. 存提別(±)(1)
         /// </summary>
-        [Description("存提別(±)"), MaxLength(1)]
-        public string PN { get => _PN; set => _PN = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        [Description("存提別(±)"), MaxLength(1)] public string PN { get => _PN; set => _PN = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 7. 交易金額(11)
         /// </summary>
-        [Description("交易金額"), MaxLength(11)]
-        public string Amount { get => _Amount; set => _Amount = value.PadLeft(11, '0').ByteSubString(0, 11); }
+        [Description("交易金額"), MaxLength(11)] public string Amount { get => _Amount; set => _Amount = value.PadLeft(11, '0').ByteSubString(0, 11); }
         /// <summary>
         /// 8. 繳費截止日(7)
         /// 民國年月日
         /// </summary>
-        [Description("繳費截止日"), MaxLength(7)]
-        public string PayEndDay { get => _PayEndDay; set => _PayEndDay = value.PadLeft(7, '0').ByteSubString(0, 7); }
+        [Description("繳費截止日"), MaxLength(7)] public string PayEndDay { get => _PayEndDay; set => _PayEndDay = value.PadLeft(7, '0').ByteSubString(0, 7); }
         /// <summary>
         /// 9. 用戶編號(16)
         /// </summary>
-        [Description("用戶編號"), MaxLength(16)]
-        public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("用戶編號"), MaxLength(16)] public string CompareCode { get => _CompareCode; set => _CompareCode = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 10. 檢碼(1)
         /// </summary>
-        [Description("檢碼"), MaxLength(1)]
-        public string CheckCode { get => _CheckCode; set => _CheckCode = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        [Description("檢碼"), MaxLength(1)] public string CheckCode { get => _CheckCode; set => _CheckCode = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 11. 保留(42)
         /// </summary>
-        [Description("保留"), MaxLength(42)]
-        public string Empty { get => _Empty; set => _Empty = value.PadLeft(42, '0').ByteSubString(0, 42); }
+        [Description("保留"), MaxLength(42)] public string Empty { get => _Empty; set => _Empty = value.PadLeft(42, '0').ByteSubString(0, 42); }
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號")]
-        public string ImportBatchNo { get; set; }
+        [Description("導入批號")] public string ImportBatchNo { get; set; }
         /// <summary>
         /// Source
         /// </summary>
@@ -260,7 +231,7 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _CollectionType = ConstParameter.PostCollectionTypeId;
+        private string _CollectionType = CP.PostCollectionTypeId;
         private string _TradeDate = DateTime.Now.ToROCDate();
         private string _Branch = string.Empty.PadLeft(6);
         private string _Channel;
@@ -287,80 +258,65 @@ namespace SKGPortalCore.Model.SourceData
         /// <summary>
         /// 1. 錄別(1)
         /// </summary>
-        [Description("錄別"), MaxLength(1)]
-        public string Idx { get => _Idx; set => _Idx = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        [Description("錄別"), MaxLength(1)] public string Idx { get => _Idx; set => _Idx = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 2. 公司代號(8)
         /// </summary>
-        [Description("公司代號"), MaxLength(8)]
-        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadRight(8, ' ').ByteSubString(0, 8); }
+        [Description("公司代號"), MaxLength(8)] public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 3. 代收機構代號(8)
         /// </summary>
-        [Description("代收機構代號"), MaxLength(8)]
-        public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
+        [Description("代收機構代號"), MaxLength(8)] public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 4. 代收門市店號(8)
         /// </summary>
-        [Description("代收門市店號"), MaxLength(8)]
-        public string Store { get => _Store; set => _Store = value.PadRight(8, ' ').ByteSubString(0, 8); }
+        [Description("代收門市店號"), MaxLength(8)] public string Store { get => _Store; set => _Store = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 5. 轉帳代繳帳號(14)
         /// </summary>
-        [Description("轉帳代繳帳號"), MaxLength(14)]
-        public string TransAccount { get => _TransAccount; set => _TransAccount = value.PadLeft(14, '0').ByteSubString(0, 14); }
+        [Description("轉帳代繳帳號"), MaxLength(14)] public string TransAccount { get => _TransAccount; set => _TransAccount = value.PadLeft(14, '0').ByteSubString(0, 14); }
         /// <summary>
         /// 6. 轉帳類別(3)
         /// </summary>
-        [Description("轉帳類別"), MaxLength(3)]
-        public string TransType { get => _TransType; set => _TransType = value.PadLeft(3, '0').ByteSubString(0, 3); }
+        [Description("轉帳類別"), MaxLength(3)] public string TransType { get => _TransType; set => _TransType = value.PadLeft(3, '0').ByteSubString(0, 3); }
         /// <summary>
         /// 7. 扣繳狀況(2)
         /// </summary>
-        [Description("扣繳狀況"), MaxLength(2)]
-        public string PayStatus { get => _PayStatus; set => _PayStatus = value.PadLeft(2, '0').ByteSubString(0, 2); }
+        [Description("扣繳狀況"), MaxLength(2)] public string PayStatus { get => _PayStatus; set => _PayStatus = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 8. 門市會計日(8)
         /// </summary>
-        [Description("門市會計日"), MaxLength(8)]
-        public string AccountingDay { get => _AccountingDay; set => _AccountingDay = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("門市會計日"), MaxLength(8)] public string AccountingDay { get => _AccountingDay; set => _AccountingDay = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 9. 顧客繳費日(8)
         /// </summary>
-        [Description("顧客繳費日"), MaxLength(8)]
-        public string PayDate { get => _PayDate; set => _PayDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("顧客繳費日"), MaxLength(8)] public string PayDate { get => _PayDate; set => _PayDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 10. Barcode1(9)
         /// </summary>
-        [Description("Barcode1"), MaxLength(9)]
-        public string Barcode1 { get => _Barcode1; set => _Barcode1 = value.PadLeft(9, '0').ByteSubString(0, 9); }
+        [Description("Barcode1"), MaxLength(9)] public string Barcode1 { get => _Barcode1; set => _Barcode1 = value.PadLeft(9, '0').ByteSubString(0, 9); }
         /// <summary>
         /// 11. Barcode2(16)
         /// 銷帳資料
         /// </summary>
-        [Description("Barcode2"), MaxLength(16)]
-        public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("Barcode2"), MaxLength(16)] public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 12. 保留1(4)
         /// </summary>
-        [Description("保留1(4)"), MaxLength(4)]
-        public string Empty1 { get => _Empty1; set => _Empty1 = value.PadLeft(4, ' ').ByteSubString(0, 4); }
+        [Description("保留1(4)"), MaxLength(4)] public string Empty1 { get => _Empty1; set => _Empty1 = value.PadLeft(4, ' ').ByteSubString(0, 4); }
         /// <summary>
         /// 13. Barcode3(15)
         /// 金額
         /// </summary>
-        [Description("Barcode3"), MaxLength(15)]
-        public string Barcode3 { get => _Barcode3; set => _Barcode3 = value.PadLeft(15, '0').ByteSubString(0, 15); }
+        [Description("Barcode3"), MaxLength(15)] public string Barcode3 { get => _Barcode3; set => _Barcode3 = value.PadLeft(15, '0').ByteSubString(0, 15); }
         /// <summary>
         /// 14. 保留(16)
         /// </summary>
-        [Description("保留2(16)"), MaxLength(16)]
-        public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("保留2(16)"), MaxLength(16)] public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號")]
-        public string ImportBatchNo { get; set; }
+        [Description("導入批號")] public string ImportBatchNo { get; set; }
         /// <summary>
         /// Source
         /// </summary>
@@ -425,68 +381,55 @@ namespace SKGPortalCore.Model.SourceData
         /// <summary>
         /// 錄別(1)
         /// </summary>
-        [Description("錄別"), MaxLength(1)]
-        public string Idx { get => _Idx; set => _Idx = value.PadLeft(1, '0').ByteSubString(0, 1); }
+        [Description("錄別"), MaxLength(1)] public string Idx { get => _Idx; set => _Idx = value.PadLeft(1, '0').ByteSubString(0, 1); }
         /// <summary>
         /// 代收機構代號(8)
         /// </summary>
-        [Description("代收機構代號"), MaxLength(8)]
-        public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
+        [Description("代收機構代號"), MaxLength(8)] public string Channel { get => _Channel; set => _Channel = value.PadRight(8, ' ').ByteSubString(0, 8); }
         /// <summary>
         /// 收件單位(8)
         /// </summary>
-        [Description("收件單位"), MaxLength(8)]
-        public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("收件單位"), MaxLength(8)] public string CollectionType { get => _CollectionType; set => _CollectionType = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 入/扣帳日期(8)
         /// </summary>
-        [Description("入/扣帳日期"), MaxLength(8)]
-        public string TransDate { get => _TransDate; set => _TransDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("入/扣帳日期"), MaxLength(8)] public string TransDate { get => _TransDate; set => _TransDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 繳費日期(8)
         /// </summary>
-        [Description("繳費日期"), MaxLength(8)]
-        public string PayDate { get => _PayDate; set => _PayDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
+        [Description("繳費日期"), MaxLength(8)] public string PayDate { get => _PayDate; set => _PayDate = value.PadLeft(8, '0').ByteSubString(0, 8); }
         /// <summary>
         /// 銷帳編號(16)
         /// </summary>
-        [Description("銷帳編號"), MaxLength(16)]
-        public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
+        [Description("銷帳編號"), MaxLength(16)] public string Barcode2 { get => _Barcode2; set => _Barcode2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
         /// 應繳日期[Barcode3:1-4](4)
         /// </summary>
-        [Description("應繳日期"), MaxLength(4)]
-        public string Barcode3_Date { get => _Barcode3_Date; set => _Barcode3_Date = value.PadLeft(4, '0').ByteSubString(0, 4); }
+        [Description("應繳日期"), MaxLength(4)] public string Barcode3_Date { get => _Barcode3_Date; set => _Barcode3_Date = value.PadLeft(4, '0').ByteSubString(0, 4); }
         /// <summary>
         /// 校對碼[Barcode3:5-6](2)
         /// </summary>
-        [Description("校對碼"), MaxLength(2)]
-        public string Barcode3_CheckCode { get => _Barcode3_CheckCode; set => _Barcode3_CheckCode = value.PadLeft(2, '0').ByteSubString(0, 2); }
+        [Description("校對碼"), MaxLength(2)] public string Barcode3_CheckCode { get => _Barcode3_CheckCode; set => _Barcode3_CheckCode = value.PadLeft(2, '0').ByteSubString(0, 2); }
         /// <summary>
         /// 代收金額[Barcode3:5-6](9)
         /// </summary>
-        [Description("代收金額"), MaxLength(9)]
-        public string Barcode3_Amount { get => _Barcode3_Amount; set => _Barcode3_Amount = value.PadLeft(9, '0').ByteSubString(0, 9); }
+        [Description("代收金額"), MaxLength(9)] public string Barcode3_Amount { get => _Barcode3_Amount; set => _Barcode3_Amount = value.PadLeft(9, '0').ByteSubString(0, 9); }
         /// <summary>
         /// 保留欄位1(18)
         /// </summary>
-        [Description("保留欄位1"), MaxLength(18)]
-        public string Empty1 { get => _Empty1; set => _Empty1 = value.PadLeft(18, '0').ByteSubString(0, 18); }
+        [Description("保留欄位1"), MaxLength(18)] public string Empty1 { get => _Empty1; set => _Empty1 = value.PadLeft(18, '0').ByteSubString(0, 18); }
         /// <summary>
         /// 代收門市(6)
         /// </summary>
-        [Description("代收門市"), MaxLength(6)]
-        public string Store { get => _Store; set => _Store = value.PadLeft(6, '0').ByteSubString(0, 6); }
+        [Description("代收門市"), MaxLength(6)] public string Store { get => _Store; set => _Store = value.PadLeft(6, '0').ByteSubString(0, 6); }
         /// <summary>
         /// 保留欄位2(32)
         /// </summary>
-        [Description("保留欄位2"), MaxLength(32)]
-        public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(32, '0').ByteSubString(0, 32); }
+        [Description("保留欄位2"), MaxLength(32)] public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(32, '0').ByteSubString(0, 32); }
         /// <summary>
         /// 導入批號
         /// </summary>
-        [Description("導入批號")]
-        public string ImportBatchNo { get; set; }
+        [Description("導入批號")] public string ImportBatchNo { get; set; }
         /// <summary>
         /// Source
         /// </summary>
@@ -521,7 +464,7 @@ namespace SKGPortalCore.Model.SourceData
         #region Private
         private string _Idx = "2";
         private string _Channel;
-        private string _CollectionType = "I0O".PadRight(8,' ');
+        private string _CollectionType = "I0O".PadRight(8, ' ');
         private string _TransDate = DateTime.Now.ToString("yyyyMMdd");
         private string _PayDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
         private string _Barcode2;

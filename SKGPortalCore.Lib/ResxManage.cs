@@ -28,7 +28,19 @@ namespace SKGPortalCore.Lib
         {
             return null == attribute ? string.Empty : attribute.Value;
         }
-
+        /// <summary>
+        /// 獲取靜態欄位別名
+        /// 用法：GetStaticDescription(typeof(Class),nameof(Field))
+        /// </summary>
+        /// <param name="staticType">typeof(Class)</param>
+        /// <param name="fieldName">nameof(Field)</param>
+        /// <returns></returns>
+        public static string GetDescription(Type staticType, string fieldName)
+        {
+            FieldInfo property = staticType.GetField(fieldName);
+            DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
+            return GetDescription(attribute);
+        }
         public static string GetDescription(Enum member)
         {
             DescriptionAttribute attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();
