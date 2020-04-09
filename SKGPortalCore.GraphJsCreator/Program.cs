@@ -62,11 +62,11 @@ namespace SKGPortalCore.GraphJsCreator
                 }
                 return $@"import {{ gql }} from ""apollo-boost"";
 
-const {set.Name}Fragment = {{
+const {LibData.ToCamelCase(set.Name)}Fragment = {{
 {tableTemplate}
 }};
 
-export default {set.Name}Fragment;
+export default {LibData.ToCamelCase(set.Name)}Fragment;
 ";
             }
             private string GetTableTemplate(dynamic tableInst, string fragName)
@@ -117,10 +117,15 @@ export default {set.Name}Fragment;
                     if (tableInst is ListGraphType) tableInst = Activator.CreateInstance(tableInst.Type);
                     tableInstList.Add(tableInst);
                 }
-                string fullPath = LibData.Merge("/", false, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
+
+                string frontDir = string.Empty;
+                int subLv = subPath.Split('/').Length;
+                for (int i = 0; i < subLv; i++) frontDir = LibData.Merge("/", false, frontDir, "..");
+
+                string fullPath = LibData.Merge("/", false, frontDir, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
 
                 return $@"import {{ gql }} from ""apollo-boost"";
-import {set.Name}Fragment from ""{fullPath}""; 
+import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}""; 
 
 {GetReturnedFields(set.Name, tableInstList)}
 {GetCreate(set.Name, tableInstList.Count)}
@@ -259,7 +264,7 @@ import {set.Name}Fragment from ""{fullPath}"";
             }
             private string GetCondition(string setName, dynamic tableInst, int count)
             {
-                return $@"${{search{count} ? """" : {setName}Fragment.{LibData.ToCamelCase(tableInst.Name)}}}";
+                return $@"${{search{count} ? """" : {LibData.ToCamelCase(setName)}Fragment.{LibData.ToCamelCase(tableInst.Name)}}}";
             }
         }
         class Query
@@ -287,9 +292,13 @@ import {set.Name}Fragment from ""{fullPath}"";
             }
             private string Template(string subPath, dynamic set)
             {
-                string fullPath = LibData.Merge("/", false, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
+                string frontDir = string.Empty;
+                int subLv = subPath.Split('/').Length;
+                for (int i = 0; i < subLv; i++) frontDir = LibData.Merge("/", false, frontDir, "..");
+
+                string fullPath = LibData.Merge("/", false, frontDir, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
                 return $@"import {{ gql }} from ""apollo-boost"";
-import {set.Name}Fragment from ""{fullPath}"";
+import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
 {GetDataList(set)}
 {GetDataInfo(set)}
 ";
@@ -311,7 +320,7 @@ import {set.Name}Fragment from ""{fullPath}"";
                 ${{searchFields || ""...{LibData.ToCamelCase(tableInst.Name)}List""}}
             }}
         }}
-        ${{searchFields ? """" : {set.Name}Fragment.{LibData.ToCamelCase(tableInst.Name)}List}}
+        ${{searchFields ? """" : {LibData.ToCamelCase(set.Name)}Fragment.{LibData.ToCamelCase(tableInst.Name)}List}}
     `;
 }};
 ";
@@ -362,7 +371,7 @@ import {set.Name}Fragment from ""{fullPath}"";
             }
             private string GetCondition(string setName, dynamic tableInst, int count)
             {
-                return $@"${{search{count} ? """" : {setName}Fragment.{LibData.ToCamelCase(tableInst.Name)}}}";
+                return $@"${{search{count} ? """" : {LibData.ToCamelCase(setName)}Fragment.{LibData.ToCamelCase(tableInst.Name)}}}";
             }
         }
         class Client
@@ -380,10 +389,14 @@ import {set.Name}Fragment from ""{fullPath}"";
             }
             private string Template()
             {
-                return $@"const {{ ApolloClient }} = require('apollo-client');
+                return $@"const ApolloClient = require('apollo-client');
 const {{ createUploadLink }} = require('apollo-upload-client');
 const {{ InMemoryCache }} = require('apollo-cache-inmemory');
 var url=""https://localhost:5001/"";
+
+export const client = new ApolloClient({{
+  uri: url
+}});
 
 {GetApolloClients()}
 ";

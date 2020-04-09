@@ -91,37 +91,37 @@ namespace SKGPortalCore.Graph
     {
         public BaseMutationType(BasicRepository<TSet> repo, ISessionWrapper session)
         {
-            Field(
-                type: typeof(TSetType),
-                name: CP.GQL_Create,
-                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Create)),
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
-                resolve: context =>
-                {
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Create, null)) return default;
-                    TSet set = context.GetArgument<TSet>(CP.GQL_Set);
-                    TSet result = repo.Create(set);
-                    repo.CommitData(FuncAction.Create);
-                    context.Errors.AddRange(repo.Message.Errors);
-                    repo.Message.WriteLogTxt();
-                    return context.Errors.Count == 0 ? result : default;
-                });
-            Field(
-                type: typeof(TSetType),
-                name: CP.GQL_Update,
-                description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Update)),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
-                resolve: context =>
-                {
-                    object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
-                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Update, keyVal)) return default;
-                    TSet set = context.GetArgument<TSet>(CP.GQL_Set);
-                    TSet result = repo.Update(keyVal, set);
-                    repo.CommitData(FuncAction.Update);
-                    context.Errors.AddRange(repo.Message.Errors);
-                    repo.Message.WriteLogTxt();
-                    return context.Errors.Count == 0 ? result : default;
-                });
+            //Field(
+            //    type: typeof(TSetType),
+            //    name: CP.GQL_Create,
+            //    description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Create)),
+            //    arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
+            //    resolve: context =>
+            //    {
+            //        if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Create, null)) return default;
+            //        TSet set = context.GetArgument<TSet>(CP.GQL_Set);
+            //        TSet result = repo.Create(set);
+            //        repo.CommitData(FuncAction.Create);
+            //        context.Errors.AddRange(repo.Message.Errors);
+            //        repo.Message.WriteLogTxt();
+            //        return context.Errors.Count == 0 ? result : default;
+            //    });
+            //Field(
+            //    type: typeof(TSetType),
+            //    name: CP.GQL_Update,
+            //    description: ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Update)),
+            //    arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = CP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = CP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
+            //    resolve: context =>
+            //    {
+            //        object[] keyVal = context.GetArgument<object>(CP.GQL_KeyVal) as object[];
+            //        if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Update, keyVal)) return default;
+            //        TSet set = context.GetArgument<TSet>(CP.GQL_Set);
+            //        TSet result = repo.Update(keyVal, set);
+            //        repo.CommitData(FuncAction.Update);
+            //        context.Errors.AddRange(repo.Message.Errors);
+            //        repo.Message.WriteLogTxt();
+            //        return context.Errors.Count == 0 ? result : default;
+            //    });
             Field(
                 type: typeof(BooleanGraphType),
                 name: CP.GQL_Delete,
