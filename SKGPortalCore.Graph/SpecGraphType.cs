@@ -75,8 +75,7 @@ namespace SKGPortalCore.Graph
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = CP.GQL_Condition, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_Condition)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = CP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(CP.GQL_JWT)) }),
                 resolve: context =>
                 {
-                    string selectFields = LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p => p != "__typename").ToArray());
-                    if (!string.IsNullOrEmpty(selectFields)) selectFields = $"new ({selectFields})";
+                    string selectFields = $"new ({LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p => p != "__typename").ToArray())})";
                     string condition = context.GetArgument<string>(CP.GQL_Condition);
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
