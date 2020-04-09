@@ -13,7 +13,7 @@ namespace SKGPortalCore.GraphJsCreator
 {
     class Program
     {
-        private const string OutputPath = @"./output";
+        private const string OutputPath = @".\output";
 
         static void Main()
         {
@@ -23,13 +23,13 @@ namespace SKGPortalCore.GraphJsCreator
             Mutation mutation = new Mutation(assembly);
             Query query = new Query(assembly);
             Client client = new Client(assembly);
-            Process.Start("explorer.exe", @".\output");
+            Process.Start("explorer.exe", OutputPath);
         }
 
         class Fragment
         {
             public Type[] GraphTypes;
-            readonly string Path = $@"{OutputPath}/GraphQL/fragments";
+            readonly string Path = $@"{OutputPath}\GraphQL\fragments";
             public Fragment(Type[] assembly)
             {
                 GraphTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0).ToArray();
@@ -41,11 +41,11 @@ namespace SKGPortalCore.GraphJsCreator
                 {
                     string[] strs = type.Namespace.Split('.');
                     string subPath = string.Empty;
-                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"/", false, subPath, strs[i].ToCamelCase()); }
-                    string fullPath = LibData.Merge(@"/", false, Path, subPath);
+                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"\", false, subPath, strs[i].ToCamelCase()); }
+                    string fullPath = LibData.Merge(@"\", false, Path, subPath);
                     Directory.CreateDirectory(fullPath);
                     dynamic set = Activator.CreateInstance(type);
-                    using StreamWriter file = new StreamWriter($@"{fullPath}/{LibData.ToCamelCase(set.Name)}.fragment.js", true);
+                    using StreamWriter file = new StreamWriter($@"{fullPath}\{LibData.ToCamelCase(set.Name)}.fragment.js", true);
                     file.Write(Template(set));
                 }
             }
@@ -88,7 +88,7 @@ export default {set.Name}Fragment;
         class Mutation
         {
             public Type[] GraphTypes;
-            readonly string Path = $@"{OutputPath}/GraphQL/mutations";
+            readonly string Path = $@"{OutputPath}\GraphQL\mutations";
             public Mutation(Type[] assembly)
             {
                 GraphTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
@@ -100,15 +100,15 @@ export default {set.Name}Fragment;
                 {
                     string[] strs = type.Namespace.Split('.');
                     string subPath = string.Empty;
-                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"/", false, subPath, strs[i].ToCamelCase()); }
-                    string fullPath = LibData.Merge(@"/", false, Path, subPath);
+                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"\", false, subPath, strs[i].ToCamelCase()); }
+                    string fullPath = LibData.Merge(@"\", false, Path, subPath);
                     Directory.CreateDirectory(fullPath);
                     dynamic set = Activator.CreateInstance(type);
-                    using StreamWriter file = new StreamWriter($@"{fullPath}/{LibData.ToCamelCase(set.Name)}.mutation.js", true);
-                    file.Write(Template(subPath, set));
+                    using StreamWriter file = new StreamWriter($@"{fullPath}\{LibData.ToCamelCase(set.Name)}.mutation.js", true);
+                    file.Write(Template(set));
                 }
             }
-            private string Template(string subPath, dynamic set)
+            private string Template(dynamic set)
             {
                 List<dynamic> tableInstList = new List<dynamic>();
                 foreach (var table in set.Fields)
@@ -117,10 +117,10 @@ export default {set.Name}Fragment;
                     if (tableInst is ListGraphType) tableInst = Activator.CreateInstance(tableInst.Type);
                     tableInstList.Add(tableInst);
                 }
-                string fullPath = LibData.Merge("/", false, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
+
 
                 return $@"import {{ gql }} from ""apollo-boost"";
-import {set.Name}Fragment from ""{fullPath}""; 
+import {set.Name}Fragment from ""../fragments/{LibData.ToCamelCase(set.Name)}.fragment""; 
 
 {GetReturnedFields(set.Name, tableInstList)}
 {GetCreate(set.Name, tableInstList.Count)}
@@ -265,7 +265,7 @@ import {set.Name}Fragment from ""{fullPath}"";
         class Query
         {
             public Type[] GraphTypes;
-            readonly string Path = $@"{OutputPath}/GraphQL/queries";
+            readonly string Path = $@"{OutputPath}\GraphQL\querys";
             public Query(Type[] assembly)
             {
                 GraphTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0).ToArray();
@@ -277,19 +277,18 @@ import {set.Name}Fragment from ""{fullPath}"";
                 {
                     string[] strs = type.Namespace.Split('.');
                     string subPath = string.Empty;
-                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"/", false, subPath, strs[i].ToCamelCase()); }
-                    string fullPath = LibData.Merge(@"/", false, Path, subPath);
+                    for (int i = 2; i < strs.Length; i++) { subPath = LibData.Merge(@"\", false, subPath, strs[i].ToCamelCase()); }
+                    string fullPath = LibData.Merge(@"\", false, Path, subPath);
                     Directory.CreateDirectory(fullPath);
                     dynamic set = Activator.CreateInstance(type);
-                    using StreamWriter file = new StreamWriter($@"{fullPath}/{LibData.ToCamelCase(set.Name)}.query.js", true);
-                    file.Write(Template(subPath, set));
+                    using StreamWriter file = new StreamWriter($@"{fullPath}\{LibData.ToCamelCase(set.Name)}.query.js", true);
+                    file.Write(Template(set));
                 }
             }
-            private string Template(string subPath, dynamic set)
+            private string Template(dynamic set)
             {
-                string fullPath = LibData.Merge("/", false, "../fragments", subPath, $"{ LibData.ToCamelCase(set.Name)}.fragment");
                 return $@"import {{ gql }} from ""apollo-boost"";
-import {set.Name}Fragment from ""{fullPath}"";
+import {set.Name}Fragment from ""../fragments/{LibData.ToCamelCase(set.Name)}.fragment"";
 {GetDataList(set)}
 {GetDataInfo(set)}
 ";
@@ -335,6 +334,7 @@ import {set.Name}Fragment from ""{fullPath}"";
 {GetConditions(set.Name, tableInstList)}    `;
 }};";
             }
+
             private string GetSearch(int count)
             {
                 string result = string.Empty;
@@ -342,28 +342,33 @@ import {set.Name}Fragment from ""{fullPath}"";
                     result = LibData.Merge(", ", false, result, $"search{i}");
                 return result;
             }
+
             private string GetDetailSearchs(List<dynamic> tableInstList)
             {
                 StringBuilder str = new StringBuilder();
                 for (int i = 1; i <= tableInstList.Count; i++) str.AppendLine(GetDetailSearch(tableInstList[i - 1], i));
                 return str.ToString();
             }
+
             private string GetDetailSearch(dynamic tableInst, int count)
             {
                 return $@"                {LibData.ToCamelCase(tableInst.Name)} {{
                     ${{search{count} || ""...{LibData.ToCamelCase(tableInst.Name)}""}}
                 }}";
             }
+
             private string GetConditions(string setName, List<dynamic> tableInstList)
             {
                 StringBuilder str = new StringBuilder();
                 for (int i = 1; i <= tableInstList.Count; i++) str.AppendLine("        " + GetCondition(setName, tableInstList[i - 1], i));
                 return str.ToString();
             }
+
             private string GetCondition(string setName, dynamic tableInst, int count)
             {
                 return $@"${{search{count} ? """" : {setName}Fragment.{LibData.ToCamelCase(tableInst.Name)}}}";
             }
+
         }
         class Client
         {
@@ -375,16 +380,13 @@ import {set.Name}Fragment from ""{fullPath}"";
             }
             private void CreateClient()
             {
-                using StreamWriter file = new StreamWriter($@"{OutputPath}/client.js", true);
+                using StreamWriter file = new StreamWriter($@"{OutputPath}\client.js", true);
                 file.Write(Template());
             }
             private string Template()
             {
-                return $@"const {{ ApolloClient }} = require('apollo-client');
-const {{ createUploadLink }} = require('apollo-upload-client');
-const {{ InMemoryCache }} = require('apollo-cache-inmemory');
-var url=""https://localhost:5001/"";
-
+                return $@"import ApolloClient from ""apollo-boost"";
+const url=""https://localhost:5001/""
 {GetApolloClients()}
 ";
             }
@@ -397,9 +399,7 @@ var url=""https://localhost:5001/"";
             }
             private string GetApolloClient(string schemaName)
             {
-                return $@"export const {schemaName.ToCamelCase()}Client = new ApolloClient({{
-  link: createUploadLink(),
-  cache: new InMemoryCache(),
+                return $@"const {schemaName.ToCamelCase()}Client = new ApolloClient({{
   uri: url+""{schemaName}""
 }});";
             }
