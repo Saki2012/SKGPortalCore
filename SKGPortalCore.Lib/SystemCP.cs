@@ -67,6 +67,14 @@ namespace SKGPortalCore.Lib
         /// 異常發生訊息
         /// </summary>
         public const string ExpectionMessage = "異常發生，請洽客服人員。";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string DbSet = "Set";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string RowId = "RowId";
         #endregion
 
         #region Model

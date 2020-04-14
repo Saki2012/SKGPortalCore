@@ -212,7 +212,7 @@ namespace SKGPortalCore.Repository
                 {
                     Type modelType = setProperty.PropertyType.GetGenericArguments()[0];
                     IList list = SetReflect.GetValue(instance, setProperty.Name) as IList;
-                    dynamic dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(modelType).Invoke(DataAccess, null);
+                    dynamic dbSet = DataAccess.GetType().GetMethod(SystemCP.DbSet).MakeGenericMethod(modelType).Invoke(DataAccess, null);
                     IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
                     models = EagerLoading(models, modelType);
                     dynamic local = DynamicQueryable.Where(Queryable.AsQueryable(dbSet.Local), pkCondition, key);
@@ -233,7 +233,7 @@ namespace SKGPortalCore.Repository
                 else
                 {
                     pkCondition = GetPKCondition(GetKeyPropertiesByModelType(setProperty.PropertyType));
-                    dynamic dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(setProperty.PropertyType).Invoke(DataAccess, null);
+                    dynamic dbSet = DataAccess.GetType().GetMethod(SystemCP.DbSet).MakeGenericMethod(setProperty.PropertyType).Invoke(DataAccess, null);
                     IQueryable models = ((IQueryable)dbSet).Where(pkCondition, key);
                     models = EagerLoading(models, setProperty.PropertyType);
                     if (!models.Any()) return default;
@@ -253,9 +253,9 @@ namespace SKGPortalCore.Repository
         public virtual IList QueryList(string selectFields, string condition)
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
-            object dbSet = DataAccess.GetType().GetMethod("Set").MakeGenericMethod(masterType).Invoke(DataAccess, null);
+            object dbSet = DataAccess.GetType().GetMethod(SystemCP.DbSet).MakeGenericMethod(masterType).Invoke(DataAccess, null);
             IQueryable query = ((IQueryable)dbSet);
-            if(!condition.IsNullOrEmpty()) query.Where(condition);
+            if (!condition.IsNullOrEmpty()) query.Where(condition);
             if (!selectFields.IsNullOrEmpty()) query = DynamicQueryable.Select(query, selectFields);
             return query.Cast<dynamic>().ToList();
         }
@@ -650,11 +650,11 @@ namespace SKGPortalCore.Repository
         /// <param name="entityList"></param>
         private void SetInsertRowId(IList entityList)
         {
-            if (!entityList.HasData() || (null == entityList[0].GetType().GetProperty("RowId"))) return;
+            if (!entityList.HasData() || (null == entityList[0].GetType().GetProperty(SystemCP.RowId))) return;
             int rowId = 0;
-            List<int> c = entityList.AsQueryable().Where("RowState!=@0", RowState.Insert).OrderBy("RowId Desc").Select("RowId").Take(1).Cast<int>().ToList();
+            List<int> c = entityList.AsQueryable().Where($"{nameof(DetailRowState.RowState)}!=@0", RowState.Insert).OrderBy($"{SystemCP.RowId} Desc").Select(SystemCP.RowId).Take(1).Cast<int>().ToList();
             if (c.HasData()) rowId = c[0];
-            dynamic etyList = entityList.AsQueryable().Where("RowState=@0", RowState.Insert);
+            dynamic etyList = entityList.AsQueryable().Where($"{nameof(DetailRowState.RowState)}=@0", RowState.Insert);
             foreach (dynamic entity in etyList)
                 entity.RowId = ++rowId;
         }
