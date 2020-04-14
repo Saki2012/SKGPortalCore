@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Lib;
+using System;
 using System.ComponentModel;
 
 namespace SKGPortalCore.Model.MasterData
@@ -11,10 +12,11 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編")] public string CustomerId { get; set; }
+        [Description(SystemCP.DESC_CustomerId)] public string CustomerId { get; set; }
         /// <summary>
         /// 密碼
         /// </summary>
+        [Description(SystemCP.GQL_Pasuwado)]
         public string Pasuwado { get; set; }
         /// <summary>
         /// 密碼到期日

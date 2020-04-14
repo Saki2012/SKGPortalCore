@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System;
 using System.ComponentModel;
@@ -10,44 +11,44 @@ namespace SKGPortalCore.Model.MasterData
     /// <summary>
     /// 繳款人
     /// </summary>
-    [Description("繳款人")]
+    [Description(SystemCP.DESC_Payer)]
     public class PayerSet
     {
         /// <summary>
-        /// 繳款人資料
+        /// 繳款人
         /// </summary>
-        [Description("繳款人資料")] public PayerModel Payer { get; set; }
+        [Description(SystemCP.DESC_Payer)] public PayerModel Payer { get; set; }
     }
 
     /// <summary>
-    /// 繳款人資料
+    /// 繳款人
     /// </summary>
-    [Description("繳款人資料")]
+    [Description(SystemCP.DESC_Payer)]
     public class PayerModel : MasterDataModel
     {
         /// <summary>
-        /// 
+        /// 商戶資料
         /// </summary>
-        [ForeignKey("CustomerCode")] public BizCustomerModel BizCustomer { get; set; }
+        [ForeignKey(nameof(CustomerCode))] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業代號
         /// </summary>
-        [Description("企業代號"), Key] public string CustomerCode { get; set; }
+        [Description(SystemCP.DESC_CustomerCode), Key] public string CustomerCode { get; set; }
         /// <summary>
         /// 繳款人代號
         /// </summary>
-        [Description("繳款人代號"), Key, MaxLength(CP.DataIdLen)] public string PayerId { get; set; }
+        [Description(SystemCP.DESC_PayerId), Key, MaxLength(SystemCP.DataIdLen)] public string PayerId { get; set; }
         /// <summary>
         /// 繳款人名稱
         /// </summary>
-        [Description("繳款人名稱"), Required, InputField, MaxLength(CP.NormalLen)] public string PayerName { get; set; }
+        [Description(SystemCP.DESC_PayerName), Required, InputField, MaxLength(SystemCP.NormalLen)] public string PayerName { get; set; }
         /// <summary>
         /// 繳款人編碼
         /// </summary>
-        [Description("繳款人編碼"), Required, InputField, MaxLength(CP.NormalLen)] public string PayerNo { get; set; }
+        [Description(SystemCP.DESC_PayerNo), Required, InputField, MaxLength(SystemCP.NormalLen)] public string PayerNo { get; set; }
         /// <summary>
         /// 繳款人類別
         /// </summary>
-        [Description("繳款人類別"), InputField] public PayerType PayerType { get; set; }
+        [Description(SystemCP.DESC_PayerType), InputField] public PayerType PayerType { get; set; }
     }
 }

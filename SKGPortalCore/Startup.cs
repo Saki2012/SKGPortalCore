@@ -39,7 +39,7 @@ namespace SKGPortalCore
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options =>
-      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Namespace))
+      options.UseSqlServer(Configuration.GetConnectionString(SystemCP.SqlConnection), b => b.MigrationsAssembly(typeof(ApplicationDbContext).Namespace))
       );
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -57,7 +57,7 @@ namespace SKGPortalCore
             services.AddSession(options =>
              {
                  options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                 options.Cookie.Name = "YouKnowDaWaeOfDevil";
+                 options.Cookie.Name = SystemCP.CookieName;
                  options.IdleTimeout = TimeSpan.FromMinutes(20);
              });
             services.Configure<CookiePolicyOptions>(options =>
@@ -71,7 +71,7 @@ namespace SKGPortalCore
 #else
             services.AddSingleton<ISessionWapper, SessionWapper<CustUserModel>>();
 #endif
-            services.AddDistributedRedisCache(p => p.Configuration = "127.0.0.1:6379");
+            services.AddDistributedRedisCache(p => p.Configuration = Configuration.GetConnectionString(SystemCP.RedisConnection));
             //services.AddDistributedMemoryCache();
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }

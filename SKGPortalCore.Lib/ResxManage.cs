@@ -41,6 +41,18 @@ namespace SKGPortalCore.Lib
             DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
             return GetDescription(attribute);
         }
+        /// <summary>
+        /// 獲取靜態欄位別名(默認SystemCP Type)
+        /// 用法：GetStaticDescription(nameof(SystemCP.Field)) 
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
+        public static string GetDescription(string fieldName)
+        {
+            return GetDescription(typeof(SystemCP), fieldName);
+        }
+
+
         public static string GetDescription(Enum member)
         {
             DescriptionAttribute attribute = member.GetType().GetField(member.ToString()).GetCustomAttribute<DescriptionAttribute>();

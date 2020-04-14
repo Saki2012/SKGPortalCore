@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
@@ -10,78 +11,94 @@ using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
+    /// <summary>
+    /// 通路帳簿
+    /// </summary>
+    [Description(SystemCP.DESC_ChannelEAccountBill)]
     public class ChannelEAccountBillSet
     {
-        public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
-        public List<ChannelEAccountBillDetailModel> ChannelEAccountBillDetail { get; set; }
+        /// <summary>
+        /// 通路帳簿
+        /// </summary>
+        [Description(SystemCP.DESC_ChannelEAccountBill)] public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
+        /// <summary>
+        /// 通路收款明細帳簿
+        /// </summary>
+        [Description(SystemCP.DESC_ChannelEAccountBillDt)] public List<ChannelEAccountBillDetailModel> ChannelEAccountBillDetail { get; set; }
     }
 
     /// <summary>
     /// 通路帳簿
     /// </summary>
-    [Description("通路帳簿")]
+    [Description(SystemCP.DESC_ChannelEAccountBill)]
     public class ChannelEAccountBillModel : BillDataModel
     {
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; }
         /// <summary>
-        /// 
+        /// 代收通路
         /// </summary>
-        [ForeignKey("ChannelId")] public ChannelModel Channel { get; set; }
+        [ForeignKey(nameof(ChannelId))] public ChannelModel Channel { get; set; }
         /// <summary>
         /// 通路代號
         /// </summary>
-        [Description("通路代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public string ChannelId { get; set; }
+        [Description(SystemCP.DESC_ChannelId), Index(SystemCP.IX_ChannelId_CollectionTypeId_ExpectRemitDate)] public string ChannelId { get; set; }
         /// <summary>
-        /// 
+        /// 代收項目
         /// </summary>
-        [ForeignKey("CollectionTypeId")] public CollectionTypeModel CollectionType { get; set; }
+        [ForeignKey(nameof(CollectionTypeId))] public CollectionTypeModel CollectionType { get; set; }
         /// <summary>
-        /// 代收類別代號
+        /// 代收項目
         /// </summary>
-        [Description("代收類別代號"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public string CollectionTypeId { get; set; }
+        [Description(SystemCP.DESC_CollectionTypeId), Index(SystemCP.IX_ChannelId_CollectionTypeId_ExpectRemitDate)] public string CollectionTypeId { get; set; }
         /// <summary>
         /// 預計匯款日期
         /// </summary>
-        [Description("預計匯款日期"), Index("IX_ChannelId_CollectionTypeId_ExpectRemitDate")] public DateTime ExpectRemitDate { get; set; }
+        [Description(SystemCP.DESC_ExpectRemitDate), Index(SystemCP.IX_ChannelId_CollectionTypeId_ExpectRemitDate)] public DateTime ExpectRemitDate { get; set; }
         /// <summary>
         /// 遞延天數
         /// </summary>
-        [Description("遞延天數")] public int PostponeDays { get; set; }
+        [Description(SystemCP.DESC_PostponeDays)] public int PostponeDays { get; set; }
         /// <summary>
-        /// 資訊流金額
+        /// 交易金額
         /// </summary>
-        [Description("資訊流金額")] public decimal Amount { get; set; }
+        [Description(SystemCP.DESC_Amount)] public decimal Amount { get; set; }
         /// <summary>
         /// 通路手續費
         /// </summary>
-        [Description("通路手續費")] public decimal Fee { get; set; }
+        [Description(SystemCP.DESC_ChannelFee)] public decimal ChannelFee { get; set; }
         /// <summary>
         /// 預計匯款金額
         /// </summary>
-        [Description("預計匯款金額")] public decimal ExpectRemitAmount { get; set; }
+        [Description(SystemCP.DESC_ExpectRemitAmount)] public decimal ExpectRemitAmount { get; set; }
         /// <summary>
         /// 筆數
         /// </summary>
-        [Description("筆數")] public int PayCount { get; set; }
+        [Description(SystemCP.TotalCount)] public int TotalCount { get; set; }
     }
     /// <summary>
     /// 通路收款明細帳簿
     /// </summary>
-    [Description("通路收款明細帳簿")]
+    [Description(SystemCP.DESC_ChannelEAccountBillDt)]
     public class ChannelEAccountBillDetailModel : DetailRowState
     {
-        [ForeignKey("BillNo")] public ChannelEAccountBillModel Bill { get; set; }
+        /// <summary>
+        /// 通路帳簿
+        /// </summary>
+        [ForeignKey(nameof(BillNo))] public ChannelEAccountBillModel Bill { get; set; }
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key] public string BillNo { get; set; }
-        [ForeignKey("ReceiptBillNo")] public ReceiptBillModel ReceiptBill { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key] public string BillNo { get; set; }
+        /// <summary>
+        /// 收款單
+        /// </summary>
+        [ForeignKey(nameof(ReceiptBillNo))] public ReceiptBillModel ReceiptBill { get; set; }
         /// <summary>
         /// 收款單號
         /// </summary>
-        [Description("收款單號"), Key] public string ReceiptBillNo { get; set; }
+        [Description(SystemCP.DESC_ReceiptBillNo), Key] public string ReceiptBillNo { get; set; }
     }
 }

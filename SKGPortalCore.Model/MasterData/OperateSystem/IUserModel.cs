@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
@@ -17,6 +18,6 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
     /// </summary>
     public static class SystemOperator
     {
-        public static BackendUserModel SysOperator = new BackendUserModel() { KeyId = "SysOperator", UserName = "系統操作", AccountStatus = AccountStatus.Enable, DeptId = null, Email = string.Empty };
+        public static BackendUserModel SysOperator = new BackendUserModel() { KeyId = SystemCP.SysOperator, UserName = SystemCP.SysOperatorName, AccountStatus = AccountStatus.Enable, DeptId = null, Email = string.Empty };
     }
 }

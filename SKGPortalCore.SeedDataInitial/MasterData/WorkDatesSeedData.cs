@@ -18,7 +18,7 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
             while (date != date2)
             {
                 if (null == dataAccess.WorkDate.FirstOrDefault(p => p.Date == date))
-                    workDates.Add(new WorkDateModel() { Date = date, Description = "", HolidayCategory = "", IsWorkDate = !date.DayOfWeek.In(DayOfWeek.Sunday, DayOfWeek.Saturday), Name = "" });
+                    workDates.Add(new WorkDateModel() { Date = date, Description = "", HolidayCategory = "", IsWorkDate = !date.DayOfWeek.In(DayOfWeek.Sunday, DayOfWeek.Saturday), HolidayName = "" });
                 date = date.AddDays(1);
             }
             dataAccess.WorkDate.AddRange(workDates);

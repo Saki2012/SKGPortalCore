@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKGPortalCore.Lib;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,28 +27,28 @@ namespace SKGPortalCore.Model.MasterData
     /// 營業日
     /// 源於：http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000077-002
     /// </summary>
-    [Description("營業日")]
+    [Description(SystemCP.DESC_WorkDate)]
     public class WorkDateModel
     {
         /// <summary>
         /// 日期
         /// </summary>
-        [Description("日期"), Key] public DateTime Date { get; set; }
+        [Description(SystemCP.DESC_Date), Key] public DateTime Date { get; set; }
         /// <summary>
         /// 是否營業日
         /// </summary>
-        [Description("是否營業日")] public bool IsWorkDate { get; set; }
+        [Description(SystemCP.DESC_IsWorkDate)] public bool IsWorkDate { get; set; }
         /// <summary>
         /// 假別名
         /// </summary>
-        [Description("假別名")] public string Name { get; set; }
+        [Description(SystemCP.DESC_HolidayName)] public string HolidayName { get; set; }
         /// <summary>
         /// 假類別
         /// </summary>
-        [Description("假類別")] public string HolidayCategory { get; set; }
+        [Description(SystemCP.DESC_HolidayCategory)] public string HolidayCategory { get; set; }
         /// <summary>
         /// 說明
         /// </summary>
-        [Description("說明")] public string Description { get; set; }
+        [Description(SystemCP.DESC_Description)] public string Description { get; set; }
     }
 }

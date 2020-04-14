@@ -3,7 +3,6 @@ using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
 using System;
@@ -41,9 +40,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 {
                     BizCustomer = new BizCustomerModel() { MarketEnable = true, PostEnable = true, },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>() {
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
                         },
                 },
                     actualData = Repo.Create(new BizCustomerSet()
@@ -60,13 +59,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                     });
                 AssertCorrectData(expectData, actualData);
@@ -84,8 +83,8 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 {
                     BizCustomer = new BizCustomerModel() { MarketEnable = false, PostEnable = true, },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>() {
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
                         },
                 },
                 actualData = Repo.Create(new BizCustomerSet()
@@ -102,12 +101,12 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,05",
-                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId}",
+                        CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId}",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                 });
                 AssertCorrectData(expectData, actualData);
@@ -124,9 +123,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 {
                     BizCustomer = new BizCustomerModel() { MarketEnable = true, PostEnable = true, },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>() {
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
                         },
                 },
                     actualData = Repo.Create(new BizCustomerSet()
@@ -143,13 +142,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="2665", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                     });
                 AssertCorrectData(expectData, actualData);
@@ -166,9 +165,9 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                 {
                     BizCustomer = new BizCustomerModel() { MarketEnable = true, PostEnable = true, },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>() {
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
-                        new BizCustomerFeeDetailModel(){ Percent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
+                        new BizCustomerFeeDetailModel(){ IntroPercent=0 },
                         },
                 },
                     actualData = Repo.Create(new BizCustomerSet()
@@ -185,13 +184,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                             VirtualAccount2 = VirtualAccount2.PayerNo,
                             VirtualAccount3 = VirtualAccount3.NoverifyCode,
                             ChannelIds = "00,01,02,03,04,05",
-                            CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                            CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                             AccountStatus = AccountStatus.Enable,
                         },
                         BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode="805", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                     });
                 AssertCorrectData(expectData, actualData);
@@ -217,13 +216,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                 });
                 CheckVirtualAccountLength();
@@ -249,13 +248,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, IntroPercent=0 },
                         }
                 });
                 CheckBizCustType();
@@ -281,13 +280,13 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
                         VirtualAccount2 = VirtualAccount2.PayerNo,
                         VirtualAccount3 = VirtualAccount3.NoverifyCode,
                         ChannelIds = "00,01,02,03,04,05",
-                        CollectionTypeIds = $"{CP.BankCollectionTypeId},{CP.PostCollectionTypeId},6V1,6V2,6V3",
+                        CollectionTypeIds = $"{SystemCP.BankCollectionTypeId},{SystemCP.PostCollectionTypeId},6V1,6V2,6V3",
                         AccountStatus = AccountStatus.Enable,
                     },
                     BizCustomerFeeDetail = new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, Percent=0 },
-                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee,Fee=10, Percent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.Hitrust_ClearFee_NextMonth,Fee=10, IntroPercent=0 },
+                            new BizCustomerFeeDetailModel(){ CustomerCode=key, ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee,Fee=10, IntroPercent=0 },
                         }
                 });
                 CheckIntroduceType();
@@ -350,7 +349,7 @@ namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
             Assert.AreEqual(expectData.BizCustomer.PostEnable, actualData.BizCustomer.PostEnable, ResxManage.GetDescription<BizCustomerModel>(p => p.PostEnable));
             for (int i = 0; i < expectData.BizCustomerFeeDetail.Count; i++)
             {
-                Assert.AreEqual(expectData.BizCustomerFeeDetail[i].Percent, actualData.BizCustomerFeeDetail[i].Percent);
+                Assert.AreEqual(expectData.BizCustomerFeeDetail[i].IntroPercent, actualData.BizCustomerFeeDetail[i].IntroPercent);
             }
         }
         /// <summary>

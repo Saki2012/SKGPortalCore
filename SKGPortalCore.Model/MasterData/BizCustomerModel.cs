@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System;
 using System.Collections.Generic;
@@ -11,143 +12,146 @@ namespace SKGPortalCore.Model.MasterData
     /// <summary>
     /// 商戶資料
     /// </summary>
-    [Description("商戶資料")]
+    [Description(SystemCP.DESC_BizCustomer)]
     public class BizCustomerSet
     {
         /// <summary>
         /// 商戶資料
         /// </summary>
-        [Description("商戶資料")] public BizCustomerModel BizCustomer { get; set; }
+        [Description(SystemCP.DESC_BizCustomer)] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 商戶手續費管理明細
         /// </summary>
-        [Description("商戶手續費管理明細")] public List<BizCustomerFeeDetailModel> BizCustomerFeeDetail { get; set; }
+        [Description(SystemCP.DESC_BizCustomerFeeDt)] public List<BizCustomerFeeDetailModel> BizCustomerFeeDetail { get; set; }
     }
     /// <summary>
     /// 商戶資料
     /// </summary>
-    [Description("商戶資料")]
+    [Description(SystemCP.DESC_BizCustomer)]
     public class BizCustomerModel : MasterDataModel
     {
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Key, MaxLength(CP.DataIdLen)] public string CustomerCode { get; set; }
-        [ForeignKey("CustomerId")] public CustomerModel Customer { get; set; }
+        [Description(SystemCP.DESC_CustomerCode), Key, MaxLength(SystemCP.DataIdLen)] public string CustomerCode { get; set; }
+        /// <summary>
+        /// 客戶資料
+        /// </summary>
+        [ForeignKey(nameof(CustomerId))] public CustomerModel Customer { get; set; }
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編"), Required] public string CustomerId { get; set; }
+        [Description(SystemCP.DESC_CustomerId), Required] public string CustomerId { get; set; }
         /// <summary>
-        /// 
+        /// 部門資料
         /// </summary>
-        [ForeignKey("AccountDeptId")] public DeptModel AccountDept { get; set; }
+        [ForeignKey(nameof(AccountDeptId))] public DeptModel AccountDept { get; set; }
         /// <summary>
         /// 帳務分行
         /// </summary>
-        [Description("帳務分行"), InputField] public string AccountDeptId { get; set; }
+        [Description(SystemCP.DESC_AccountDeptId), InputField] public string AccountDeptId { get; set; }
         /// <summary>
         /// 實體帳號
         /// </summary>
-        [Description("實體帳號"), Required, InputField, MaxLength(CP.NormalLen)] public string RealAccount { get; set; }
+        [Description(SystemCP.DESC_RealAccount), Required, InputField, MaxLength(SystemCP.NormalLen)] public string RealAccount { get; set; }
         /// <summary>
-        /// 銷帳編號長度
+        /// 虛擬帳號長度
         /// </summary>
-        [Description("虛擬帳號長度"), InputField] public VirtualAccountLen VirtualAccountLen { get; set; }
+        [Description(SystemCP.DESC_VirtualAccountLen), InputField] public VirtualAccountLen VirtualAccountLen { get; set; }
         /// <summary>
         /// 期別編號長度
         /// </summary>
-        [Description("期別編號長度"), InputField] public byte BillTermLen { get; set; }
+        [Description(SystemCP.DESC_BillTermLen), InputField] public byte BillTermLen { get; set; }
         /// <summary>
         /// 繳款人編號長度
         /// </summary>
-        [Description("繳款人編號長度"), InputField] public byte PayerNoLen { get; set; }
+        [Description(SystemCP.DESC_PayerNoLen), InputField] public byte PayerNoLen { get; set; }
         /// <summary>
         /// 自組銷帳編號1
         /// </summary>
-        [Description("自組銷帳編號1"), InputField] public VirtualAccount1 VirtualAccount1 { get; set; }
+        [Description(SystemCP.DESC_VirtualAccount + "1"), InputField] public VirtualAccount1 VirtualAccount1 { get; set; }
         /// <summary>
         /// 自組銷帳編號2
         /// </summary>
-        [Description("自組銷帳編號2"), InputField] public VirtualAccount2 VirtualAccount2 { get; set; }
+        [Description(SystemCP.DESC_VirtualAccount + "2"), InputField] public VirtualAccount2 VirtualAccount2 { get; set; }
         /// <summary>
         /// 自組銷帳編號3
         /// </summary>
-        [Description("自組銷帳編號3"), InputField] public VirtualAccount3 VirtualAccount3 { get; set; }
+        [Description(SystemCP.DESC_VirtualAccount + "3"), InputField] public VirtualAccount3 VirtualAccount3 { get; set; }
         /// <summary>
         /// 啟用通路
         /// (逗號分割)
         /// </summary>
-        [Description("啟用通路"), Required, InputField, MaxLength(CP.LongLen)] public string ChannelIds { get; set; }
+        [Description(SystemCP.DESC_ChannelIds), Required, InputField, MaxLength(SystemCP.LongLen)] public string ChannelIds { get; set; }
         /// <summary>
-        /// 啟用代收類別
+        /// 啟用代收項目
         /// (逗號分割)
         /// </summary>
-        [Description("啟用代收類別"), Required, InputField, MaxLength(100)] public string CollectionTypeIds { get; set; }
+        [Description(SystemCP.DESC_CollectionTypeIds), Required, InputField, MaxLength(100)] public string CollectionTypeIds { get; set; }
         /// <summary>
         /// 啟用超商通路
         /// </summary>
-        [Description("啟用超商通路")] public bool MarketEnable { get; set; }
+        [Description(SystemCP.DESC_MarketEnable)] public bool MarketEnable { get; set; }
         /// <summary>
         /// 啟用郵局通路
         /// </summary>
-        [Description("啟用郵局通路")] public bool PostEnable { get; set; }
+        [Description(SystemCP.DESC_PostEnable)] public bool PostEnable { get; set; }
         /// <summary>
         /// 商戶類型
         /// </summary>
-        [Description("商戶類型"), InputField] public BizCustType BizCustType { get; set; }
+        [Description(SystemCP.DESC_BizCustType), InputField] public BizCustType BizCustType { get; set; }
         /// <summary>
         /// 介紹商企業
         /// </summary>
-        [ForeignKey("IntroCustomerCode")] public BizCustomerModel IntroCustomer { get; set; }
+        [ForeignKey(nameof(IntroCustomerCode))] public BizCustomerModel IntroCustomer { get; set; }
         /// <summary>
         /// 介紹商企業代號
         /// </summary>
-        [Description("介紹商企業代號"), InputField] public string IntroCustomerCode { get; set; }
+        [Description(SystemCP.DESC_IntroCustomerCode), InputField] public string IntroCustomerCode { get; set; }
         /// <summary>
         /// 帳戶狀態
         /// </summary>
-        [Description("帳戶狀態"), InputField] public AccountStatus AccountStatus { get; set; }
+        [Description(SystemCP.DESC_AccountStatus), InputField] public AccountStatus AccountStatus { get; set; }
         /// <summary>
         /// 導入時間
         /// </summary>
-        [Description("導入時間")] public DateTime SyncDateTime { get; set; }
+        [Description(SystemCP.DESC_SyncDateTime)] public DateTime SyncDateTime { get; set; }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號"), Required, MaxLength(CP.NormalLen)] public string ImportBatchNo { get; set; } = string.Empty;
+        [Description(SystemCP.DESC_ImportBatchNo), Required, MaxLength(SystemCP.NormalLen)] public string ImportBatchNo { get; set; } = string.Empty;
         /// <summary>
         /// 來源
         /// </summary>
-        [Description("來源"), MaxLength(200)] public string Source { get; set; }
+        [Description(SystemCP.DESC_Source), MaxLength(200)] public string Source { get; set; }
     }
     /// <summary>
     /// 商戶手續費管理明細
     /// </summary>
-    [Description("商戶手續費管理明細")]
+    [Description(SystemCP.DESC_BizCustomerFeeDt)]
     public class BizCustomerFeeDetailModel : DetailRowState
     {
-        [ForeignKey("CustomerCode")] public BizCustomerModel BizCustomer { get; set; }
+        [ForeignKey(nameof(CustomerCode))] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>
-        [Description("企業編號"), Key] public string CustomerCode { get; set; }
+        [Description(SystemCP.DESC_CustomerCode), Key] public string CustomerCode { get; set; }
         /// <summary>
         /// 通路類別
         /// </summary>
-        [Description("通路類別"), Key] public ChannelGroupType ChannelType { get; set; }
+        [Description(SystemCP.DESC_ChannelGroupType), Key] public ChannelGroupType ChannelGroupType { get; set; }
         /// <summary>
         /// 銀行手續費類型
         /// </summary>
-        [Description("銀行手續費類型"), InputField] public BankFeeType BankFeeType { get; set; }
+        [Description(SystemCP.DESC_BankFeeType), InputField] public BankFeeType BankFeeType { get; set; }
         /// <summary>
         /// 手續費
         /// </summary>
-        [Description("手續費"), InputField] public decimal Fee { get; set; }
+        [Description(SystemCP.DESC_Fee), InputField] public decimal Fee { get; set; }
         /// <summary>
         /// 介紹商手續費/分潤%
         /// </summary>
-        [Description("介紹商手續費/分潤%"), InputField] public decimal Percent { get; set; }
+        [Description(SystemCP.DESC_IntroPercent), InputField] public decimal IntroPercent { get; set; }
     }
 
     /*

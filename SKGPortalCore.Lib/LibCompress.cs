@@ -26,9 +26,9 @@ namespace SKGPortalCore.Lib
             }
             else
             {
-                byte[] rawData = System.Text.Encoding.UTF8.GetBytes(rawString.ToString());
+                byte[] rawData = Encoding.UTF8.GetBytes(rawString.ToString());
                 byte[] zippedData = Compress(rawData);
-                return (string)(Convert.ToBase64String(zippedData));
+                return Convert.ToBase64String(zippedData);
             }
 
         }

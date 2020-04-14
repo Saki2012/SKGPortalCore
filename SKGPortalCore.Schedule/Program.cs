@@ -3,14 +3,14 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using SKGPortalCore.Data;
-using SKGPortalCore.Model.SourceData;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
 
 namespace SKGPortalCore.Schedule
 {
     internal class Program
     {
-        private static readonly IConfiguration Config= new ConfigurationBuilder().SetBasePath(CP.AppSettingsJsonPath).AddJsonFile(CP.AppSettingsJson).Build();
+        private static readonly IConfiguration Config= new ConfigurationBuilder().SetBasePath(SystemCP.AppSettingsJsonPath).AddJsonFile(SystemCP.AppSettingsJson).Build();
         private static void Main()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

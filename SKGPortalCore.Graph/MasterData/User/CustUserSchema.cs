@@ -1,6 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Types;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData.User;
@@ -19,20 +20,20 @@ namespace SKGPortalCore.Graph.MasterData.User
         {
             Field(
                     type: typeof(ListGraphType<Permission>),
-                    name: "Login",
-                    description: "登錄帳號",
+                    name: SystemCP.GQL_Login,
+                    description: ResxManage.GetDescription(SystemCP.GQL_Login),
                     arguments: new QueryArguments(
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "account", Description = "帳號" },
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "pasuwado", Description = "密碼" }
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_Account, Description = ResxManage.GetDescription(SystemCP.GQL_Account) },
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_Pasuwado, Description = ResxManage.GetDescription(SystemCP.GQL_Pasuwado) }
                     ),
                     resolve: context =>
                     {
-                        return repository.Login(session, context.GetArgument<string>("account"), context.GetArgument<string>("pasuwado"));
+                        return repository.Login(session, context.GetArgument<string>(SystemCP.GQL_Account), context.GetArgument<string>(SystemCP.GQL_Pasuwado));
                     });
             Field(
                     type: typeof(ListGraphType<Permission>),
-                    name: "Logout",
-                    description: "登出帳號",
+                    name: SystemCP.GQL_Logout,
+                    description: ResxManage.GetDescription(SystemCP.GQL_Logout),
                     resolve: context =>
                     {
                         repository.Logout(session);

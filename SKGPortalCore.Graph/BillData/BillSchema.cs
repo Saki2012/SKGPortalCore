@@ -30,17 +30,16 @@ namespace SKGPortalCore.Graph.BillData
         {
             Field(
             type: typeof(BooleanGraphType),
-            name: "UploadFile",
-            description: "上傳檔案",
+            name: SystemCP.GQL_UploadFile,
+            description: ResxManage.GetDescription(SystemCP.GQL_UploadFile),
             arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<FileInfo>> { Name = "file", Description = "檔案資訊" }
+                new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
             ),
             resolve: context =>
             {
-                FileInfoModel file = context.GetArgument<FileInfoModel>("file");
+                FileInfoModel file = context.GetArgument<FileInfoModel>(SystemCP.GQL_FileInfo);
                 byte[] bytes = file.Content.Select(x => LibData.ToByte(x)).ToArray();
                 File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
-
                 return true;
             });
         }

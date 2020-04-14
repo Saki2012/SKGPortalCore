@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -62,7 +62,7 @@ namespace SKGPortalCore.Data
             foreach (Type type in modelTypes)
             {
                 string tableName = type.Name;
-                if (tableName.Substring(tableName.Length - 5, 5) == "Model") tableName = tableName[0..^5];
+                if (tableName.Substring(tableName.Length - 5, 5) == SystemCP.Model) tableName = tableName[0..^5];
                 string[] keyPropName = type.GetProperties().Where(p => p.IsDefined(typeof(KeyAttribute))).Select(p => p.Name).ToArray();
                 if (keyPropName.Length != 0) builder.Entity(type).ToTable(tableName).HasKey(keyPropName);
                 else builder.Entity(type).ToTable(tableName);
@@ -77,7 +77,7 @@ namespace SKGPortalCore.Data
         /// <summary>
         /// 
         /// </summary>
-        private static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(CP.AppSettingsJsonPath).AddJsonFile(CP.AppSettingsJson).Build();
+        private static readonly IConfiguration Configuration = new ConfigurationBuilder().SetBasePath(SystemCP.AppSettingsJsonPath).AddJsonFile(SystemCP.AppSettingsJson).Build();
         #endregion
         #region Public
         /// <summary>
@@ -98,7 +98,7 @@ namespace SKGPortalCore.Data
         {
             if (null == config) config = Configuration;
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(config.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("SKGPortalCore"));
+            builder.UseSqlServer(config.GetConnectionString(SystemCP.SqlConnection), b => b.MigrationsAssembly(nameof(SKGPortalCore)));
             return builder.Options;
         }
         #endregion

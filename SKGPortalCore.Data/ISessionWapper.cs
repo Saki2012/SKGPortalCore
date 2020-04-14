@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 
 namespace SKGPortalCore.Data
@@ -18,7 +19,7 @@ namespace SKGPortalCore.Data
     [Serializable]
     public class SessionWapper<T> : ISessionWapper<T>, ISessionWrapper where T : IUserModel
     {
-        private static readonly string _userKey = "session.user";
+        private static readonly string _userKey = SystemCP.UserKey;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public SessionWapper(IHttpContextAccessor httpContextAccessor)
         {

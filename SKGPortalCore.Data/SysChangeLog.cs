@@ -59,7 +59,7 @@ namespace SKGPortalCore.Data
         public void SetChangeLogDetail(int tbIdx, dynamic oldModel, dynamic newModel, RowState rowState)
         {
             return;
-            DataChangeLogDetail.Add(new DataChangeLogDetail() { DataChangeId = ChangeLogSet.DataChangeLog.DataChangeId, TableIndex = tbIdx, RowStatus = rowState, ChangeData = GetChangeData(tbIdx, oldModel, newModel, rowState) });
+            DataChangeLogDetail.Add(new DataChangeLogDetail() { DataChangeId = ChangeLogSet.DataChangeLog.DataChangeId, TableIndex = tbIdx, RowState = rowState, ChangeData = GetChangeData(tbIdx, oldModel, newModel, rowState) });
         }
         /// <summary>
         /// 

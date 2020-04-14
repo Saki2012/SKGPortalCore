@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,51 +11,54 @@ namespace SKGPortalCore.Model.MasterData
     /// <summary>
     /// 代收通路
     /// </summary>
-    [Description("代收通路")]
+    [Description(SystemCP.DESC_Channel)]
     public class ChannelSet
     {
         /// <summary>
-        /// 代收通路資料
+        /// 代收通路
         /// </summary>
-        [Description("代收通路資料")] public ChannelModel Channel { get; set; }
+        [Description(SystemCP.DESC_Channel)] public ChannelModel Channel { get; set; }
         /// <summary>
         /// 交易代號與平台通路代號關聯表
         /// </summary>
-        [Description("交易代號與平台通路代號關聯表")] public List<ChannelMapModel> ChannelMap { get; set; }
+        [Description(SystemCP.DESC_ChannelMap)] public List<ChannelMapModel> ChannelMap { get; set; }
     }
     /// <summary>
-    /// 代收通路資料
+    /// 代收通路
     /// </summary>
-    [Description("代收通路資料")]
+    [Description(SystemCP.DESC_Channel)]
     public class ChannelModel : MasterDataModel
     {
         /// <summary>
         /// 代收通路代號
         /// </summary>
-        [Description("代收通路代號"), Key, MaxLength(CP.DataIdLen)] public string ChannelId { get; set; }
+        [Description(SystemCP.DESC_ChannelId), Key, MaxLength(SystemCP.DataIdLen)] public string ChannelId { get; set; }
         /// <summary>
         /// 代收通路名稱
         /// </summary>
-        [Description("代收通路名稱"), InputField, MaxLength(CP.NormalLen)] public string ChannelName { get; set; }
+        [Description(SystemCP.DESC_ChannelName), InputField, MaxLength(SystemCP.NormalLen)] public string ChannelName { get; set; }
         /// <summary>
         /// 通路類別
         /// </summary>
-        [Description("通路類別"), InputField] public ChannelGroupType ChannelGroupType { get; set; }
+        [Description(SystemCP.DESC_ChannelGroupType), InputField] public ChannelGroupType ChannelGroupType { get; set; }
     }
     /// <summary>
     /// 交易代號與平台通路代號關聯表
     /// </summary>
-    [Description("交易代號與平台通路代號關聯表")]
+    [Description(SystemCP.DESC_ChannelMap)]
     public class ChannelMapModel : DetailRowState
     {
-        [ForeignKey("ChannelId")] public ChannelModel Channel { get; set; }
+        /// <summary>
+        /// 代收通路
+        /// </summary>
+        [ForeignKey(nameof(ChannelId))] public ChannelModel Channel { get; set; }
         /// <summary>
         /// 代收通路代號
         /// </summary>
-        [Description("代收通路代號"), Key] public string ChannelId { get; set; }
+        [Description(SystemCP.DESC_ChannelId), Key] public string ChannelId { get; set; }
         /// <summary>
         /// 交易代號
         /// </summary>
-        [Description("交易代號"), Key, MaxLength(CP.DataIdLen)] public string TransCode { get; set; }
+        [Description(SystemCP.DESC_TransCode), Key, MaxLength(SystemCP.DataIdLen)] public string TransCode { get; set; }
     }
 }

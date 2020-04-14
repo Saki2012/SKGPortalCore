@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,70 +9,88 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace SKGPortalCore.Model.MasterData.OperateSystem
 {
     /// <summary>
-    /// 前台用戶
+    /// 前臺使用者
     /// </summary>
-    [Description("前台用戶")]
+    [Description(SystemCP.DESC_CustUser)]
     public class CustUserSet
     {
         /// <summary>
-        /// 前台用戶資料
+        /// 前臺使用者
         /// </summary>
-        public CustUserModel CustUser { get; set; }
-        public List<CustUserRoleModel> CustUserRole { get; set; }
+        [Description(SystemCP.DESC_CustUser)] public CustUserModel CustUser { get; set; }
+        /// <summary>
+        /// 前臺使用者角色權限清單
+        /// </summary>
+        [Description(SystemCP.DESC_CustUserRoleList)] public List<CustUserRoleModel> CustUserRoleList { get; set; }
     }
     /// <summary>
-    /// 前台用戶資料
+    /// 前臺使用者
     /// </summary>
-    [Description("用戶資料")]
+    [Description(SystemCP.DESC_CustUser)]
     public class CustUserModel : MasterDataModel, IUserModel
     {
         /// <summary>
         /// KeyId為客戶代號,使用者代號
         /// </summary>
         [Description, Key] public string KeyId { get; set; }
-        public CustomerModel Customer { get; set; }
+        /// <summary>
+        /// 客戶資料
+        /// </summary>
+        [ForeignKey(nameof(CustomerId))] public CustomerModel Customer { get; set; }
         /// <summary>
         /// 客戶代號(統編)
         /// </summary>
-        [Description("客戶代號")] public string CustomerId { get; set; }
+        [Description(SystemCP.DESC_CustomerId)] public string CustomerId { get; set; }
         /// <summary>
         /// 使用者代號
         /// </summary>
-        [Description("用戶代號")] public string UserId { get; set; }
+        [Description(SystemCP.DESC_UserId)] public string UserId { get; set; }
         /// <summary>
         /// 使用者名稱
         /// </summary>
-        [Description("用戶名稱")] public string UserName { get; set; }
+        [Description(SystemCP.DESC_UserName)] public string UserName { get; set; }
         /// <summary>
         /// 密碼
         /// </summary>
-        [Description("密碼")] public string Pasuwado { get; set; }
+        [Description(SystemCP.GQL_Pasuwado)] public string Pasuwado { get; set; }
         /// <summary>
         /// 帳戶狀態
         /// </summary>
-        [Description("帳戶狀態")] public AccountStatus AccountStatus { get; set; }
+        [Description(SystemCP.DESC_AccountStatus)] public AccountStatus AccountStatus { get; set; }
         /// <summary>
         /// 登入失敗次數
         /// </summary>
-        [Description("登入失敗次數")] public byte LoginErrorCount { get; set; }
+        [Description(SystemCP.DESC_LoginErrorCount)] public byte LoginErrorCount { get; set; }
         /// <summary>
         /// 密碼過期時間
         /// </summary>
-        [Description("密碼過期時間")] public DateTime PasuwadoExpiredDate { get; set; }
+        [Description(SystemCP.DESC_PasuwadoExpiredDate)] public DateTime PasuwadoExpiredDate { get; set; }
     }
     /// <summary>
     /// 前台使用者角色權限清單
     /// </summary>
-    [Description("前台用戶角色權限清單")]
+    [Description(SystemCP.DESC_CustUserRoleList)]
     public class CustUserRoleModel : DetailRowState, IRoleModel
     {
-        [ForeignKey("KeyId")] public CustUserModel Key { get; set; }
+        /// <summary>
+        /// 前臺使用者
+        /// </summary>
+        [ForeignKey(nameof(KeyId))] public CustUserModel Key { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         [Description, Key] public string KeyId { get; set; }
-        [ForeignKey("RoleId")] public RoleModel Role { get; set; }
+        /// <summary>
+        /// 角色權限
+        /// </summary>
+        [ForeignKey(nameof(RoleId))] public RoleModel Role { get; set; }
         /// <summary>
         /// 角色權限代號
         /// </summary>
-        [Description("角色權限代號"), Key] public string RoleId { get; set; }
+        [Description(SystemCP.DESC_RoleId), Key] public string RoleId { get; set; }
+        /// <summary>
+        /// 權限列表
+        /// </summary>
         [NotMapped] public List<RolePermissionModel> Permissions { get; set; }
     }
 }

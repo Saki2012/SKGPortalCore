@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,20 +11,20 @@ namespace SKGPortalCore.Model.SystemTable
     /// <summary>
     /// 有效虛擬帳號表
     /// </summary>
-    [Description("有效虛擬帳號表")]
+    [Description(SystemCP.DESC_VirtualAccountCodeModel)]
     public class VirtualAccountCodeModel
     {
         /// <summary>
         /// 虛擬帳號
         /// </summary>
-        [Description("虛擬帳號"), Key, MaxLength(CP.NormalLen)] public string VirtualAccountCode { get; set; }
+        [Description(SystemCP.DESC_VirtualAccountCode), Key, MaxLength(SystemCP.NormalLen)] public string VirtualAccountCode { get; set; }
         /// <summary>
         /// 來源ProgId
         /// </summary>
-        [Description("來源ProgId"), Required, MaxLength(CP.NormalLen)] public string SourceProgId { get; set; }
+        [Description(SystemCP.DESC_SrcProgId), Required, MaxLength(SystemCP.NormalLen)] public string SrcProgId { get; set; }
         /// <summary>
         /// 來源單號
         /// </summary>
-        [Description("來源單號"), Required, MaxLength(CP.BillNoLen)] public string SourceBillNo { get; set; }
+        [Description(SystemCP.DESC_SrcBillNo), Required, MaxLength(SystemCP.BillNoLen)] public string SrcBillNo { get; set; }
     }
 }

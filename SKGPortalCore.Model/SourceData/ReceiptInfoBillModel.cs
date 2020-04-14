@@ -83,13 +83,13 @@ namespace SKGPortalCore.Model.SourceData
         /// </summary>
         [Description("保留"), MaxLength(25)] public string Empty { get => _Empty; set => _Empty = value.PadLeft(25, '0').ByteSubString(0, 25); }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號")] public string ImportBatchNo { get; set; }
+        [Description(SystemCP.DESC_ImportBatchNo)] public string ImportBatchNo { get; set; }
         /// <summary>
-        /// Source
+        /// 來源
         /// </summary>
-        [Description("Source")]
+        [Description(SystemCP.DESC_Source)]
         public string Source
         {
             get => $"{_RealAccount}{_TradeDate}{_TradeTime}{_CompareCode}{_PN}{_Amount}{_Summary}{_Branch}{_TradeChannel}{_Channel}{_Channel}{_ChangeDate}{_BizDate}{_Serial}{_CustomerCode}{_Fee}{_Empty}";
@@ -197,13 +197,13 @@ namespace SKGPortalCore.Model.SourceData
         /// </summary>
         [Description("保留"), MaxLength(42)] public string Empty { get => _Empty; set => _Empty = value.PadLeft(42, '0').ByteSubString(0, 42); }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號")] public string ImportBatchNo { get; set; }
+        [Description(SystemCP.DESC_ImportBatchNo)] public string ImportBatchNo { get; set; }
         /// <summary>
-        /// Source
+        /// 來源
         /// </summary>
-        [Description("Source")]
+        [Description(SystemCP.DESC_Source)]
         public string Source
         {
             get => $"{_CollectionType}{_TradeDate}{_Branch}{_Channel}{_TradeSer}{_PN}{_Amount}{_PayEndDay}{_CompareCode}{_CheckCode}{_Empty}";
@@ -231,7 +231,7 @@ namespace SKGPortalCore.Model.SourceData
         public string Src { get; private set; }
         #endregion
         #region Private
-        private string _CollectionType = CP.PostCollectionTypeId;
+        private string _CollectionType = SystemCP.PostCollectionTypeId;
         private string _TradeDate = DateTime.Now.ToROCDate();
         private string _Branch = string.Empty.PadLeft(6);
         private string _Channel;
@@ -314,13 +314,13 @@ namespace SKGPortalCore.Model.SourceData
         /// </summary>
         [Description("保留2(16)"), MaxLength(16)] public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(16, '0').ByteSubString(0, 16); }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號")] public string ImportBatchNo { get; set; }
+        [Description(SystemCP.DESC_ImportBatchNo)] public string ImportBatchNo { get; set; }
         /// <summary>
-        /// Source
+        /// 來源
         /// </summary>
-        [Description("Source")]
+        [Description(SystemCP.DESC_Source)]
         public string Source
         {
             get => $"{_Idx}{_CollectionType}{_Channel}{_Store}{_TransAccount}{_TransType}{_PayStatus}{_AccountingDay}{_PayDate}{_Barcode1}{_Barcode2}{_Empty1}{_Barcode3}{_Empty2}";
@@ -427,13 +427,13 @@ namespace SKGPortalCore.Model.SourceData
         /// </summary>
         [Description("保留欄位2"), MaxLength(32)] public string Empty2 { get => _Empty2; set => _Empty2 = value.PadLeft(32, '0').ByteSubString(0, 32); }
         /// <summary>
-        /// 導入批號
+        /// 匯入批號
         /// </summary>
-        [Description("導入批號")] public string ImportBatchNo { get; set; }
+        [Description(SystemCP.DESC_ImportBatchNo)] public string ImportBatchNo { get; set; }
         /// <summary>
-        /// Source
+        /// 來源
         /// </summary>
-        [Description("Source")]
+        [Description(SystemCP.DESC_Source)]
         public string Source
         {
             get => $"{_Idx}{_Channel}{_CollectionType}{_TransDate}{_PayDate}{_Barcode2}{_Barcode3_Date}{_Barcode3_CheckCode}{_Barcode3_Amount}{_Empty1}{_Store}{_Empty2}";

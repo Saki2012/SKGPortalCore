@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
 
@@ -23,18 +23,18 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                 Message.Prefix = "新增「代收類別」-初始資料：";
                 using CollectionTypeRepository repo = new CollectionTypeRepository(dataAccess) { User = SystemOperator.SysOperator, Message = Message };
                 List<CollectionTypeSet> collectionTypes = new List<CollectionTypeSet>() {
-                        new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId=CP.PostCollectionTypeId,CollectionTypeName="郵局特戶", ChargePayType= ChargePayType.Deduction},
+                        new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId=SystemCP.PostCollectionTypeId,CollectionTypeName="郵局特戶", ChargePayType= ChargePayType.Deduction},
                             CollectionTypeDetail = new List<CollectionTypeDetailModel>() {
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "05", SRange = 1, ERange = 100, ChannelFee = 5, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "05", SRange = 101, ERange = 1000, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "05", SRange = 1001, ERange = 9999999, ChannelFee = 15, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "A1", SRange = 1, ERange = 100, ChannelFee = 5, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "A1", SRange = 101, ERange = 1000, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.PostCollectionTypeId, ChannelId = "A1", SRange = 1001, ERange = 9999999, ChannelFee = 15, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 }
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "05", SRange = 1, ERange = 100, ChannelFee = 5, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "05", SRange = 101, ERange = 1000, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "05", SRange = 1001, ERange = 9999999, ChannelFee = 15, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "A1", SRange = 1, ERange = 100, ChannelFee = 5, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "A1", SRange = 101, ERange = 1000, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.PostCollectionTypeId, ChannelId = "A1", SRange = 1001, ERange = 9999999, ChannelFee = 15, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 }
                             },
                             CollectionTypeVerifyPeriod=new List<CollectionTypeVerifyPeriodModel>(){
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.PostCollectionTypeId, ChannelId="05", PayPeriodType= PayPeriodType.TenDay },
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.PostCollectionTypeId, ChannelId="A1", PayPeriodType= PayPeriodType.NDay_A },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.PostCollectionTypeId, ChannelId="05", PayPeriodType= PayPeriodType.TenDay },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.PostCollectionTypeId, ChannelId="A1", PayPeriodType= PayPeriodType.NDay_A },
                                 //new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=ConstParameter.PostCollectionTypeId, ChannelId="01", PayPeriodType= PayPeriodType.NDay_A },
                             },
                          },
@@ -450,21 +450,21 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                                 new CollectionTypeVerifyPeriodModel(){ CollectionTypeId="6V9", ChannelId="14", PayPeriodType= PayPeriodType.NDay_A },
                             },
                         },
-                        new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId=CP.BankCollectionTypeId,CollectionTypeName="銀行通路", ChargePayType= ChargePayType.Increase },
+                        new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId=SystemCP.BankCollectionTypeId,CollectionTypeName="銀行通路", ChargePayType= ChargePayType.Increase },
                             CollectionTypeDetail = new List<CollectionTypeDetailModel>() {
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.BankCollectionTypeId, ChannelId = "00", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.BankCollectionTypeId, ChannelId = "06", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.BankCollectionTypeId, ChannelId = "07", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
-                                new CollectionTypeDetailModel() {  CollectionTypeId = CP.BankCollectionTypeId, ChannelId = "A2", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.BankCollectionTypeId, ChannelId = "00", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.BankCollectionTypeId, ChannelId = "06", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.BankCollectionTypeId, ChannelId = "07", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
+                                new CollectionTypeDetailModel() {  CollectionTypeId = SystemCP.BankCollectionTypeId, ChannelId = "A2", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
                                 //new CollectionTypeDetailModel() {  CollectionTypeId = ConstParameter.BankCollectionTypeId, ChannelId = "A3", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
                                 //new CollectionTypeDetailModel() {  CollectionTypeId = ConstParameter.BankCollectionTypeId, ChannelId = "A4", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
                                 //new CollectionTypeDetailModel() {  CollectionTypeId = ConstParameter.BankCollectionTypeId, ChannelId = "A5", SRange = 1, ERange = 9999999, ChannelFee = 10, ChannelFeedBackFee = 0 , ChannelRebateFee = 0 },
                             },
                             CollectionTypeVerifyPeriod=new List<CollectionTypeVerifyPeriodModel>(){
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.BankCollectionTypeId, ChannelId="00", PayPeriodType= PayPeriodType.NDay_A },
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.BankCollectionTypeId, ChannelId="06", PayPeriodType= PayPeriodType.NDay_A },
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.BankCollectionTypeId, ChannelId="07", PayPeriodType= PayPeriodType.NDay_A },
-                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=CP.BankCollectionTypeId, ChannelId="A2", PayPeriodType= PayPeriodType.NDay_A },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.BankCollectionTypeId, ChannelId="00", PayPeriodType= PayPeriodType.NDay_A },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.BankCollectionTypeId, ChannelId="06", PayPeriodType= PayPeriodType.NDay_A },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.BankCollectionTypeId, ChannelId="07", PayPeriodType= PayPeriodType.NDay_A },
+                                new CollectionTypeVerifyPeriodModel(){ CollectionTypeId=SystemCP.BankCollectionTypeId, ChannelId="A2", PayPeriodType= PayPeriodType.NDay_A },
                             },
                         },
                         new CollectionTypeSet() { CollectionType = new CollectionTypeModel() {CollectionTypeId="I0O",CollectionTypeName="超商代收-保險費", ChargePayType= ChargePayType.Deduction},

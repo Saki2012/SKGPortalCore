@@ -1,6 +1,5 @@
 ﻿using GraphQL.Types;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model.SourceData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -154,8 +153,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const CREATE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {CP.GQL_Create}(${CP.GQL_Set}: {setName}InputType!, ${CP.GQL_JWT}: String!) {{
-            {CP.GQL_Create}({CP.GQL_Set}: ${CP.GQL_Set}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        mutation {SystemCP.GQL_Create}(${SystemCP.GQL_Set}: {setName}InputType!, ${SystemCP.GQL_JWT}: String!) {{
+            {SystemCP.GQL_Create}({SystemCP.GQL_Set}: ${SystemCP.GQL_Set}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                ${{fields}}
             }}
         }}
@@ -169,8 +168,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const UPDATE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {CP.GQL_Update}(${CP.GQL_KeyVal}: [ID], ${CP.GQL_Set}: {setName}InputType!, ${CP.GQL_JWT}: String!) {{
-            {CP.GQL_Update}({CP.GQL_KeyVal}:${CP.GQL_KeyVal}, {CP.GQL_Set}: ${CP.GQL_Set}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        mutation {SystemCP.GQL_Update}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_Set}: {setName}InputType!, ${SystemCP.GQL_JWT}: String!) {{
+            {SystemCP.GQL_Update}({SystemCP.GQL_KeyVal}:${SystemCP.GQL_KeyVal}, {SystemCP.GQL_Set}: ${SystemCP.GQL_Set}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                ${{fields}}
             }}
         }}
@@ -183,8 +182,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
             {
                 return $@"export const DELETE_{setName.ToUpper()} = () => {{
   return gql`
-    mutation {CP.GQL_Delete}(${CP.GQL_KeyVal}: [ID], ${CP.GQL_JWT}: String!) {{
-      delete({CP.GQL_KeyVal}: ${CP.GQL_KeyVal}, {CP.GQL_JWT}: ${CP.GQL_JWT})
+    mutation {SystemCP.GQL_Delete}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_JWT}: String!) {{
+      delete({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT})
     }}
   `;
 }};
@@ -195,8 +194,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const APPROVE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {CP.GQL_Approve}(${CP.GQL_KeyVal}: [ID],${CP.GQL_Status}: Boolean!, ${CP.GQL_JWT}: String!) {{
-            {CP.GQL_Approve}({CP.GQL_KeyVal}: ${CP.GQL_KeyVal},{CP.GQL_Status}: ${CP.GQL_Status}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        mutation {SystemCP.GQL_Approve}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
+            {SystemCP.GQL_Approve}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                ${{fields}}
             }}
         }}
@@ -210,8 +209,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const INVALID_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {CP.GQL_Invalid}(${CP.GQL_KeyVal}: [ID],${CP.GQL_Status}: Boolean!, ${CP.GQL_JWT}: String!) {{
-            {CP.GQL_Invalid}({CP.GQL_KeyVal}: ${CP.GQL_KeyVal},{CP.GQL_Status}: ${CP.GQL_Status}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        mutation {SystemCP.GQL_Invalid}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
+            {SystemCP.GQL_Invalid}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                ${{fields}}
             }}
         }}
@@ -225,8 +224,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const ENDCASE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {CP.GQL_EndCase}(${CP.GQL_KeyVal}: [ID],${CP.GQL_Status}: Boolean!, ${CP.GQL_JWT}: String!) {{
-            {CP.GQL_EndCase}({CP.GQL_KeyVal}: ${CP.GQL_KeyVal},{CP.GQL_Status}: ${CP.GQL_Status}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        mutation {SystemCP.GQL_EndCase}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
+            {SystemCP.GQL_EndCase}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                ${{fields}}
             }}
         }}
@@ -315,8 +314,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const GET_{tableInst.Name.ToUpper()}_List = searchFields => {{
     return gql`
 
-        query {CP.GQL_QueryList}(${CP.GQL_Condition}: String!, ${CP.GQL_JWT}: String!){{
-            {CP.GQL_QueryList}({CP.GQL_Condition}: ${CP.GQL_Condition}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        query {SystemCP.GQL_QueryList}(${SystemCP.GQL_Condition}: String!, ${SystemCP.GQL_JWT}: String!){{
+            {SystemCP.GQL_QueryList}({SystemCP.GQL_Condition}: ${SystemCP.GQL_Condition}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
                 ${{searchFields || ""...{LibData.ToCamelCase(tableInst.Name)}List""}}
             }}
         }}
@@ -337,8 +336,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
 
                 return $@"export const GET_{tableInstList[0].Name.ToUpper()}_INFO = ({GetSearch(tableInstList.Count)}) => {{
     return gql`
-        query {CP.GQL_QueryData}(${CP.GQL_KeyVal}: [ID], ${CP.GQL_JWT}: String!){{
-            {CP.GQL_QueryData}({CP.GQL_KeyVal}: ${CP.GQL_KeyVal}, {CP.GQL_JWT}: ${CP.GQL_JWT}){{
+        query {SystemCP.GQL_QueryData}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_JWT}: String!){{
+            {SystemCP.GQL_QueryData}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
 {GetDetailSearchs(tableInstList)}            }}
         }}
 {GetConditions(set.Name, tableInstList)}    `;

@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -6,28 +7,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData
 {
-
+    /// <summary>
+    /// 撥款單
+    /// </summary>
+    [Description(SystemCP.DESC_DisbursementBill)]
     public class DisbursementBillSet
     {
-        public DisbursementBillModel DisbursementBill { get; set; }
-        //public List<DisbursementDetailModel> DisbursementDetail { get; set; }
+        /// <summary>
+        /// 撥款單
+        /// </summary>
+        [Description(SystemCP.DESC_DisbursementBill)] public DisbursementBillModel DisbursementBill { get; set; }
     }
 
 
     /// <summary>
     /// 撥款單
     /// </summary>
-    [Description("撥款單")]
+    [Description(SystemCP.DESC_DisbursementBill)]
     public class DisbursementBillModel : BillDataModel
     {
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description("單據編號"), Key, MaxLength(CP.BillNoLen)] public string BillNo { get; set; }
-        [ForeignKey("ChannelWriteOfBillNo")] public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; }
+        /// <summary>
+        /// 通路帳款核銷單
+        /// </summary>
+        [ForeignKey(nameof(ChannelWriteOfBillNo))] public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
         /// <summary>
         /// 通路帳款核銷單號
         /// </summary>
-        [Description("通路帳款核銷單號")] public string ChannelWriteOfBillNo { get; set; }
+        [Description(SystemCP.DESC_ChannelWriteOfBillNo)] public string ChannelWriteOfBillNo { get; set; }
     }
 }

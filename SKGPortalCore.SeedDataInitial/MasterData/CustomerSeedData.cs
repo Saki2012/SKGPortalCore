@@ -2,7 +2,6 @@
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
 using System;
@@ -62,62 +61,62 @@ namespace SKGPortalCore.SeedDataInitial.MasterData
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="445235",CustomerId="48577921",AccountDeptId="0019",RealAccount="7714815486840", VirtualAccountLen= VirtualAccountLen.Len13,
                             BillTermLen=2,PayerNoLen=5,VirtualAccount1= VirtualAccount1.BillTerm,VirtualAccount2= VirtualAccount2.PayerNo,VirtualAccount3= VirtualAccount3.NoverifyCode, BizCustType= BizCustType.Introducer,
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "445235", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="774336",CustomerId="77494941",AccountDeptId="0019",RealAccount="7714815486840", VirtualAccountLen= VirtualAccountLen.Len13,
                             BillTermLen=2,PayerNoLen=5,VirtualAccount1= VirtualAccount1.BillTerm,VirtualAccount2= VirtualAccount2.PayerNo,VirtualAccount3= VirtualAccount3.NoverifyCode, BizCustType= BizCustType.Hitrust,
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "774336", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="992086",CustomerId="30262944",AccountDeptId="0019",RealAccount="0514101002570", VirtualAccountLen= VirtualAccountLen.Len13,
                             BillTermLen=3,PayerNoLen=4,VirtualAccount1 = VirtualAccount1.BillTerm,VirtualAccount2 = VirtualAccount2.PayerNo,VirtualAccount3 = VirtualAccount3.NoverifyCode,
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),BizCustType= BizCustType.Cust,AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),BizCustType= BizCustType.Cust,AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "992086", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_NextMonth, Fee=15, IntroPercent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="2143"  ,CustomerId="00146877",AccountDeptId="0019",RealAccount="0518425007840", VirtualAccountLen= VirtualAccountLen.Len16,
                             BillTermLen=6,PayerNoLen=6,VirtualAccount1= VirtualAccount1.BillTerm,VirtualAccount2= VirtualAccount2.PayerNo,VirtualAccount3= VirtualAccount3.NoverifyCode, IntroCustomerCode="445235",
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),BizCustType= BizCustType.Cust,AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),BizCustType= BizCustType.Cust,AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=35, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=35, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=35, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=35, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=35, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "2143", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=35, IntroPercent=0 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="805",CustomerId="01031142",AccountDeptId="0019",RealAccount="7714815486840",VirtualAccountLen= VirtualAccountLen.Len14,
                             BillTermLen=5,PayerNoLen=6,VirtualAccount1= VirtualAccount1.BillTerm,VirtualAccount2= VirtualAccount2.PayerNo,VirtualAccount3= VirtualAccount3.NoverifyCode,BizCustType= BizCustType.Cust,
                             IntroCustomerCode="445235",
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=28, Percent=50 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=28, Percent=50 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=28, Percent=50 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.TotalFee, Fee=28, IntroPercent=50 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.TotalFee, Fee=28, IntroPercent=50 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "805", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.TotalFee, Fee=28, IntroPercent=50 } ,
                         }
                     },
                     new BizCustomerSet() {
                         BizCustomer = new BizCustomerModel(){ CustomerCode="993586",CustomerId="00973171",AccountDeptId="0019",RealAccount="7714815486840", VirtualAccountLen= VirtualAccountLen.Len13,
                             BillTermLen=2,PayerNoLen=5,VirtualAccount1= VirtualAccount1.BillTerm,VirtualAccount2= VirtualAccount2.PayerNo,VirtualAccount3= VirtualAccount3.NoverifyCode,BizCustType= BizCustType.Cust,
-                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,CP.BankCollectionTypeId,CP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
+                            ChannelIds="00,01,02,03,04,05,12,13,14",CollectionTypeIds= LibData.Merge(",",false,SystemCP.BankCollectionTypeId,SystemCP.PostCollectionTypeId,"6V1,6V2,6V3"),AccountStatus= AccountStatus.Enable,ImportBatchNo="BeginData" },
                         BizCustomerFeeDetail =new List<BizCustomerFeeDetailModel>(){
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
-                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, Percent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelGroupType= ChannelGroupType.Bank, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelGroupType= ChannelGroupType.Market, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
+                            new BizCustomerFeeDetailModel(){ CustomerCode= "993586", ChannelGroupType= ChannelGroupType.Post, BankFeeType= BankFeeType.ClearFee_CurMonth, Fee=15, IntroPercent=0 } ,
                         }
                     },
                 };

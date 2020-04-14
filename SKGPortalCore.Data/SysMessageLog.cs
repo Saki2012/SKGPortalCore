@@ -46,7 +46,7 @@ namespace SKGPortalCore.Data
         public List<MessageCode> MsgCodeList { get; set; } = new List<MessageCode>();
         #endregion
         #region Construct
-        public SysMessageLog(IUserModel user, string logPath = @"./Log/", string logFileName = "SKGPortalCore")
+        public SysMessageLog(IUserModel user, string logPath = SystemCP.LogDefaultPath, string logFileName = SystemCP.LogDefaultFileName)
         {
             Errors = new ExecutionErrors();
             LogPath = logPath;
@@ -63,7 +63,7 @@ namespace SKGPortalCore.Data
         /// <param name="args"></param>
         public void AddCustErrorMessage(MessageCode messageCode, params object[] args)
         {
-            ExecutionError err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = "CustomerMessageCode", Source = ErrStack };
+            ExecutionError err = new ExecutionError(string.Format($"{Prefix}{messageCode}:{ResxManage.GetDescription(messageCode)}", args)) { Code = SystemCP.CustomerMessageCode, Source = ErrStack };
             Errors.Add(err);
             MsgCodeList.Add(messageCode);
         }
@@ -74,7 +74,7 @@ namespace SKGPortalCore.Data
         public void AddExceptionError(Exception ex)
         {
             Exception innerEx = ex.GetInnermostException();
-            ExecutionError exErr = new ExecutionError("異常發生，請洽客服人員", innerEx) { Source = innerEx.ToString() };
+            ExecutionError exErr = new ExecutionError(SystemCP.ExpectionMessage, innerEx) { Source = innerEx.ToString() };
             Errors.Add(exErr);
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace SKGPortalCore.Data
                 str.AppendLine($"{now.ToString()} User:{User.KeyId}, {User.UserName} Message:{msg.Message}");
                 if (null != msg.Source)
                 {
-                    if (msg.Code.CompareTo("CustomerMessageCode") != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
+                    if (msg.Code.CompareTo(SystemCP.CustomerMessageCode) != 0) //略過一般操作上錯誤StackMessage，若有需要看其Stack可註解掉。
                     {
                         str.AppendLine($" Stack Message:{msg.Source}");
                     }
@@ -209,7 +209,7 @@ namespace SKGPortalCore.Data
         [Description("通路[{0}]尚未填寫核銷規則，請確認！")]
         Code1014,
         /// <summary>
-        /// 未啟用代收類別「{0}」，請確認！"
+        /// 未啟用代收類別「{0}」，請確認！
         /// </summary>
         [Description("未啟用代收類別「{0}」，請確認！")]
         Code1015,

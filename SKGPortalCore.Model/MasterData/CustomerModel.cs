@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.SourceData;
+﻿using SKGPortalCore.Lib;
+using SKGPortalCore.Model.SourceData;
 using SKGPortalCore.Model.System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -6,53 +7,53 @@ using System.ComponentModel.DataAnnotations;
 namespace SKGPortalCore.Model.MasterData
 {
     /// <summary>
-    /// 客戶
+    /// 客戶資料
     /// </summary>
-    [Description("客戶基本資料")]
+    [Description(SystemCP.DESC_Customer)]
     public class CustomerSet
     {
         /// <summary>
         /// 客戶資料
         /// </summary>
-        public CustomerModel Customer { get; set; }
+        [Description(SystemCP.DESC_Customer)] public CustomerModel Customer { get; set; }
     }
     /// <summary>
     /// 客戶資料
     /// </summary>
-    [Description("客戶基本資料")]
+    [Description(SystemCP.DESC_Customer)]
     public class CustomerModel : MasterDataModel
     {
         /// <summary>
         /// 客戶統編
         /// </summary>
-        [Description("客戶統編"), Key, MaxLength(CP.DataIdLen)] public string CustomerId { get; set; }
+        [Description(SystemCP.DESC_CustomerId), Key, MaxLength(SystemCP.DataIdLen)] public string CustomerId { get; set; }
         /// <summary>
         /// 客戶名稱
         /// </summary>
-        [Description("客戶名稱"), Required, InputField, MaxLength(CP.NormalLen)] public string CustomerName { get; set; }
+        [Description(SystemCP.DESC_CustomerName), Required, InputField, MaxLength(SystemCP.NormalLen)] public string CustomerName { get; set; }
         /// <summary>
         /// 地址
         /// </summary>
-        [Description("地址"), Required, InputField, MaxLength(CP.LongLen)] public string Address { get; set; }
+        [Description(SystemCP.DESC_Address), Required, InputField, MaxLength(SystemCP.LongLen)] public string Address { get; set; }
         /// <summary>
         /// 電話
         /// </summary>
-        [Description("電話"), Required, InputField, MaxLength(CP.NormalLen)] public string Tel { get; set; }
+        [Description(SystemCP.DESC_Tel), Required, InputField, MaxLength(SystemCP.NormalLen)] public string Tel { get; set; }
         /// <summary>
         /// 傳真
         /// </summary>
-        [Description("傳真"), Required, InputField, MaxLength(CP.NormalLen)] public string Fax { get; set; }
+        [Description(SystemCP.DESC_Fax), Required, InputField, MaxLength(SystemCP.NormalLen)] public string Fax { get; set; }
         /// <summary>
         /// 郵遞區號
         /// </summary>
-        [Description("郵遞區號"), Required, InputField, MaxLength(CP.NormalLen)] public string ZipCode { get; set; }
+        [Description(SystemCP.DESC_ZipCode), Required, InputField, MaxLength(SystemCP.NormalLen)] public string ZipCode { get; set; }
         /// <summary>
         /// 郵簡許可單位
         /// </summary>
-        [Description("郵簡許可單位"), Required, InputField, MaxLength(CP.NormalLen)] public string ZipUnit { get; set; }
+        [Description(SystemCP.DESC_ZipUnit), Required, InputField, MaxLength(SystemCP.NormalLen)] public string ZipUnit { get; set; }
         /// <summary>
         /// 郵簡字號
         /// </summary>
-        [Description("郵簡字號"), Required, InputField, MaxLength(CP.NormalLen)] public string ZipNum { get; set; }
+        [Description(SystemCP.DESC_ZipNum), Required, InputField, MaxLength(SystemCP.NormalLen)] public string ZipNum { get; set; }
     }
 }
