@@ -16,7 +16,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 後臺使用者
         /// </summary>
-        [Description(SystemCP.DESC_BackendUser)] public BackendUserModel BackendUser { get; set; }
+        [Description(SystemCP.DESC_BackendUser)] public BackendUserModel BackendUser { get; set; } = new BackendUserModel();
         /// <summary>
         /// 後臺使用者角色權限清單
         /// </summary>

@@ -191,6 +191,38 @@ namespace SKGPortalCore.Lib
         [Description("檔案資訊")] public const string GQL_FileInfo = "fileInfo";
         #endregion
 
+        #region ProgId
+        /// <summary>
+        /// 約定扣款單 ProgId
+        /// </summary>
+        public const string ProgId_AutoDebitBill = "AutoDebitBill";
+        /// <summary>
+        /// 帳單 ProgId
+        /// </summary>
+        public const string ProgId_Bill = "Bill";
+        /// <summary>
+        /// 金流帳簿 ProgId
+        /// </summary>
+        public const string ProgId_CashFlowBill = "CashFlowBill";
+        /// <summary>
+        /// 通路帳簿庫 ProgId
+        /// </summary>
+        public const string ProgId_ChannelEAccountBill = "ChannelEAccountBill";
+        /// <summary>
+        /// 通路帳款核銷單 ProgId
+        /// </summary>
+        public const string ProgId_ChannelWriteOfBill = "ChannelWriteOfBill";
+        /// <summary>
+        /// 入金機 ProgId
+        /// </summary>
+        public const string ProgId_DepositBill = "DepositBill";
+        /// <summary>
+        /// 撥款單 ProgId
+        /// </summary>
+        public const string ProgId_DisbursementBill = "DisbursementBill";
+
+        #endregion
+
         #region Description
         /// <summary>
         /// 約定扣款單

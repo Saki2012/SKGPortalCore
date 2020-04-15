@@ -16,7 +16,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 角色權限資料
         /// </summary>
-        [Description(SystemCP.DESC_Role)] public RoleModel Role { get; set; }
+        [Description(SystemCP.DESC_Role)] public RoleModel Role { get; set; } = new RoleModel();
         /// <summary>
         /// 權限設置
         /// </summary>

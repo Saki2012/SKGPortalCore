@@ -17,11 +17,11 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 代收通路
         /// </summary>
-        [Description(SystemCP.DESC_Channel)] public ChannelModel Channel { get; set; }
+        [Description(SystemCP.DESC_Channel)] public ChannelModel Channel { get; set; } = new ChannelModel();
         /// <summary>
         /// 交易代號與平台通路代號關聯表
         /// </summary>
-        [Description(SystemCP.DESC_ChannelMap)] public List<ChannelMapModel> ChannelMap { get; set; }
+        [Description(SystemCP.DESC_ChannelMap)] public List<ChannelMapModel> ChannelMap { get; set; } = new List<ChannelMapModel>();
     }
     /// <summary>
     /// 代收通路

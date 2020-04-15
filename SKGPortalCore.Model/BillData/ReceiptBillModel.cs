@@ -19,7 +19,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 收款單
         /// </summary>
-        [Description(SystemCP.DESC_ReceiptBill)] public ReceiptBillModel ReceiptBill { get; set; }
+        [Description(SystemCP.DESC_ReceiptBill)] public ReceiptBillModel ReceiptBill { get; set; } = new ReceiptBillModel();
         /// <summary>
         /// 收款單異動說明表
         /// </summary>

@@ -15,9 +15,9 @@ namespace SKGPortalCore.Model.BillData
 
     public class ChannelWriteOfBillSet
     {
-        [Description(SystemCP.DESC_ChannelWriteOfBill)] public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; }
-        [Description(SystemCP.DESC_ChannelWriteOfDt)] public List<ChannelWriteOfDetailModel> ChannelWriteOfDetail { get; set; }
-        [Description(SystemCP.DESC_CashFlowWriteOfDt)] public List<CashFlowWriteOfDetailModel> CashFlowWriteOfDetail { get; set; }
+        [Description(SystemCP.DESC_ChannelWriteOfBill)] public ChannelWriteOfBillModel ChannelWriteOfBill { get; set; } = new ChannelWriteOfBillModel();
+        [Description(SystemCP.DESC_ChannelWriteOfDt)] public List<ChannelWriteOfDetailModel> ChannelWriteOfDetail { get; set; } = new List<ChannelWriteOfDetailModel>();
+        [Description(SystemCP.DESC_CashFlowWriteOfDt)] public List<CashFlowWriteOfDetailModel> CashFlowWriteOfDetail { get; set; } = new List<CashFlowWriteOfDetailModel>();
     }
     /// <summary>
     /// 通路帳款核銷單

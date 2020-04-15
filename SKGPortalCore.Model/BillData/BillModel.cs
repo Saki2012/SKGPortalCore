@@ -40,7 +40,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 帳單編號
         /// </summary>  
-        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; } = string.Empty;
         /// <summary>
         /// 企業編號
         /// </summary>

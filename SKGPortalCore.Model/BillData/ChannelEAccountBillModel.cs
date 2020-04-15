@@ -20,11 +20,11 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 通路帳簿
         /// </summary>
-        [Description(SystemCP.DESC_ChannelEAccountBill)] public ChannelEAccountBillModel ChannelEAccountBill { get; set; }
+        [Description(SystemCP.DESC_ChannelEAccountBill)] public ChannelEAccountBillModel ChannelEAccountBill { get; set; } = new ChannelEAccountBillModel();
         /// <summary>
         /// 通路收款明細帳簿
         /// </summary>
-        [Description(SystemCP.DESC_ChannelEAccountBillDt)] public List<ChannelEAccountBillDetailModel> ChannelEAccountBillDetail { get; set; }
+        [Description(SystemCP.DESC_ChannelEAccountBillDt)] public List<ChannelEAccountBillDetailModel> ChannelEAccountBillDetail { get; set; } = new List<ChannelEAccountBillDetailModel>();
     }
 
     /// <summary>

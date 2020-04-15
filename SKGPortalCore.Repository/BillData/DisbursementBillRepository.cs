@@ -1,10 +1,13 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Repository.BillData
 {
+    [ProgId(SystemCP.ProgId_DisbursementBill)]
     public class DisbursementBillRepository : BasicRepository<DisbursementBillSet>
     {
         #region Construct

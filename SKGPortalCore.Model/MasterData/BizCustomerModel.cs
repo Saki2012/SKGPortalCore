@@ -18,11 +18,11 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 商戶資料
         /// </summary>
-        [Description(SystemCP.DESC_BizCustomer)] public BizCustomerModel BizCustomer { get; set; }
+        [Description(SystemCP.DESC_BizCustomer)] public BizCustomerModel BizCustomer { get; set; } = new BizCustomerModel();
         /// <summary>
         /// 商戶手續費管理明細
         /// </summary>
-        [Description(SystemCP.DESC_BizCustomerFeeDt)] public List<BizCustomerFeeDetailModel> BizCustomerFeeDetail { get; set; }
+        [Description(SystemCP.DESC_BizCustomerFeeDt)] public List<BizCustomerFeeDetailModel> BizCustomerFeeDetail { get; set; } = new List<BizCustomerFeeDetailModel>();
     }
     /// <summary>
     /// 商戶資料

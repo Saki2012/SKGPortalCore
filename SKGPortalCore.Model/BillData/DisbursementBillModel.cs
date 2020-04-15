@@ -16,7 +16,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 撥款單
         /// </summary>
-        [Description(SystemCP.DESC_DisbursementBill)] public DisbursementBillModel DisbursementBill { get; set; }
+        [Description(SystemCP.DESC_DisbursementBill)] public DisbursementBillModel DisbursementBill { get; set; } = new DisbursementBillModel();
     }
 
 

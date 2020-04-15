@@ -15,7 +15,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 客戶資料
         /// </summary>
-        [Description(SystemCP.DESC_Customer)] public CustomerModel Customer { get; set; }
+        [Description(SystemCP.DESC_Customer)] public CustomerModel Customer { get; set; } = new CustomerModel();
     }
     /// <summary>
     /// 客戶資料

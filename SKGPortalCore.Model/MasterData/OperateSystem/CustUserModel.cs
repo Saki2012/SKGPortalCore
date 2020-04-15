@@ -17,11 +17,11 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 前臺使用者
         /// </summary>
-        [Description(SystemCP.DESC_CustUser)] public CustUserModel CustUser { get; set; }
+        [Description(SystemCP.DESC_CustUser)] public CustUserModel CustUser { get; set; } = new CustUserModel();
         /// <summary>
         /// 前臺使用者角色權限清單
         /// </summary>
-        [Description(SystemCP.DESC_CustUserRoleList)] public List<CustUserRoleModel> CustUserRoleList { get; set; }
+        [Description(SystemCP.DESC_CustUserRoleList)] public List<CustUserRoleModel> CustUserRoleList { get; set; } = new List<CustUserRoleModel>();
     }
     /// <summary>
     /// 前臺使用者

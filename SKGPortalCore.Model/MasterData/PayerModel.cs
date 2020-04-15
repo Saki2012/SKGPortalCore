@@ -17,7 +17,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 繳款人
         /// </summary>
-        [Description(SystemCP.DESC_Payer)] public PayerModel Payer { get; set; }
+        [Description(SystemCP.DESC_Payer)] public PayerModel Payer { get; set; } = new PayerModel();
     }
 
     /// <summary>

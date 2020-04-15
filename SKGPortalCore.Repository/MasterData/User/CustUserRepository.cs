@@ -21,8 +21,8 @@ namespace SKGPortalCore.Repository.MasterData.User
             if (null == set) return null;
             if (!BizAccountLogin.CheckAccountPasuwado(set, pasuwado)) return null;
             using RoleRepository rep = new RoleRepository(DataAccess);
-            foreach (var custUserRole in set.CustUserRole) custUserRole.Permissions = rep.QueryData(new object[] { custUserRole.RoleId }).RolePermission;
-            List<IRoleModel> UserRoles = set.CustUserRole.Cast<IRoleModel>().ToList();
+            foreach (var custUserRole in set.CustUserRoleList) custUserRole.Permissions = rep.QueryData(new object[] { custUserRole.RoleId }).RolePermission;
+            List<IRoleModel> UserRoles = set.CustUserRoleList.Cast<IRoleModel>().ToList();
             session.User = set.CustUser;
             List<PermissionTokenModel> permissions = BizAccountLogin.GetRolePermissionsToken(session.SessionId, UserRoles);
             return permissions;

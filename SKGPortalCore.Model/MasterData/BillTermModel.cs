@@ -18,11 +18,11 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 期別資料
         /// </summary>
-        [Description(SystemCP.DESC_BillTerm)] public BillTermModel BillTerm { get; set; }
+        [Description(SystemCP.DESC_BillTerm)] public BillTermModel BillTerm { get; set; } = new BillTermModel();
         /// <summary>
         /// 期別費用明細
         /// </summary>
-        [Description(SystemCP.DESC_BillTermDt)] public List<BillTermDetailModel> BillTermDetail { get; set; }
+        [Description(SystemCP.DESC_BillTermDt)] public List<BillTermDetailModel> BillTermDetail { get; set; } = new List<BillTermDetailModel>();
     }
     /// <summary>
     /// 期別

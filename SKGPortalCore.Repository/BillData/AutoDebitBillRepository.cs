@@ -16,7 +16,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 約定扣款單庫
     /// </summary>
-    [ProgId("AutoDebitBill"), Description("約定扣款單")]
+    [ProgId(SystemCP.ProgId_AutoDebitBill)]
     public class AutoDebitBillRepository : BasicRepository<AutoDebitBillSet>
     {
         #region Construct

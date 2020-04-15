@@ -16,7 +16,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 金流帳簿
         /// </summary>
-        [Description(SystemCP.DESC_CashFlowBill)] public CashFlowBillModel CashFlowBill { get; set; }
+        [Description(SystemCP.DESC_CashFlowBill)] public CashFlowBillModel CashFlowBill { get; set; } = new CashFlowBillModel();
     }
 
     /// <summary>
