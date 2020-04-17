@@ -52,7 +52,7 @@ namespace SKGPortalCore.Model.BillData
         /// </summary>
         [Description(SystemCP.DESC_CollectionTypeId)] public string CollectionTypeId { get; set; }
         /// <summary>
-        /// 
+        /// 代收通路
         /// </summary>
         [ForeignKey(nameof(ChannelId))] public ChannelModel Channel { get; set; }
         /// <summary>

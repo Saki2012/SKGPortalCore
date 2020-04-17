@@ -71,9 +71,9 @@ namespace SKGPortalCore.Repository.BillData
         /// 通路手續費月結報表
         /// (舊：手續費報表)
         /// </summary>
-        public void ChannelTotalFeeRpt()
+        public void ChannelTotalFeeRpt(string customerId)
         {
-            DataTable rpt = BizReceiptBill.GetChannelTotalFeeRpt(DataAccess);
+            DataTable rpt = BizReceiptBill.GetChannelTotalFeeRpt(DataAccess, customerId);
             using LibDocument doc = new LibDocument(); doc.ExportExcel(rpt);
 
         }
@@ -81,9 +81,9 @@ namespace SKGPortalCore.Repository.BillData
         /// 通路手續費月結收據
         /// (舊：手續費報表)
         /// </summary>
-        public void ChannelTotalFeeReceiptRpt()
+        public void ChannelTotalFeeReceiptRpt(string customerId)
         {
-            BizReceiptBill.GetChannelTotalFeeRpt(DataAccess);
+            BizReceiptBill.GetChannelTotalFeeRpt(DataAccess, customerId);
         }
 
 
@@ -93,24 +93,24 @@ namespace SKGPortalCore.Repository.BillData
         /// 收款明細報表
         /// (舊：銷帳明細資料查詢)
         /// </summary>
-        public void ReceiptRpt()
+        public List<ReceiptRptModel> ReceiptRpt(string customerId, string customerCode, string[] channelIds, DateTime beginDate, DateTime endDate)
         {
-            //BizReceiptBill.GetReceiptRpt(DataAccess);
+            return BizReceiptBill.GetReceiptRpt(DataAccess, customerId, customerCode, channelIds, beginDate, endDate);
         }
         /// <summary>
         /// 總收款報表-客戶別
         /// </summary>
-        public void TotalReceipt_Customer()
+        public void TotalReceipt_Customer(DateTime tradeDate)
         {
-            BizReceiptBill.GetTotalReceipt_Customer(DataAccess);
+            BizReceiptBill.GetTotalReceipt_Customer(DataAccess, tradeDate);
 
         }
         /// <summary>
         /// 總收款報表-通路別
         /// </summary>
-        public void TotalReceipt_Channel()
+        public void TotalReceipt_Channel(DateTime tradeDate)
         {
-            BizReceiptBill.GetTotalReceipt_Channel(DataAccess);
+            BizReceiptBill.GetTotalReceipt_Channel(DataAccess, tradeDate);
         }
         #endregion
 

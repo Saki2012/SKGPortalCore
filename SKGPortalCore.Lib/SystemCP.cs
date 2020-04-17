@@ -422,7 +422,7 @@ namespace SKGPortalCore.Lib
         /// <summary>
         /// 筆數
         /// </summary>
-        public const string TotalCount = "筆數";
+        public const string DESC_TotalCount = "筆數";
         /// <summary>
         /// 金流帳簿
         /// </summary>
@@ -967,6 +967,10 @@ namespace SKGPortalCore.Lib
         /// 入帳金額
         /// </summary>
         public const string DESC_IncomeAmount = "入帳金額";
+        /// <summary>
+        /// 總收款報表
+        /// </summary>
+        public const string DESC_TotalReceiptRpt = "總收款報表";
         #endregion
 
         #region Index

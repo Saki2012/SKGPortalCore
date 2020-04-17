@@ -96,7 +96,7 @@ namespace SKGPortalCore.Data
         /// <returns></returns>
         private static DbContextOptions<ApplicationDbContext> GetConnectionOption(IConfiguration config)
         {
-            if (null == config) config = Configuration;
+            if (config is null) config = Configuration;
             DbContextOptionsBuilder<ApplicationDbContext> builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             builder.UseSqlServer(config.GetConnectionString(SystemCP.SqlConnection), b => b.MigrationsAssembly(nameof(SKGPortalCore)));
             return builder.Options;

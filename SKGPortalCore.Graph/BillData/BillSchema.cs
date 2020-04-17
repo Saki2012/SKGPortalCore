@@ -42,6 +42,21 @@ namespace SKGPortalCore.Graph.BillData
                 File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
                 return true;
             });
+
+            Field(
+            type: typeof(BooleanGraphType),
+            name: nameof(BillRepository.BillPayProgressRpt),
+            description: ResxManage.GetDescription(typeof(BillRepository), nameof(BillRepository.BillPayProgressRpt)),
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
+            ),
+            resolve: context =>
+            {
+                return repository.BillPayProgressRpt("", "");
+            });
+
+
+
         }
     }
     //Input

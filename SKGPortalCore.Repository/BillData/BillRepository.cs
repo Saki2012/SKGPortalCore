@@ -40,6 +40,7 @@ namespace SKGPortalCore.Repository.BillData
         /// 繳費進度報表
         /// (舊：銷帳報表列印)
         /// </summary>
+        [Description(SystemCP.DESC_BillPayProgressRpt)]
         public List<BillPayProgressRptModel> BillPayProgressRpt(string customerCode, string billTermId)
         {
             return BizBill.GetBillPayProgressRpt(DataAccess, customerCode, billTermId);

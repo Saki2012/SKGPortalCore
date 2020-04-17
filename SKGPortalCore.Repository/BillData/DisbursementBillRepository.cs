@@ -51,7 +51,7 @@ namespace SKGPortalCore.Repository.BillData
         #region Private
         private void WriteBackBillNo(string billNo, string channelWriteOfBillNo)
         {
-            ChannelWriteOfBillModel b = DataAccess.Set<ChannelWriteOfBillModel>().FirstOrDefault(p => p.BillNo == channelWriteOfBillNo);
+            ChannelWriteOfBillModel b = DataAccess.Set<ChannelWriteOfBillModel>().FirstOrDefault(p => p.BillNo.Equals(channelWriteOfBillNo));
             b.DisBillNo = billNo;
             DataAccess.Set<ChannelWriteOfBillModel>().Update(b);
         }

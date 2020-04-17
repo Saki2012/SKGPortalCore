@@ -47,6 +47,7 @@ namespace SKGPortalCore.Repository
             }
         }
         #endregion
+
         #region SystemProperty
         /// <summary>
         /// 
@@ -115,6 +116,7 @@ namespace SKGPortalCore.Repository
         /// </summary>
         private SysChangeLog SysChangeLog { get; }
         #endregion
+
         #region Construct
         public BasicRepository(ApplicationDbContext dataAccess)
         {
@@ -130,6 +132,7 @@ namespace SKGPortalCore.Repository
             SysChangeLog = new SysChangeLog(dataAccess, ModelReflects);
         }
         #endregion
+
         #region Public
         /// <summary>
         /// 新增
@@ -354,6 +357,7 @@ namespace SKGPortalCore.Repository
             }
         }
         #endregion
+
         #region Protected
         /// <summary>
         /// 進Entity後
@@ -394,6 +398,7 @@ namespace SKGPortalCore.Repository
         /// <param name="status"></param>
         protected virtual void AfterEndCase(TSet set, bool status) { }
         #endregion
+
         #region Private
         /// <summary>
         /// 處理新增動作
@@ -685,7 +690,6 @@ namespace SKGPortalCore.Repository
             return dbSet;
         }
         #endregion
-
 
         #region IDisposable Support
         private bool disposedValue = false; // 偵測多餘的呼叫

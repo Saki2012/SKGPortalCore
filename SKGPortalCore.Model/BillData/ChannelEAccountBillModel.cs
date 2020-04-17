@@ -76,7 +76,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 筆數
         /// </summary>
-        [Description(SystemCP.TotalCount)] public int TotalCount { get; set; }
+        [Description(SystemCP.DESC_TotalCount)] public int TotalCount { get; set; }
     }
     /// <summary>
     /// 通路收款明細帳簿

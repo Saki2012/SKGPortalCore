@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -54,11 +55,9 @@ namespace SKGPortalCore.Lib
         /// <returns></returns>
         public static string Merge(string mergeStr, bool hasEmpty, params object[] strs)
         {
-            if (null == strs || strs.Length == 0)
-            {
-                return string.Empty;
-            }
+            if (null == strs || strs.Length == 0) return string.Empty;
             int len = strs.Length;
+            //StringBuilder results =new StringBuilder();
             string result = strs[0].ToString(), s;
             for (int i = 1; i < len; i++)
             {
@@ -235,6 +234,26 @@ namespace SKGPortalCore.Lib
         {
             return Convert.ToByte(val);
         }
+
+
+        /// <summary>
+        /// 獲取月初日
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static DateTime GetFirstDate(this DateTime val)
+        {
+            return val.AddDays(-(val.Day - 1));
+        }
+        /// <summary>
+        /// 獲取月末日
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static DateTime GetLastDate(this DateTime val)
+        {
+            return val.GetFirstDate().AddMonths(1).AddDays(-1);
+        }
         public static DateTime ToDateTime(this string val)
         {
             val = val.ToADDateFormat();
@@ -364,6 +383,15 @@ namespace SKGPortalCore.Lib
             stream.Seek(0, SeekOrigin.Begin);
             return bytes;
         }
+
+        public static List<T> SumListData<T>(this List<T> val, Expression<Func<T, T, object>> propertyExpression)
+        {
+            //var propertyInfo = (propertyExpression.Body.NodeType == ExpressionType.Convert) ?
+            //(PropertyInfo)((MemberExpression)((UnaryExpression)propertyExpression.Body).Operand).Member
+            //: (PropertyInfo)((MemberExpression)propertyExpression.Body).Member;
+            return val;
+        }
+
     }
     public static class GraphQLChangeType
     {
