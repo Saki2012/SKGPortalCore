@@ -33,6 +33,7 @@ namespace SKGPortalCore.Repository.BillData
             });
         }
         #endregion
+
         #region Protected
         protected override void AfterSetEntity(AutoDebitBillSet set, FuncAction action)
         {
@@ -41,6 +42,5 @@ namespace SKGPortalCore.Repository.BillData
             BizAutoDebitBill.SetData(set, ProgId, DataAccess);
         }
         #endregion
-
     }
 }

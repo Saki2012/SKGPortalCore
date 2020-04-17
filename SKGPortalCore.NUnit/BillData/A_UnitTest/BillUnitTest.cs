@@ -75,6 +75,13 @@ namespace SKGPortalCore.NUnit.BillData.A_UnitTest
                 Repo.CommitData(Model.System.FuncAction.Create);
                 //AssertCorrectData(expectData, actualData);
             }
+            [Test]
+            public void Test()
+            {
+                var repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
+                repo.ChannelTotalFeeRpt();
+            }
+
         }
         #endregion
 

@@ -56,6 +56,10 @@ namespace SKGPortalCore.Lib
         /// </summary>
         public const string LogDefaultPath = @"./Log/";
         /// <summary>
+        /// 文件路徑
+        /// </summary>
+        public const string DocPath = @"D:\ibankRoot\Ftp_SKGPortalCore\Doc\";
+        /// <summary>
         /// Log默認檔名
         /// </summary>
         public const string LogDefaultFileName = "SKGPortalCoreLog";
@@ -220,7 +224,50 @@ namespace SKGPortalCore.Lib
         /// 撥款單 ProgId
         /// </summary>
         public const string ProgId_DisbursementBill = "DisbursementBill";
-
+        /// <summary>
+        /// 收款單 ProgId
+        /// </summary>
+        public const string ProgId_ReceiptBill = "ReceiptBill";
+        /// <summary>
+        /// 後臺用戶 ProgId
+        /// </summary>
+        public const string ProgId_BackendUser = "BackendUser";
+        /// <summary>
+        /// 前臺用戶 ProgId
+        /// </summary>
+        public const string ProgId_CustUser = "CustUser";
+        /// <summary>
+        /// 角色權限 ProgId
+        /// </summary>
+        public const string ProgId_Role = "Role";
+        /// <summary>
+        /// 期別 ProgId
+        /// </summary>
+        public const string ProgId_BillTerm = "BillTerm";
+        /// <summary>
+        /// 商戶資料 ProgId
+        /// </summary>
+        public const string ProgId_BizCustomer = "BizCustomer";
+        /// <summary>
+        /// 代收通路 ProgId
+        /// </summary>
+        public const string ProgId_Channel = "Channel";
+        /// <summary>
+        /// 代收類別 ProgId
+        /// </summary>
+        public const string ProgId_CollectionType = "CollectionType";
+        /// <summary>
+        /// 客戶 ProgId
+        /// </summary>
+        public const string ProgId_Customer = "Customer";
+        /// <summary>
+        /// 部門 ProgId
+        /// </summary>
+        public const string ProgId_Dept = "Dept";
+        /// <summary>
+        /// 繳款人 ProgId
+        /// </summary>
+        public const string ProgId_Payer = "Payer";
         #endregion
 
         #region Description
@@ -337,7 +384,7 @@ namespace SKGPortalCore.Lib
         /// </summary>
         public const string DESC_ChannelId = "代收通路代號";
         /// <summary>
-        /// 通路代號
+        /// 代收通路名稱
         /// </summary>
         public const string DESC_ChannelName = "代收通路名稱";
         /// <summary>
@@ -904,6 +951,22 @@ namespace SKGPortalCore.Lib
         /// 權限
         /// </summary>
         public const string DESC_FuncAction = "權限";
+        /// <summary>
+        /// 帳單繳費進度報表
+        /// </summary>
+        public const string DESC_BillPayProgressRpt = "帳單繳費進度報表";
+        /// <summary>
+        /// 客戶手續費報表
+        /// </summary>
+        public const string DESC_ChannelTotalFeeRpt = "客戶手續費報表";
+        /// <summary>
+        /// 收款明細報表
+        /// </summary>
+        public const string DESC_ReceiptRpt = "收款明細報表";
+        /// <summary>
+        /// 入帳金額
+        /// </summary>
+        public const string DESC_IncomeAmount = "入帳金額";
         #endregion
 
         #region Index

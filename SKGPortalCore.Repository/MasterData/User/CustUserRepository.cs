@@ -1,16 +1,19 @@
 ﻿using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.MasterData.User
 {
     /// <summary>
     /// 前臺用戶庫
     /// </summary>
+    [ProgId(SystemCP.ProgId_CustUser)]
     public class CustUserRepository : BasicRepository<CustUserSet>, IUSerRepository<CustUserSet>
     {
         public CustUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

@@ -12,7 +12,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// <summary>
     /// 期別庫
     /// </summary>
-    [ProgId("BillTerm"), Description("期別")]
+    [ProgId(SystemCP.ProgId_BillTerm)]
     public class BillTermRepository : BasicRepository<BillTermSet>
     {
         #region Construct
@@ -30,6 +30,7 @@ namespace SKGPortalCore.Repository.MasterData
             });
         }
         #endregion
+
         #region Protected
         protected override void AfterSetEntity(BillTermSet set, FuncAction action)
         {

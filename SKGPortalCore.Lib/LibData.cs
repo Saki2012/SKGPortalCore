@@ -220,6 +220,7 @@ namespace SKGPortalCore.Lib
         }
         public static decimal ToDecimal(this object val)
         {
+            if (null == val || DBNull.Value == val) return decimal.Zero;
             return Convert.ToDecimal(val);
         }
         public static double ToDouble(this object val)
@@ -350,6 +351,18 @@ namespace SKGPortalCore.Lib
             memoryStream.Seek(0, SeekOrigin.Begin);
             object obj = binaryFormatter.Deserialize(memoryStream);
             return (T)obj;
+        }
+        /// <summary>
+        /// 將 Stream 轉成 byte[]
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public static byte[] StreamToBytes(this Stream stream)
+        {
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            stream.Seek(0, SeekOrigin.Begin);
+            return bytes;
         }
     }
     public static class GraphQLChangeType

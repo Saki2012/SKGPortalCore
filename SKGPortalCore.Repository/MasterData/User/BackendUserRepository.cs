@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SKGPortalCore.Repository.MasterData.User
@@ -13,6 +15,7 @@ namespace SKGPortalCore.Repository.MasterData.User
     /// <summary>
     /// 後臺用戶庫
     /// </summary>
+    [ProgId(SystemCP.ProgId_BackendUser)]
     public class BackendUserRepository : BasicRepository<BackendUserSet>, IUSerRepository<BackendUserSet>
     {
         public BackendUserRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

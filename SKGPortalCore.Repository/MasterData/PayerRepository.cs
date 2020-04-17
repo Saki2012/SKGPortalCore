@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
 using SKGPortalCore.Model.MasterData;
@@ -10,6 +11,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// <summary>
     /// 繳款人庫
     /// </summary>
+    [ProgId(SystemCP.DESC_Payer)]
     public class PayerRepository : BasicRepository<PayerSet>
     {
         public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess)

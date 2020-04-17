@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 using SKGPortalCore.Data;
+using SKGPortalCore.Lib;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
@@ -10,7 +11,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 金流帳簿庫
     /// </summary>
-    [ProgId("CashFlowBill"), Description("金流帳簿")]
+    [ProgId(SystemCP.ProgId_CashFlowBill)]
     public class CashFlowBillRepository : BasicRepository<CashFlowBillSet>
     {
         #region Construct

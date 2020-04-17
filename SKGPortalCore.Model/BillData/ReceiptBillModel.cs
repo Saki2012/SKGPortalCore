@@ -38,7 +38,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 商戶資料
         /// </summary>
-        [ForeignKey(nameof(CustomerCode))] public BizCustomerModel Customer { get; set; }
+        [ForeignKey(nameof(CustomerCode))] public BizCustomerModel BizCustomer { get; set; }
         /// <summary>
         /// 企業編號
         /// </summary>

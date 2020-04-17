@@ -15,7 +15,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 入金機庫
     /// </summary>
-    [ProgId("DepositBill"), Description("入金機")]
+    [ProgId(SystemCP.ProgId_DepositBill)]
     public class DepositBillRepository : BasicRepository<DepositBillSet>
     {
         #region Construct
@@ -32,6 +32,7 @@ namespace SKGPortalCore.Repository.BillData
             });
         }
         #endregion
+
         #region Protected
         protected override void AfterSetEntity(DepositBillSet set, FuncAction action)
         {

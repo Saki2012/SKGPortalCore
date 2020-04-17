@@ -13,7 +13,7 @@ namespace SKGPortalCore.Repository.BillData
     /// <summary>
     /// 通路帳簿庫
     /// </summary>
-    [ProgId("ChannelEAccountBill"), Description("通路帳簿")]
+    [ProgId(SystemCP.ProgId_ChannelEAccountBill)]
     public class ChannelEAccountBillRepository : BasicRepository<ChannelEAccountBillSet>
     {
         #region Construct
