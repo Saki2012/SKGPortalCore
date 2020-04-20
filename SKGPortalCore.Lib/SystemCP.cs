@@ -79,6 +79,26 @@ namespace SKGPortalCore.Lib
         /// 
         /// </summary>
         public const string RowId = "RowId";
+        /// <summary>
+        /// 主鍵
+        /// </summary>
+        public const string KeyVal = "keyVal";
+        /// <summary>
+        /// Json Web Token
+        /// </summary>
+        public const string JWT = "jwt";
+        /// <summary>
+        /// 過濾條件
+        /// </summary>
+        public const string Condition = "condition";
+        /// <summary>
+        /// 表單資料
+        /// </summary>
+        public const string Set = "set";
+        /// <summary>
+        /// 狀態
+        /// </summary>
+        public const string Status = "status";
         #endregion
 
         #region Model
@@ -114,85 +134,6 @@ namespace SKGPortalCore.Lib
         /// 大筆資料長度
         /// </summary>
         public const int LongLen = 100;
-        #endregion
-
-        #region GraphQL
-        /// <summary>
-        /// 查看表單
-        /// </summary>
-        [Description("查看表單")] public const string GQL_QueryData = "queryData";
-        /// <summary>
-        /// 清單列表查詢
-        /// </summary>
-        [Description("清單列表查詢")] public const string GQL_QueryList = "queryList";
-        /// <summary>
-        /// 新增表單
-        /// </summary>
-        [Description("新增表單")] public const string GQL_Create = "create";
-        /// <summary>
-        /// 修改表單
-        /// </summary>
-        [Description("修改表單")] public const string GQL_Update = "update";
-        /// <summary>
-        /// 刪除表單
-        /// </summary>
-        [Description("刪除表單")] public const string GQL_Delete = "delete";
-        /// <summary>
-        /// 審核表單
-        /// </summary>
-        [Description("審核表單")] public const string GQL_Approve = "approve";
-        /// <summary>
-        /// 作廢表單
-        /// </summary>
-        [Description("作廢表單")] public const string GQL_Invalid = "invalid";
-        /// <summary>
-        /// 結案表單
-        /// </summary>
-        [Description("結案表單")] public const string GQL_EndCase = "endCase";
-        /// <summary>
-        /// 表單資料
-        /// </summary>
-        [Description("表單資料")] public const string GQL_Set = "set";
-        /// <summary>
-        /// 主鍵
-        /// </summary>
-        [Description("主鍵")] public const string GQL_KeyVal = "keyVal";
-        /// <summary>
-        /// Json Web Token
-        /// </summary>
-        [Description("Json Web Token")] public const string GQL_JWT = "jwt";
-        /// <summary>
-        /// 過濾條件
-        /// </summary>
-        [Description("過濾條件")] public const string GQL_Condition = "condition";
-        /// <summary>
-        /// 狀態
-        /// </summary>
-        [Description("狀態")] public const string GQL_Status = "status";
-        /// <summary>
-        /// 帳號
-        /// </summary>
-        [Description("帳號")] public const string GQL_Account = "account";
-        /// <summary>
-        /// 密碼
-        /// </summary>
-        [Description("密碼")] public const string GQL_Pasuwado = "pasuwado";
-        /// <summary>
-        /// 登入帳號
-        /// </summary>
-        [Description("登入帳號")] public const string GQL_Login = "Login";
-        /// <summary>
-        /// 登出帳號
-        /// </summary>
-        [Description("登出帳號")] public const string GQL_Logout = "Logout";
-        /// <summary>
-        /// 上傳檔案
-        /// </summary>
-        [Description("上傳檔案")] public const string GQL_UploadFile = "UploadFile";
-        /// <summary>
-        /// 檔案資訊
-        /// </summary>
-        [Description("檔案資訊")] public const string GQL_FileInfo = "fileInfo";
         #endregion
 
         #region ProgId
@@ -971,6 +912,82 @@ namespace SKGPortalCore.Lib
         /// 總收款報表
         /// </summary>
         public const string DESC_TotalReceiptRpt = "總收款報表";
+        /// <summary>
+        /// 查看表單
+        /// </summary>
+        public const string DESC_QueryData = "查看表單";
+        /// <summary>
+        /// 清單列表查詢
+        /// </summary>
+        public const string DESC_QueryList = "清單列表查詢";
+        /// <summary>
+        /// 新增表單
+        /// </summary>
+        public const string DESC_Create = "新增表單";
+        /// <summary>
+        /// 修改表單
+        /// </summary>
+        public const string DESC_Update = "修改表單";
+        /// <summary>
+        /// 刪除表單
+        /// </summary>
+        public const string DESC_Delete = "刪除表單";
+        /// <summary>
+        /// 審核表單
+        /// </summary>
+        public const string DESC_Approve = "審核表單";
+        /// <summary>
+        /// 作廢表單
+        /// </summary>
+        public const string DESC_Invalid = "作廢表單";
+        /// <summary>
+        /// 結案表單
+        /// </summary>
+        public const string DESC_EndCase = "結案表單";
+        /// <summary>
+        /// 表單資料
+        /// </summary>
+        public const string DESC_Set = "表單資料";
+        /// <summary>
+        /// 主鍵
+        /// </summary>
+        public const string DESC_KeyVal = "主鍵";
+        /// <summary>
+        /// Json Web Token
+        /// </summary>
+        public const string DESC_JWT = "Json Web Token";
+        /// <summary>
+        /// 過濾條件
+        /// </summary>
+        public const string DESC_Condition = "過濾條件";
+        /// <summary>
+        /// 狀態
+        /// </summary>
+        public const string DESC_Status = "狀態";
+        /// <summary>
+        /// 帳號
+        /// </summary>
+        public const string DESC_Account = "帳號";
+        /// <summary>
+        /// 密碼
+        /// </summary>
+        public const string DESC_Pasuwado = "密碼";
+        /// <summary>
+        /// 登入帳號
+        /// </summary>
+        public const string DESC_Login = "登入帳號";
+        /// <summary>
+        /// 登出帳號
+        /// </summary>
+        public const string DESC_Logout = "登出帳號";
+        /// <summary>
+        /// 上傳檔案
+        /// </summary>
+        public const string DESC_UploadFile = "上傳檔案";
+        /// <summary>
+        /// 檔案資訊
+        /// </summary>
+        public const string DESC_FileInfo = "檔案資訊";
         #endregion
 
         #region Index

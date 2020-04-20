@@ -20,21 +20,21 @@ namespace SKGPortalCore.Graph.MasterData.User
         {
             Field(
                     type: typeof(ListGraphType<Permission>),
-                    name: SystemCP.GQL_Login,
-                    description: ResxManage.GetDescription(nameof(SystemCP.GQL_Login)),
+                    name: SystemCP.DESC_Login,
+                    description: SystemCP.DESC_Login,
                     arguments: new QueryArguments(
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_Account, Description = ResxManage.GetDescription(nameof(SystemCP.GQL_Account)) },
-                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_Pasuwado, Description = ResxManage.GetDescription(nameof(SystemCP.GQL_Pasuwado)) }
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.DESC_Account, Description = SystemCP.DESC_Account },
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.DESC_Pasuwado, Description = SystemCP.DESC_Pasuwado }
                     ),
                     resolve: context =>
                     {
-                        return repository.Login(session, context.GetArgument<string>(SystemCP.GQL_Account), context.GetArgument<string>(SystemCP.GQL_Pasuwado));
+                        return repository.Login(session, context.GetArgument<string>(SystemCP.DESC_Account), context.GetArgument<string>(SystemCP.DESC_Pasuwado));
                     }
                     );
             Field(
                     type: typeof(ListGraphType<Permission>),
-                    name: SystemCP.GQL_Logout,
-                    description: ResxManage.GetDescription(nameof(SystemCP.GQL_Logout)),
+                    name: SystemCP.DESC_Logout,
+                    description: SystemCP.DESC_Logout,
                     resolve: context =>
                     {
                         repository.Logout(session);

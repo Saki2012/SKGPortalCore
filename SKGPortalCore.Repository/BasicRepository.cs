@@ -2,16 +2,14 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SKGPortalCore.Data;
 using SKGPortalCore.Lib;
-using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Model.System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -139,6 +137,7 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="set"></param>
         /// <returns></returns>
+        [Description(SystemCP.DESC_Create)]
         public virtual TSet Create(TSet set)
         {
             try
@@ -160,6 +159,7 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="inputSet"></param>
         /// <returns></returns>
+        [Description(SystemCP.DESC_Update)]
         public virtual TSet Update(object[] key, TSet inputSet)
         {
             try
@@ -182,6 +182,7 @@ namespace SKGPortalCore.Repository
         /// 刪除
         /// </summary>
         /// <param name="key"></param>
+        [Description(SystemCP.DESC_Delete)]
         public virtual void Delete(object[] key)
         {
             try
@@ -200,10 +201,11 @@ namespace SKGPortalCore.Repository
             }
         }
         /// <summary>
-        /// 查詢
+        /// 查看表單
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
+        [Description(SystemCP.DESC_QueryData)]
         public virtual TSet QueryData(object[] key)
         {
             PropertyInfo[] setProperties = typeof(TSet).GetProperties();
@@ -253,6 +255,7 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
+        [Description(SystemCP.DESC_QueryList)]
         public virtual IList QueryList(string selectFields, string condition)
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
@@ -268,6 +271,7 @@ namespace SKGPortalCore.Repository
         /// <param name="key"></param>
         /// <param name="status"></param>
         /// <returns></returns>
+        [Description(SystemCP.DESC_Approve)]
         public virtual TSet Approve(object[] key, bool status)
         {
             TSet set = QueryData(key);
@@ -291,6 +295,7 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 作廢
         /// </summary>
+        [Description(SystemCP.DESC_Invalid)]
         public virtual TSet Invalid(object[] key, bool status)
         {
             TSet set = QueryData(key);
@@ -314,6 +319,7 @@ namespace SKGPortalCore.Repository
         /// <summary>
         /// 結案
         /// </summary>
+        [Description(SystemCP.DESC_EndCase)]
         public virtual TSet EndCase(object[] key, bool status)
         {
             TSet set = QueryData(key);

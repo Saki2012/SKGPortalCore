@@ -55,12 +55,12 @@ namespace SKGPortalCore.Graph
         {
             Field(
                 type: typeof(TSetType),
-                name: SystemCP.GQL_QueryData,
-                description: ResxManage.GetDescription( nameof(SystemCP.GQL_QueryData)),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_JWT)) }),
+                name: nameof(repo.QueryData),
+                description: SystemCP.DESC_QueryData,
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
                 resolve: context =>
                 {
-                    object[] keyVal = (context.GetArgument<object>(SystemCP.GQL_KeyVal) as List<object>).ToArray();
+                    object[] keyVal = (context.GetArgument<object>(SystemCP.KeyVal) as List<object>).ToArray();
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, keyVal)) return default;
                     TSet set = repo.QueryData(keyVal);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -69,14 +69,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(ListGraphType<TMasterModelType>),
-                name: SystemCP.GQL_QueryList,
-                description: ResxManage.GetDescription( nameof(SystemCP.GQL_QueryList)),
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = SystemCP.GQL_Condition, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_Condition)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_JWT)) }),
+                name: nameof(repo.QueryList),
+                description: SystemCP.DESC_QueryList,
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = SystemCP.Condition, Description = SystemCP.DESC_Condition }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
                 resolve: context =>
                 {
                     string selectFields = LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p => p != "__typename").ToArray());
                     if (!string.IsNullOrEmpty(selectFields)) selectFields = $"new ({selectFields})";
-                    string condition = context.GetArgument<string>(SystemCP.GQL_Condition);
+                    string condition = context.GetArgument<string>(SystemCP.Condition);
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
@@ -90,45 +90,45 @@ namespace SKGPortalCore.Graph
     {
         public BaseMutationType(BasicRepository<TSet> repo, ISessionWrapper session)
         {
-            //Field(
-            //    type: typeof(TSetType),
-            //    name: SystemCP.GQL_Create,
-            //    description: ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_Create)),
-            //    arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = SystemCP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_JWT)) }),
-            //    resolve: context =>
-            //    {
-            //        if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Create, null)) return default;
-            //        TSet set = context.GetArgument<TSet>(SystemCP.GQL_Set);
-            //        TSet result = repo.Create(set);
-            //        repo.CommitData(FuncAction.Create);
-            //        context.Errors.AddRange(repo.Message.Errors);
-            //        repo.Message.WriteLogTxt();
-            //        return context.Errors.Count == 0 ? result : default;
-            //    });
-            //Field(
-            //    type: typeof(TSetType),
-            //    name: SystemCP.GQL_Update,
-            //    description: ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_Update)),
-            //    arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = SystemCP.GQL_Set, Description = ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_Set)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription(typeof(CP), nameof(SystemCP.GQL_JWT)) }),
-            //    resolve: context =>
-            //    {
-            //        object[] keyVal = context.GetArgument<object>(SystemCP.GQL_KeyVal) as object[];
-            //        if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Update, keyVal)) return default;
-            //        TSet set = context.GetArgument<TSet>(SystemCP.GQL_Set);
-            //        TSet result = repo.Update(keyVal, set);
-            //        repo.CommitData(FuncAction.Update);
-            //        context.Errors.AddRange(repo.Message.Errors);
-            //        repo.Message.WriteLogTxt();
-            //        return context.Errors.Count == 0 ? result : default;
-            //    });
             Field(
-                type: typeof(BooleanGraphType),
-                name: SystemCP.GQL_Delete,
-                description: ResxManage.GetDescription( nameof(SystemCP.GQL_Delete)),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_JWT)) }),
+                type: typeof(TSetType),
+                name: nameof(repo.Create),
+                description: SystemCP.DESC_Create,
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<TInputSet>> { Name = SystemCP.Set, Description = SystemCP.DESC_Set }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>(SystemCP.GQL_KeyVal) as object[];
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Create, null)) return default;
+                    TSet set = context.GetArgument<TSet>(SystemCP.Set);
+                    TSet result = repo.Create(set);
+                    repo.CommitData(FuncAction.Create);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
+                    return context.Errors.Count == 0 ? result : default;
+                });
+            Field(
+                type: typeof(TSetType),
+                name: nameof(repo.Update),
+                description: SystemCP.DESC_Update,
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<NonNullGraphType<TInputSet>> { Name = SystemCP.Set, Description = SystemCP.DESC_Set }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
+                resolve: context =>
+                {
+                    object[] keyVal = context.GetArgument<object>(SystemCP.KeyVal) as object[];
+                    if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Update, keyVal)) return default;
+                    TSet set = context.GetArgument<TSet>(SystemCP.Set);
+                    TSet result = repo.Update(keyVal, set);
+                    repo.CommitData(FuncAction.Update);
+                    context.Errors.AddRange(repo.Message.Errors);
+                    repo.Message.WriteLogTxt();
+                    return context.Errors.Count == 0 ? result : default;
+                });
+            Field(
+                type: typeof(BooleanGraphType),
+                name: nameof(repo.Delete),
+                description: SystemCP.DESC_Delete,
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
+                resolve: context =>
+                {
+                    object[] keyVal = context.GetArgument<object>(SystemCP.KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Delete, keyVal)) return default;
                     repo.Delete(new[] { keyVal });
                     repo.CommitData(FuncAction.Delete);
@@ -138,14 +138,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
-                name: SystemCP.GQL_Approve,
-                description: ResxManage.GetDescription( nameof(SystemCP.GQL_Approve)),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = SystemCP.GQL_Status, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_QueryData)) }),
+                name: nameof(repo.Approve),
+                description: SystemCP.DESC_Approve,
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<BooleanGraphType> { Name = SystemCP.Status, Description = SystemCP.DESC_Status }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>(SystemCP.GQL_KeyVal) as object[];
+                    object[] keyVal = context.GetArgument<object>(SystemCP.KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Approve, keyVal)) return default;
-                    bool status = context.GetArgument<bool>(SystemCP.GQL_Status);
+                    bool status = context.GetArgument<bool>(SystemCP.Status);
                     TSet result = repo.Approve(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Approve);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -154,14 +154,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
                 type: typeof(TSetType),
-                name: SystemCP.GQL_Invalid,
-                description: ResxManage.GetDescription( nameof(SystemCP.GQL_Invalid)),
-                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = SystemCP.GQL_Status, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_JWT)) }),
+                name: nameof(repo.Invalid),
+                description: SystemCP.DESC_Invalid,
+                arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<BooleanGraphType> { Name = SystemCP.Status, Description = SystemCP.DESC_Status }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
                 resolve: context =>
                 {
-                    object[] keyVal = context.GetArgument<object>(SystemCP.GQL_KeyVal) as object[];
+                    object[] keyVal = context.GetArgument<object>(SystemCP.KeyVal) as object[];
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Invalid, keyVal)) return default;
-                    bool status = context.GetArgument<bool>(SystemCP.GQL_Status);
+                    bool status = context.GetArgument<bool>(SystemCP.Status);
                     TSet result = repo.Invalid(new[] { keyVal }, status);
                     repo.CommitData(FuncAction.Invalid);
                     context.Errors.AddRange(repo.Message.Errors);
@@ -170,14 +170,14 @@ namespace SKGPortalCore.Graph
                 });
             Field(
               type: typeof(TSetType),
-              name: SystemCP.GQL_EndCase,
-              description: ResxManage.GetDescription( nameof(SystemCP.GQL_EndCase)),
-              arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.GQL_KeyVal, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_KeyVal)) }, new QueryArgument<BooleanGraphType> { Name = SystemCP.GQL_Status, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_Status)) }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.GQL_JWT, Description = ResxManage.GetDescription( nameof(SystemCP.GQL_JWT)) }),
+              name: nameof(repo.EndCase),
+              description: SystemCP.DESC_EndCase,
+              arguments: new QueryArguments(new QueryArgument<ListGraphType<IdGraphType>> { Name = SystemCP.KeyVal, Description = SystemCP.DESC_KeyVal }, new QueryArgument<BooleanGraphType> { Name = SystemCP.Status, Description = SystemCP.DESC_Status }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
               resolve: context =>
               {
-                  object[] keyVal = context.GetArgument<object>(SystemCP.GQL_KeyVal) as object[];
+                  object[] keyVal = context.GetArgument<object>(SystemCP.KeyVal) as object[];
                   if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.EndCase, keyVal)) return default;
-                  bool status = context.GetArgument<bool>(SystemCP.GQL_Status);
+                  bool status = context.GetArgument<bool>(SystemCP.Status);
                   TSet result = repo.Invalid(new[] { keyVal }, status);
                   repo.CommitData(FuncAction.EndCase);
                   context.Errors.AddRange(repo.Message.Errors);
@@ -201,9 +201,7 @@ namespace SKGPortalCore.Graph
                 if (typeof(IEnumerable).IsAssignableFrom(t.PropertyType))
                     Field(typeof(ListGraphType<>).MakeGenericType(new[] { Type.GetType(typeName) }), t.Name, description);
                 else
-                {
                     Field(Type.GetType(typeName), t.Name, description);
-                }
             }
         }
     }
@@ -211,7 +209,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseInputSetGraphType()
         {
-            Name = typeof(TSet).Name;
+            Name = $"{typeof(TSet).Name}Input";
             foreach (var t in typeof(TSet).GetProperties())
             {
                 string typeName = $"{GetType().Namespace}.{t.Name}{SystemCP.InputType}";
@@ -230,7 +228,7 @@ namespace SKGPortalCore.Graph
     {
         public BaseInputFieldGraphType()
         {
-            Name = typeof(TModelType).Name.Replace(SystemCP.Model, string.Empty);
+            Name = typeof(TModelType).Name.Replace(SystemCP.Model, SystemCP.InputType);
             Type t = typeof(TModelType);
             PropertyInfo[] properties = t.GetProperties().Where(p => p.IsDefined(typeof(InputFieldAttribute)) || p.IsDefined(typeof(KeyAttribute))).ToArray();
             PropertyInfo[] expectProperties = SetExpectProperties(null);

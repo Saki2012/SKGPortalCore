@@ -16,7 +16,7 @@ namespace SKGPortalCore.Model.MasterData
         /// <summary>
         /// 密碼
         /// </summary>
-        [Description(SystemCP.GQL_Pasuwado)]
+        [Description(SystemCP.DESC_Pasuwado)]
         public string Pasuwado { get; set; }
         /// <summary>
         /// 密碼到期日

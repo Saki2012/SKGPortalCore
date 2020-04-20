@@ -52,7 +52,7 @@ namespace SKGPortalCore.Model.MasterData.OperateSystem
         /// <summary>
         /// 密碼
         /// </summary>
-        [Description(SystemCP.GQL_Pasuwado)] public string Pasuwado { get; set; }
+        [Description(SystemCP.DESC_Pasuwado)] public string Pasuwado { get; set; }
         /// <summary>
         /// 帳戶狀態
         /// </summary>

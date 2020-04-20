@@ -1,5 +1,6 @@
 ﻿using GraphQL.Types;
 using SKGPortalCore.Lib;
+using SKGPortalCore.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -153,8 +154,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const CREATE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {SystemCP.GQL_Create}(${SystemCP.GQL_Set}: {setName}InputType!, ${SystemCP.GQL_JWT}: String!) {{
-            {SystemCP.GQL_Create}({SystemCP.GQL_Set}: ${SystemCP.GQL_Set}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        mutation {nameof(BasicRepository<object>.Create)}(${SystemCP.Set}: {setName}InputType!, ${SystemCP.JWT}: String!) {{
+            {nameof(BasicRepository<object>.Create)}({SystemCP.Set}: ${SystemCP.Set}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                ${{fields}}
             }}
         }}
@@ -168,8 +169,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const UPDATE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {SystemCP.GQL_Update}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_Set}: {setName}InputType!, ${SystemCP.GQL_JWT}: String!) {{
-            {SystemCP.GQL_Update}({SystemCP.GQL_KeyVal}:${SystemCP.GQL_KeyVal}, {SystemCP.GQL_Set}: ${SystemCP.GQL_Set}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        mutation {nameof(BasicRepository<object>.Update)}(${SystemCP.KeyVal}: [ID], ${SystemCP.Set}: {setName}InputType!, ${SystemCP.JWT}: String!) {{
+            {nameof(BasicRepository<object>.Update)}({SystemCP.KeyVal}:${SystemCP.KeyVal}, {SystemCP.Set}: ${SystemCP.Set}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                ${{fields}}
             }}
         }}
@@ -182,8 +183,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
             {
                 return $@"export const DELETE_{setName.ToUpper()} = () => {{
   return gql`
-    mutation {SystemCP.GQL_Delete}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_JWT}: String!) {{
-      delete({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT})
+    mutation {nameof(BasicRepository<object>.Delete)}(${SystemCP.KeyVal}: [ID], ${SystemCP.JWT}: String!) {{
+      {nameof(BasicRepository<object>.Delete)}({SystemCP.KeyVal}: ${SystemCP.KeyVal}, {SystemCP.JWT}: ${SystemCP.JWT})
     }}
   `;
 }};
@@ -194,8 +195,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const APPROVE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {SystemCP.GQL_Approve}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
-            {SystemCP.GQL_Approve}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        mutation {nameof(BasicRepository<object>.Approve)}(${SystemCP.KeyVal}: [ID],${SystemCP.Status}: Boolean!, ${SystemCP.JWT}: String!) {{
+            {nameof(BasicRepository<object>.Approve)}({SystemCP.KeyVal}: ${SystemCP.KeyVal},{SystemCP.Status}: ${SystemCP.Status}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                ${{fields}}
             }}
         }}
@@ -209,8 +210,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const INVALID_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {SystemCP.GQL_Invalid}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
-            {SystemCP.GQL_Invalid}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        mutation {nameof(BasicRepository<object>.Invalid)}(${SystemCP.KeyVal}: [ID],${SystemCP.Status}: Boolean!, ${SystemCP.JWT}: String!) {{
+            {nameof(BasicRepository<object>.Invalid)}({SystemCP.KeyVal}: ${SystemCP.KeyVal},{SystemCP.Status}: ${SystemCP.Status}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                ${{fields}}
             }}
         }}
@@ -224,8 +225,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const ENDCASE_{setName.ToUpper()} = ({GetSearch(count)}) => {{
   const {{ fields, fragments }} = getReturnedFields({GetSearch(count)});
   return gql`
-        mutation {SystemCP.GQL_EndCase}(${SystemCP.GQL_KeyVal}: [ID],${SystemCP.GQL_Status}: Boolean!, ${SystemCP.GQL_JWT}: String!) {{
-            {SystemCP.GQL_EndCase}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal},{SystemCP.GQL_Status}: ${SystemCP.GQL_Status}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        mutation {nameof(BasicRepository<object>.EndCase)}(${SystemCP.KeyVal}: [ID],${SystemCP.Status}: Boolean!, ${SystemCP.JWT}: String!) {{
+            {nameof(BasicRepository<object>.EndCase)}({SystemCP.KeyVal}: ${SystemCP.KeyVal},{SystemCP.Status}: ${SystemCP.Status}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                ${{fields}}
             }}
         }}
@@ -314,8 +315,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
                 return $@"export const GET_{tableInst.Name.ToUpper()}_List = searchFields => {{
     return gql`
 
-        query {SystemCP.GQL_QueryList}(${SystemCP.GQL_Condition}: String!, ${SystemCP.GQL_JWT}: String!){{
-            {SystemCP.GQL_QueryList}({SystemCP.GQL_Condition}: ${SystemCP.GQL_Condition}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        query {nameof(BasicRepository<object>.QueryList)}(${SystemCP.Condition}: String!, ${SystemCP.JWT}: String!){{
+            {nameof(BasicRepository<object>.QueryList)}({SystemCP.Condition}: ${SystemCP.Condition}, {SystemCP.JWT}: ${SystemCP.JWT}){{
                 ${{searchFields || ""...{LibData.ToCamelCase(tableInst.Name)}List""}}
             }}
         }}
@@ -336,8 +337,8 @@ import {LibData.ToCamelCase(set.Name)}Fragment from ""{fullPath}"";
 
                 return $@"export const GET_{tableInstList[0].Name.ToUpper()}_INFO = ({GetSearch(tableInstList.Count)}) => {{
     return gql`
-        query {SystemCP.GQL_QueryData}(${SystemCP.GQL_KeyVal}: [ID], ${SystemCP.GQL_JWT}: String!){{
-            {SystemCP.GQL_QueryData}({SystemCP.GQL_KeyVal}: ${SystemCP.GQL_KeyVal}, {SystemCP.GQL_JWT}: ${SystemCP.GQL_JWT}){{
+        query {nameof(BasicRepository<object>.QueryData)}(${SystemCP.KeyVal}: [ID], ${SystemCP.JWT}: String!){{
+            {nameof(BasicRepository<object>.QueryData)}({SystemCP.KeyVal}: ${SystemCP.KeyVal}, {SystemCP.JWT}: ${SystemCP.JWT}){{
 {GetDetailSearchs(tableInstList)}            }}
         }}
 {GetConditions(set.Name, tableInstList)}    `;

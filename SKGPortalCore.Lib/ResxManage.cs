@@ -28,30 +28,6 @@ namespace SKGPortalCore.Lib
         {
             return null == attribute ? string.Empty : attribute.Value;
         }
-        /// <summary>
-        /// 獲取靜態欄位別名
-        /// 用法：GetStaticDescription(typeof(Class),nameof(Field))
-        /// </summary>
-        /// <param name="staticType">typeof(Class)</param>
-        /// <param name="fieldName">nameof(Field)</param>
-        /// <returns></returns>
-        public static string GetDescription(Type staticType, string fieldName)
-        {
-            FieldInfo property = staticType.GetField(fieldName);
-            DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
-            return GetDescription(attribute);
-        }
-        /// <summary>
-        /// 獲取靜態欄位別名(默認SystemCP Type)
-        /// 用法：GetStaticDescription(nameof(SystemCP.Field)) 
-        /// </summary>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        public static string GetDescription(string fieldName)
-        {
-            return GetDescription(typeof(SystemCP), fieldName);
-        }
-
 
         public static string GetDescription(Enum member)
         {
@@ -65,11 +41,24 @@ namespace SKGPortalCore.Lib
         }
         public static string GetDescription<T>(Expression<Func<T, object>> propertyExpression)
         {
-            var propertyInfo = (propertyExpression.Body.NodeType == ExpressionType.Convert) ?
+            PropertyInfo propertyInfo = (propertyExpression.Body.NodeType == ExpressionType.Convert) ?
                                (PropertyInfo)((MemberExpression)((UnaryExpression)propertyExpression.Body).Operand).Member
                               : (PropertyInfo)((MemberExpression)propertyExpression.Body).Member;
             return GetDescription(propertyInfo);
         }
+
+        public static string GetDescription<T>(string name, bool isField)
+        {
+            if (isField) return GetDescription(typeof(T).GetProperty(name));
+            else return GetDescription(typeof(T).GetMethod(name));
+        }
+
+        public static string GetDescription(MethodInfo property)
+        {
+            DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();
+            return GetDescription(attribute);
+        }
+
         public static string GetDescription(PropertyInfo property)
         {
             DescriptionAttribute attribute = property.GetCustomAttribute<DescriptionAttribute>();

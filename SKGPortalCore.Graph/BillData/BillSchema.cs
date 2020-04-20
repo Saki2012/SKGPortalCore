@@ -28,32 +28,32 @@ namespace SKGPortalCore.Graph.BillData
     {
         public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session)
         {
-            Field(
-            type: typeof(BooleanGraphType),
-            name: SystemCP.GQL_UploadFile,
-            description: ResxManage.GetDescription(SystemCP.GQL_UploadFile),
-            arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
-            ),
-            resolve: context =>
-            {
-                FileInfoModel file = context.GetArgument<FileInfoModel>(SystemCP.GQL_FileInfo);
-                byte[] bytes = file.Content.Select(x => LibData.ToByte(x)).ToArray();
-                File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
-                return true;
-            });
+            //Field(
+            //type: typeof(BooleanGraphType),
+            //name: SystemCP.GQL_UploadFile,
+            //description: ResxManage.GetDescription(SystemCP.GQL_UploadFile),
+            //arguments: new QueryArguments(
+            //    new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
+            //),
+            //resolve: context =>
+            //{
+            //    FileInfoModel file = context.GetArgument<FileInfoModel>(SystemCP.GQL_FileInfo);
+            //    byte[] bytes = file.Content.Select(x => LibData.ToByte(x)).ToArray();
+            //    File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
+            //    return true;
+            //});
 
-            Field(
-            type: typeof(BooleanGraphType),
-            name: nameof(BillRepository.BillPayProgressRpt),
-            description: ResxManage.GetDescription(typeof(BillRepository), nameof(BillRepository.BillPayProgressRpt)),
-            arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
-            ),
-            resolve: context =>
-            {
-                return repository.BillPayProgressRpt("", "");
-            });
+            //Field(
+            //type: typeof(BooleanGraphType),
+            //name: nameof(BillRepository.BillPayProgressRpt),
+            //description: ResxManage.GetDescription(typeof(BillRepository), nameof(BillRepository.BillPayProgressRpt)),
+            //arguments: new QueryArguments(
+            //    new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description =SystemCP.GQL_FileInfo }
+            //),
+            //resolve: context =>
+            //{
+            //    return repository.BillPayProgressRpt("", "");
+            //});
 
 
 
