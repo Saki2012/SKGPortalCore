@@ -217,6 +217,10 @@ namespace SKGPortalCore.Lib
         /// 收款單相關報表 ProgId
         /// </summary>
         public const string ProgId_ReceiptBillRpt = "ReceiptBillRpt";
+        /// <summary>
+        /// 系統使用相關報表
+        /// </summary>
+        public const string ProgId_SystemRpt = "SystemRpt";
         #endregion
 
         #region Description

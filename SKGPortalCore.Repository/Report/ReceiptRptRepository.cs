@@ -20,6 +20,7 @@ namespace SKGPortalCore.Repository.Report
         #region Construct
         public ReceiptRptRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
         #endregion
+        #region Public
         /// <summary>
         /// 無帳單主檔報表
         /// (舊：銷帳報表列印)
@@ -45,7 +46,6 @@ namespace SKGPortalCore.Repository.Report
         {
             DataTable rpt = BizReceiptBillRpt.GetChannelTotalFeeRpt(DataAccess, customerId);
             using LibDocument doc = new LibDocument(); doc.ExportExcel(rpt);
-
         }
         /// <summary>
         /// 通路手續費月結收據
@@ -77,5 +77,6 @@ namespace SKGPortalCore.Repository.Report
         {
             BizReceiptBillRpt.GetTotalReceipt_Channel(DataAccess, tradeDate);
         }
+        #endregion
     }
 }

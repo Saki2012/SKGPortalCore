@@ -28,36 +28,6 @@ namespace SKGPortalCore.Graph.BillData
     {
         public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session)
         {
-            //Field(
-            //type: typeof(BooleanGraphType),
-            //name: SystemCP.GQL_UploadFile,
-            //description: ResxManage.GetDescription(SystemCP.GQL_UploadFile),
-            //arguments: new QueryArguments(
-            //    new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description = ResxManage.GetDescription(SystemCP.GQL_FileInfo) }
-            //),
-            //resolve: context =>
-            //{
-            //    FileInfoModel file = context.GetArgument<FileInfoModel>(SystemCP.GQL_FileInfo);
-            //    byte[] bytes = file.Content.Select(x => LibData.ToByte(x)).ToArray();
-            //    File.WriteAllBytes(@"C:\Users\Suikoden\Desktop\zxccxz\zxccxzC.7z", bytes);
-            //    return true;
-            //});
-
-            Field(
-            type: typeof(BooleanGraphType),
-            name: nameof(BillRepository.BillPayProgressRpt),
-            description: SystemCP.DESC_BillPayProgressRpt,
-            arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = nameof(BillModel.CustomerCode), Description = ResxManage.GetDescription<BillModel>(p => p.CustomerCode) },
-                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = nameof(BillModel.BillTermId), Description = ResxManage.GetDescription<BillModel>(p => p.BillTermId) }
-            ),
-            resolve: context =>
-            {
-                return repository.BillPayProgressRpt(context.GetArgument<string>(nameof(BillModel.CustomerCode)), context.GetArgument<string>(nameof(BillModel.BillTermId)));
-            });
-
-
-
         }
     }
     //Input
