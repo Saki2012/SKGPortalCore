@@ -36,7 +36,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key, MaxLength(SystemCP.BillNoLen)] public string BillNo { get; set; } = string.Empty;
         /// <summary>
         /// 代收通路
         /// </summary>
@@ -60,23 +60,23 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 遞延天數
         /// </summary>
-        [Description(SystemCP.DESC_PostponeDays)] public int PostponeDays { get; set; }
+        [Description(SystemCP.DESC_PostponeDays)] public int PostponeDays { get; set; } = 0;
         /// <summary>
         /// 交易金額
         /// </summary>
-        [Description(SystemCP.DESC_Amount)] public decimal Amount { get; set; }
+        [Description(SystemCP.DESC_Amount)] public decimal Amount { get; set; } = decimal.Zero;
         /// <summary>
         /// 通路手續費
         /// </summary>
-        [Description(SystemCP.DESC_ChannelFee)] public decimal ChannelFee { get; set; }
+        [Description(SystemCP.DESC_ChannelFee)] public decimal ChannelFee { get; set; } = decimal.Zero;
         /// <summary>
         /// 預計匯款金額
         /// </summary>
-        [Description(SystemCP.DESC_ExpectRemitAmount)] public decimal ExpectRemitAmount { get; set; }
+        [Description(SystemCP.DESC_ExpectRemitAmount)] public decimal ExpectRemitAmount { get; set; } = decimal.Zero;
         /// <summary>
         /// 筆數
         /// </summary>
-        [Description(SystemCP.DESC_TotalCount)] public int TotalCount { get; set; }
+        [Description(SystemCP.DESC_TotalCount)] public int TotalCount { get; set; } = 0;
     }
     /// <summary>
     /// 通路收款明細帳簿
@@ -91,7 +91,7 @@ namespace SKGPortalCore.Model.BillData
         /// <summary>
         /// 單據編號
         /// </summary>
-        [Description(SystemCP.DESC_BillNo), Key] public string BillNo { get; set; }
+        [Description(SystemCP.DESC_BillNo), Key] public string BillNo { get; set; } = string.Empty;
         /// <summary>
         /// 收款單
         /// </summary>

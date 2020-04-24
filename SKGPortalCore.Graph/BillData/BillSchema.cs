@@ -43,17 +43,18 @@ namespace SKGPortalCore.Graph.BillData
             //    return true;
             //});
 
-            //Field(
-            //type: typeof(BooleanGraphType),
-            //name: nameof(BillRepository.BillPayProgressRpt),
-            //description: ResxManage.GetDescription(typeof(BillRepository), nameof(BillRepository.BillPayProgressRpt)),
-            //arguments: new QueryArguments(
-            //    new QueryArgument<NonNullGraphType<FileInfo>> { Name = SystemCP.GQL_FileInfo, Description =SystemCP.GQL_FileInfo }
-            //),
-            //resolve: context =>
-            //{
-            //    return repository.BillPayProgressRpt("", "");
-            //});
+            Field(
+            type: typeof(BooleanGraphType),
+            name: nameof(BillRepository.BillPayProgressRpt),
+            description: SystemCP.DESC_BillPayProgressRpt,
+            arguments: new QueryArguments(
+                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = nameof(BillModel.CustomerCode), Description = ResxManage.GetDescription<BillModel>(p => p.CustomerCode) },
+                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = nameof(BillModel.BillTermId), Description = ResxManage.GetDescription<BillModel>(p => p.BillTermId) }
+            ),
+            resolve: context =>
+            {
+                return repository.BillPayProgressRpt(context.GetArgument<string>(nameof(BillModel.CustomerCode)), context.GetArgument<string>(nameof(BillModel.BillTermId)));
+            });
 
 
 

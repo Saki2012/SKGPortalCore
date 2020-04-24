@@ -209,6 +209,14 @@ namespace SKGPortalCore.Lib
         /// 繳款人 ProgId
         /// </summary>
         public const string ProgId_Payer = "Payer";
+        /// <summary>
+        /// 帳單相關報表 ProgId
+        /// </summary>
+        public const string ProgId_BillRpt = "BillRpt";
+        /// <summary>
+        /// 收款單相關報表 ProgId
+        /// </summary>
+        public const string ProgId_ReceiptBillRpt = "ReceiptBillRpt";
         #endregion
 
         #region Description

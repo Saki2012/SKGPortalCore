@@ -35,29 +35,6 @@ namespace SKGPortalCore.Repository.BillData
         }
         #endregion
 
-        #region Public
-        /// <summary>
-        /// 繳費進度報表
-        /// (舊：銷帳報表列印)
-        /// </summary>
-        [Description(SystemCP.DESC_BillPayProgressRpt)]
-        public List<BillPayProgressRptModel> BillPayProgressRpt(string customerCode, string billTermId)
-        {
-            return BizBill.GetBillPayProgressRpt(DataAccess, customerCode, billTermId);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        public void BillPayProgressRptDoc(string customerCode, string billTermId)
-        {
-            List<BillPayProgressRptModel> rpt = BizBill.GetBillPayProgressRpt(DataAccess, customerCode, billTermId);
-            using LibDocument doc = new LibDocument(); doc.ExportExcel(rpt);
-        }
-
-
-
-        #endregion
-
         #region Protected
         /// <summary>
         /// 
