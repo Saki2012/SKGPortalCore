@@ -36,7 +36,7 @@ namespace SKGPortalCore.Repository.Report
         public void NoBillReceiptRptDoc(string customerCode)
         {
             List<NoBillReceiptRptModel> rpt = BizReceiptBillRpt.NoBillReceiptRpt(DataAccess, customerCode);
-            using LibDocument doc = new LibDocument(); doc.ExportExcel(rpt);
+            LibDocument.ExportExcel(rpt);
         }
         /// <summary>
         /// 通路手續費月結報表
@@ -45,7 +45,7 @@ namespace SKGPortalCore.Repository.Report
         public void ChannelTotalFeeRpt(string customerId)
         {
             DataTable rpt = BizReceiptBillRpt.GetChannelTotalFeeRpt(DataAccess, customerId);
-            using LibDocument doc = new LibDocument(); doc.ExportExcel(rpt);
+            LibDocument.ExportExcel(rpt);
         }
         /// <summary>
         /// 通路手續費月結收據

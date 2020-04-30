@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/SKGPortalCore",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:55558",
       "sslPort": 44366

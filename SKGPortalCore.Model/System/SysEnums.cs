@@ -513,4 +513,27 @@ namespace SKGPortalCore.Model.System
         /// </summary>
         [Description("刪除")] Delete = 3,
     }
+    /// <summary>
+    /// 過帳狀態
+    /// </summary>
+    [Description("過帳狀態")]
+    public enum TransStatus : byte
+    {
+        /// <summary>
+        /// 無
+        /// </summary>
+        [Description("無")] None = 0,
+        /// <summary>
+        /// 正過帳
+        /// </summary>
+        [Description("正過帳")] Increase = 1,
+        /// <summary>
+        /// 差異過帳
+        /// </summary>
+        [Description("差異過帳")] Difference = 2,
+        /// <summary>
+        /// 反過帳
+        /// </summary>
+        [Description("反過帳")] Invert = 3,
+    }
 }

@@ -31,7 +31,7 @@ namespace SKGPortalCore.Repository.Report
         /// </summary>
         public void BillPayProgressRptDoc(string customerCode, string billTermId)
         {
-            using LibDocument doc = new LibDocument(); doc.ExportExcel(BizBillRpt.GetBillPayProgressRpt(DataAccess, customerCode, billTermId));
+            LibDocument.ExportExcel(BizBillRpt.GetBillPayProgressRpt(DataAccess, customerCode, billTermId));
         }
         #endregion
     }

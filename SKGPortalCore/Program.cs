@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace SKGPortalCore
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -34,7 +34,7 @@ namespace SKGPortalCore
  * 4. 區域變數名稱首字需小寫                                                                 *
  * 5. 除特殊情況(Ex:為了大批數據更新的效率等問題)，在對其他單進行「增刪改」等動作時，        *
  *  一律使用該單的Repository進行動作                                                         *
- * 6.                                                                                        *
+ * 6. 每一Function應註明Summary                                                              *
  *-------------------------------------------------------------------------------------------- 
  *Model建置規範(1)                                                                           *
  * 1. 表單

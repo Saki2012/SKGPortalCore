@@ -144,6 +144,7 @@ namespace SKGPortalCore.Repository
                 SetFlowNo?.Invoke(set);
                 DoCreate(set);
                 AfterSetEntity(set, FuncAction.Create);
+                AfterUpdate(default, set, TransStatus.Increase);
                 SysChangeLog.SaveChangeLog();
             }
             catch (Exception ex)
@@ -167,6 +168,7 @@ namespace SKGPortalCore.Repository
                 TSet oldSet = QueryData(key);
                 DoUpdate(oldSet, inputSet);
                 AfterSetEntity(oldSet, FuncAction.Update);
+                AfterUpdate(oldSet, inputSet, TransStatus.Difference);
                 SysChangeLog.SaveChangeLog();
                 return oldSet;
             }
@@ -190,6 +192,8 @@ namespace SKGPortalCore.Repository
                 DataAccess.Remove(master);
                 SysChangeLog.RemoveChangeLog(master.InternalId);
                 AfterRemoveEntity(set);
+                AfterUpdate(set, default, TransStatus.Invert);
+
             }
             catch (Exception ex)
             {
@@ -251,14 +255,14 @@ namespace SKGPortalCore.Repository
         /// 查詢明細
         /// </summary>
         /// <returns></returns>
-        public virtual IList QueryList(string selectFields, string condition)
+        public virtual IList QueryList(string selectFields, string condition, int pageCt, int takeCt)
         {
             Type masterType = typeof(TSet).GetProperties()[0].PropertyType;
             object dbSet = DataAccess.GetType().GetMethod(SystemCP.DbSet).MakeGenericMethod(masterType).Invoke(DataAccess, null);
             IQueryable query = ((IQueryable)dbSet);
             if (!condition.IsNullOrEmpty()) query.Where(condition);
             if (!selectFields.IsNullOrEmpty()) query = DynamicQueryable.Select(query, selectFields);
-            return query.Cast<dynamic>().ToList();
+            return query.Skip((pageCt - 1) * takeCt).Take(takeCt).Cast<dynamic>().ToList();
         }
         /// <summary>.
         /// 審核
@@ -278,6 +282,7 @@ namespace SKGPortalCore.Repository
                     ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Approved : FormStatus.Saved;
                 }
                 AfterApprove(set, status);
+                AfterUpdate(set, default, TransStatus.None);
             }
             catch (Exception ex)
             {
@@ -301,6 +306,7 @@ namespace SKGPortalCore.Repository
                     ((BasicDataModel)masterData).FormStatus = status ? FormStatus.Obsoleted : FormStatus.Saved;
                 }
                 AfterInvalid(set, status);
+                AfterUpdate(set, set, status ? TransStatus.Invert : TransStatus.Increase);
             }
             catch (Exception ex)
             {
@@ -324,6 +330,7 @@ namespace SKGPortalCore.Repository
                     ((BasicDataModel)masterData).FormStatus = status ? FormStatus.EndCase : FormStatus.Approved;
                 }
                 AfterEndCase(set, status);
+                AfterUpdate(set, set, TransStatus.None);
             }
             catch (Exception ex)
             {
@@ -372,6 +379,13 @@ namespace SKGPortalCore.Repository
         /// </summary>
         /// <param name="set"></param>
         protected virtual void AfterRemoveEntity(TSet set) { }
+        /// <summary>
+        /// 更新之後(供過帳使用)
+        /// </summary>
+        /// <param name="oldSet"></param>
+        /// <param name="newSet"></param>
+        /// <param name="status"></param>
+        protected virtual void AfterUpdate(TSet oldSet, TSet newSet, TransStatus status) { }
         /// <summary>
         /// 執行SaveChanges後
         /// </summary>

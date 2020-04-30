@@ -26,9 +26,7 @@ namespace SKGPortalCore.Graph.BillData
     }
     public class BillMutation : BaseMutationType<BillSet, BillSetType, BillSetInputType>
     {
-        public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session)
-        {
-        }
+        public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BillSetInputType : BaseInputSetGraphType<BillSet> { }

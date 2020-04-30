@@ -71,7 +71,8 @@ namespace SKGPortalCore.Graph
                 type: typeof(ListGraphType<TMasterModelType>),
                 name: nameof(repo.QueryList),
                 description: SystemCP.DESC_QueryList,
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = SystemCP.Condition, Description = SystemCP.DESC_Condition }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT }),
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = SystemCP.Condition, Description = SystemCP.DESC_Condition }, new QueryArgument<NonNullGraphType<StringGraphType>> { Name = SystemCP.JWT, Description = SystemCP.DESC_JWT },
+new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "pageCt", Description = "頁數" }, new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "takeCt", Description = "筆數" }),
                 resolve: context =>
                 {
                     string selectFields = LibData.Merge(",", false, context.Fragments.Select(p => p.SelectionSet.Selections).FirstOrDefault()?.Select(p => ((Field)p).Name).Where(p => p != "__typename").ToArray());
@@ -80,7 +81,9 @@ namespace SKGPortalCore.Graph
                     if (!BaseOperateComm<TSet>.CheckAuthority(context, session, repo, FuncAction.Query, null)) return default;
                     context.Errors.AddRange(repo.Message.Errors);
                     repo.Message.WriteLogTxt();
-                    return repo.QueryList(selectFields, condition);
+                    int pageCt = context.GetArgument<int>("pageCt");
+                    int takeCt = context.GetArgument<int>("takeCt");
+                    return repo.QueryList(selectFields, condition, pageCt, takeCt);
                 });
         }
     }

@@ -55,7 +55,11 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizReceiptBill.SetData(set, DataAccess, BizCustSetDic, ColSetDic, WorkDic);
-            BizReceiptBill.PostingData(DataAccess, User,/* action, null,*/ set);
+        }
+        protected override void AfterUpdate(ReceiptBillSet oldSet, ReceiptBillSet newSet, TransStatus status)
+        {
+            base.AfterUpdate(oldSet, newSet, status);
+            BizReceiptBill.PostingData(DataAccess, User, status, oldSet, newSet);
         }
         #endregion
     }

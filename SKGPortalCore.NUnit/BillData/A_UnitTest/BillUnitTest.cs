@@ -78,8 +78,8 @@ namespace SKGPortalCore.NUnit.BillData.A_UnitTest
             [Test]
             public void Test()
             {
-                var repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
-                repo.ChannelTotalFeeRpt("30262944");
+                //var repo = new ReceiptBillRepository(DataAccess) { User = SystemOperator.SysOperator };
+                //repo.ChannelTotalFeeRpt("30262944");
             }
 
         }

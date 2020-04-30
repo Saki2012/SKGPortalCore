@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  skgportalcore:
+    restart: always
+    image: ${DOCKER_REGISTRY-}skgportalcore
+    build:
+      context: .
+      dockerfile: SKGPortalCore/Dockerfile
+    networks:
+      - skg-net
+
+  docker.nginx:
+    image: nginx
+    ports:
+      - "8077:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    links:
+      - skgportalcore
+    networks:
+      - skg-net
+
+networks:
+  skg-net:
+    driver: bridge
