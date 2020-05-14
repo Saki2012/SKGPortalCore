@@ -21,16 +21,7 @@ namespace SKGPortalCore.Repository.BillData
         #region Construct
         public BillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {
-            SetFlowNo = new Action<BillSet>(p =>
-            {
-                if (p.Bill.BillNo.IsNullOrEmpty())
-                {
-                    string billNo = $"Bill{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
-                    p.Bill.BillNo = billNo;
-                    p.BillDetail?.ForEach(p => p.BillNo = billNo);
-                    p.BillReceiptDetail?.ForEach(p => p.BillNo = billNo);
-                }
-            });
+            SetFlowNo = new Action<BillSet>(p => DoSetFlowNo(p));
             IsSetRefModel = true;
         }
         #endregion
@@ -46,6 +37,19 @@ namespace SKGPortalCore.Repository.BillData
             base.AfterSetEntity(set, action);
             BizBill.CheckData(set, Message, DataAccess);
             BizBill.SetData(set, ProgId, DataAccess);
+        }
+        #endregion
+
+        #region Private
+        private void DoSetFlowNo(BillSet p)
+        {
+            if (p.Bill.BillNo.IsNullOrEmpty())
+            {
+                string billNo = $"Bill{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                p.Bill.BillNo = billNo;
+                p.BillDetail?.ForEach(p => p.BillNo = billNo);
+                p.BillReceiptDetail?.ForEach(p => p.BillNo = billNo);
+            }
         }
         #endregion
     }
