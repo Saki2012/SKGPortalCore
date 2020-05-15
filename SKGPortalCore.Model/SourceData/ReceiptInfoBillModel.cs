@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.Libary;
 
 namespace SKGPortalCore.Model.SourceData
 {

@@ -1,8 +1,7 @@
 using NUnit.Framework;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.MasterData.OperateSystem;
 using SKGPortalCore.Repository.MasterData;
 using System.Collections.Generic;
 

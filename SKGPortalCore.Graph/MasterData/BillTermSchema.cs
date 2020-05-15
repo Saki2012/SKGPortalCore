@@ -1,24 +1,24 @@
-﻿using GraphQL;
-using GraphQL.Types;
-using SKGPortalCore.Data;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Interface.IGraphQL.MasterData;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Graph.MasterData
 {
     //Schema
-    public class BillTermSchema : BaseSchema<BillTermQuery, BillTermMutation>
+    public class BillTermSchema : BaseSchema<BillTermSet, BillTermQuery, BillTermMutation>, IBillTermSchema
     {
-        public BillTermSchema(IDependencyResolver resolver) : base(resolver) { }
+        public BillTermSchema(IBillTermRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Operate
     public class BillTermQuery : BaseQueryType<BillTermSet, BillTermSetType, BillTermType>
     {
-        public BillTermQuery(BillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BillTermQuery(IBillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class BillTermMutation : BaseMutationType<BillTermSet, BillTermSetType, BillTermSetInputType>
     {
-        public BillTermMutation(BillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BillTermMutation(IBillTermRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BillTermSetInputType : BaseInputSetGraphType<BillTermSet> { }

@@ -1,23 +1,22 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SKGPortalCore.Repository.BillData
 {
-
     /// <summary>
     /// 約定扣款單庫
     /// </summary>
     [ProgId(SystemCP.ProgId_AutoDebitBill)]
-    public class AutoDebitBillRepository : BasicRepository<AutoDebitBillSet>
+    public class AutoDebitBillRepository : BasicRepository<AutoDebitBillSet>, IAutoDebitBillRepository
     {
         #region Construct
         public AutoDebitBillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
@@ -26,7 +25,7 @@ namespace SKGPortalCore.Repository.BillData
             {
                 if (p.AutoDebitBill.BillNo.IsNullOrEmpty())
                 {
-                    string billNo = $"Auto{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billNo = $"Auto{DateTime.Today.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.AutoDebitBill.BillNo = billNo;
                     p.AutoDebitBillReceiptDetail?.ForEach(p => p.BillNo = billNo);
                 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SKGPortalCore.Graph.Report
+﻿namespace SKGPortalCore.Graph.Report
 {
-    class BillRptSchema
-    {
-    }
+    //public class BillRptSchema : Schema
+    //{
+    //}
 }

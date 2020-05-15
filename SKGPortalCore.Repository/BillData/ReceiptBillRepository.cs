@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.Report;
-using SKGPortalCore.Model.System;
-using SKGPortalCore.Repository.MasterData;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData
@@ -20,7 +18,7 @@ namespace SKGPortalCore.Repository.BillData
     /// 收款單庫
     /// </summary>
     [ProgId(SystemCP.ProgId_ReceiptBill)]
-    public class ReceiptBillRepository : BasicRepository<ReceiptBillSet>
+    public class ReceiptBillRepository : BasicRepository<ReceiptBillSet>, IReceiptBillRepository
     {
         #region Property
         public Dictionary<string, BizCustomerSet> BizCustSetDic { get; } = new Dictionary<string, BizCustomerSet>();
@@ -35,18 +33,11 @@ namespace SKGPortalCore.Repository.BillData
             {
                 if (p.ReceiptBill.BillNo.IsNullOrEmpty())
                 {
-                    string billNo = $"Rec{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billNo = $"Rec{DateTime.Today.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.ReceiptBill.BillNo = billNo;
                 }
             });
-            InitWorkDic(DateTime.Now, 9);
-        }
-        #endregion
-
-        #region Public
-        public void InitWorkDic(DateTime date, int months)
-        {
-            WorkDic = DataAccess.Set<WorkDateModel>().Where(p => p.Date >= date.AddMonths(-Math.Abs(months)) && p.Date <= date.AddMonths(Math.Abs(months))).ToDictionary(key => key.Date, value => value.IsWorkDate);
+            //InitWorkDic(DateTime.Now, 9);
         }
         #endregion
 

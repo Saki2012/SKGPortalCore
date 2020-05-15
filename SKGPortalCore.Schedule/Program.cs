@@ -1,9 +1,8 @@
-﻿using System.Configuration;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Extensions.Configuration;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Interface.IRepository.Import;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
 
 namespace SKGPortalCore.Schedule

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
 
 namespace SKGPortalCore.Repository.MasterData
@@ -12,7 +15,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// 繳款人庫
     /// </summary>
     [ProgId(SystemCP.DESC_Payer)]
-    public class PayerRepository : BasicRepository<PayerSet>
+    public class PayerRepository : BasicRepository<PayerSet>, IPayerRepository
     {
         public PayerRepository(ApplicationDbContext dataAccess) : base(dataAccess)
         {

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
-using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using System.Runtime.InteropServices;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData
@@ -12,7 +13,7 @@ namespace SKGPortalCore.Repository.BillData
     /// 通路帳款核銷單庫
     /// </summary>
     [ProgId(SystemCP.ProgId_ChannelWriteOfBill)]
-    public class ChannelWriteOfBillRepository : BasicRepository<ChannelWriteOfBillSet>
+    public class ChannelWriteOfBillRepository : BasicRepository<ChannelWriteOfBillSet>, IChannelWriteOfBillRepository
     {
         #region Construct
         public ChannelWriteOfBillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

@@ -1,4 +1,5 @@
-﻿using SKGPortalCore.Model.MasterData.OperateSystem;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Model.MasterData.OperateSystem;
 using System;
 
 namespace SKGPortalCore.Data

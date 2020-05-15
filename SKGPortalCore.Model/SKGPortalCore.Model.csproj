@@ -16,13 +16,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Core\SKGPortalCore.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\3.0.0-preview3-19153-02\ref\netcoreapp3.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MasterData\OperateSystem\" />
+    <Folder Include="System\" />
   </ItemGroup>
 
 </Project>

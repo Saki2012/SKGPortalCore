@@ -1,7 +1,10 @@
-﻿using GraphQL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
-using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,15 +14,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SKGPortalCore.Data;
-using SKGPortalCore.Graph;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.System;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.Model.User;
+using SKGPortalCore.Interface;
 
 namespace SKGPortalCore
 {
@@ -44,13 +43,12 @@ namespace SKGPortalCore
       );
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            InjectionRepository(ref services);
-            InjectionGraphSchema(ref services);
+
+            DependencyInjection(ref services);
 
             services.Configure<KestrelServerOptions>(options =>
             {
@@ -65,9 +63,6 @@ namespace SKGPortalCore
                 options.ForwardedHeaders =
                     ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
-
-            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
-
 
 
             services.AddSession(options =>
@@ -100,13 +95,12 @@ namespace SKGPortalCore
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseWebSockets();
 
-            Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
-            Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
+            Type[] assembly = typeof(ITF).Assembly.GetTypes().Where(p => p.IsInterface && p.Namespace.Contains("IGraphQL", StringComparison.Ordinal)).ToArray();
 
-            foreach (var type in schemaTypes)
+            foreach (var type in assembly)
             {
-                typeof(GraphQLWebSocketsExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Replace("Schema", "")}" });
-                typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Replace("Schema", "")}" });
+                typeof(GraphQLWebSocketsExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
+                typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
             }
 
 
@@ -119,40 +113,19 @@ namespace SKGPortalCore
 
         #region Private
         /// <summary>
-        /// 注入Repository
+        /// 注入相依性注入服務
         /// </summary>
         /// <param name="services"></param>
-        private void InjectionRepository(ref IServiceCollection services)
+        private void DependencyInjection(ref IServiceCollection services)
         {
-            Assembly assembly = Assembly.Load("SKGPortalCore.Repository");
-            Type[] types = assembly.ExportedTypes.Where(p => !p.Namespace.Contains("SKGPortalCore.Business") && p.Namespace.Contains("SKGPortalCore.Repository")).ToArray();
-            foreach (Type t in types) services.AddScoped(t);
-        }
-        /// <summary>
-        /// 注入GraphSchema
-        /// </summary>
-        /// <param name="services"></param>
-        private void InjectionGraphSchema(ref IServiceCollection services)
-        {
-            Type[] assembly = Assembly.Load("SKGPortalCore.Graph").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Graph") != 0).ToArray();
-            //Field
-            Type[] fieldTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryFieldGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputFieldGraphType`1") == 0).ToArray();
-            foreach (Type t in fieldTypes) services.AddScoped(t);
-            //Set
-            Type[] setTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQuerySetGraphType`1") == 0 || t.BaseType.Name.CompareTo("BaseInputSetGraphType`1") == 0).ToArray();
-            foreach (Type t in setTypes) services.AddScoped(t);
-            //Operate
-            Type[] operateTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseQueryType`3") == 0 || t.BaseType.Name.CompareTo("BaseMutationType`3") == 0 || t.Name.Contains("Subscription")).ToArray();
-            foreach (Type t in operateTypes) services.AddScoped(t);
-            //Schema
-            Type[] schemaTypes = assembly.Where(t => t.BaseType.Name.CompareTo("BaseSchema`1") == 0 || t.BaseType.Name.CompareTo("BaseSchema`2") == 0 || t.BaseType.Name.CompareTo("BaseSchema`3") == 0).ToArray();
-            foreach (Type t in schemaTypes) services.AddScoped(t);
+            List<Type> interfaces = typeof(ITF).Assembly.GetTypes().Where(p => p.IsInterface).ToList();
+            List<Type> repo = Assembly.LoadFrom(@"D:\Proj\SKGPortalCore\SKGPortalCore.Repository\bin\Debug\netcoreapp3.1\SKGPortalCore.Repository.dll").GetTypes().ToList();
+            List<Type> graph = Assembly.LoadFrom(@"D:\Proj\SKGPortalCore\SKGPortalCore.Graph\bin\Debug\netcoreapp3.1\SKGPortalCore.Graph.dll").GetTypes().ToList();
+            Injectionimplement(ref services, interfaces, repo);
+            Injectionimplement(ref services, interfaces, graph);
             //添加Enum
-            Type[] enumType = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => p.Namespace.CompareTo("SKGPortalCore.Model.System") == 0 && p.IsEnum).ToArray();
-            foreach (Type t in enumType) services.AddScoped(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
-
-            services.AddScoped<Permission>();
-            services.AddScoped<FileInfo>();
+            Type[] enumType = Assembly.Load("SKGPortalCore.Core").GetTypes().Where(p => p.IsEnum).ToArray();
+            foreach (Type t in enumType) services.AddSingleton(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
 
             services.AddGraphQL(options =>
                 {
@@ -163,6 +136,26 @@ namespace SKGPortalCore
                .AddDataLoader()
                .AddWebSockets();
             services.AddCors();
+        }
+        /// <summary>
+        /// 動態注入介面/實體服務
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="interfaces"></param>
+        /// <param name="implements"></param>
+        private void Injectionimplement(ref IServiceCollection services, List<Type> interfaces, List<Type> implements)
+        {
+            foreach (Type t in interfaces)
+            {
+                Type implement = implements.FirstOrDefault(p => null != p.GetInterface(t.Name));
+                if (null != implement)
+                {
+                    //#if BackEnd
+                    //                    if (implement.IsDefined(typeof(EndPointAttribute)) && implement.GetCustomAttribute<EndPointAttribute>().EndType != Core.LibEnum.EndType.Backend) continue;
+                    //#endif
+                    services.AddScoped(t, implement);
+                }
+            }
         }
         #endregion
     }

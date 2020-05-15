@@ -20,16 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="BillData\B_FlowTest\" />
     <Folder Include="BillData\C_GraphTest\" />
     <Folder Include="MasterData\B_FlowTest\" />
     <Folder Include="MasterData\C_GraphTest\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKGPortalCore.Interface\SKGPortalCore.Interface.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SKGPortalCore.Data;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.System;
+﻿using System.Collections.Generic;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.SeedDataInitial.MasterData

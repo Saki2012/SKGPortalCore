@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Repository;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.Repository.Entity;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

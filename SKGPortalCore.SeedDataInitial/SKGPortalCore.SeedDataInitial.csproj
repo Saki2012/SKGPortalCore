@@ -19,10 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Schedule\SKGPortalCore.Schedule.csproj" />
-    <ProjectReference Include="..\SKGPortalCore\SKGPortalCore.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Interface\SKGPortalCore.Interface.csproj" />
   </ItemGroup>
 
 </Project>

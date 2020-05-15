@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using Toolbelt.ComponentModel.DataAnnotations;
 
-namespace SKGPortalCore.Data
+namespace SKGPortalCore.Core
 {
     public class ApplicationDbContext : DbContext// IdentityDbContext
     {
@@ -55,10 +55,10 @@ namespace SKGPortalCore.Data
         /// <param name="builder"></param>
         private void ModelDbSetting(ModelBuilder builder)
         {
-            Type[] modelTypes = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p => (
-            (p.BaseType == typeof(DetailRowState) || p.BaseType == typeof(MasterDataModel) || p.BaseType == typeof(BillDataModel)) ||
-            (p.Namespace.Contains("SKGPortalCore.Model.SystemTable"))
-            )).ToArray();
+            Type[] modelTypes = Assembly.Load("SKGPortalCore.Model").GetTypes().Where(p =>
+            p.BaseType == typeof(DetailRowState) || p.BaseType == typeof(MasterDataModel) || p.BaseType == typeof(BillDataModel) ||
+            p.Namespace.Contains("SKGPortalCore.Model.SystemTable")
+            ).ToArray();
             foreach (Type type in modelTypes)
             {
                 string tableName = type.Name;

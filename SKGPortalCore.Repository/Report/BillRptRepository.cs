@@ -1,9 +1,12 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.Report;
 using SKGPortalCore.Model.Report;
 using SKGPortalCore.Repository.SKGPortalCore.Business.Report;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.Report
 {
@@ -11,7 +14,7 @@ namespace SKGPortalCore.Repository.Report
     /// 帳單相關報表
     /// </summary>
     [ProgId(SystemCP.ProgId_BillRpt)]
-    public class BillRptRepository : BasicRptRepository
+    public class BillRptRepository : BasicRptRepository, IBillRptRepository
     {
         #region Construct
         public BillRptRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

@@ -1,23 +1,24 @@
-﻿using GraphQL;
-using SKGPortalCore.Data;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Interface.IGraphQL.MasterData;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Graph.MasterData
 {
     //Schema
-    public class PayerSchema : BaseSchema<PayerQuery, PayerMutation>
+    public class PayerSchema : BaseSchema<PayerSet, PayerQuery, PayerMutation>, IPayerSchema
     {
-        public PayerSchema(IDependencyResolver resolver) : base(resolver) { }
+        public PayerSchema(IPayerRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Operate
     public class PayerQuery : BaseQueryType<PayerSet, PayerSetType, PayerType>
     {
-        public PayerQuery(PayerRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public PayerQuery(IPayerRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     public class PayerMutation : BaseMutationType<PayerSet, PayerSetType, PayerSetInputType>
     {
-        public PayerMutation(PayerRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public PayerMutation(IPayerRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Input
     public class PayerSetInputType : BaseInputSetGraphType<PayerSet> { }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core.Libary;
 
 namespace SKGPortalCore.Model.SourceData
 {

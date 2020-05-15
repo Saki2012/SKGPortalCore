@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Graph\SKGPortalCore.Graph.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Core\SKGPortalCore.Core.csproj" />
   </ItemGroup>
 
 </Project>

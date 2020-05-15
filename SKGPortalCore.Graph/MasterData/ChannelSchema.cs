@@ -1,23 +1,24 @@
-﻿using GraphQL;
-using SKGPortalCore.Data;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Interface.IGraphQL.MasterData;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Graph.MasterData
 {
     //Schema
-    public class ChannelSchema : BaseSchema<ChannelQuery, ChannelMutation>
+    public class ChannelSchema : BaseSchema<ChannelSet, ChannelQuery, ChannelMutation>, IChannelSchema
     {
-        public ChannelSchema(IDependencyResolver resolver) : base(resolver) { }
+        public ChannelSchema(IChannelRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Operate
     public class ChannelQuery : BaseQueryType<ChannelSet, ChannelSetType, ChannelType>
     {
-        public ChannelQuery(ChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public ChannelQuery(IChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class ChannelMutation : BaseMutationType<ChannelSet, ChannelSetType, ChannelSetInputType>
     {
-        public ChannelMutation(ChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public ChannelMutation(IChannelRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class ChannelSetInputType : BaseInputSetGraphType<ChannelSet> { }

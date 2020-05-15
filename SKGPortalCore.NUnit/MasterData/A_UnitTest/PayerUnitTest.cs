@@ -1,12 +1,9 @@
 ﻿using NUnit.Framework;
-using SKGPortalCore.Data;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.MasterData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SKGPortalCore.NUnit.MasterData.A_UnitTest
 {

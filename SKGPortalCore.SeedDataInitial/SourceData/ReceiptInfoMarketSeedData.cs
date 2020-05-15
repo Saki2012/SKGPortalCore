@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SKGPortalCore.Data;
+using SKGPortalCore.Core;
 using SKGPortalCore.Model.SourceData;
 
 namespace SKGPortalCore.SeedDataInitial.SourceData

@@ -1,9 +1,8 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using System;
-using System.Collections.Generic;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.Report;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SKGPortalCore.Repository.Report
 {
@@ -11,7 +10,7 @@ namespace SKGPortalCore.Repository.Report
     /// 系統使用相關報表
     /// </summary>
     [ProgId(SystemCP.ProgId_SystemRpt)]
-    public class SystemRptRepository : BasicRptRepository
+    public class SystemRptRepository : BasicRptRepository, ISystemRptRepository
     {
         #region Construct
         public SystemRptRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

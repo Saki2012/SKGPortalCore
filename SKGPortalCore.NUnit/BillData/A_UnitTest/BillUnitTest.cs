@@ -1,23 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
-using SKGPortalCore.Lib;
+﻿using NUnit.Framework;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model.User;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Repository.BillData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace SKGPortalCore.NUnit.BillData.A_UnitTest
 {
     public class BillUnitTest : BaseUnitTest
     {
         #region Property
-        BillRepository Repo;
+        IBillRepository Repo;
         [SetUp]
         public void Setup()
         {
@@ -72,7 +67,7 @@ namespace SKGPortalCore.NUnit.BillData.A_UnitTest
                     sw.Stop();
                     Console.WriteLine($"Time={sw.ElapsedMilliseconds:n0}ms");
                 }
-                Repo.CommitData(Model.System.FuncAction.Create);
+                Repo.CommitData(FuncAction.Create);
                 //AssertCorrectData(expectData, actualData);
             }
             [Test]

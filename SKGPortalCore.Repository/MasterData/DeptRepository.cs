@@ -1,10 +1,9 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace SKGPortalCore.Repository.MasterData
 {
@@ -12,7 +11,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// 部門庫
     /// </summary>
     [ProgId(SystemCP.ProgId_Dept)]
-    public class DeptRepository : BasicRepository<DeptSet>
+    public class DeptRepository : BasicRepository<DeptSet>, IDeptRepository
     {
         public DeptRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
     }

@@ -1,4 +1,4 @@
-﻿using SKGPortalCore.Lib;
+﻿using SKGPortalCore.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

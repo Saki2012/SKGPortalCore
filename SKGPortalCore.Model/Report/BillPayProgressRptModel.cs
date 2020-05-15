@@ -1,9 +1,6 @@
-﻿using SKGPortalCore.Lib;
-using SKGPortalCore.Model.System;
+﻿using SKGPortalCore.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace SKGPortalCore.Model.Report
 {

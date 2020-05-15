@@ -1,12 +1,12 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.MasterData.OperateSystem;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Import;
+﻿using System;
+using System.Text;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Model.User;
+using SKGPortalCore.Interface.IRepository.Import;
 using SKGPortalCore.SeedDataInitial.BillData;
 using SKGPortalCore.SeedDataInitial.MasterData;
 using SKGPortalCore.SeedDataInitial.SourceData;
-using System;
-using System.Text;
 
 namespace SKGPortalCore.SeedDataInitial
 {

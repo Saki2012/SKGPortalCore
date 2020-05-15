@@ -11,14 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Data\SKGPortalCore.Data.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Lib\SKGPortalCore.Lib.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
+    <Folder Include="Report\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Report\" />
+    <ProjectReference Include="..\SKGPortalCore.Interface\SKGPortalCore.Interface.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,14 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.System;
-using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
+using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -16,7 +16,7 @@ namespace SKGPortalCore.Repository.BillData
     /// 入金機庫
     /// </summary>
     [ProgId(SystemCP.ProgId_DepositBill)]
-    public class DepositBillRepository : BasicRepository<DepositBillSet>
+    public class DepositBillRepository : BasicRepository<DepositBillSet>, IDepositBillRepository
     {
         #region Construct
         public DepositBillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
@@ -25,7 +25,7 @@ namespace SKGPortalCore.Repository.BillData
             {
                 if (p.DepositBill.BillNo.IsNullOrEmpty())
                 {
-                    string billNo = $"Deposit{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billNo = $"Deposit{DateTime.Today.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.DepositBill.BillNo = billNo;
                     p.DepositBillReceiptDetail?.ForEach(p => p.BillNo = billNo);
                 }
@@ -38,7 +38,7 @@ namespace SKGPortalCore.Repository.BillData
         {
             base.AfterSetEntity(set, action);
             BizDepositBill.CheckData(set, Message, DataAccess);
-            BizDepositBill.SetData(set,ProgId,DataAccess);
+            BizDepositBill.SetData(set, ProgId, DataAccess);
         }
         #endregion
     }

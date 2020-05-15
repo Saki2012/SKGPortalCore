@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore", "SKGPortalCore\SKGPortalCore.csproj", "{DF9A0273-A5A8-4491-985F-EB9CC68B7D47}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.Data", "SKGPortalCore.Data\SKGPortalCore.Data.csproj", "{47B3AAB7-CEFC-41C2-AB99-4556ABB9E8A0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.Lib", "SKGPortalCore.Lib\SKGPortalCore.Lib.csproj", "{082DDFD7-7A34-4889-AB64-88A8F3FF135F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.Core", "SKGPortalCore.Core\SKGPortalCore.Core.csproj", "{47B3AAB7-CEFC-41C2-AB99-4556ABB9E8A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.Model", "SKGPortalCore.Model\SKGPortalCore.Model.csproj", "{FABF0248-8E79-4B46-A44B-4D586B610106}"
 EndProject
@@ -23,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.NUnit", "SKGP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SKGPortalCore.GraphJsCreator", "SKGPortalCore.GraphJsCreator\SKGPortalCore.GraphJsCreator.csproj", "{24228A05-378E-42B7-91FB-88E2D610F12E}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{70934B07-C209-46D0-ADDE-6156E318C9B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKGPortalCore.Interface", "SKGPortalCore.Interface\SKGPortalCore.Interface.csproj", "{0F9E02A2-4A7F-4D5F-90EE-0BAA1B8160ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +37,6 @@ Global
 		{47B3AAB7-CEFC-41C2-AB99-4556ABB9E8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47B3AAB7-CEFC-41C2-AB99-4556ABB9E8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47B3AAB7-CEFC-41C2-AB99-4556ABB9E8A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{082DDFD7-7A34-4889-AB64-88A8F3FF135F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{082DDFD7-7A34-4889-AB64-88A8F3FF135F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{082DDFD7-7A34-4889-AB64-88A8F3FF135F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{082DDFD7-7A34-4889-AB64-88A8F3FF135F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FABF0248-8E79-4B46-A44B-4D586B610106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FABF0248-8E79-4B46-A44B-4D586B610106}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FABF0248-8E79-4B46-A44B-4D586B610106}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,10 +65,10 @@ Global
 		{24228A05-378E-42B7-91FB-88E2D610F12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24228A05-378E-42B7-91FB-88E2D610F12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24228A05-378E-42B7-91FB-88E2D610F12E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70934B07-C209-46D0-ADDE-6156E318C9B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70934B07-C209-46D0-ADDE-6156E318C9B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70934B07-C209-46D0-ADDE-6156E318C9B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70934B07-C209-46D0-ADDE-6156E318C9B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9E02A2-4A7F-4D5F-90EE-0BAA1B8160ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9E02A2-4A7F-4D5F-90EE-0BAA1B8160ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9E02A2-4A7F-4D5F-90EE-0BAA1B8160ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9E02A2-4A7F-4D5F-90EE-0BAA1B8160ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

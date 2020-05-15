@@ -1,14 +1,16 @@
 ﻿using System.Linq;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Repository.BillData
 {
     [ProgId(SystemCP.ProgId_DisbursementBill)]
-    public class DisbursementBillRepository : BasicRepository<DisbursementBillSet>
+    public class DisbursementBillRepository : BasicRepository<DisbursementBillSet>, IDisbursementBillRepository
     {
         #region Construct
         public DisbursementBillRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }

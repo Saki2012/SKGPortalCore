@@ -1,34 +1,29 @@
-﻿using GraphQL;
-using GraphQL.Types;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model;
-using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.System;
-using SKGPortalCore.Repository.BillData;
-using System;
-using System.IO;
+﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Linq;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Interface.IGraphQL.BillData;
+using SKGPortalCore.Interface.IRepository.BillData;
+using SKGPortalCore.Model.BillData;
 
 namespace SKGPortalCore.Graph.BillData
 {
     //Schema
-    public class BillSchema : BaseSchema<BillQuery, BillMutation>
+    public class BillSchema : BaseSchema<BillSet, BillQuery, BillMutation>, IBillSchema
     {
-        public BillSchema(IDependencyResolver resolver) : base(resolver) { }
+        public BillSchema(IBillRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Operate
     public class BillQuery : BaseQueryType<BillSet, BillSetType, BillType>
     {
-        public BillQuery(BillRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BillQuery(IBillRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     public class BillMutation : BaseMutationType<BillSet, BillSetType, BillSetInputType>
     {
-        public BillMutation(BillRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BillMutation(IBillRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
-    //Input
+    //InputFields
     public class BillSetInputType : BaseInputSetGraphType<BillSet> { }
     public class BillInputType : BaseInputFieldGraphType<BillModel>
     {
@@ -39,7 +34,7 @@ namespace SKGPortalCore.Graph.BillData
     }
     public class BillDetailInputType : BaseInputFieldGraphType<BillDetailModel> { }
     public class BillReceiptDetailInputType : BaseInputFieldGraphType<BillReceiptDetailModel> { }
-    //Query
+    //QueryFields
     public class BillSetType : BaseQuerySetGraphType<BillSet> { }
     public class BillType : BaseQueryFieldGraphType<BillModel> { }
     public class BillDetailType : BaseQueryFieldGraphType<BillDetailModel> { }

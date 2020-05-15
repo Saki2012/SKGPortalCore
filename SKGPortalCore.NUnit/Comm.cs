@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using SKGPortalCore.Data;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
 using System;
 using System.Collections.Generic;
 using System.Text;

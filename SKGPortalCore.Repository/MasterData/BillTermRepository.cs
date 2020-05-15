@@ -1,10 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
 
 namespace SKGPortalCore.Repository.MasterData
@@ -13,7 +16,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// 期別庫
     /// </summary>
     [ProgId(SystemCP.ProgId_BillTerm)]
-    public class BillTermRepository : BasicRepository<BillTermSet>
+    public class BillTermRepository : BasicRepository<BillTermSet>, IBillTermRepository
     {
         #region Construct
         public BillTermRepository(ApplicationDbContext dataAccess) : base(dataAccess)
@@ -23,7 +26,7 @@ namespace SKGPortalCore.Repository.MasterData
             {
                 if (p.BillTerm.BillTermId.IsNullOrEmpty())
                 {
-                    string billTermId = $"Term{DateTime.Today.ToString("yyyyMMdd")}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
+                    string billTermId = $"Term{DateTime.Today.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}{(++DataFlowNo.FlowNo).ToString().PadLeft(5, '0')}";
                     p.BillTerm.BillTermId = billTermId;
                     p.BillTermDetail?.ForEach(p => p.BillTermId = billTermId);
                 }

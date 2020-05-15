@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.SourceData;
-using SKGPortalCore.Model.System;
 
 namespace SKGPortalCore.Model.BillData
 {

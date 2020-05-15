@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.LibAttribute;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model;
 using SKGPortalCore.Model.MasterData;
 using SKGPortalCore.Model.SourceData;
-using SKGPortalCore.Model.System;
 using Toolbelt.ComponentModel.DataAnnotations.Schema;
 
 namespace SKGPortalCore.Model.BillData

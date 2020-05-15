@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0005: 無須使用指示詞。
+dotnet_diagnostic.IDE0005.severity = none

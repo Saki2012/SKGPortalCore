@@ -1,9 +1,11 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using System.Runtime.InteropServices;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
-using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.MasterData
 {
@@ -11,7 +13,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// 商戶資料庫
     /// </summary>
     [ProgId(SystemCP.ProgId_BillTerm)]
-    public class BizCustomerRepository : BasicRepository<BizCustomerSet>
+    public class BizCustomerRepository : BasicRepository<BizCustomerSet>, IBizCustomerRepository
     {
         public BizCustomerRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
 

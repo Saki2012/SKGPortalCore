@@ -1,11 +1,11 @@
 SKGPortalCore/bin
 SKGPortalCore/obj
 SKGPortalCore.Business/
-SKGPortalCore.Data/bin
-SKGPortalCore.Data/obj
+SKGPortalCore.Core/bin
+SKGPortalCore.Core/obj
 SKGPortalCore.Schedule/bin
 SKGPortalCore.Schedule/obj
-SKGPortalCore.Data/Migrations
+SKGPortalCore.Core/Migrations
 SKGPortalCore.Lib/bin
 SKGPortalCore.Lib/obj
 SKGPortalCore.Model/bin

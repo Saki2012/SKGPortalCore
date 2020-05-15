@@ -1,13 +1,14 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
-using SKGPortalCore.Model.Report;
-using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Report;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.InteropServices;
-using System.Text;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.Report;
+using SKGPortalCore.Model.Report;
+using SKGPortalCore.Repository.SKGPortalCore.Business.Report;
 
 namespace SKGPortalCore.Repository.Report
 {
@@ -15,11 +16,12 @@ namespace SKGPortalCore.Repository.Report
     /// 收款單相關報表
     /// </summary>
     [ProgId(SystemCP.ProgId_ReceiptBillRpt)]
-    public class ReceiptRptRepository : BasicRptRepository
+    public class ReceiptRptRepository : BasicRptRepository, IReceiptRptRepository
     {
         #region Construct
         public ReceiptRptRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
         #endregion
+
         #region Public
         /// <summary>
         /// 無帳單主檔報表

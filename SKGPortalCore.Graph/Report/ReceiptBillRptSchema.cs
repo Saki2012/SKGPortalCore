@@ -1,22 +1,20 @@
-﻿using GraphQL;
-using GraphQL.Types;
-using SKGPortalCore.Lib;
+﻿using GraphQL.Types;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Interface.IRepository.Report;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Repository.Report;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SKGPortalCore.Graph.Report
 {
     //Schema
-    public class ReceiptBillRptSchema : Schema
-    {
-        public ReceiptBillRptSchema(IDependencyResolver resolver) : base(resolver)
-        {
-            Query = resolver.Resolve<ReceiptBillRptQuery>() as IObjectGraphType;
-        }
-    }
+    //public class ReceiptBillRptSchema : Schema
+    //{
+    //    public ReceiptBillRptSchema(IDependencyResolver resolver) : base(resolver)
+    //    {
+    //        Query = resolver.Resolve<ReceiptBillRptQuery>() as IObjectGraphType;
+    //    }
+    //}
     //Operate
     public class ReceiptBillRptQuery : ObjectGraphType
     {
@@ -24,7 +22,7 @@ namespace SKGPortalCore.Graph.Report
         {
             Field(
          type: typeof(BooleanGraphType),
-         name: nameof(BillRptRepository.BillPayProgressRpt),
+         name: nameof(IBillRptRepository.BillPayProgressRpt),
          description: SystemCP.DESC_BillPayProgressRpt,
          arguments: new QueryArguments(
              new QueryArgument<NonNullGraphType<StringGraphType>> { Name = nameof(BillModel.CustomerCode), Description = ResxManage.GetDescription<BillModel>(p => p.CustomerCode) },

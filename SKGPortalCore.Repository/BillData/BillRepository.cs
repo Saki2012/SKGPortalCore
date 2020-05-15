@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.Libary;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
-using SKGPortalCore.Model.Report;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.BillData;
-using SKGPortalCore.Repository.SKGPortalCore.Business.Func;
 
 namespace SKGPortalCore.Repository.BillData
 {
@@ -16,7 +15,7 @@ namespace SKGPortalCore.Repository.BillData
     /// 帳單庫
     /// </summary>
     [ProgId(SystemCP.ProgId_Bill)]
-    public class BillRepository : BasicRepository<BillSet>
+    public class BillRepository : BasicRepository<BillSet>, IBillRepository
     {
         #region Construct
         public BillRepository(ApplicationDbContext dataAccess) : base(dataAccess)
@@ -41,6 +40,10 @@ namespace SKGPortalCore.Repository.BillData
         #endregion
 
         #region Private
+        /// <summary>
+        /// 設置流水編號
+        /// </summary>
+        /// <param name="p"></param>
         private void DoSetFlowNo(BillSet p)
         {
             if (p.Bill.BillNo.IsNullOrEmpty())

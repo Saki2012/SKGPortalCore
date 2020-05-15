@@ -1,10 +1,10 @@
-﻿using SKGPortalCore.Lib;
-using SKGPortalCore.Model.SourceData;
-using SKGPortalCore.Model.System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Model;
 
 namespace SKGPortalCore.Model.BillData
 {

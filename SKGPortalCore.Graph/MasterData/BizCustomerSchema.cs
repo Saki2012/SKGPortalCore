@@ -1,23 +1,24 @@
-﻿using GraphQL;
-using SKGPortalCore.Data;
+﻿using SKGPortalCore.Core;
+using SKGPortalCore.Core.GraphQL;
+using SKGPortalCore.Interface.IGraphQL.MasterData;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Repository.MasterData;
 
 namespace SKGPortalCore.Graph.MasterData
 {
     //Schema
-    public class BizCustomerSchema : BaseSchema<BizCustomerQuery, BizCustomerMutation>
+    public class BizCustomerSchema : BaseSchema<BizCustomerSet, BizCustomerQuery, BizCustomerMutation>, IBizCustomerSchema
     {
-        public BizCustomerSchema(IDependencyResolver resolver) : base(resolver) { }
+        public BizCustomerSchema(IBizCustomerRepository repo, ISessionWrapper session) : base(repo, session) { }
     }
     //Operate
     public class BizCustomerQuery : BaseQueryType<BizCustomerSet, BizCustomerSetType, BizCustomerType>
     {
-        public BizCustomerQuery(BizCustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BizCustomerQuery(IBizCustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     public class BizCustomerMutation : BaseMutationType<BizCustomerSet, BizCustomerSetType, BizCustomerSetInputType>
     {
-        public BizCustomerMutation(BizCustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
+        public BizCustomerMutation(IBizCustomerRepository repository, ISessionWrapper session) : base(repository, session) { }
     }
     //Input
     public class BizCustomerSetInputType : BaseInputSetGraphType<BizCustomerSet> { }

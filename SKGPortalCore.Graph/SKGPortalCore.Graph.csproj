@@ -10,16 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SKGPortalCore.Model\SKGPortalCore.Model.csproj" />
-    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="GraphQL" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Func\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SKGPortalCore.Interface\SKGPortalCore.Interface.csproj" />
   </ItemGroup>
 
 </Project>

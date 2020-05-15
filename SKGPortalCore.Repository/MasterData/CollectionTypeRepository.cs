@@ -1,9 +1,11 @@
-﻿using SKGPortalCore.Data;
-using SKGPortalCore.Lib;
+﻿using System.Runtime.InteropServices;
+using SKGPortalCore.Core;
+using SKGPortalCore.Core.DB;
+using SKGPortalCore.Core.LibEnum;
+using SKGPortalCore.Core.Repository.Entity;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using SKGPortalCore.Model.MasterData;
-using SKGPortalCore.Model.System;
 using SKGPortalCore.Repository.SKGPortalCore.Business.MasterData;
-using System.Runtime.InteropServices;
 
 namespace SKGPortalCore.Repository.MasterData
 {
@@ -11,7 +13,7 @@ namespace SKGPortalCore.Repository.MasterData
     /// 代收類別庫
     /// </summary>
     [ProgId(SystemCP.ProgId_CollectionType)]
-    public class CollectionTypeRepository : BasicRepository<CollectionTypeSet>
+    public class CollectionTypeRepository : BasicRepository<CollectionTypeSet>, ICollectionTypeRepository
     {
         #region Construct
         public CollectionTypeRepository(ApplicationDbContext dataAccess) : base(dataAccess) { }
