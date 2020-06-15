@@ -6,6 +6,7 @@ using SKGPortalCore.Core.LibEnum;
 using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Interface.IRepository.BillData;
 using SKGPortalCore.Model.BillData;
+using SKGPortalCore.Repository.BillData;
 
 namespace SKGPortalCore.SeedDataInitial.BillData
 {

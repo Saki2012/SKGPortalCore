@@ -10,6 +10,8 @@ SKGPortalCore.Lib/bin
 SKGPortalCore.Lib/obj
 SKGPortalCore.Model/bin
 SKGPortalCore.Model/obj
+SKGPortalCore.Interface/bin
+SKGPortalCore.Interface/obj
 SKGPortalCore.Repository/bin
 SKGPortalCore.Repository/obj
 SKGPortalCore.Graph/bin

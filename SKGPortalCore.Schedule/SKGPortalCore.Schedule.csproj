@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SKGPortalCore.Interface\SKGPortalCore.Interface.csproj" />
+    <ProjectReference Include="..\SKGPortalCore.Repository\SKGPortalCore.Repository.csproj" />
   </ItemGroup>
 
 </Project>
