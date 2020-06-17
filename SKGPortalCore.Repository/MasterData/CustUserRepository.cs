@@ -5,7 +5,7 @@ using SKGPortalCore.Core.LibEnum;
 using SKGPortalCore.Core.Model;
 using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Core.Repository.Entity;
-using SKGPortalCore.Repository.MasterData.User;
+using SKGPortalCore.Interface.IRepository.MasterData;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;

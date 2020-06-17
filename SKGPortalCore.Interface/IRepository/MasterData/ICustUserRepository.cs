@@ -4,7 +4,7 @@ using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Core.Repository.Interface;
 using System.Collections.Generic;
 
-namespace SKGPortalCore.Repository.MasterData.User
+namespace SKGPortalCore.Interface.IRepository.MasterData
 {
     public interface ICustUserRepository : IBasicRepository<CustUserSet>
     {

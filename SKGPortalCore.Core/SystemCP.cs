@@ -99,6 +99,15 @@ namespace SKGPortalCore.Core
         /// 狀態
         /// </summary>
         public const string Status = "status";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string RepositoryDLL = "RepositoryDLL";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string GraphDLL = "GraphDLL";
+
         #endregion
 
         #region Model

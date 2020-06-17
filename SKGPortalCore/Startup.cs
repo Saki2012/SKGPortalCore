@@ -27,6 +27,10 @@ namespace SKGPortalCore
         #region Property
         IConfiguration Configuration { get; }
         IWebHostEnvironment Env { get; }
+        /// <summary>
+        /// Session過期時間
+        /// </summary>
+        private const int IdleTimeout = 20;
         #endregion
 
         #region Construct
@@ -69,11 +73,10 @@ namespace SKGPortalCore
              {
                  options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                  options.Cookie.Name = SystemCP.CookieName;
-                 options.IdleTimeout = TimeSpan.FromMinutes(20);
+                 options.IdleTimeout = TimeSpan.FromMinutes(IdleTimeout);
              });
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -94,16 +97,12 @@ namespace SKGPortalCore
             app.UseSession();
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseWebSockets();
-
-            Type[] assembly = typeof(ITF).Assembly.GetTypes().Where(p => p.IsInterface && p.Namespace.Contains("IGraphQL", StringComparison.Ordinal)).ToArray();
-
+            List<Type> assembly = ITF.IGraphQL;
             foreach (var type in assembly)
             {
-                typeof(GraphQLWebSocketsExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
-                typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods()[0].MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
+                typeof(GraphQLWebSocketsExtensions).GetMethods().FirstOrDefault().MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
+                typeof(GraphQL.Server.ApplicationBuilderExtensions).GetMethods().FirstOrDefault().MakeGenericMethod(type).Invoke(null, new object[] { app, $@"/{type.Name.Substring(1).Replace("Schema", "", StringComparison.Ordinal)}" });
             }
-
-
             app.UseStaticFiles();
 #if DEBUG
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() { Path = "/", GraphQLEndPoint = "/Bill" });
@@ -118,11 +117,10 @@ namespace SKGPortalCore
         /// <param name="services"></param>
         private void DependencyInjection(ref IServiceCollection services)
         {
-            List<Type> interfaces = typeof(ITF).Assembly.GetTypes().Where(p => p.IsInterface).ToList();
-            List<Type> repo = Assembly.LoadFrom(@"D:\Proj\SKGPortalCore\SKGPortalCore.Repository\bin\Debug\netcoreapp3.1\SKGPortalCore.Repository.dll").GetTypes().ToList();
-            List<Type> graph = Assembly.LoadFrom(@"D:\Proj\SKGPortalCore\SKGPortalCore.Graph\bin\Debug\netcoreapp3.1\SKGPortalCore.Graph.dll").GetTypes().ToList();
-            Injectionimplement(ref services, interfaces, repo);
-            Injectionimplement(ref services, interfaces, graph);
+            List<Type> repo = Assembly.LoadFrom(Configuration.GetSection(SystemCP.RepositoryDLL).Value).GetTypes().ToList();
+            List<Type> graph = Assembly.LoadFrom(Configuration.GetSection(SystemCP.GraphDLL).Value).GetTypes().ToList();
+            Injectionimplement(ref services, ITF.IRepository, repo);
+            Injectionimplement(ref services, ITF.IGraphQL, graph);
             //添加Enum
             Type[] enumType = Assembly.Load("SKGPortalCore.Core").GetTypes().Where(p => p.IsEnum).ToArray();
             foreach (Type t in enumType) services.AddSingleton(typeof(BaseEnumerationGraphType<>).MakeGenericType(new[] { t }));
@@ -253,5 +251,22 @@ namespace SKGPortalCore
  * 服動一個人的思考架構，馬上就被經理打回原形   *
  * 我還是把時間多花在這邊開發吧，開發完好離職   *
  * 去做健康管理事業比較實際。                   *
- ************************************************
+ * ----------------------------------------------
+ *  2020/06/15                   Kevin Wu       *
+ * ----------------------------------------------
+ * 一個月過去了，的確又浪費掉了...              *
+ * ----------------------------------------------
+ *  2020/06/16                   Kevin Wu       *
+ * ----------------------------------------------
+ * 不能再浪費時間了。早上公司的事情，下午處理   *
+ * 系統開發的事情，文件的事情優先吧。           *
+ * 我真不想待在這家公司等死。                   *
+ * ----------------------------------------------
+ *  2020/06/17                   Kevin Wu       *
+ * ----------------------------------------------
+ *  早上專心弄公司的事情，下午專心弄新平台      *
+ *  資料變更等等的問題看看吧。                  *
+ *  希望能稍微找回以前開發的感覺了。才兩個月    *
+ *  就整個狀態不對                              *
+ * **********************************************
  */

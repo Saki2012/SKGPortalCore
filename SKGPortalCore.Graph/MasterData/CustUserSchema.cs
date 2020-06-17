@@ -5,7 +5,7 @@ using SKGPortalCore.Core.LibAttribute;
 using SKGPortalCore.Core.LibEnum;
 using SKGPortalCore.Core.Model.User;
 using SKGPortalCore.Interface.IGraphQL.MasterData;
-using SKGPortalCore.Repository.MasterData.User;
+using SKGPortalCore.Interface.IRepository.MasterData;
 
 namespace SKGPortalCore.Graph.MasterData
 {
